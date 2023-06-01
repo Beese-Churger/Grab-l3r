@@ -5,9 +5,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Vector2 checkpointPosition = new Vector2(-2,0);
-
+    public bool isGrabbing = false;
+    
     private void Awake()
     {
+        // set player position to last checkpoint on respawn
         GameObject.FindGameObjectWithTag("Player").transform.position = checkpointPosition;
     }
 
@@ -21,5 +23,14 @@ public class Player : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // check collision with terrain
+        if (collision.transform.tag == "Terrain")
+        {
+            // TODO: check terrain surface type
+        }
     }
 }
