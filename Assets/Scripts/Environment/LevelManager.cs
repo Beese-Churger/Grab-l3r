@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -43,7 +45,7 @@ public class LevelManager : MonoBehaviour
         if (currentLevelIndex < levels.Length)
         {
             Level level= levels[currentLevelIndex];
-            LoadLevel(level);
+            StartCoroutine(LoadLevel(level));
         }
         else
         {
@@ -53,16 +55,26 @@ public class LevelManager : MonoBehaviour
     }
 
     // Load level by index
-    public void LoadLevel(Level level)
+    private IEnumerator LoadLevel(Level level)
     {
         string scene = level.sceneName;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+
+        while(!asyncLoad.isDone)
+        {
+            yield return null;
+        }
     }
 
     // Load level by name
     // Can be used in level selection or for testing purpouses
-    public void LoadLevel(string scene)
-    { 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
+    public IEnumerator LoadLevel(string scene)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
     }
 }
