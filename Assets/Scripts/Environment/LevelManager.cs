@@ -4,46 +4,65 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public class LevelData
-    {
-        public string sceneName;
-
-        public LevelData(string scene)
-        {
-            sceneName= scene;
-        }
-    }
-
-    private LevelData[] levels;
-    private int currentLevel = 0;
-    public bool changeLevel = false;
-
-    // Load level by name
-    public void LoadLevel(string scene)
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
-    }
-
-    // load level after current level is finnished
-    public void LoadNextLevel(LevelData levels)
-    {
-
-    }
-
     // Manually add all levels (scenes) by name to the levels array
     void Start()
     {
-        new LevelData("Environment");
-        new LevelData("Jontest");
+        new Level("Environment");
+        new Level("Jontest");
         // add more levels if there are
     }
 
-    // Update is called once per frame
-    void Update()
+    public class Level
     {
-        
+        public string sceneName;
+
+        public Level(string s)
+        {
+            sceneName = s;
+        }
     }
 
+    private Level[] levels;
+    private int currentLevelIndex = 0;
+    private static LevelManager instance;
 
-    
+    public static LevelManager Instance()
+    {
+        if(instance==null)
+        {
+            instance= new LevelManager();
+        }
+        return instance;
+    }
+
+    // load level after current level is finnished
+    public void LoadNextLevel()
+    {
+        currentLevelIndex++;
+
+        if (currentLevelIndex < levels.Length)
+        {
+            Level level= levels[currentLevelIndex];
+            LoadLevel(level);
+        }
+        else
+        {
+            Debug.Log("All levels loaded");
+        }
+
+    }
+
+    // Load level by index
+    public void LoadLevel(Level level)
+    {
+        string scene = level.sceneName;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
+    }
+
+    // Load level by name
+    // Can be used in level selection or for testing purpouses
+    public void LoadLevel(string scene)
+    { 
+        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
+    }
 }

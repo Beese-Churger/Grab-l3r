@@ -10,7 +10,7 @@ public class Checkpoint : MonoBehaviour
         if (collision.transform.tag == "Player")
         {
             // set players last checkpoint position in player script
-            Player.checkpointPosition = transform.position;
+            Player.checkpointPos = transform.position;
         }
     }
 }
