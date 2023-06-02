@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        instance = this;
         playerSprite = GetComponent<SpriteRenderer>();
         rBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RopeSystem : MonoBehaviour
+public class RopeSysTest : MonoBehaviour
 {
     public LineRenderer ropeRenderer;
     public LayerMask ropeLayerMask;
     public float climbSpeed = 3f;
     public GameObject ropeHingeAnchor;
-    public DistanceJoint2D ropeJoint;
-    //public SpringJoint2D ropeJoint;
+    //public DistanceJoint2D ropeJoint;
+    public SpringJoint2D ropeJoint;
     public Transform crosshair;
     public SpriteRenderer crosshairSprite;
     public PlayerController playerMovement;
@@ -24,6 +24,15 @@ public class RopeSystem : MonoBehaviour
     private Dictionary<Vector2, int> wrapPointsLookup = new Dictionary<Vector2, int>();
     private SpriteRenderer ropeHingeAnchorSprite;
 
+    [Header("No Launch To Point")]
+    [SerializeField] private bool autoConfigureDistance = false;
+    [SerializeField] private float targetDistance = 3;
+    [SerializeField] private float targetFrequncy = 1;
+
+    [Header("Launching:")]
+    [SerializeField] private bool launchToPoint = true;
+    [SerializeField] private float launchSpeed = 0.5f;
+
     void Awake()
     {
         ropeJoint.enabled = false;
@@ -36,7 +45,7 @@ public class RopeSystem : MonoBehaviour
     private Vector2 GetClosestColliderPointFromRaycastHit(RaycastHit2D hit, PolygonCollider2D polyCollider)
     {
         // Transform polygoncolliderpoints to world space (default is local)
-        Dictionary<float,Vector2> distanceDictionary = polyCollider.points.ToDictionary<Vector2, float, Vector2>(
+        Dictionary<float, Vector2> distanceDictionary = polyCollider.points.ToDictionary<Vector2, float, Vector2>(
             position => Vector2.Distance(hit.point, polyCollider.transform.TransformPoint(position)),
             position => polyCollider.transform.TransformPoint(position));
 
@@ -110,12 +119,10 @@ public class RopeSystem : MonoBehaviour
             if (ropeAttached) return;
             ropeRenderer.enabled = true;
 
-            //m_springJoint2D.connectedAnchor = grapplePoint;
 
-            //Vector2 distanceVector = firePoint.position - gunHolder.position;
 
-            //m_springJoint2D.distance = distanceVector.magnitude;
-            //m_springJoint2D.frequency = launchSpeed;
+
+           
             //m_springJoint2D.enabled = true;
 
             var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
@@ -124,13 +131,15 @@ public class RopeSystem : MonoBehaviour
                 ropeAttached = true;
                 if (!ropePositions.Contains(hit.point))
                 {
-                    // Jump slightly to distance the player a little from the ground after grappling to something.
-                    transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
+                  
+
+                    //transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
                     ropePositions.Add(hit.point);
                     wrapPointsLookup.Add(hit.point, 0);
-                    ropeJoint.distance = Vector2.Distance(playerPosition, hit.point);
-                    ropeJoint.enabled = true;
+                    //ropeJoint.distance = Vector2.Distance(playerPosition, hit.point);
+                    //ropeJoint.enabled = true;
                     ropeHingeAnchorSprite.enabled = true;
+                    Grapple();
                 }
             }
             else
@@ -147,6 +156,35 @@ public class RopeSystem : MonoBehaviour
         }
     }
 
+    private void Grapple()
+    {
+        {
+            ropeJoint.autoConfigureDistance = false;
+            if (!launchToPoint && !autoConfigureDistance)
+            {
+                //ropeJoint.distance = targetDistance;
+                ropeJoint.frequency = targetFrequncy;
+            }
+            if (!launchToPoint)
+            {
+                if (autoConfigureDistance)
+                {
+                    ropeJoint.autoConfigureDistance = true;
+                    ropeJoint.frequency = 0;
+                }
+                ropeJoint.enabled = true;
+            }
+            else
+            {
+                Vector2 distanceVector = crosshair.position - transform.position;
+
+                ropeJoint.distance = distanceVector.magnitude;
+                ropeJoint.frequency = launchSpeed;
+                ropeJoint.enabled = true;
+                
+            }
+        }
+    }
     // Resets the rope in terms of gameplay, visual, and supporting variable values.
     private void ResetRope()
     {
@@ -159,7 +197,6 @@ public class RopeSystem : MonoBehaviour
         ropePositions.Clear();
         wrapPointsLookup.Clear();
         ropeHingeAnchorSprite.enabled = false;
-        //m_springJoint2D.enabled = false;
     }
 
     // Move the aiming crosshair based on aim angle
@@ -180,7 +217,7 @@ public class RopeSystem : MonoBehaviour
     // Retracts or extends the 'rope'
     private void HandleRopeLength()
     {
-        
+
         if (Input.GetAxis("Vertical") >= 1f && ropeAttached && !isColliding)
         {
             ropeJoint.distance -= Time.deltaTime * climbSpeed;
