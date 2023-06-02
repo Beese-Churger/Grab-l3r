@@ -2,22 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IEnemy
-{
-    int GetState();
-    Vector2 GetPosition();
-}
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager enemyManager;
-    private List<GameObject> EnemyList;
-
+    [SerializeField]private List<EnemyBaseClass> EnemyList;
     void Awake()
     {
         if (enemyManager == null)
         {
             enemyManager = this;
-            EnemyList = new List<GameObject>();
+            AddEnemies();
+            
         }
         else
         {
@@ -27,10 +22,18 @@ public class EnemyManager : MonoBehaviour
     }
     void Update()
     {
-
+        foreach (EnemyBaseClass enemy in EnemyList)
+        {
+            enemy.FSMUpdate();
+        }
     }
     public void AddEnemies()
     {
-       GameObject.FindGameObjectWithTag("Enemy");
+       GameObject[] EnemyGOArray = GameObject.FindGameObjectsWithTag("Enemy");
+       foreach (GameObject enemyObject in EnemyGOArray)
+       {
+           EnemyList.Add(enemyObject.GetComponent<EnemyBaseClass>());
+       }
     }
+
 }
