@@ -4,8 +4,22 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public class Level
+{
+    public string sceneName;
+
+    public Level(string s)
+    {
+        sceneName = s;
+    }
+}
+
 public class LevelManager : MonoBehaviour
 {
+    private Level[] levels;
+    private int currentLevelIndex = 0;
+    private static LevelManager instance;
+
     // Manually add all levels (scenes) by name to the levels array
     void Start()
     {
@@ -14,27 +28,16 @@ public class LevelManager : MonoBehaviour
         // add more levels if there are
     }
 
-    public class Level
+    private void Awake()
     {
-        public string sceneName;
-
-        public Level(string s)
+        if (instance != null)
         {
-            sceneName = s;
+            Destroy(this);
         }
-    }
-
-    private Level[] levels;
-    private int currentLevelIndex = 0;
-    private static LevelManager instance;
-
-    public static LevelManager Instance()
-    {
-        if(instance==null)
+        else
         {
-            instance= new LevelManager();
+            instance = this;
         }
-        return instance;
     }
 
     // load level after current level is finnished

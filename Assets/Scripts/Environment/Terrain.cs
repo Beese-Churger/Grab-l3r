@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class Terrain : MonoBehaviour
 {
-    // TODO: add more types of terrain (pressure plates etc...)
+    // TODO: add more types of platforms 
     public enum TerrainType
     {
-        grabbable,
-        slippery,
-        pressure,
-        button
+       concreate,
+       vines
     }
 
     [SerializeField] TerrainType terrainType;
     private GameObject player;
 
-    // Start is called before the first frame update
+    // Find player from scene
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -30,11 +28,12 @@ public class Terrain : MonoBehaviour
         {
             switch (terrainType)
             {
-                case TerrainType.grabbable:
-                    //attatch player?
+                case TerrainType.vines:
+                    //attatch player
                     break;
-                case TerrainType.slippery:
-                    // detatch player
+                case TerrainType.concreate:
+                    // detatch player 
+                    player.GetComponent<Player>().isGrabbing = false;
                     break;
             }
         }

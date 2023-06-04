@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb=GetComponent<Rigidbody2D>(); 
+        rb = GetComponent<Rigidbody2D>(); 
     }
 
     // Player movement for testing purpouses
@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
         if (collision.transform.tag == "Terrain")
         {
             // TODO: check terrain surface type
+            isGrabbing = true;
             Debug.Log("Collision with terrain");
         }
     }
