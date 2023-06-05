@@ -12,7 +12,7 @@ public class CameraMovement : MonoBehaviour
 
 
     //TEMP VARIABLE
-    private GameObject playerPlaceHolder;
+    private GameObject player;
     private GameObject target;
 
     // Start is called before the first frame update
@@ -23,7 +23,7 @@ public class CameraMovement : MonoBehaviour
         // Get Component Of CinemachineVirtualCamera
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
         // Find PlayerPlaceHolderObject
-        playerPlaceHolder = GameObject.Find("PlayerPlaceHolder");
+        player = GameObject.Find("Player");
         // Find Target
         target = GameObject.Find("CameraTarget");
 
@@ -31,7 +31,7 @@ public class CameraMovement : MonoBehaviour
         mousePosition = new Vector2(0,0);
 
         // Initialize Player Position
-        playerPosition = playerPlaceHolder.transform.position;
+        playerPosition = player.transform.position;
 
     }
 
@@ -41,20 +41,10 @@ public class CameraMovement : MonoBehaviour
          // Converted from screen space to world space
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        // Update player position
-        playerPosition = playerPlaceHolder.transform.position;
+        // convert vector3 to vector2
+        playerPosition = player.transform.position;
 
-
-    }
-
-    // Update is called once per frame
-    void LateUpdate()
-    {
         // The Position Of The Invisible Target
-        lookAtPosition = Vector2.Lerp(playerPosition, mousePosition, 0.5f);
-        // Set the position of the invisible target
-        target.transform.position = lookAtPosition;
-        //Debug.Log(target.transform.position.x + "," + target.transform.position.y);
-
+        target.transform.position = playerPosition + (mousePosition - playerPosition) * 0.2f;
     }
 }

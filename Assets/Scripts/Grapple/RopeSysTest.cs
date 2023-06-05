@@ -7,7 +7,7 @@ public class RopeSysTest : MonoBehaviour
 {
     public LineRenderer ropeRenderer;
     public LayerMask ropeLayerMask;
-    public float climbSpeed = 3f;
+    public float climbSpeed = 5f;
     public GameObject ropeHingeAnchor;
     //public DistanceJoint2D ropeJoint;
     public SpringJoint2D ropeJoint;
@@ -17,7 +17,7 @@ public class RopeSysTest : MonoBehaviour
     private bool ropeAttached;
     private Vector2 playerPosition;
     private List<Vector2> ropePositions = new List<Vector2>();
-    private float ropeMaxCastDistance = 20f;
+    [SerializeField] private float ropeMaxCastDistance = 10f;
     private Rigidbody2D ropeHingeAnchorRb;
     private bool distanceSet;
     private bool isColliding;
@@ -88,7 +88,7 @@ public class RopeSysTest : MonoBehaviour
                     PolygonCollider2D colliderWithVertices = playerToCurrentNextHit.collider as PolygonCollider2D;
                     if (colliderWithVertices != null)
                     {
-                        var closestPointToHit = GetClosestColliderPointFromRaycastHit(playerToCurrentNextHit, colliderWithVertices);
+                        Vector2 closestPointToHit = GetClosestColliderPointFromRaycastHit(playerToCurrentNextHit, colliderWithVertices);
                         if (wrapPointsLookup.ContainsKey(closestPointToHit))
                         {
                             // Reset the rope if it wraps around an 'already wrapped' position.
@@ -125,10 +125,11 @@ public class RopeSysTest : MonoBehaviour
            
             //m_springJoint2D.enabled = true;
 
-            var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
+            RaycastHit2D hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
             if (hit.collider != null)
             {
                 ropeAttached = true;
+                //ropeHingeAnchor.transform.parent = hit.transform;
                 if (!ropePositions.Contains(hit.point))
                 {
                   
@@ -207,10 +208,10 @@ public class RopeSysTest : MonoBehaviour
             crosshairSprite.enabled = true;
         }
 
-        var x = transform.position.x + 1f * Mathf.Cos(aimAngle);
-        var y = transform.position.y + 1f * Mathf.Sin(aimAngle);
+        float x = transform.position.x + 1f * Mathf.Cos(aimAngle);
+        float y = transform.position.y + 1f * Mathf.Sin(aimAngle);
 
-        var crossHairPosition = new Vector3(x, y, 0);
+        Vector3 crossHairPosition = new Vector3(x, y, 0);
         crosshair.transform.position = crossHairPosition;
     }
 
@@ -352,7 +353,7 @@ public class RopeSysTest : MonoBehaviour
     private void UnwrapRopePosition(int anchorIndex, int hingeIndex)
     {
         // 1
-        var newAnchorPosition = ropePositions[anchorIndex];
+        Vector2 newAnchorPosition = ropePositions[anchorIndex];
         wrapPointsLookup.Remove(ropePositions[hingeIndex]);
         ropePositions.RemoveAt(hingeIndex);
 
