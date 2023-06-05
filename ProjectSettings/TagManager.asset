@@ -4,16 +4,18 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Enemy
   - Terrain
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
+  - Rope
+  - Pivot
+  - PostProcessVolume
   - 
   - 
   - 
