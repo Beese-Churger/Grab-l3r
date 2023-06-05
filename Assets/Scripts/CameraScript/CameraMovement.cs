@@ -25,7 +25,7 @@ public class CameraMovement : MonoBehaviour
         // Find PlayerPlaceHolderObject
         playerPlaceHolder = GameObject.Find("PlayerPlaceHolder");
         // Find Target
-        target = GameObject.Find("Target");
+        target = GameObject.Find("CameraTarget");
 
         // Initialize Mouse Position
         mousePosition = new Vector2(0,0);
@@ -35,21 +35,26 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+     
+    void FixedUpdate()
     {
-        // Converted from screen space to world space
+         // Converted from screen space to world space
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+        // Update player position
+        playerPosition = playerPlaceHolder.transform.position;
+
+
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
         // The Position Of The Invisible Target
         lookAtPosition = Vector2.Lerp(playerPosition, mousePosition, 0.5f);
         // Set the position of the invisible target
         target.transform.position = lookAtPosition;
         //Debug.Log(target.transform.position.x + "," + target.transform.position.y);
 
-    }
-    void LateUpdate()
-    {
-        //virtualCamera.LookAt = target.transform;
     }
 }
