@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     //[SerializeField] private GameObject Grapple2;
     //[SerializeField] private GameObject Player;
 
+    // A variable that checks whether the player is alive or not
+    public bool p_Alive = true;
+
     public float swingForce = 4f;
     public float speed = 1f;
     public float jumpSpeed = 3f;
