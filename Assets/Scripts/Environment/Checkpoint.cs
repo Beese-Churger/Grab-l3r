@@ -12,5 +12,6 @@ public class Checkpoint : MonoBehaviour
             // set players last checkpoint position in player script
             Player.checkpointPos = transform.position;
         }
+        Destroy(this);
     }
 }
