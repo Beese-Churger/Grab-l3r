@@ -21,13 +21,16 @@ using static Terrain;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-    public float health = 90;
-    public int score = 0;
-    public int enemiesDefeated = 0;
-    public bool gamePaused;
-    public bool triggeredGameEnd;
+    private float health = 90;
+    private int score = 0;
+    private int enemiesDefeated = 0;
+    private bool gamePaused;
+    private bool triggeredGameEnd;
     private StateType state;
     public static event Action<StateType> StateChanged;
+
+    [SerializeField] private GameObject levelManagerObj = null;
+    private LevelManager levelManager = null;
 
     public static GameManager getInstance()
     {
@@ -46,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        levelManager = levelManagerObj.GetComponent<LevelManager>();
         // load mainmenu when game is opened
         SetGameState(StateType.start);
     }
@@ -60,10 +64,12 @@ public class GameManager : MonoBehaviour
                 EndGame();
                 break;
             case StateType.start:
+                //StartCoroutine(levelManager.LoadLevel("MainMenu"));
                 break;
             case StateType.pause:
                 break;
             case StateType.levelChange:
+                levelManager.LoadNextLevel();
                 break;
             case StateType.respawn:
                 Respawn();
@@ -76,11 +82,20 @@ public class GameManager : MonoBehaviour
         StateChanged?.Invoke(newState);
     }
 
+    private void Update()
+    {
+        if (health <= 0)
+        {
+            // set state to respawn or smt..
+        }
+    }
+
     private void EndGame()
     {
         // TODO: what happens when game ends
         // show credits after
         ShowCredits();
+        StartCoroutine(levelManager.LoadLevel("Main Menu"));
     }
 
     public void ResetGame()
@@ -114,5 +129,6 @@ public class GameManager : MonoBehaviour
     public void TakeDamage()
     {
         health -= 30;
+        Debug.Log("Health:"+health);
     }
 }

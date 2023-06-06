@@ -14,8 +14,9 @@ public class PressurePlate : MonoBehaviour
             if (d < 0.05f)
             {
                 terrain.ActivateMovingPlatform();
+                Debug.Log("Pressure plate pushed");
             }
         }
-        //Destroy(this);
+        Destroy(this);
     }
 }

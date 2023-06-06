@@ -16,7 +16,7 @@ public class Terrain : MonoBehaviour
     private GameObject player;
     private bool triggerPressurePlate = false;
     public float speed = 2f;
-    public Vector2 startPoint;
+    private Vector2 startPoint;
     public Vector2 endPoint;
 
     // Find player from scene
@@ -42,6 +42,7 @@ public class Terrain : MonoBehaviour
                     player.GetComponent<Player>().isGrabbing = false;
                     break;
             }
+            
         }
 
         if(triggerPressurePlate)
@@ -56,10 +57,11 @@ public class Terrain : MonoBehaviour
             }
         }
 
-        Debug.Log(triggerPressurePlate);
+        
     }
 
     public void ActivateMovingPlatform(){
         triggerPressurePlate = true;
+        Debug.Log(triggerPressurePlate);
     }
 }
