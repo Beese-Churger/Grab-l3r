@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using static Terrain;
         end,            // move to main menu
         start,          // load main menu 
         pause,          // game on pause
-        levelPassed,    // load next level
+        levelChange,    // load next level
         respawn,        // load level again when player dies
         boss,           // activate and deactivate boss
         credits         // show credits
@@ -20,69 +21,80 @@ using static Terrain;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-    public int health = 100;
+    public float health = 90;
     public int score = 0;
     public int enemiesDefeated = 0;
-    private bool gameStarted;
     public bool gamePaused;
     public bool triggeredGameEnd;
-    [SerializeField] StateType states;
+    private StateType state;
+    public static event Action<StateType> StateChanged;
 
     public static GameManager getInstance()
     {
         if (instance == null)
         {
-            DontDestroyOnLoad(instance);
             instance = new GameManager();
+            DontDestroyOnLoad(instance);
         }
         return instance;
     }
 
     private void Awake()
     {
-        instance= this;
+        instance = this;
     }
 
-    public void SetGameEvent(StateType newState)
+    private void Start()
     {
-        this.states= newState;
-        // TODO: hanle event change
+        // load mainmenu when game is opened
+        SetGameState(StateType.start);
     }
 
-    private void Update()
+    public void SetGameState(StateType newState)
     {
-        // TODO: fill with event associated functions etc...
-        switch(states)
-            {
-                case StateType.end:
-                    ShowCredits();
-                    break;
-                case StateType.start:
-                    break;
-                case StateType.pause:
-                    break;
-                case StateType.levelPassed:
-                    break;
-                case StateType.respawn:
-                    Respawn();
-                    break;
-                case StateType.boss:
-                    break;
-                case StateType.credits:
-                    break;
+        state=newState;
+
+        switch (newState)
+        {
+            case StateType.end:
+                EndGame();
+                break;
+            case StateType.start:
+                break;
+            case StateType.pause:
+                break;
+            case StateType.levelChange:
+                break;
+            case StateType.respawn:
+                Respawn();
+                break;
+            case StateType.boss:
+                break;
+            case StateType.credits:
+                break;
         }
+        StateChanged?.Invoke(newState);
+    }
+
+    private void EndGame()
+    {
+        // TODO: what happens when game ends
+        // show credits after
+        ShowCredits();
     }
 
     public void ResetGame()
     {
         // TODO: reset all variables to initials
-        this.health = 100;
-        this.score = 0;
+        health = 100;
+        score = 0;
+        triggeredGameEnd = false;
+        enemiesDefeated = 0;
     }
 
     public void Respawn()
     {
-        // TODO: load level
+        // TODO: load level again
     }
 
     public void SetScore(int addToScore){
@@ -96,7 +108,11 @@ public class GameManager : MonoBehaviour
 
     public void ShowCredits()
     {
-
+        // TODO: display credits when the game ends
     }
 
+    public void TakeDamage()
+    {
+        health -= 30;
+    }
 }

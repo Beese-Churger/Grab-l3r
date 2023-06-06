@@ -8,16 +8,22 @@ public class Terrain : MonoBehaviour
     public enum TerrainType
     {
        concreate,
-       vines
+       vines,
+       none
     }
 
     [SerializeField] TerrainType terrainType;
     private GameObject player;
+    private bool triggerPressurePlate = false;
+    public float speed = 2f;
+    public Vector2 startPoint;
+    public Vector2 endPoint;
 
     // Find player from scene
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        startPoint=transform.position;
     }
 
     // Update is called once per frame
@@ -37,5 +43,23 @@ public class Terrain : MonoBehaviour
                     break;
             }
         }
+
+        if(triggerPressurePlate)
+        {
+            if(transform.position.x < endPoint.x)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, endPoint, speed*Time.deltaTime);
+            }
+            else
+            {
+                transform.position=Vector2.MoveTowards(transform.position, startPoint, speed*Time.deltaTime);
+            }
+        }
+
+        Debug.Log(triggerPressurePlate);
+    }
+
+    public void ActivateMovingPlatform(){
+        triggerPressurePlate = true;
     }
 }
