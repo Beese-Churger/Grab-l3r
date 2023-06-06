@@ -6,6 +6,7 @@ using UnityEngine;
 // only works with the player movement and not the camera
 public class TEMPSCRIPT : MonoBehaviour
 {
+    [SerializeField] private Rigidbody2D m_Rigidbody;
     float v, h;
     public float speed;  // units per second; consider making this a public property for easy tweaking
     float dy, dx;
@@ -24,7 +25,8 @@ public class TEMPSCRIPT : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
            Debug.Log("Dashed");
-           dx = 100 * speed * Time.deltaTime;
+            //dy = 100 * speed * Time.deltaTime;
+            m_Rigidbody.AddForce(transform.right * 10.0f, ForceMode2D.Impulse);
         }
 
 
