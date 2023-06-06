@@ -7,8 +7,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public SoundScript[] bgmSounds, sfxSounds, bgSounds, insultSounds;
-    public AudioSource bgmSource, sfxSource, bgSource, insultSource;
+    public SoundScript[] bgmSounds, sfxSounds, bgSounds;
+    public AudioSource bgmSource, sfxSource, bgSource;
 
     private void Awake()
     {
@@ -139,25 +139,7 @@ public class AudioManager : MonoBehaviour
             bgSource.Play();
         }
     }
-    public void PlayInsult(string name)
-    {
-        SoundScript s = Array.Find(insultSounds, x => x.name == name);
-
-        if (s == null)
-        {
-            Debug.Log("Sound not found");
-        }
-        else
-        {
-            insultSource.clip = s.clip;
-            if (insultSource.isPlaying)
-            {
-                return;
-            }
-            insultSource.PlayOneShot(s.clip);
-        }
-    }
-
+  
     public void ToggleBGM()
     {
         bgmSource.mute = !bgmSource.mute;
@@ -167,7 +149,6 @@ public class AudioManager : MonoBehaviour
     public void ToggleSFX()
     {
         sfxSource.mute = !sfxSource.mute;
-        insultSource.mute = !insultSource.mute;
     }
 
     public void BGMVolume(float volume)
@@ -179,7 +160,6 @@ public class AudioManager : MonoBehaviour
     public void SFXVolume(float volume)
     {
         sfxSource.volume = volume;
-        insultSource.volume = volume;
     }
 
 }

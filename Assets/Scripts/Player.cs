@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
+
     public static Vector2 checkpointPos = new Vector2(-2,0);
     public bool isGrabbing = false;
     public float speed = 1f;
@@ -12,8 +14,32 @@ public class Player : MonoBehaviour
     private Vector2 movementDir;
 
     private Vector2 playerPos = new Vector2(0, 0);
+
+    enum HookState
+    {
+        HOOK_RETRACTED,
+        HOOK_IDLE,
+        HOOK_RETRACT_START,
+        HOOK_RETRACT_END,
+        HOOK_FLYING,
+        HOOK_GRABBED,
+        HOOK_GRABBED_NOHOOK,
+        HOOK_ATTACH_GROUND,
+        HOOK_ATTACH_ENTITY,
+    };
+
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         // set player position to last checkpoint on respawn
         GameObject.FindGameObjectWithTag("Player").transform.position = checkpointPos;
     }

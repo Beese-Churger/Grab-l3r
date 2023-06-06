@@ -128,6 +128,7 @@ public class RopeSysTest : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
             if (hit.collider != null)
             {
+                AudioManager.Instance.PlaySFX("hook_attach");
                 ropeAttached = true;
                 //ropeHingeAnchor.transform.parent = hit.transform;
                 if (!ropePositions.Contains(hit.point))
@@ -226,9 +227,9 @@ public class RopeSysTest : MonoBehaviour
         else if (Input.GetAxis("Vertical") < 0f && ropeAttached)
         {
             // prevent player from phasing into the ground
-            if (PlayerController.instance.groundCheck)
+            if (PlayerController.Instance.groundCheck)
                 return;
-
+            
             // prevent rope from extending if player is already on the floor
             if (ropeHingeAnchor.transform.position.y <= transform.position.y)
                 return;

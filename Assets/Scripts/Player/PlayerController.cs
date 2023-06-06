@@ -5,7 +5,7 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController instance;
+    public static PlayerController Instance;
     //public bool isSwinging = false;
     //public Vector2 ropeHook;
     //public float swingForce = 4f;
@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
     public Vector2 ropeHook;
     public bool isSwinging;
     public bool groundCheck;
+
+    public float MAXSPEED = 1000f;
+    public float AirAccel = 100.0f;
+    public float GroundAccel = 100.0f;
     private SpriteRenderer playerSprite;
     private Rigidbody2D rBody;
     private bool isJumping;
@@ -30,9 +34,31 @@ public class PlayerController : MonoBehaviour
     private float jumpInput;
     private float horizontalInput;
 
+    enum HookState
+    {
+        HOOK_RETRACTED,
+        HOOK_IDLE,
+        HOOK_RETRACT_START,
+        HOOK_RETRACT_END,
+        HOOK_FLYING,
+        HOOK_GRABBED,
+        HOOK_GRABBED_NOHOOK,
+        HOOK_ATTACH_GROUND,
+        HOOK_ATTACH_ENTITY,
+    };
+   
     void Awake()
     {
-        instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         playerSprite = GetComponent<SpriteRenderer>();
         rBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -40,6 +66,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+
         jumpInput = Input.GetAxis("Jump");
         horizontalInput = Input.GetAxis("Horizontal");
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
@@ -48,34 +75,38 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        // determine how much the player is to accelerate
+        float Accel = isSwinging ? AirAccel : GroundAccel;
         if (horizontalInput < 0f || horizontalInput > 0f)
         {
-            animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
+            //animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
             playerSprite.flipX = horizontalInput < 0f;
             if (isSwinging)
             {
-                animator.SetBool("IsSwinging", true);
+                //// animator.SetBool("IsSwinging", true);
 
-                // Get normalized direction vector from player to the hook point
-                var playerToHookDirection = (ropeHook - (Vector2)transform.position).normalized;
+                // // Get normalized direction vector from player to the hook point
+                // var playerToHookDirection = (ropeHook - (Vector2)transform.position).normalized;
 
-                // Inverse the direction to get a perpendicular direction
-                Vector2 perpendicularDirection;
-                if (horizontalInput < 0)
-                {
-                    perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
-                    var leftPerpPos = (Vector2)transform.position - perpendicularDirection * -2f;
-                    Debug.DrawLine(transform.position, leftPerpPos, Color.green, 0f);
-                }
-                else
-                {
-                    perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
-                    var rightPerpPos = (Vector2)transform.position + perpendicularDirection * 2f;
-                    Debug.DrawLine(transform.position, rightPerpPos, Color.green, 0f);
-                }
+                // // Inverse the direction to get a perpendicular direction
+                // Vector2 perpendicularDirection;
+                // if (horizontalInput < 0)
+                // {
+                //     perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
+                //     var leftPerpPos = (Vector2)transform.position - perpendicularDirection * -2f;
+                //     Debug.DrawLine(transform.position, leftPerpPos, Color.green, 0f);
+                // }
+                // else
+                // {
+                //     perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
+                //     var rightPerpPos = (Vector2)transform.position + perpendicularDirection * 2f;
+                //     Debug.DrawLine(transform.position, rightPerpPos, Color.green, 0f);
+                // }
 
-                var force = perpendicularDirection * swingForce;
-                rBody.AddForce(force, ForceMode2D.Force);
+                // var force = perpendicularDirection * swingForce;
+                // rBody.AddForce(force, ForceMode2D.Force);
+                //rBody.velocity = new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0);
+                rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
             }
             else
             {
@@ -106,33 +137,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //private void GrappleUpdate()
-    //{
-    //    Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    //    mousePos.z = 0;
-
-    //    Vector3 Dir = (Player.transform.position - mousePos).normalized;
-    //    float angle = angle360(Dir, Vector3.Angle(Dir, Player.transform.up));
-
-    //    //Debug.Log(angle);
-    //    //GrappleGun.Instance.ShootGrapple(0f);
-    //    //if (IsRight(angle))
-    //    //{
-    //    //    if (Input.GetKey(KeyCode.A))
-    //    //    {
-    //    //        Debug.Log("1");
-    //    //    }
-    //    //}
-    //    //else 
-    //    //{
-    //    //    if (Input.GetKey(KeyCode.S))
-    //    //    {
-    //    //        Debug.Log("2");
-    //    //    }
-    //    //}
-
-
-    //}
+    // increases or decreases speed at first, but only up to a maximum (saturation) level
+    private float SaturatedAdd(float Min, float Max, float Current, float Modifier)
+    {
+        if (Modifier < 0)
+        {
+            if (Current < Min)
+                return Current;
+            Current += Modifier;
+            if (Current < Min)
+                Current = Min;
+            return Current;
+        }
+        else
+        {
+            if (Current > Max)
+                return Current;
+            Current += Modifier;
+            if (Current > Max)
+                Current = Max;
+            return Current;
+        }
+    }
 
     //private bool IsRight(float angle)
     //{
