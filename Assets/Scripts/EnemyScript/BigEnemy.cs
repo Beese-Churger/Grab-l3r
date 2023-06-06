@@ -13,6 +13,8 @@ public class BigEnemy : EnemyBaseClass
     };
     //[SerializeField] private float x,y;
     [SerializeField] private GameObject[] waypoints;
+    [SerializeField] private int weight;
+    private bool e_Alive;
     private GameObject playerPrefab;
     private FSM current;
     private int currentWP;
@@ -31,7 +33,7 @@ public class BigEnemy : EnemyBaseClass
         stationaryTimer = 1;
         rotation = 180;
         transform.localRotation = Quaternion.Euler(0, rotation, 0);
-
+        e_Alive = true;
     }
     public override void FSMUpdate()
     {
@@ -65,7 +67,14 @@ public class BigEnemy : EnemyBaseClass
 
         }
     }
-
+    public override int GetWeight()
+    {
+        return weight;
+    }
+    public override void SetStatus(bool b_Status)
+    {
+        e_Alive = b_Status;
+    }
     private void Patrol()
     {
         Vector3 dir = (waypoints[currentWP].transform.position - transform.position).normalized;
@@ -142,7 +151,7 @@ public class BigEnemy : EnemyBaseClass
     {
         if (col.gameObject.tag == "Player")
         {
-            // TO DO: SET THE PLAYER STATUS TO DEAD
+            //SET THE PLAYER STATUS TO DEAD
             if (playerInstance != null)
             {
                 playerInstance.p_Alive = false;

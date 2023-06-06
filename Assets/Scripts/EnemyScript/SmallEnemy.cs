@@ -13,12 +13,14 @@ public class SmallEnemy : EnemyBaseClass
     };
     //[SerializeField] private float x,y;
     [SerializeField] private GameObject[] waypoints;
+    [SerializeField] private int weight;
     private GameObject playerPrefab;
     private FSM current;
     private int currentWP;
     private float speed;
     private float stationaryTimer;
     private float rotation;
+    private bool e_Alive;
     private PlayerController playerInstance;
 
     // Start is called before the first frame update
@@ -31,6 +33,7 @@ public class SmallEnemy : EnemyBaseClass
         stationaryTimer = 1;
         rotation = 180;
         transform.localRotation = Quaternion.Euler(0, rotation, 0);
+        e_Alive = true;
 
     }
     public override void FSMUpdate()
@@ -64,6 +67,15 @@ public class SmallEnemy : EnemyBaseClass
             break;
 
         }
+    }
+    public override int GetWeight()
+    {
+        return weight;
+    }
+
+    public override void SetStatus(bool b_Status)
+    {
+        e_Alive = b_Status;
     }
 
     private void Patrol()

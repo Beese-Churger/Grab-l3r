@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class EnemyFOV : MonoBehaviour
 {
-    private GameObject playerPrefab;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerPrefab = GameObject.FindGameObjectWithTag("Player");
-    }
-
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == "Player")

@@ -7,25 +7,17 @@ public class CameraMovement : MonoBehaviour
 {
     private Vector2 mousePosition;
     private Vector2 playerPosition;
-    private Vector2 lookAtPosition;
-    private CinemachineVirtualCamera virtualCamera;
 
 
     //TEMP VARIABLE
-    private GameObject player;
-    private GameObject target;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject target;
 
     // Start is called before the first frame update
     void Start()
     {
         // keep cursor confined in the game window
         Cursor.lockState = CursorLockMode.Confined;
-        // Get Component Of CinemachineVirtualCamera
-        virtualCamera = GetComponent<CinemachineVirtualCamera>();
-        // Find PlayerPlaceHolderObject
-        player = GameObject.Find("Player");
-        // Find Target
-        target = GameObject.Find("CameraTarget");
 
         // Initialize Mouse Position
         mousePosition = new Vector2(0,0);
