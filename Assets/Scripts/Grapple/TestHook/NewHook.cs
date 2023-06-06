@@ -32,7 +32,7 @@ public class NewHook : MonoBehaviour
 	public float m_MaxHookDistance = 40f;
 	public float m_HookDragAccel = 3f;
 	public float m_HookDragSpeed = 15f;
-
+	public LineRenderer m_lineRenderer;
 	private float horizontalInput;
 
 	HookState m_HookState = HookState.HOOK_IDLE;
@@ -71,13 +71,13 @@ public class NewHook : MonoBehaviour
 				m_HookDir = aimDirection;
 			}
 		}
-		//else
-		//{
-		//	m_HookState = HookState.HOOK_IDLE;
-		//	m_HookPos = m_PivotPos;
-		//}
-		// do hook
-		if (m_HookState == HookState.HOOK_IDLE)
+        else
+        {
+            m_HookState = HookState.HOOK_IDLE;
+            m_HookPos = m_PivotPos;
+        }
+        // do hook
+        if (m_HookState == HookState.HOOK_IDLE)
 		{
 			//SetHookedPlayer(-1);
 			m_HookPos = m_PivotPos;
@@ -108,12 +108,12 @@ public class NewHook : MonoBehaviour
 			int teleNr = 0;
 
 			RaycastHit2D hit = Physics2D.Raycast(m_HookPos, NewPos, ropeLayerMask);
-
+			
 			// m_NewHook = false;
 
 			if (hit.collider != null)
 			{
-				Debug.Log("hit");
+				Debug.Log(hit.collider.gameObject);
 				if (hit.collider.tag == "TILE_NOHOOK")
 					GoingToRetract = true;
 				else if (hit.collider.tag == "TILE_HOOKPASS")
@@ -123,32 +123,7 @@ public class NewHook : MonoBehaviour
 				m_Reset = true;
 			}
 
-			//// Check against other players first
-			//if (!this->m_HookHitDisabled && m_pWorld && m_Tuning.m_PlayerHooking)
-			//{
-			//	float Distance = 0.0f;
-			//	for (int i = 0; i < MAX_CLIENTS; i++)
-			//	{
-			//		CCharacterCore* pCharCore = m_pWorld->m_apCharacters[i];
-			//		if (!pCharCore || pCharCore == this || (!(m_Super || pCharCore->m_Super) && ((m_Id != -1 && !m_pTeams->CanCollide(i, m_Id)) || pCharCore->m_Solo || m_Solo)))
-			//			continue;
-
-			//		vec2 ClosestPoint;
-			//		if (closest_point_on_line(m_HookPos, NewPos, pCharCore->m_Pos, ClosestPoint))
-			//		{
-			//			if (distance(pCharCore->m_Pos, ClosestPoint) < PhysicalSize() + 2.0f)
-			//			{
-			//				if (m_HookedPlayer == -1 || distance(m_HookPos, pCharCore->m_Pos) < Distance)
-			//				{
-			//					m_TriggeredEvents |= COREEVENT_HOOK_ATTACH_PLAYER;
-			//					m_HookState = HOOK_GRABBED;
-			//					SetHookedPlayer(i);
-			//					Distance = distance(m_HookPos, pCharCore->m_Pos);
-			//				}
-			//			}
-			//		}
-			//	}
-			//}
+		
 
 			if (m_HookState == HookState.HOOK_FLYING)
 			{
@@ -176,31 +151,13 @@ public class NewHook : MonoBehaviour
 				//else
 				//{
 					m_HookPos = NewPos;
+				DrawRopeNoWaves(NewPos);
 				//}
 			}
 		}
 
 		if (m_HookState == HookState.HOOK_GRABBED)
-		{
-			//if (m_HookedPlayer != -1 && m_pWorld)
-			//{
-			//	CCharacterCore* pCharCore = m_pWorld->m_apCharacters[m_HookedPlayer];
-			//	if (pCharCore && m_Id != -1 && m_pTeams->CanKeepHook(m_Id, pCharCore->m_Id))
-			//		m_HookPos = pCharCore->m_Pos;
-			//	else
-			//	{
-			//		// release hook
-			//		SetHookedPlayer(-1);
-			//		m_HookState = HOOK_RETRACTED;
-			//		m_HookPos = m_Pos;
-			//	}
-
-			//	// keep players hooked for a max of 1.5sec
-			//	// if(Server()->Tick() > hook_tick+(Server()->TickSpeed()*3)/2)
-			//	// release_hooked();
-			//}
-
-			// don't do this hook rutine when we are hook to a player
+		{ 
 
 			if (Vector2.Distance(m_HookPos, m_PivotPos) > m_MaxHookDistance)
 			{
@@ -224,17 +181,20 @@ public class NewHook : MonoBehaviour
 					rBody.velocity = NewVel; // no problem. apply
 			}
 
-			// release hook (max default hook time is 1.25 s)
-			//m_HookTick++;
-			if (m_HookState == HookState.HOOK_GRABBED /*&& (m_HookTick > SERVER_TICK_SPEED + SERVER_TICK_SPEED / 5 || (m_pWorld && !m_pWorld->m_apCharacters[m_HookedPlayer]))*/)
+			if (m_HookState == HookState.HOOK_GRABBED)
 			{
 				//SetHookedPlayer(-1);
 				m_HookState = HookState.HOOK_RETRACTED;
 				m_HookPos = m_PivotPos;
 			}
+			Debug.Log(m_HookState);
 		}
 
-		//if (DoDeferredTick)
-		//	TickDeferred();
+	}
+
+	void DrawRopeNoWaves(Vector2 NewPos)
+	{
+		m_lineRenderer.SetPosition(0, GrapplePivot.transform.position);
+		m_lineRenderer.SetPosition(1, NewPos);
 	}
 }
