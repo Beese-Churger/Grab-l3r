@@ -188,7 +188,7 @@ public class RopeSystem : MonoBehaviour
         else if (Input.GetAxis("Vertical") < 0f && ropeAttached)
         {
             // prevent player from phasing into the ground
-            if (PlayerController.instance.groundCheck)
+            if (PlayerController.Instance.groundCheck)
                 return;
 
             // prevent rope from extending if player is already on the floor

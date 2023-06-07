@@ -10,8 +10,10 @@ public class CameraMovement : MonoBehaviour
     private Vector3 cameraPosition;
 
 
+
     //TEMP VARIABLE
     [SerializeField] private GameObject player;
+
 
     // Start is called before the first frame update
     void Start()
@@ -41,9 +43,5 @@ public class CameraMovement : MonoBehaviour
         cameraPosition.z = -10.0f;
 
         transform.position = cameraPosition;
-
-        
-        
-
     }
 }

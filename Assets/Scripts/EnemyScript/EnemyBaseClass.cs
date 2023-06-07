@@ -8,4 +8,12 @@ public class EnemyBaseClass : MonoBehaviour
     {
 
     }
+    public virtual int GetWeight()
+    {
+        return 0;
+    }
+    public virtual void SetStatus(bool b_Status)
+    {
+
+    }
 }
