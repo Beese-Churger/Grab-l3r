@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,7 +16,7 @@ public class LevelManager : MonoBehaviour
 {
     private Level[] levels;
     private int currentLevelIndex = 0;
-    private static LevelManager instance;
+    private static LevelManager instance = null;
 
     // Manually add all levels (scenes) by name to the levels array
     void Start()
@@ -37,6 +35,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             instance = this;
+            DontDestroyOnLoad(instance);
         }
     }
 
