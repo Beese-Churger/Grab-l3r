@@ -226,6 +226,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: []
+  weight: 20
+  stoppingDistance: 5
+  originalSpeed: 25
+  intervalBetweenPoints: 2
 --- !u!114 &8491629283298615638
 MonoBehaviour:
   m_ObjectHideFlags: 0

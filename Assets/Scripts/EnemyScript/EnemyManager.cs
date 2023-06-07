@@ -60,5 +60,9 @@ public class EnemyManager : MonoBehaviour
         }
          
     }
+    public int GetEnemyType(GameObject enemy)
+    {
+        return enemy.GetComponent<EnemyBaseClass>().GetEnemyType();
+    }
 
 }

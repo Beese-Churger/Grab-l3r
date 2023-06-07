@@ -26,13 +26,13 @@ public class TEMPSCRIPT : MonoBehaviour
         {
            Debug.Log("Dashed");
             //dy = 100 * speed * Time.deltaTime;
-            m_Rigidbody.AddForce(transform.right * 10.0f, ForceMode2D.Impulse);
+            m_Rigidbody.AddForce(transform.up * 20.0f, ForceMode2D.Impulse);
         }
 
 
 
-
-        transform.position = new Vector2(transform.position.x + dx, transform.position.y+dy);
+        m_Rigidbody.AddForce(transform.right * dx, ForceMode2D.Impulse);
+        //transform.position = new Vector2(transform.position.x + dx, transform.position.y+dy);
         
  
     }

@@ -11,9 +11,14 @@ public class BigEnemy : EnemyBaseClass
         AGGRESSIVE,
         NUM_STATE
     };
-    //[SerializeField] private float x,y;
     [SerializeField] private GameObject[] waypoints;
     [SerializeField] private int weight;
+    [SerializeField] private float stoppingDistance;
+    [SerializeField] private float originalSpeed;
+    [SerializeField] private float intervalBetweenPoints;
+
+
+
     private bool e_Alive;
     private GameObject playerPrefab;
     private FSM current;
@@ -23,48 +28,61 @@ public class BigEnemy : EnemyBaseClass
     private float rotation;
     private PlayerController playerInstance;
 
+    //
+    private int type = 1;
+
     // Start is called before the first frame update
     void Start()
     {
         playerPrefab = GameObject.FindGameObjectWithTag("Player");
+
+        // Set current state to patrol mode
         current = FSM.PATROL;
         currentWP = 0;
         speed = 25;
-        stationaryTimer = 1;
+        stationaryTimer = intervalBetweenPoints;
         rotation = 180;
         transform.localRotation = Quaternion.Euler(0, rotation, 0);
         e_Alive = true;
+
+        // Set the position of the enemy at the start of the first waypoint
+        transform.position = waypoints[currentWP].transform.position;
+
     }
     public override void FSMUpdate()
     {
-        switch (current)
+        // Might change this implementation if there is a DEAD state
+        if (e_Alive)
         {
-            case FSM.NEUTRAL: // For NEUTRAL State, The enemy temporarily stops moving before it starts moving again
-                Stop();
-                break;
-            case FSM.PATROL:
-                // For PATROL State, The enemy would be patrolling around it's own platform to find the player
-                if (Vector2.Distance(transform.position, waypoints[0].transform.position) < 0.05 && currentWP == 0)
-                {
-                    currentWP = 1;
-                    current = FSM.NEUTRAL;
-                }
-                if (Vector2.Distance(transform.position, waypoints[1].transform.position) < 0.05 && currentWP == 1)
-                {
-                    currentWP = 0;
-                    current = FSM.NEUTRAL;
+            switch (current)
+            {
+                case FSM.NEUTRAL: // For NEUTRAL State, The enemy temporarily stops moving before it starts moving again
+                    Stop();
+                    break;
+                case FSM.PATROL:
+                    // For PATROL State, The enemy would be patrolling around it's own platform to find the player
+                    if (Vector2.Distance(transform.position, waypoints[0].transform.position) < 0.05 && currentWP == 0)
+                    {
+                        currentWP = 1;
+                        current = FSM.NEUTRAL;
+                    }
+                    if (Vector2.Distance(transform.position, waypoints[1].transform.position) < 0.05 && currentWP == 1)
+                    {
+                        currentWP = 0;
+                        current = FSM.NEUTRAL;
 
-                }
-                Patrol();
-                Slow();
-                break;
-            case FSM.AGGRESSIVE:
-                // TO DO:
-                Debug.Log("Triggered!!!");
-                // If enemy touches the player, the player will instantly die
-                Follow();
-                break;
+                    }
+                    Patrol();
+                    Slow();
+                    break;
+                case FSM.AGGRESSIVE:
+                    // TO DO:
+                    Debug.Log("Triggered!!!");
+                    // If enemy touches the player, the player will instantly die
+                    Follow();
+                    break;
 
+            }
         }
     }
     public override int GetWeight()
@@ -75,11 +93,17 @@ public class BigEnemy : EnemyBaseClass
     {
         e_Alive = b_Status;
     }
+    public override bool GetStatus()
+    {
+        return e_Alive;
+    }
+    public override int GetEnemyType()
+    {
+        return type;
+    }
     private void Patrol()
     {
-        Vector3 dir = (waypoints[currentWP].transform.position - transform.position).normalized;
-        transform.position += dir * speed * Time.deltaTime;
-
+        transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWP].transform.position, speed * Time.deltaTime);
         //transform.position = Vector2.Lerp(transform.position, waypoints[currentWP].transform.position, Time.deltaTime);
         //Debug.Log("ENEMY POSITION: " + gameObject.transform.position);
         //Debug.Log("WAYPOINT POSITION: " + waypoints[currentWP].transform.position);
@@ -89,16 +113,18 @@ public class BigEnemy : EnemyBaseClass
     // Slows big enemy movement down as it approaches the waypoint,
     private void Slow()
     {
-        if (Vector2.Distance(transform.position, waypoints[currentWP].transform.position) < 2)
+        float distanceFromDestination = Vector2.Distance(transform.position, waypoints[currentWP].transform.position);
+
+        if (distanceFromDestination < stoppingDistance)
         {
-            if (speed > 0)
+            if (speed > 1.5)
             {
-                speed -= 6 * Time.deltaTime;
+                speed = distanceFromDestination / stoppingDistance * originalSpeed;
             }
         }
         else
         {
-            speed = 5;
+            speed = originalSpeed;
         }
     }
     /* Make the big enemy stationary for 1 second before allowing it to move to
@@ -113,7 +139,7 @@ public class BigEnemy : EnemyBaseClass
         }
         else
         {
-            stationaryTimer = 1;
+            stationaryTimer = intervalBetweenPoints;
             // Flips FOV
             rotation -= 180;
             transform.localRotation = Quaternion.Euler(0, rotation, 0);
@@ -125,7 +151,6 @@ public class BigEnemy : EnemyBaseClass
       */
     private void Follow()
     {
-        //if (Vector2.Distance(transform.position, playerPrefab.transform.position) > 2)
         {
             Vector3 dir = (playerPrefab.transform.position - transform.position).normalized;
             dir.y = 0;

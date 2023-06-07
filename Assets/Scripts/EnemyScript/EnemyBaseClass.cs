@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class EnemyBaseClass : MonoBehaviour
 {
     public virtual void FSMUpdate()
@@ -16,4 +18,13 @@ public class EnemyBaseClass : MonoBehaviour
     {
 
     }
+    public virtual bool GetStatus()
+    {
+        return false;
+    }
+    public virtual int GetEnemyType()
+    {
+        return -1;
+    }
+
 }
