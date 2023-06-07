@@ -22,19 +22,21 @@ public class Obstacle : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.tag == "Player")
+        if(collision.transform.CompareTag("Player"))
         {
-            switch (obstacleType)
-            {
-                case ObstacleType.water:
-                    break;
-                case ObstacleType.spikes:
-                    break;
-                case ObstacleType.electricity:
-                    break;
-            }
+            //switch (obstacleType)
+            //{
+            //    case ObstacleType.water:
+            //        break;
+            //    case ObstacleType.spikes:
+            //        break;
+            //    case ObstacleType.electricity:
+            //        break;
+            //}
+
+            // for first playable, collision with any obstacle causes damage to player
             gameManager.TakeDamage();
-            Debug.Log("Obstacle collision"+obstacleType);
+            Debug.Log("Obstacle collision");
         }
     }
 

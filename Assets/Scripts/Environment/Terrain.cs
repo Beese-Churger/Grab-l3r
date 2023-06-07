@@ -9,55 +9,47 @@ public class Terrain : MonoBehaviour
     {
        concreate,
        vines,
-       none
+       moving
     }
 
     [SerializeField] TerrainType terrainType;
     private GameObject player;
-    private bool triggerPressurePlate = false;
+    public bool triggerPressurePlate = false;
     public float speed = 2f;
-    private Vector2 startPoint;
-    public Vector2 endPoint;
+    private Vector2 startPos;
+    public Vector2 endPos;
+    private bool isRight;
 
     // Find player from scene
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        startPoint=transform.position;
+        startPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // check if player is grabbing true
-        if(player.GetComponent<Player>().isGrabbing)
-        {
-            switch (terrainType)
-            {
-                case TerrainType.vines:
-                    //attatch player
-                    break;
-                case TerrainType.concreate:
-                    // detatch player 
-                    player.GetComponent<Player>().isGrabbing = false;
-                    break;
-            }
+        //// check if player is grabbing true
+        //if(player.GetComponent<Player>().isGrabbing)
+        //{
+        //    switch (terrainType)
+        //    {
+        //        case TerrainType.vines:
+        //            //attatch player
+        //            break;
+        //        case TerrainType.concreate:
+        //            // detatch player 
+        //            player.GetComponent<Player>().isGrabbing = false;
+        //            break;
+        //    }
             
-        }
+        //}
 
         if(triggerPressurePlate)
         {
-            if(transform.position.x < endPoint.x)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, endPoint, speed*Time.deltaTime);
-            }
-            else
-            {
-                transform.position=Vector2.MoveTowards(transform.position, startPoint, speed*Time.deltaTime);
-            }
+            transform.position = Vector2.Lerp(startPos, endPos, Mathf.PingPong(Time.time * speed, 1f));
         }
-
-        
     }
 
     public void ActivateMovingPlatform(){
