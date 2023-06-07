@@ -7,11 +7,13 @@ public class CameraMovement : MonoBehaviour
 {
     private Vector2 mousePosition;
     private Vector2 playerPosition;
+    private Vector3 cameraPosition;
+
 
 
     //TEMP VARIABLE
     [SerializeField] private GameObject player;
-    [SerializeField] private GameObject target;
+
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +39,9 @@ public class CameraMovement : MonoBehaviour
         playerPosition = player.transform.position;
 
         // The Position Of The Invisible Target
-        target.transform.position = playerPosition + (mousePosition - playerPosition) * 0.2f;
+        cameraPosition = playerPosition + (mousePosition - playerPosition) * 0.2f;
+        cameraPosition.z = -10.0f;
+
+        transform.position = cameraPosition;
     }
 }
