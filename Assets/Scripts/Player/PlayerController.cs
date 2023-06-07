@@ -24,9 +24,9 @@ public class PlayerController : MonoBehaviour
     public bool isSwinging;
     public bool groundCheck;
 
-    public float MAXSPEED = 1000f;
-    public float AirAccel = 100.0f;
-    public float GroundAccel = 100.0f;
+    public float MAXSPEED = 100f;
+    public float AirAccel = 10f;
+    public float GroundAccel = 3f;
     private SpriteRenderer playerSprite;
     private Rigidbody2D rBody;
     private bool isJumping;
@@ -52,11 +52,10 @@ public class PlayerController : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
 
         playerSprite = GetComponent<SpriteRenderer>();
@@ -106,7 +105,10 @@ public class PlayerController : MonoBehaviour
                 // var force = perpendicularDirection * swingForce;
                 // rBody.AddForce(force, ForceMode2D.Force);
                 //rBody.velocity = new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0);
-                rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
+                if (horizontalInput > 0f)
+                    rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
+                else if (horizontalInput < 0f) 
+                    rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
             }
             else
             {

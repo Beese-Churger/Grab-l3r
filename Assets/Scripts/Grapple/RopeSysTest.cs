@@ -23,7 +23,9 @@ public class RopeSysTest : MonoBehaviour
     private bool isColliding;
     private Dictionary<Vector2, int> wrapPointsLookup = new Dictionary<Vector2, int>();
     private SpriteRenderer ropeHingeAnchorSprite;
-
+    private bool setAnchor = true;
+    [SerializeField] private GameObject attachedTo;
+    [SerializeField] private GameObject ropeHook;
     [Header("No Launch To Point")]
     [SerializeField] private bool autoConfigureDistance = false;
     [SerializeField] private float targetDistance = 3;
@@ -103,7 +105,7 @@ public class RopeSysTest : MonoBehaviour
                 }
             }
         }
-
+        
         UpdateRopePositions();
         HandleRopeLength();
         HandleInput(aimDirection);
@@ -142,6 +144,9 @@ public class RopeSysTest : MonoBehaviour
                     //ropeJoint.enabled = true;
                     ropeHingeAnchorSprite.enabled = true;
                     Grapple();
+                    attachedTo = hit.transform.gameObject;
+
+                    //hit.collider.transform.SetParent(ropeHingeAnchor.transform);
                 }
             }
             else
@@ -152,7 +157,7 @@ public class RopeSysTest : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1))
+        if(Input.GetMouseButton(1))
         {
             ResetRope();
         }
@@ -160,31 +165,29 @@ public class RopeSysTest : MonoBehaviour
 
     private void Grapple()
     {
+        ropeJoint.autoConfigureDistance = false;
+        if (!launchToPoint && !autoConfigureDistance)
         {
-            ropeJoint.autoConfigureDistance = false;
-            if (!launchToPoint && !autoConfigureDistance)
+            //ropeJoint.distance = targetDistance;
+            ropeJoint.frequency = targetFrequncy;
+        }
+        if (!launchToPoint)
+        {
+            if (autoConfigureDistance)
             {
-                //ropeJoint.distance = targetDistance;
-                ropeJoint.frequency = targetFrequncy;
+                ropeJoint.autoConfigureDistance = true;
+                ropeJoint.frequency = 0;
             }
-            if (!launchToPoint)
-            {
-                if (autoConfigureDistance)
-                {
-                    ropeJoint.autoConfigureDistance = true;
-                    ropeJoint.frequency = 0;
-                }
-                ropeJoint.enabled = true;
-            }
-            else
-            {
-                Vector2 distanceVector = crosshair.position - transform.position;
+            ropeJoint.enabled = true;
+        }
+        else
+        {
+            Vector2 distanceVector = crosshair.position - transform.position;
 
-                ropeJoint.distance = distanceVector.magnitude;
-                ropeJoint.frequency = launchSpeed;
-                ropeJoint.enabled = true;
+            ropeJoint.distance = distanceVector.magnitude;
+            ropeJoint.frequency = launchSpeed;
+            ropeJoint.enabled = true;
                 
-            }
         }
     }
     // Resets the rope in terms of gameplay, visual, and supporting variable values.
@@ -199,6 +202,9 @@ public class RopeSysTest : MonoBehaviour
         ropePositions.Clear();
         wrapPointsLookup.Clear();
         ropeHingeAnchorSprite.enabled = false;
+        attachedTo = null;
+        ropeHook.transform.SetParent(transform);
+        setAnchor = true;
     }
 
     // Move the aiming crosshair based on aim angle
@@ -243,8 +249,16 @@ public class RopeSysTest : MonoBehaviour
         if (ropeAttached)
         {
             ropeRenderer.positionCount = ropePositions.Count + 1;
+            if(setAnchor)
+            {
+                ropeHook.transform.position = ropePositions[0];
+                ropeHook.transform.SetParent(attachedTo.transform);
+                setAnchor = false;
+            }
 
-            for (var i = ropeRenderer.positionCount - 1; i >= 0; i--)
+            ropePositions[0] = ropeHook.transform.position;
+
+            for (int i = ropeRenderer.positionCount - 1; i >= 0; i--)
             {
                 if (i != ropeRenderer.positionCount - 1) // if not the Last point of line renderer
                 {
@@ -262,6 +276,7 @@ public class RopeSysTest : MonoBehaviour
                                 ropeJoint.distance = Vector2.Distance(transform.position, ropePosition);
                                 distanceSet = true;
                             }
+
                         }
                         else
                         {
@@ -302,6 +317,8 @@ public class RopeSysTest : MonoBehaviour
             return;
         }
 
+        Vector2 objectPosition = attachedTo.transform.position;
+        Vector2 hookPosition = ropeHook.transform.position;
         // Hinge = next point up from the player position
         // Anchor = next point up from the Hinge
         // Hinge Angle = Angle between anchor and hinge
@@ -311,13 +328,22 @@ public class RopeSysTest : MonoBehaviour
         var anchorIndex = ropePositions.Count - 2;
         // most recent hinge created
         var hingeIndex = ropePositions.Count - 1;
-
+        var inverseHingeIndex = 1;
         var anchorPosition = ropePositions[anchorIndex];
+        var inverseAnchorPosition = ropePositions[0];
+
         var hingePosition = ropePositions[hingeIndex];
         var hingeDir = hingePosition - anchorPosition;
         var hingeAngle = Vector2.Angle(anchorPosition, hingeDir);
+
+        var inverseHingePosition = ropePositions[inverseHingeIndex];
+        var inverseHingeDir = inverseHingePosition - hookPosition;
+        var inverseHingeAngle = Vector2.Angle(hookPosition, inverseHingeDir);
+
         var playerDir = playerPosition - anchorPosition;
+        var objectDir = objectPosition - inverseAnchorPosition; 
         var playerAngle = Vector2.Angle(anchorPosition, playerDir);
+        var objectAngle = Vector2.Angle(inverseAnchorPosition, objectDir);
 
         if (!wrapPointsLookup.ContainsKey(hingePosition))
         {
@@ -343,6 +369,31 @@ public class RopeSysTest : MonoBehaviour
             if (wrapPointsLookup[hingePosition] == -1)
             {
                 UnwrapRopePosition(anchorIndex, hingeIndex);
+                return;
+            }
+
+            // 4
+            wrapPointsLookup[hingePosition] = 1;
+        }
+
+        if (objectAngle < inverseHingeAngle)
+        {
+            // unwrap
+            if (wrapPointsLookup[hingePosition] == 1)
+            {
+                UnwrapRopePosition(0, inverseHingeIndex);
+                return;
+            }
+
+            // 2
+            wrapPointsLookup[inverseHingePosition] = -1;
+        }
+        else
+        {
+            // 3
+            if (wrapPointsLookup[inverseHingePosition] == -1)
+            {
+                UnwrapRopePosition(0, inverseHingeIndex);
                 return;
             }
 
