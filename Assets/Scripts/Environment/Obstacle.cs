@@ -32,10 +32,6 @@ public class Obstacle : MonoBehaviour
                 Debug.Log("Obstacle collision");
             }
         }
-        else
-        {
-
-        }
     }
 
     public void DisableObstacle()

@@ -406,7 +406,7 @@ MonoBehaviour:
   terrain: {fileID: 1928709457}
   obstacle: {fileID: 1284447640}
   endPos: {x: 0.2, y: -4.8}
-  isObstacle: 0
+  isObstacle: 1
 --- !u!1 &805244930
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,9 +545,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1268012554}
   - component: {fileID: 1268012553}
-  - component: {fileID: 1268012552}
   - component: {fileID: 1268012550}
   - component: {fileID: 1268012555}
+  - component: {fileID: 1268012556}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -576,20 +576,6 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1268012552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268012549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5bad925eeb871340a5d7d185248d1bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGrabbing: 0
-  speed: 3
 --- !u!212 &1268012553
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -683,6 +669,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1268012556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268012549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42bd19e33cb4684698dda3a7ff3ac9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGrabbing: 0
+  speed: 3
 --- !u!1 &1271911295
 GameObject:
   m_ObjectHideFlags: 0
