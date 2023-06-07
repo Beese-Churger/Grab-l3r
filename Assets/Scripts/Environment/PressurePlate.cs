@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
     [SerializeField] public Terrain terrain;
+    [SerializeField] public Obstacle obstacle;
     private Vector2 startPos;
     public Vector2 endPos;
+    public bool isObstacle;
 
     private void Start()
     {
@@ -17,12 +17,18 @@ public class PressurePlate : MonoBehaviour
     {
         if (collision.transform.CompareTag("Player"))
         {
-            // TODO:different activations when plate is pressed
-            if(transform.position.y > endPos.y)
+            if (isObstacle)
             {
-                transform.Translate(0, -0.01f, 0);
+                obstacle.DisableObstacle();
             }
-            terrain.ActivateMovingPlatform();
+            else
+            {
+                if (transform.position.y > endPos.y)
+                {
+                    transform.Translate(0, -0.01f, 0);
+                }
+                terrain.ActivateMovingPlatform();
+            }
         }
     }
 

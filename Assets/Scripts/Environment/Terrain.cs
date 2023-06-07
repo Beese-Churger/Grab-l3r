@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Terrain : MonoBehaviour
@@ -42,8 +40,7 @@ public class Terrain : MonoBehaviour
         //            // detatch player 
         //            player.GetComponent<Player>().isGrabbing = false;
         //            break;
-        //    }
-            
+        //    }  
         //}
 
         if(triggerPressurePlate)
@@ -54,6 +51,22 @@ public class Terrain : MonoBehaviour
 
     public void ActivateMovingPlatform(){
         triggerPressurePlate = true;
-        Debug.Log(triggerPressurePlate);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Player"))
+        {
+            collision.transform.parent = transform;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Player"))
+        {
+            collision.transform.parent = null;
+        }
+    }
+
 }
