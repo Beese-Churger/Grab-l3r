@@ -42,17 +42,17 @@ public class Obstacle : MonoBehaviour
 
     private void Update()
     {
-        //if (!isActive)
-        //{ 
-        //    //switch (obstacleType)
-        //    //{
-        //    //    case ObstacleType.water:
-        //    //        break;
-        //    //    case ObstacleType.spikes:
-        //    //        break;
-        //    //    case ObstacleType.electricity:
-        //    //        break;
-        //    //}
-        //}
+        if (!isActive)
+        {
+            switch (obstacleType)
+            {
+                case ObstacleType.water:
+                    break;
+                case ObstacleType.spikes:
+                    break;
+                case ObstacleType.electricity:
+                    break;
+            }
+        }
     }
 }

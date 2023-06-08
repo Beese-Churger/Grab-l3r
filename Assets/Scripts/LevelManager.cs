@@ -56,6 +56,12 @@ public class LevelManager : MonoBehaviour
 
     }
 
+    public void ReLoadLevel()
+    {
+        Level level = levels[currentLevelIndex];
+        StartCoroutine(LoadLevel(level));
+    }
+
     // Load level by index
     private IEnumerator LoadLevel(Level level)
     {

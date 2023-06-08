@@ -15,14 +15,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance = null;
     private float health = 90;
     private int score = 0;
     private int enemiesDefeated = 0;
     private bool gamePaused;
     private bool triggeredGameEnd;
+
     private StateType state;
     public static event Action<StateType> StateChanged;
+    public static GameManager instance = null;
 
     [SerializeField] private GameObject levelManagerObj = null;
     private LevelManager levelManager = null;
@@ -56,10 +57,11 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case StateType.end:
-                EndGame();
+                DisplayCredits();
+                StartCoroutine(levelManager.LoadLevel("Main Menu"));
                 break;
             case StateType.start:
-                //StartCoroutine(levelManager.LoadLevel("MainMenu"));
+                StartCoroutine(levelManager.LoadLevel("MainMenu"));
                 break;
             case StateType.pause:
                 break;
@@ -67,7 +69,8 @@ public class GameManager : MonoBehaviour
                 levelManager.LoadNextLevel();
                 break;
             case StateType.respawn:
-                Respawn();
+                ResetGame();
+                levelManager.ReLoadLevel();
                 break;
             case StateType.boss:
                 break;
@@ -77,20 +80,17 @@ public class GameManager : MonoBehaviour
         StateChanged?.Invoke(newState);
     }
 
+    private void DisplayCredits()
+    {
+       // TODO: credits display
+    }
+
     private void Update()
     {
         if (health <= 0)
         {
-            // set state to respawn or smt..
+            SetGameState(StateType.respawn);
         }
-    }
-
-    private void EndGame()
-    {
-        // TODO: what happens when game ends
-        // show credits after
-        ShowCredits();
-        StartCoroutine(levelManager.LoadLevel("Main Menu"));
     }
 
     public void ResetGame()
@@ -98,14 +98,10 @@ public class GameManager : MonoBehaviour
         // TODO: reset all variables to initials
         health = 100;
         score = 0;
-        triggeredGameEnd = false;
         enemiesDefeated = 0;
+        triggeredGameEnd = false;
     }
 
-    public void Respawn()
-    {
-        // TODO: load level again
-    }
 
     public void SetScore(int addToScore){
         score += addToScore;
@@ -114,11 +110,6 @@ public class GameManager : MonoBehaviour
     public int GetScore()
     {
         return score;
-    }
-
-    public void ShowCredits()
-    {
-        // TODO: display credits when the game ends
     }
 
     public void TakeDamage()
