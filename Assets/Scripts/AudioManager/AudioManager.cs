@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+
+    [SerializeField] public Slider SFXvolumeSlider;
+    [SerializeField] public Slider BGMvolumeSlider;
 
     public SoundScript[] bgmSounds, sfxSounds, bgSounds;
     public AudioSource bgmSource, sfxSource, bgSource;
@@ -15,6 +19,8 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            SFXvolumeSlider.value = sfxSource.volume;
+            BGMvolumeSlider.value = bgmSource.volume;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -154,7 +160,7 @@ public class AudioManager : MonoBehaviour
     public void BGMVolume(float volume)
     {
         bgmSource.volume = volume;
-        bgSource.volume = volume;
+        //bgSource.volume = volume;
     }
 
     public void SFXVolume(float volume)
