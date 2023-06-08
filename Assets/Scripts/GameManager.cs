@@ -4,9 +4,8 @@ using UnityEngine;
 
     public enum StateType
     {
-        end,            // move to main menu
-        start,          // load main menu 
-        pause,          // game on pause
+        end,            // move to main menu     
+        start,          // load first level
         levelChange,    // load next level
         respawn,        // load level again when player dies
         boss,           // activate and deactivate boss
@@ -25,8 +24,7 @@ public class GameManager : MonoBehaviour
     public static event Action<StateType> StateChanged;
     public static GameManager instance = null;
 
-    [SerializeField] private GameObject levelManagerObj = null;
-    private LevelManager levelManager = null;
+    private LevelManager levelManager;
 
     public static GameManager getInstance()
     {
@@ -45,7 +43,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        levelManager = levelManagerObj.GetComponent<LevelManager>();
         // load mainmenu when game is opened
         SetGameState(StateType.start);
     }
@@ -59,11 +56,9 @@ public class GameManager : MonoBehaviour
             case StateType.end:
                 DisplayCredits();
                 StartCoroutine(levelManager.LoadLevel("Main Menu"));
-                break;
+                break;;
             case StateType.start:
-                StartCoroutine(levelManager.LoadLevel("MainMenu"));
-                break;
-            case StateType.pause:
+                levelManager.LoadNextLevel();
                 break;
             case StateType.levelChange:
                 levelManager.LoadNextLevel();
@@ -71,10 +66,6 @@ public class GameManager : MonoBehaviour
             case StateType.respawn:
                 ResetGame();
                 levelManager.ReLoadLevel();
-                break;
-            case StateType.boss:
-                break;
-            case StateType.credits:
                 break;
         }
         StateChanged?.Invoke(newState);

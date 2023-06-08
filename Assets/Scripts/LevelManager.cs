@@ -17,12 +17,17 @@ public class LevelManager : MonoBehaviour
     private Level[] levels;
     private int currentLevelIndex = 0;
     private static LevelManager instance = null;
+    private GameManager gameManager;
 
     // Manually add all levels (scenes) by name to the levels array
     void Start()
     {
         new Level("Environment");
-        new Level("Jontest");
+        new Level("Level1");
+        new Level("Level2");
+        new Level("BossLevel");
+
+        Debug.Log(levels[currentLevelIndex]);
         // add more levels if there are
     }
 
@@ -52,6 +57,8 @@ public class LevelManager : MonoBehaviour
         else
         {
             Debug.Log("All levels loaded");
+            gameManager.SetGameState(StateType.end);
+
         }
 
     }
