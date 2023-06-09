@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
+    // check player collision with checkpoint sprite, set player position to checkpoint position for respawn
+    // called only once
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // check if player has triggered checkpoint

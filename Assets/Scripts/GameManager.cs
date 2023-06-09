@@ -4,9 +4,8 @@ using UnityEngine;
 
     public enum StateType
     {
-        end,            // move to main menu
-        start,          // load main menu 
-        pause,          // game on pause
+        end,            // move to main menu     
+        start,          // load first level
         levelChange,    // load next level
         respawn,        // load level again when player dies
         boss,           // activate and deactivate boss
@@ -15,17 +14,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance = null;
     private float health = 90;
     private int score = 0;
     private int enemiesDefeated = 0;
     private bool gamePaused;
     private bool triggeredGameEnd;
+
     private StateType state;
     public static event Action<StateType> StateChanged;
+    public static GameManager instance = null;
 
-    [SerializeField] private GameObject levelManagerObj = null;
-    private LevelManager levelManager = null;
+    private LevelManager levelManager;
 
     public static GameManager getInstance()
     {
@@ -44,53 +43,46 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        levelManager = levelManagerObj.GetComponent<LevelManager>();
         // load mainmenu when game is opened
-        SetGameState(StateType.start);
+        //SetGameState(StateType.start);
     }
 
-    public void SetGameState(StateType newState)
-    {
-        state=newState;
+    //public void SetGameState(StateType newState)
+    //{
+    //    state=newState;
 
-        switch (newState)
-        {
-            case StateType.end:
-                EndGame();
-                break;
-            case StateType.start:
-                //StartCoroutine(levelManager.LoadLevel("MainMenu"));
-                break;
-            case StateType.pause:
-                break;
-            case StateType.levelChange:
-                levelManager.LoadNextLevel();
-                break;
-            case StateType.respawn:
-                Respawn();
-                break;
-            case StateType.boss:
-                break;
-            case StateType.credits:
-                break;
-        }
-        StateChanged?.Invoke(newState);
+    //    switch (newState)
+    //    {
+    //        case StateType.end:
+    //            DisplayCredits();
+    //            StartCoroutine(levelManager.LoadLevel("Main Menu"));
+    //            break;;
+    //        case StateType.start:
+    //            levelManager.LoadNextLevel();
+    //            break;
+    //        case StateType.levelChange:
+    //            levelManager.LoadNextLevel();
+    //            break;
+    //        case StateType.respawn:
+    //            ResetGame();
+    //            levelManager.ReLoadLevel();
+    //            break;
+    //    }
+    //    StateChanged?.Invoke(newState);
+    //}
+
+    private void DisplayCredits()
+    {
+       // TODO: credits display
     }
 
     private void Update()
     {
         if (health <= 0)
         {
-            // set state to respawn or smt..
+            ResetGame();
+            //SetGameState(StateType.respawn);
         }
-    }
-
-    private void EndGame()
-    {
-        // TODO: what happens when game ends
-        // show credits after
-        ShowCredits();
-        StartCoroutine(levelManager.LoadLevel("Main Menu"));
     }
 
     public void ResetGame()
@@ -98,14 +90,10 @@ public class GameManager : MonoBehaviour
         // TODO: reset all variables to initials
         health = 100;
         score = 0;
-        triggeredGameEnd = false;
         enemiesDefeated = 0;
+        triggeredGameEnd = false;
     }
 
-    public void Respawn()
-    {
-        // TODO: load level again
-    }
 
     public void SetScore(int addToScore){
         score += addToScore;
@@ -114,11 +102,6 @@ public class GameManager : MonoBehaviour
     public int GetScore()
     {
         return score;
-    }
-
-    public void ShowCredits()
-    {
-        // TODO: display credits when the game ends
     }
 
     public void TakeDamage()

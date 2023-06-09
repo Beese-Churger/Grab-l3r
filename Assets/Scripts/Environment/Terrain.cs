@@ -25,7 +25,6 @@ public class Terrain : MonoBehaviour
         startPos = transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
         //// check if player is grabbing true
@@ -43,16 +42,19 @@ public class Terrain : MonoBehaviour
         //    }  
         //}
 
+        // activate moving platform
         if(triggerPressurePlate)
         {
             transform.position = Vector2.Lerp(startPos, endPos, Mathf.PingPong(Time.time * speed, 1f));
         }
     }
 
+    // call function to activate moving platform
     public void ActivateMovingPlatform(){
         triggerPressurePlate = true;
     }
 
+    // attatch player to platform transform when attatched
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("Player"))
