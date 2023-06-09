@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
         new Level("Level2");
         new Level("BossLevel");
 
-        Debug.Log(levels[currentLevelIndex]);
+        //Debug.Log(levels[currentLevelIndex]);
         // add more levels if there are
     }
 
@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             Debug.Log("All levels loaded");
-            gameManager.SetGameState(StateType.end);
+            //gameManager.SetGameState(StateType.end);
 
         }
 

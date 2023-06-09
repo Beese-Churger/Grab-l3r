@@ -44,32 +44,32 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // load mainmenu when game is opened
-        SetGameState(StateType.start);
+        //SetGameState(StateType.start);
     }
 
-    public void SetGameState(StateType newState)
-    {
-        state=newState;
+    //public void SetGameState(StateType newState)
+    //{
+    //    state=newState;
 
-        switch (newState)
-        {
-            case StateType.end:
-                DisplayCredits();
-                StartCoroutine(levelManager.LoadLevel("Main Menu"));
-                break;;
-            case StateType.start:
-                levelManager.LoadNextLevel();
-                break;
-            case StateType.levelChange:
-                levelManager.LoadNextLevel();
-                break;
-            case StateType.respawn:
-                ResetGame();
-                levelManager.ReLoadLevel();
-                break;
-        }
-        StateChanged?.Invoke(newState);
-    }
+    //    switch (newState)
+    //    {
+    //        case StateType.end:
+    //            DisplayCredits();
+    //            StartCoroutine(levelManager.LoadLevel("Main Menu"));
+    //            break;;
+    //        case StateType.start:
+    //            levelManager.LoadNextLevel();
+    //            break;
+    //        case StateType.levelChange:
+    //            levelManager.LoadNextLevel();
+    //            break;
+    //        case StateType.respawn:
+    //            ResetGame();
+    //            levelManager.ReLoadLevel();
+    //            break;
+    //    }
+    //    StateChanged?.Invoke(newState);
+    //}
 
     private void DisplayCredits()
     {
@@ -80,7 +80,8 @@ public class GameManager : MonoBehaviour
     {
         if (health <= 0)
         {
-            SetGameState(StateType.respawn);
+            ResetGame();
+            //SetGameState(StateType.respawn);
         }
     }
 
