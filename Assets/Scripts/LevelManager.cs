@@ -12,6 +12,7 @@ public class Level
     }
 }
 
+[System.Serializable]
 public class LevelManager : MonoBehaviour
 {
     private Level[] levels;
@@ -22,10 +23,16 @@ public class LevelManager : MonoBehaviour
     // Manually add all levels (scenes) by name to the levels array
     void Start()
     {
-        new Level("Environment");
-        new Level("Level1");
-        new Level("Level2");
-        new Level("BossLevel");
+        //new Level("Environment");
+        //new Level("Level1");
+        //new Level("Level2");
+        //new Level("BossLevel");
+
+        levels[0] = new Level("Main Menu");
+        levels[1] = new Level("Environment");
+        levels[2] = new Level("Level1");
+        levels[3] = new Level("Level2");
+        levels[4] = new Level("BossLevel");
 
         //Debug.Log(levels[currentLevelIndex]);
         // add more levels if there are
@@ -48,6 +55,7 @@ public class LevelManager : MonoBehaviour
     public void LoadNextLevel()
     {
         currentLevelIndex++;
+        Debug.Log(currentLevelIndex);
 
         if (currentLevelIndex < levels.Length)
         {

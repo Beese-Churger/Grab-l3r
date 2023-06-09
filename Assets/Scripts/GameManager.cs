@@ -1,9 +1,11 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
     public enum StateType
     {
+        open,           // game opened, load main menu
         end,            // move to main menu     
         start,          // load first level
         levelChange,    // load next level
@@ -44,32 +46,35 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // load mainmenu when game is opened
-        //SetGameState(StateType.start);
+        SetGameState(StateType.start);
     }
 
-    //public void SetGameState(StateType newState)
-    //{
-    //    state=newState;
+    public void SetGameState(StateType newState)
+    {
+        state = newState;
 
-    //    switch (newState)
-    //    {
-    //        case StateType.end:
-    //            DisplayCredits();
-    //            StartCoroutine(levelManager.LoadLevel("Main Menu"));
-    //            break;;
-    //        case StateType.start:
-    //            levelManager.LoadNextLevel();
-    //            break;
-    //        case StateType.levelChange:
-    //            levelManager.LoadNextLevel();
-    //            break;
-    //        case StateType.respawn:
-    //            ResetGame();
-    //            levelManager.ReLoadLevel();
-    //            break;
-    //    }
-    //    StateChanged?.Invoke(newState);
-    //}
+        switch (newState)
+        {
+            case StateType.end:
+                DisplayCredits();
+                StartCoroutine(levelManager.LoadLevel("Main Menu"));
+                break; ;
+            case StateType.start:
+                levelManager.LoadNextLevel();
+                break;
+            case StateType.open:
+                StartCoroutine(levelManager.LoadLevel("Main Menu"));
+                break;
+            case StateType.levelChange:
+                levelManager.LoadNextLevel();
+                break;
+            case StateType.respawn:
+                ResetGame();
+                levelManager.ReLoadLevel();
+                break;
+        }
+        StateChanged?.Invoke(newState);
+    }
 
     private void DisplayCredits()
     {
@@ -81,7 +86,12 @@ public class GameManager : MonoBehaviour
         if (health <= 0)
         {
             ResetGame();
-            //SetGameState(StateType.respawn);
+            SetGameState(StateType.respawn);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SetGameState(StateType.levelChange);
         }
     }
 
@@ -93,7 +103,6 @@ public class GameManager : MonoBehaviour
         enemiesDefeated = 0;
         triggeredGameEnd = false;
     }
-
 
     public void SetScore(int addToScore){
         score += addToScore;
@@ -109,4 +118,5 @@ public class GameManager : MonoBehaviour
         health -= 30;
         Debug.Log("Health:"+health);
     }
+
 }
