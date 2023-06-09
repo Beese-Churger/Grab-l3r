@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cbcb1bf7a23034ab6ba0a617ba93dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointer: {fileID: -5079066100166309683, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
 --- !u!1 &3238121682551177520
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,6 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19631d5c0f7f9644ab7f5fe0716a6271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointer: {fileID: -5079066100166309683, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   ropeRenderer: {fileID: 3238121682551177521}
   ropeLayerMask:
     serializedVersion: 2

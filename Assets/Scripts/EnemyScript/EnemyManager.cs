@@ -12,7 +12,6 @@ public class EnemyManager : MonoBehaviour
         if (enemyManager == null)
         {
             enemyManager = this;
-            EnemyGOArray = GameObject.FindGameObjectsWithTag("Enemy");
             AddEnemies();
             
         }
@@ -20,22 +19,23 @@ public class EnemyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
     void Update()
     {
         foreach (EnemyBaseClass enemy in EnemyList)
         {
-            enemy.FSMUpdate();
+            if (enemy != null)
+                enemy.FSMUpdate();
         }
     }
     public void AddEnemies()
     {
-       
-       foreach (GameObject enemyObject in EnemyGOArray)
-       {
-           EnemyList.Add(enemyObject.GetComponent<EnemyBaseClass>());
-       }
+        EnemyGOArray = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemyObject in EnemyGOArray)
+        {
+            EnemyList.Add(enemyObject.GetComponent<EnemyBaseClass>());
+        }
     }
     public int GetEnemyWeight(GameObject enemy)
     {
@@ -63,6 +63,15 @@ public class EnemyManager : MonoBehaviour
     public int GetEnemyType(GameObject enemy)
     {
         return enemy.GetComponent<EnemyBaseClass>().GetEnemyType();
+    }
+    public void ClearEnemyList()
+    {
+        for (int i = EnemyList.Count - 1; i >= 0; --i)
+        {
+            Destroy(EnemyList[i].gameObject);
+        }
+        EnemyList.Clear();
+        //Debug.Log(EnemyList.Count);
     }
 
 }

@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+//Temporary until GameManager Works
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void TriggerStart()
     {
-        
+        // TEMPORARY until GameManager works
+
+        //Debug.Log("Changed Level");
+        SceneManager.LoadScene("CAMERA_TEST");
+        //GameManager.instance.SetGameState(StateType.levelChange);
+    }
+    public void TriggerExit()
+    {
+        Application.Quit();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
