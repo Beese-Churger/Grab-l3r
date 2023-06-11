@@ -18,17 +18,16 @@ public class GameManager : MonoBehaviour
 {
     private float health = 90;
     private int score = 0;
-    private int enemiesDefeated = 0;
+    //private int enemiesDefeated = 0;
     private bool gamePaused;
-    private bool triggeredGameEnd;
+    //private bool triggeredGameEnd;
 
     private StateType state;
     public static event Action<StateType> StateChanged;
     public static GameManager instance = null;
-
     private LevelManager levelManager;
 
-    public static GameManager getInstance()
+    public static GameManager GetInstance()
     {
         if (instance == null)
         {
@@ -41,12 +40,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        
     }
 
     private void Start()
     {
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         // load mainmenu when game is opened
-        SetGameState(StateType.start);
+        SetGameState(StateType.open);
     }
 
     public void SetGameState(StateType newState)
@@ -56,14 +57,14 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case StateType.end:
-                DisplayCredits();
-                StartCoroutine(levelManager.LoadLevel("Main Menu"));
+                //DisplayCredits();
+                //StartCoroutine(levelManager.LoadLevel("MainMenu"));
                 break; ;
             case StateType.start:
                 levelManager.LoadNextLevel();
                 break;
             case StateType.open:
-                StartCoroutine(levelManager.LoadLevel("Main Menu"));
+                StartCoroutine(levelManager.LoadLevel("MainMenu"));
                 break;
             case StateType.levelChange:
                 levelManager.LoadNextLevel();
@@ -89,7 +90,7 @@ public class GameManager : MonoBehaviour
             SetGameState(StateType.respawn);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             SetGameState(StateType.levelChange);
         }
@@ -100,8 +101,8 @@ public class GameManager : MonoBehaviour
         // TODO: reset all variables to initials
         health = 100;
         score = 0;
-        enemiesDefeated = 0;
-        triggeredGameEnd = false;
+        //enemiesDefeated = 0;
+        //triggeredGameEnd = false;
     }
 
     public void SetScore(int addToScore){

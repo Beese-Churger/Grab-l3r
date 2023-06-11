@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b156df41cb814299232cd1cbb6f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelManagerObj: {fileID: 1794826571}
 --- !u!4 &1304329362
 Transform:
   m_ObjectHideFlags: 0
@@ -280,6 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9849ffce4392c342a229623369a1779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManagerObj: {fileID: 1304329360}
 --- !u!4 &1794826573
 Transform:
   m_ObjectHideFlags: 0
