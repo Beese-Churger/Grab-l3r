@@ -40,14 +40,11 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        
     }
 
     private void Start()
     {
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        // load mainmenu when game is opened
-        SetGameState(StateType.open);
     }
 
     public void SetGameState(StateType newState)
@@ -74,7 +71,7 @@ public class GameManager : MonoBehaviour
                 levelManager.ReLoadLevel();
                 break;
         }
-        StateChanged?.Invoke(newState);
+        //StateChanged?.Invoke(newState);
     }
 
     private void DisplayCredits()
