@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
         // TEMPORARY until GameManager works
 
         //Debug.Log("Changed Level");
-        SceneManager.LoadScene("CAMERA_TEST");
+        SceneManager.LoadScene("Gameplay");
         //GameManager.instance.SetGameState(StateType.levelChange);
     }
     public void TriggerExit()
