@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System;
 
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
+
     //public bool isSwinging = false;
     //public Vector2 ropeHook;
     //public float swingForce = 4f;

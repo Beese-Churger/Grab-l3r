@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -13,6 +11,7 @@ public class CameraMovement : MonoBehaviour
 
     //TEMP VARIABLE
     [SerializeField] private GameObject player;
+    [SerializeField] private InputActionReference pointer;
 
 
     // Start is called before the first frame update
@@ -33,7 +32,7 @@ public class CameraMovement : MonoBehaviour
     void FixedUpdate()
     {
          // Converted from screen space to world space
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition = Camera.main.ScreenToWorldPoint(pointer.action.ReadValue<Vector2>());
 
         // convert vector3 to vector2
         playerPosition = player.transform.position;

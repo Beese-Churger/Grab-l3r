@@ -2,13 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+//Temporary until GameManager Works
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+
 
 public class Options : MonoBehaviour
 {
     private float w, h;
     // Options GO prefab
     [SerializeField] private GameObject OptionsMenu;
+
+    // Panel GO
     [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private GameObject SoundPanel;
+    [SerializeField] private GameObject VideoPanel;
+    [SerializeField] private GameObject ButtonPanel;
+    [SerializeField] private GameObject ControlPanel;
+    [SerializeField] private TMP_InputField grappleBindingInputField;
+
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private InputActionReference ToggleOptionsScreen;
 
 
     // Resolution Variables
@@ -16,11 +30,11 @@ public class Options : MonoBehaviour
 
     private Resolution[] resolutions;
 
-    private bool isOpened = true;
-    //
+    
     // Fullscreen / Windowed Mode toggle variables
 
     [SerializeField] private TMP_Dropdown fullscreenDropdown;
+
 
 
 
@@ -65,7 +79,7 @@ public class Options : MonoBehaviour
         AudioManager.Instance.SFXvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.SFXVolume);
         AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
 
-
+        //----------------------------------------------------------------------------------------------------------------
 
 
     }
@@ -110,14 +124,34 @@ public class Options : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (ToggleOptionsScreen.action.triggered)
         {
-            isOpened = !isOpened;
-            OptionsMenu.SetActive(isOpened);
+            OptionsMenu.SetActive(!OptionsMenu.activeSelf);
+            ButtonPanel.SetActive(!ButtonPanel.activeSelf);
         }
     }
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(2.0f);
     }
+    public void ToggleVideoPanel()
+    {
+        ButtonPanel.SetActive(!ButtonPanel.activeSelf);
+        VideoPanel.SetActive(!VideoPanel.activeSelf);
+    }
+    public void ToggleSoundPanel()
+    {
+        ButtonPanel.SetActive(!ButtonPanel.activeSelf);
+        SoundPanel.SetActive(!SoundPanel.activeSelf);
+    }
+    public void ToggleControlPanel()
+    {
+        ButtonPanel.SetActive(!ButtonPanel.activeSelf);
+        ControlPanel.SetActive(!ControlPanel.activeSelf);
+    }
+    public void TriggerReset()
+    {
+        SceneManager.LoadScene("CAMERA_TEST", LoadSceneMode.Single);        
+    }
+
 }

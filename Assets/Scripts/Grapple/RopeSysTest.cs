@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RopeSysTest : MonoBehaviour
 {
+    public InputActionReference pointer;
     public LineRenderer ropeRenderer;
     public LayerMask ropeLayerMask;
     public float climbSpeed = 5f;
@@ -58,7 +60,7 @@ public class RopeSysTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f));
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
         Vector3 facingDirection = worldMousePosition - transform.position;
         float aimAngle = Mathf.Atan2(facingDirection.y, facingDirection.x);
         if (aimAngle < 0f)
