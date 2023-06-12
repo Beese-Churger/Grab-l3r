@@ -36,6 +36,11 @@ public class Options : MonoBehaviour
     [SerializeField] private TMP_Dropdown fullscreenDropdown;
 
 
+    // For the reset button
+    [SerializeField] private string sceneName;
+    
+
+
 
 
     private void Start()
@@ -151,7 +156,7 @@ public class Options : MonoBehaviour
     }
     public void TriggerReset()
     {
-        SceneManager.LoadScene("CAMERA_TEST", LoadSceneMode.Single);        
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);        
     }
 
 }

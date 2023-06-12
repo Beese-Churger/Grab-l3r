@@ -39,21 +39,21 @@ public class PressurePlate : MonoBehaviour
         }
     }
 
-    // set player transform to be the same as pressureplates to avoid twitching
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.transform.CompareTag("Player"))
-        {
-            collision.transform.parent = transform;
-        }
-    }
+    //// set player transform to be the same as pressureplates to avoid twitching
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if(collision.transform.CompareTag("Player"))
+    //    {
+    //        collision.transform.parent = transform;
+    //    }
+    //}
 
-    // detach player from plate transform
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.transform.CompareTag("Player"))
-        {
-            collision.transform.parent = null;
-        }
-    }
+    //// detach player from plate transform
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    if (collision.transform.CompareTag("Player"))
+    //    {
+    //        collision.transform.parent = null;
+    //    }
+    //}
 }
