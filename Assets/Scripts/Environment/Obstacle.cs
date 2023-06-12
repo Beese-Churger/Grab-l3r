@@ -40,7 +40,6 @@ public class Obstacle : MonoBehaviour
     public void DisableObstacle()
     {
         isActive = false;
-        Debug.Log(isActive);
     }
 
     private void Update()

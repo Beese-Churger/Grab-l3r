@@ -263,7 +263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b156df41cb814299232cd1cbb6f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelManagerObj: {fileID: 1356945041}
 --- !u!4 &175691594
 Transform:
   m_ObjectHideFlags: 0
@@ -417,10 +416,9 @@ Transform:
   m_LocalPosition: {x: -0.95574045, y: 0.690043, z: -9.888145}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1351282949}
+  m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &691539019
 GameObject:
@@ -1327,12 +1325,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1351282948}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.53, y: 0.6, z: 9.888145}
+  m_LocalPosition: {x: 0.52, y: 1.38, z: 0}
   m_LocalScale: {x: 2.9413495, y: 0.91297936, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 534471196}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1351282950
 MonoBehaviour:
@@ -1348,7 +1346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrain: {fileID: 1928709457}
   obstacle: {fileID: 1284447640}
-  endPos: {x: 1.53, y: -0.25}
+  endPos: {x: 0.52, y: 0.39}
   isObstacle: 1
 --- !u!61 &1351282951
 BoxCollider2D:
@@ -1457,7 +1455,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9849ffce4392c342a229623369a1779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManagerObj: {fileID: 175691592}
 --- !u!4 &1356945043
 Transform:
   m_ObjectHideFlags: 0
@@ -1531,9 +1528,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928709453}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.9846, y: 4.5109, z: -0.035650052}
-  m_LocalScale: {x: 7.4952, y: 2.9170399, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12, y: 6, z: 12}
+  m_LocalScale: {x: 7.4952, y: 1.0664698, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1271911296}
@@ -1578,9 +1575,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrainType: 2
-  triggerPressurePlate: 1
+  triggerPressurePlate: 0
   speed: 1
-  endPos: {x: 13, y: 4.5109}
+  endPos: {x: 13, y: 6}
 --- !u!212 &1928709458
 SpriteRenderer:
   m_ObjectHideFlags: 0
