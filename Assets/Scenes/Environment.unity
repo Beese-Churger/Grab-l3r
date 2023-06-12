@@ -1024,7 +1024,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12.202319
+  orthographic size: 18.959742
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1457,6 +1457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9849ffce4392c342a229623369a1779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManagerObj: {fileID: 175691592}
 --- !u!4 &1356945043
 Transform:
   m_ObjectHideFlags: 0
@@ -1531,8 +1532,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928709453}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.8938, z: -0.035650052}
-  m_LocalScale: {x: 4.764605, y: 0.75518155, z: 1}
+  m_LocalPosition: {x: -12.9846, y: 4.5109, z: -0.035650052}
+  m_LocalScale: {x: 7.4952, y: 2.9170399, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1271911296}
@@ -1577,9 +1578,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrainType: 2
-  triggerPressurePlate: 0
+  triggerPressurePlate: 1
   speed: 1
-  endPos: {x: 0, y: -4.4514}
+  endPos: {x: 13, y: 4.5109}
 --- !u!212 &1928709458
 SpriteRenderer:
   m_ObjectHideFlags: 0

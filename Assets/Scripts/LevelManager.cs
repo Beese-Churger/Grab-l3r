@@ -1,35 +1,26 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Cinemachine.DocumentationSortingAttribute;
 
-public class Level
-{
-    public string sceneName;
+//public class Level
+//{
+//    public string sceneName;
 
-    public Level(string s)
-    {
-        sceneName = s;
-    }
-}
+//    public Level(string s)
+//    {
+//        sceneName = s;
+//    }
+//}
 
+[System.Serializable]
 public class LevelManager : MonoBehaviour
 {
-    private Level[] levels;
+    private string[] levels = { "MainMenu", "Environment", "Level1", "Level2", "BossLevel" };
     private int currentLevelIndex = 0;
     private static LevelManager instance = null;
     private GameManager gameManager;
-
-    // Manually add all levels (scenes) by name to the levels array
-    void Start()
-    {
-        new Level("Environment");
-        new Level("Level1");
-        new Level("Level2");
-        new Level("BossLevel");
-
-        //Debug.Log(levels[currentLevelIndex]);
-        // add more levels if there are
-    }
 
     private void Awake()
     {
@@ -44,6 +35,11 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
     // load level after current level is finnished
     public void LoadNextLevel()
     {
@@ -51,28 +47,27 @@ public class LevelManager : MonoBehaviour
 
         if (currentLevelIndex < levels.Length)
         {
-            Level level= levels[currentLevelIndex];
-            StartCoroutine(LoadLevel(level));
+            StartCoroutine(LoadLevel(currentLevelIndex));
         }
         else
         {
             Debug.Log("All levels loaded");
-            //gameManager.SetGameState(StateType.end);
-
+            currentLevelIndex = 0;
+            gameManager.SetGameState(StateType.end);
         }
 
     }
 
     public void ReLoadLevel()
     {
-        Level level = levels[currentLevelIndex];
+        string level = levels[currentLevelIndex];
         StartCoroutine(LoadLevel(level));
     }
 
     // Load level by index
-    private IEnumerator LoadLevel(Level level)
+    private IEnumerator LoadLevel(int index)
     {
-        string scene = level.sceneName;
+        string scene = levels[index];
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
 
         while(!asyncLoad.isDone)
