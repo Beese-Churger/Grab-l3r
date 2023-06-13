@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     //private bool triggeredGameEnd;
 
     private StateType state;
-    public static event Action<StateType> StateChanged;
+    //public static event Action<StateType> StateChanged;
     public static GameManager instance = null;
     private LevelManager levelManager;
 

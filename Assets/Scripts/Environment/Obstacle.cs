@@ -40,7 +40,11 @@ public class Obstacle : MonoBehaviour
     public void DisableObstacle()
     {
         isActive = false;
-        Debug.Log(isActive);
+    }
+
+    public void ActivateObstacle()
+    {
+        isActive = true;
     }
 
     private void Update()
@@ -58,6 +62,10 @@ public class Obstacle : MonoBehaviour
                 case ObstacleType.electricity:
                     break;
             }
+        }
+        else
+        {
+
         }
     }
 }
