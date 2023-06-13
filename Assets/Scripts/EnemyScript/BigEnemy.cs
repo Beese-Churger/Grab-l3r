@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Unity.Mathematics;
 
 public class BigEnemy : EnemyBaseClass
 {
@@ -11,11 +10,12 @@ public class BigEnemy : EnemyBaseClass
         AGGRESSIVE,
         NUM_STATE
     };
-    [SerializeField] private GameObject[] waypoints;
+    private GameObject[] waypoints;
     [SerializeField] private int weight;
     [SerializeField] private float stoppingDistance;
     [SerializeField] private float originalSpeed;
     [SerializeField] private float intervalBetweenPoints;
+    [SerializeField] private float patrolDistance = 5.0f;
 
 
 
@@ -27,6 +27,7 @@ public class BigEnemy : EnemyBaseClass
     private float stationaryTimer;
     private float rotation;
     private PlayerController playerInstance;
+    bool isGrounded = false;
 
     //
     private int type = 1;
@@ -35,6 +36,9 @@ public class BigEnemy : EnemyBaseClass
     void Start()
     {
         playerPrefab = GameObject.FindGameObjectWithTag("Player");
+        waypoints = new GameObject[2];
+        waypoints[0] = new GameObject();
+        waypoints[1] = new GameObject();
 
         // Set current state to patrol mode
         current = FSM.PATROL;
@@ -46,7 +50,7 @@ public class BigEnemy : EnemyBaseClass
         e_Alive = true;
 
         // Set the position of the enemy at the start of the first waypoint
-        transform.position = waypoints[currentWP].transform.position;
+        //transform.position = waypoints[currentWP].transform.position;
 
     }
     public override void FSMUpdate()
@@ -61,12 +65,12 @@ public class BigEnemy : EnemyBaseClass
                     break;
                 case FSM.PATROL:
                     // For PATROL State, The enemy would be patrolling around it's own platform to find the player
-                    if (Vector2.Distance(transform.position, waypoints[0].transform.position) < 0.05 && currentWP == 0)
+                    if (math.distance(transform.position.x, waypoints[0].transform.position.x) < 0.05 && currentWP == 0)
                     {
                         currentWP = 1;
                         current = FSM.NEUTRAL;
                     }
-                    if (Vector2.Distance(transform.position, waypoints[1].transform.position) < 0.05 && currentWP == 1)
+                    if (math.distance(transform.position.x, waypoints[1].transform.position.x) < 0.05 && currentWP == 1)
                     {
                         currentWP = 0;
                         current = FSM.NEUTRAL;
@@ -183,6 +187,12 @@ public class BigEnemy : EnemyBaseClass
             }
 
         }
+        if (col.gameObject.tag == "Terrain")
+        {
+            //isGrounded = true;
+            waypoints[0].transform.position = transform.position - new Vector3(patrolDistance + transform.localScale.x, 0, 0);
+            waypoints[1].transform.position = transform.position + new Vector3(patrolDistance + transform.localScale.x, 0, 0);
+            Debug.Log("Touched the floor");
+        }
     }
-
 }

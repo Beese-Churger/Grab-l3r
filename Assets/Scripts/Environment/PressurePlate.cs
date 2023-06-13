@@ -19,7 +19,7 @@ public class PressurePlate : MonoBehaviour
     {
         // if pressureplate is set to isObstacle, pressureplate disaples obtsacles functionality
         // when pressureplate is pushed
-        if (transform.position.y + 10f < collision.transform.position.y)
+        if (transform.position.y < collision.transform.position.y)
         {
             // if isObstacle is unchecked, pressureplate activates moving platform
             if (transform.position.y > endPos.y)
@@ -37,25 +37,7 @@ public class PressurePlate : MonoBehaviour
                 terrain.ActivateMovingPlatform();
             }
         }
-
-        // if isObstacle is unchecked, pressureplate activates moving platform
-        if (transform.position.y > endPos.y)
-        {
-            transform.Translate(0, -0.01f, 0);
-        }
-
-        back = false;
-
-        if (isObstacle)
-        {
-            obstacle.DisableObstacle();
-        }
-        else
-        {
-            terrain.ActivateMovingPlatform();
-        }
-    }
-
+        
     private void OnTriggerExit2D(Collider2D collision)
     {
         back = true;
