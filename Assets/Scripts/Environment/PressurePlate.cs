@@ -37,6 +37,7 @@ public class PressurePlate : MonoBehaviour
                 terrain.ActivateMovingPlatform();
             }
         }
+    }
         
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -55,6 +56,11 @@ public class PressurePlate : MonoBehaviour
             {
                 back = false;
             }
+        }
+
+        if(isObstacle && transform.position.y >= startPos.y)
+        {
+            obstacle.ActivateObstacle();
         }
     }
 }

@@ -40,11 +40,13 @@ public class Obstacle : MonoBehaviour
     public void DisableObstacle()
     {
         isActive = false;
+        Debug.Log(isActive);
     }
 
     public void ActivateObstacle()
     {
         isActive = true;
+        Debug.Log(isActive);
     }
 
     private void Update()
