@@ -12,16 +12,18 @@ public class Rope : MonoBehaviour
 
     private LineRenderer lineRenderer;
     private List<RopeSegment> ropeSegments = new List<RopeSegment>();
-    private float ropeSegLen = 0.25f;
+    private float ropeSegLen = 0.15f;
     private int segmentLength = 35;
     private float lineWidth = 0.1f;
     private bool Draw = false;
     private bool ropeAttached = false;
+    private Vector3 worldMousePosition;
+    private int indexMousePos;
+    private bool moveToMouse = true;
     [SerializeField] private GameObject attachedTo;
     [SerializeField] private GameObject ropeHook;
     [SerializeField] Mesh meshToCollide;
-    MeshCollider meshCollider;
-
+    [SerializeField] private GameObject toCollide;
     [SerializeField] private EdgeCollider2D edgeCollider;
     Vector3 pointsas;
     public Vector2[] points2 = new Vector2[35];
@@ -31,16 +33,15 @@ public class Rope : MonoBehaviour
     void Start()
     {
 
-        this.lineRenderer = this.GetComponent<LineRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
         //lineRenderer.useWorldSpace = false;
         Vector3 ropeStartPoint = StartPoint.position;
 
         for (int i = 0; i < segmentLength; i++)
         {
-            this.ropeSegments.Add(new RopeSegment(ropeStartPoint));
+            ropeSegments.Add(new RopeSegment(ropeStartPoint));
             ropeStartPoint.y -= ropeSegLen;
         }
-        meshCollider = gameObject.AddComponent<MeshCollider>();
         mesh = gameObject.GetComponent<MeshFilter>().mesh;
 
     }
@@ -55,7 +56,7 @@ public class Rope : MonoBehaviour
         }
 
 
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f));
+        worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f));
         Vector3 facingDirection = worldMousePosition - transform.position;
         float aimAngle = Mathf.Atan2(facingDirection.y, facingDirection.x);
         if (aimAngle < 0f)
@@ -65,6 +66,8 @@ public class Rope : MonoBehaviour
 
         Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
+        float xStart = StartPoint.position.x;
+        float currX = toCollide.transform.position.x;
         if (Input.GetMouseButton(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, 20, ropeLayerMask);
@@ -73,6 +76,7 @@ public class Rope : MonoBehaviour
                 AudioManager.Instance.PlaySFX("hook_attach");
                 ropeAttached = true;
                 EndPoint.position = hit.point;
+                
                 EndPoint.transform.parent = hit.transform;
 
 
@@ -92,6 +96,13 @@ public class Rope : MonoBehaviour
                 //    //hit.collider.transform.SetParent(ropeHingeAnchor.transform);
                 //}
             }
+        }
+        float xEnd = EndPoint.position.x;
+        float ratio = (currX - xStart) / (xEnd - xStart);
+        if (ratio > 0)
+        {
+            indexMousePos = (int)(segmentLength * ratio);
+            Debug.Log(indexMousePos);
         }
         if (Input.GetMouseButton(1))
         {
@@ -125,42 +136,42 @@ public class Rope : MonoBehaviour
         // SIMULATION
         Vector2 forceGravity = new Vector2(0f, -1.5f);
 
-        for (int i = 1; i < this.segmentLength; i++)
+        for (int i = 1; i < segmentLength; i++)
         {
-            RopeSegment firstSegment = this.ropeSegments[i];
+            RopeSegment firstSegment = ropeSegments[i];
             Vector2 velocity = firstSegment.posNow - firstSegment.posOld;
             firstSegment.posOld = firstSegment.posNow;
             firstSegment.posNow += velocity;
             firstSegment.posNow += forceGravity * Time.fixedDeltaTime;
-            this.ropeSegments[i] = firstSegment;
+            ropeSegments[i] = firstSegment;
         }
 
         //CONSTRAINTS
         for (int i = 0; i < 50; i++)
         {
-            this.ApplyConstraint();
+            ApplyConstraint();
         }
     }
 
     private void ApplyConstraint()
     {
         //Constrant to Mouse
-        RopeSegment firstSegment = this.ropeSegments[0];
+        RopeSegment firstSegment = ropeSegments[0];
         firstSegment.posNow = StartPoint.position;
-        this.ropeSegments[0] = firstSegment;
+        ropeSegments[0] = firstSegment;
 
         //Constrant to Second Point 
-        RopeSegment endSegment = this.ropeSegments[this.ropeSegments.Count - 1];
-        endSegment.posNow = this.EndPoint.position;
-        this.ropeSegments[this.ropeSegments.Count - 1] = endSegment;
+        RopeSegment endSegment = ropeSegments[ropeSegments.Count - 1];
+        endSegment.posNow = EndPoint.position;
+        ropeSegments[ropeSegments.Count - 1] = endSegment;
 
-        for (int i = 0; i < this.segmentLength - 1; i++)
+        for (int i = 0; i < segmentLength - 1; i++)
         {
-            RopeSegment firstSeg = this.ropeSegments[i];
-            RopeSegment secondSeg = this.ropeSegments[i + 1];
+            RopeSegment firstSeg = ropeSegments[i];
+            RopeSegment secondSeg = ropeSegments[i + 1];
 
             float dist = (firstSeg.posNow - secondSeg.posNow).magnitude;
-            float error = Mathf.Abs(dist - this.ropeSegLen);
+            float error = Mathf.Abs(dist - ropeSegLen);
             Vector2 changeDir = Vector2.zero;
 
             if (dist > ropeSegLen)
@@ -176,14 +187,23 @@ public class Rope : MonoBehaviour
             if (i != 0)
             {
                 firstSeg.posNow -= changeAmount * 0.5f;
-                this.ropeSegments[i] = firstSeg;
+                ropeSegments[i] = firstSeg;
                 secondSeg.posNow += changeAmount * 0.5f;
-                this.ropeSegments[i + 1] = secondSeg;
+                ropeSegments[i + 1] = secondSeg;
             }
             else
             {
                 secondSeg.posNow += changeAmount;
-                this.ropeSegments[i + 1] = secondSeg;
+                ropeSegments[i + 1] = secondSeg;
+            }
+            if (moveToMouse && indexMousePos > 0 && indexMousePos < segmentLength - 1 && i == indexMousePos)
+            {
+                RopeSegment segment = ropeSegments[i];
+                RopeSegment segment2 = ropeSegments[i + 1];
+                segment.posNow = new Vector2(toCollide.transform.position.x, toCollide.transform.position.y);
+                segment2.posNow = new Vector2(toCollide.transform.position.x, toCollide.transform.position.y);
+                ropeSegments[i] = segment;
+                ropeSegments[i + 1] = segment2;
             }
         }
     }
@@ -194,10 +214,10 @@ public class Rope : MonoBehaviour
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
 
-        Vector3[] ropePositions = new Vector3[this.segmentLength];
-        for (int i = 0; i < this.segmentLength; i++)
+        Vector3[] ropePositions = new Vector3[segmentLength];
+        for (int i = 0; i < segmentLength; i++)
         {
-            ropePositions[i] = this.ropeSegments[i].posNow;
+            ropePositions[i] = ropeSegments[i].posNow;
         }
 
         lineRenderer.positionCount = ropePositions.Length;
@@ -277,7 +297,6 @@ public class Rope : MonoBehaviour
         //mesh.triangles = triangles;
         //mesh.RecalculateNormals();
         lineRenderer.BakeMesh(mesh, Camera.main);
-        meshCollider.sharedMesh = mesh;
     }
     public struct RopeSegment
     {
@@ -286,8 +305,8 @@ public class Rope : MonoBehaviour
 
         public RopeSegment(Vector2 pos)
         {
-            this.posNow = pos;
-            this.posOld = pos;
+            posNow = pos;
+            posOld = pos;
         }
     }
 }
