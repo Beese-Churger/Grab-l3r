@@ -15,49 +15,57 @@ public class PressurePlate : MonoBehaviour
         startPos = transform.position;
     }
 
-    // check if player is on the pressureplate
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Player"))
+        // if pressureplate is set to isObstacle, pressureplate disaples obtsacles functionality
+        // when pressureplate is pushed
+        if (transform.position.y + 10f < collision.transform.position.y)
         {
-            // if pressureplate is set to isObstacle, pressureplate disaples obtsacles functionality
-            // when pressureplate is pushed
-         
             // if isObstacle is unchecked, pressureplate activates moving platform
-           if(transform.position.y<collision.transform.position.y)
-           {
+            if (transform.position.y > endPos.y)
+            {
                 transform.Translate(0, -0.01f, 0);
                 back = false;
+            }
 
-                if (isObstacle)
-                {
-                    obstacle.DisableObstacle();
-                }
-                else
-                {
-                    terrain.ActivateMovingPlatform();
-                }
-           }
-                
-            
-            
+            if (isObstacle)
+            {
+                obstacle.DisableObstacle();
+            }
+            else
+            {
+                terrain.ActivateMovingPlatform();
+            }
+        }
+
+        // if isObstacle is unchecked, pressureplate activates moving platform
+        if (transform.position.y > endPos.y)
+        {
+            transform.Translate(0, -0.01f, 0);
+        }
+
+        back = false;
+
+        if (isObstacle)
+        {
+            obstacle.DisableObstacle();
+        }
+        else
+        {
+            terrain.ActivateMovingPlatform();
         }
     }
 
-    // detach player from plate transform
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Enemy"))
-        {
-            back = true;
-        }
+        back = true;
     }
 
     private void Update()
     {
         if (back)
         {
-            if(transform.position.y < startPos.y) 
+            if (transform.position.y < startPos.y)
             {
                 transform.Translate(0, 0.01f, 0);
             }

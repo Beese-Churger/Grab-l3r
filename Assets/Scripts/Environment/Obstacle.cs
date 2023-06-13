@@ -42,6 +42,11 @@ public class Obstacle : MonoBehaviour
         isActive = false;
     }
 
+    public void ActivateObstacle()
+    {
+        isActive = true;
+    }
+
     private void Update()
     {
         if (!isActive)
@@ -57,6 +62,10 @@ public class Obstacle : MonoBehaviour
                 case ObstacleType.electricity:
                     break;
             }
+        }
+        else
+        {
+
         }
     }
 }
