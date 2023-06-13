@@ -7,9 +7,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
 
+
 public class Options : MonoBehaviour
 {
+
+
     private float w, h;
+    private static bool isPressed = false;
     // Options GO prefab
     [SerializeField] private GameObject OptionsMenu;
 
@@ -19,11 +23,12 @@ public class Options : MonoBehaviour
     [SerializeField] private GameObject VideoPanel;
     [SerializeField] private GameObject ButtonPanel;
     [SerializeField] private GameObject ControlPanel;
-    [SerializeField] private TMP_InputField grappleBindingInputField;
+  
 
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private InputActionReference switchToOptionsControls;
     [SerializeField] private InputActionReference ToggleOptionsScreen;
-
+    private InputActionMap controlActionMap;
 
     // Resolution Variables
     [SerializeField] private TMP_Dropdown resolutionDropdown;
@@ -38,8 +43,16 @@ public class Options : MonoBehaviour
 
     // For the reset button
     [SerializeField] private string sceneName;
-    
 
+
+    // Key binding
+    [SerializeField] private TMP_Text bindingDisplayNameText = null;
+    [SerializeField] private GameObject startRebindObject = null;
+    [SerializeField] private GameObject waitingForInputObject = null;
+
+    private InputAction currentAction;
+    private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
+    Dictionary<int, string> keyBinds;
 
 
 
@@ -85,6 +98,14 @@ public class Options : MonoBehaviour
         AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
 
         //----------------------------------------------------------------------------------------------------------------
+        controlActionMap = playerInput.currentActionMap;
+        // Check for which action I'm currently changing the keybind for
+        currentAction = controlActionMap.actions[0];
+        int bindingIndex = currentAction.GetBindingIndexForControl(currentAction.controls[0]);
+        bindingDisplayNameText.text = InputControlPath.ToHumanReadableString(
+                currentAction.bindings[bindingIndex].effectivePath,
+                InputControlPath.HumanReadableStringOptions.OmitDevice);
+        keyBinds = new Dictionary<int, string>();
 
 
     }
@@ -129,11 +150,27 @@ public class Options : MonoBehaviour
 
     private void Update()
     {
-        if (ToggleOptionsScreen.action.triggered)
+        if ((switchToOptionsControls.action.triggered || ToggleOptionsScreen.action.triggered) && !isPressed)
         {
+            if (OptionsMenu.activeSelf)
+            {
+                playerInput.SwitchCurrentActionMap("Gameplay");
+                Time.timeScale = 1;
+            }
+
+            else
+            {
+                // Switch to Options action map to prevent the player from controlling it
+                playerInput.SwitchCurrentActionMap("Options");
+                Time.timeScale = 0;
+            }
+
             OptionsMenu.SetActive(!OptionsMenu.activeSelf);
             ButtonPanel.SetActive(!ButtonPanel.activeSelf);
+            isPressed = true;
         }
+        else
+            isPressed = false;
     }
     IEnumerator Wait()
     {
@@ -157,6 +194,32 @@ public class Options : MonoBehaviour
     public void TriggerReset()
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);        
+    }
+    public void StartRebinding()
+    {
+        startRebindObject.SetActive(false);
+        waitingForInputObject.SetActive(true);
+
+        rebindingOperation = currentAction.PerformInteractiveRebinding()
+                .WithExpectedControlType("Button")
+                .WithControlsExcluding("Mouse")
+                .OnMatchWaitForAnother(0.1f)
+                .OnComplete(operation => RebindComplete())
+                .Start();
+    }
+    public void RebindComplete()
+    {
+        int bindingIndex = currentAction.GetBindingIndexForControl(currentAction.controls[0]);
+        bindingDisplayNameText.text = InputControlPath.ToHumanReadableString(
+                currentAction.bindings[bindingIndex].effectivePath,
+                InputControlPath.HumanReadableStringOptions.OmitDevice);
+
+
+        rebindingOperation.Dispose();
+
+        startRebindObject.SetActive(true);
+        waitingForInputObject.SetActive(false);
+
     }
 
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Terrain
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,6 @@ TagManager:
   - Rope
   - Pivot
   - PostProcessVolume
-  - 
   - 
   - 
   - 
