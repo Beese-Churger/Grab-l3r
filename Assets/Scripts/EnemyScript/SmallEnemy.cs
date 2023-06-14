@@ -1,7 +1,5 @@
 using UnityEngine;
 using Unity.Mathematics;
-
-
 public class SmallEnemy : EnemyBaseClass
 {
     enum FSM
@@ -35,6 +33,7 @@ public class SmallEnemy : EnemyBaseClass
     void Start()
     {
         playerPrefab = GameObject.FindGameObjectWithTag("Player");
+
 
         waypoints = new GameObject[2];
         waypoints[0] = new GameObject();
@@ -71,6 +70,7 @@ public class SmallEnemy : EnemyBaseClass
                     if (math.distance(transform.position.x, waypoints[0].transform.position.x) < 0.05 && currentWP == 0)
                     {
                         currentWP = 1;
+                        //agent.SetDestination(waypoints[currentWP].transform.position);
                         current = FSM.NEUTRAL;
                     }
                     if (math.distance(transform.position.x, waypoints[1].transform.position.x) < 0.05 && currentWP == 1)
@@ -79,8 +79,8 @@ public class SmallEnemy : EnemyBaseClass
                         current = FSM.NEUTRAL;
 
                     }
-                    Patrol();
-                    Slow();
+                    //Patrol();
+                    //Slow();
                     break;
                 case FSM.AGGRESSIVE:
                     // TO DO:

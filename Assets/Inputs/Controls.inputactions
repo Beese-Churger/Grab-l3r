@@ -9,7 +9,7 @@
                     "name": "Jump",
                     "type": "Value",
                     "id": "f7e9f7d0-f1f6-40e0-a423-463dc4b9bcda",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -18,7 +18,16 @@
                     "name": "Grapple",
                     "type": "Value",
                     "id": "df5368f7-da20-4437-9c94-b3f0e8c46c79",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "ReleaseGrapple",
+                    "type": "Value",
+                    "id": "aa42fbb0-4ea0-4c32-9755-9785d4a9e71d",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -33,19 +42,19 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "MouseMovement",
+                    "name": "SwitchToOptionsControls",
                     "type": "Value",
-                    "id": "9bdefa3a-e7f8-491b-adad-1d4adae9901d",
-                    "expectedControlType": "Vector2",
+                    "id": "46a2fc79-7b14-4b03-9e56-f42d1ad23545",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SwitchToOptionsControls",
+                    "name": "MouseMovement",
                     "type": "Value",
-                    "id": "46a2fc79-7b14-4b03-9e56-f42d1ad23545",
-                    "expectedControlType": "Button",
+                    "id": "9bdefa3a-e7f8-491b-adad-1d4adae9901d",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -58,18 +67,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Grapple",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7ffcc1f4-dc4f-4f01-9257-f03de3dbbe9f",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard(EN)",
                     "action": "Grapple",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -80,7 +78,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard(EN)",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -102,7 +100,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard(EN)",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -113,7 +111,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard(EN)",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -124,7 +122,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard(EN)",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -135,21 +133,10 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard(EN)",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "c7d38353-8d36-4c71-8605-8e1cd4f68e76",
-                    "path": "<Pointer>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseMovement",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -157,8 +144,30 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard(EN)",
                     "action": "SwitchToOptionsControls",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "227923f7-82ee-44d2-ae58-17a4efbfd60f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard(EN)",
+                    "action": "ReleaseGrapple",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c7d38353-8d36-4c71-8605-8e1cd4f68e76",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard(EN)",
+                    "action": "MouseMovement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -193,5 +202,22 @@
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "Keyboard(EN)",
+            "bindingGroup": "Keyboard(EN)",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }

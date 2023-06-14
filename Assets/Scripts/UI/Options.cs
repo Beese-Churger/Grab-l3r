@@ -26,6 +26,7 @@ public class Options : MonoBehaviour
   
 
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private InputActionReference switchToOptionsControls;
     [SerializeField] private InputActionReference ToggleOptionsScreen;
     private InputActionMap controlActionMap;
@@ -52,10 +53,6 @@ public class Options : MonoBehaviour
 
     private InputAction currentAction;
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
-    Dictionary<int, string> keyBinds;
-
-
-
     private void Start()
     {
         // Toggling between fullscreen and windowed
@@ -101,11 +98,10 @@ public class Options : MonoBehaviour
         controlActionMap = playerInput.currentActionMap;
         // Check for which action I'm currently changing the keybind for
         currentAction = controlActionMap.actions[0];
-        int bindingIndex = currentAction.GetBindingIndexForControl(currentAction.controls[0]);
-        bindingDisplayNameText.text = InputControlPath.ToHumanReadableString(
-                currentAction.bindings[bindingIndex].effectivePath,
-                InputControlPath.HumanReadableStringOptions.OmitDevice);
-        keyBinds = new Dictionary<int, string>();
+        //int bindingIndex = currentAction.GetBindingIndexForControl(currentAction.controls[0]);
+        //bindingDisplayNameText.text = InputControlPath.ToHumanReadableString(
+        //        currentAction.bindings[bindingIndex].effectivePath,
+        //        InputControlPath.HumanReadableStringOptions.OmitDevice);
 
 
     }
@@ -220,6 +216,14 @@ public class Options : MonoBehaviour
         startRebindObject.SetActive(true);
         waitingForInputObject.SetActive(false);
 
+    }
+    public void ResetAllBindings()
+    {
+        foreach (InputActionMap map in inputActions.actionMaps)
+        {
+            map.RemoveAllBindingOverrides();
+        }
+        PlayerPrefs.DeleteKey("rebinds");
     }
 
 }

@@ -263,32 +263,69 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             }
 
             // Configure the rebind.
-            m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
-                .OnCancel(
-                    operation =>
-                    {
-                        m_RebindStopEvent?.Invoke(this, operation);
-                        m_RebindOverlay?.SetActive(false);
-                        UpdateBindingDisplay();
-                        CleanUp();
-                    })
-                .OnComplete(
-                    operation =>
-                    {
-                        m_RebindOverlay?.SetActive(false);
-                        m_RebindStopEvent?.Invoke(this, operation);
-                        UpdateBindingDisplay();
-                        CleanUp();
-
-                        // If there's more composite parts we should bind, initiate a rebind
-                        // for the next part.
-                        if (allCompositeParts)
+            if (action.name != "Grapple" && action.name != "ReleaseGrapple")
+            {
+                m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
+                    .WithControlsExcluding("Mouse")
+                    .OnCancel(
+                        operation =>
                         {
-                            var nextBindingIndex = bindingIndex + 1;
-                            if (nextBindingIndex < action.bindings.Count && action.bindings[nextBindingIndex].isPartOfComposite)
-                                PerformInteractiveRebind(action, nextBindingIndex, true);
-                        }
-                    });
+                            m_RebindStopEvent?.Invoke(this, operation);
+                            m_RebindOverlay?.SetActive(false);
+                            UpdateBindingDisplay();
+                            CleanUp();
+                        })
+                    .OnComplete(
+                        operation =>
+                        {
+                            m_RebindOverlay?.SetActive(false);
+                            m_RebindStopEvent?.Invoke(this, operation);
+                            UpdateBindingDisplay();
+                            CleanUp();
+
+                            if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
+                            {
+                                action.RemoveBindingOverride(bindingIndex);
+                                CleanUp();
+                                PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
+                            }
+                            // If there's more composite parts we should bind, initiate a rebind
+                            // for the next part.
+                            if (allCompositeParts)
+                            {
+                                var nextBindingIndex = bindingIndex + 1;
+                                if (nextBindingIndex < action.bindings.Count && action.bindings[nextBindingIndex].isPartOfComposite)
+                                    PerformInteractiveRebind(action, nextBindingIndex, true);
+                            }
+                        });
+            }
+            else
+            {
+                m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
+                   .WithControlsExcluding("Keyboard")
+                   .OnCancel(
+                       operation =>
+                       {
+                           m_RebindStopEvent?.Invoke(this, operation);
+                           m_RebindOverlay?.SetActive(false);
+                           UpdateBindingDisplay();
+                           CleanUp();
+                       })
+                   .OnComplete(
+                       operation =>
+                       {
+                           m_RebindOverlay?.SetActive(false);
+                           m_RebindStopEvent?.Invoke(this, operation);
+                           UpdateBindingDisplay();
+                           CleanUp();
+                           if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
+                           {
+                               action.RemoveBindingOverride(bindingIndex);
+                               CleanUp();
+                               PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
+                           }
+                       });
+            }
 
             // If it's a part binding, show the name of the part in the UI.
             var partName = default(string);
@@ -315,6 +352,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             m_RebindOperation.Start();
         }
+        
 
         protected void OnEnable()
         {
@@ -336,6 +374,37 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 s_RebindActionUIs = null;
                 InputSystem.onActionChange -= OnActionChange;
             }
+        }
+        private bool CheckDuplicateBindings(InputAction action, int bindingIndex, bool allCompositeParts = false)
+        {
+            InputBinding newBinding = action.bindings[bindingIndex];
+
+            foreach (InputBinding binding in action.actionMap.bindings)
+            {
+                if (binding.action == newBinding.action)
+                {
+                    continue;
+                }
+                if (binding.effectivePath == newBinding.effectivePath)
+                {
+                    Debug.Log("Duplicate binding found:" + newBinding.effectivePath);
+                    return true;
+                }
+            }
+
+            // Check for duplicate composite bindings
+            if (allCompositeParts)
+            {
+                for (int i = 1; i < bindingIndex; ++i)
+                {
+                    if (action.bindings[i].effectivePath == newBinding.effectivePath)
+                    {
+                        Debug.Log("Duplicate binding found:" + newBinding.effectivePath);
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         // When the action system re-resolves bindings, we want to update our UI in response. While this will

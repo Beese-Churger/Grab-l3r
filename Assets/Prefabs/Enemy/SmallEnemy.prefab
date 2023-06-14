@@ -136,10 +136,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4860160926149258054}
   - component: {fileID: 2192153030662652062}
-  - component: {fileID: 544904354422995969}
   - component: {fileID: 1670968885567343686}
   - component: {fileID: 8491629283298615638}
-  - component: {fileID: 520705233896013614}
   m_Layer: 0
   m_Name: SmallEnemy
   m_TagString: Enemy
@@ -215,28 +213,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!195 &544904354422995969
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4876807040678775496}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1.4226667
-  m_BaseOffset: 0.71133333
-  m_WalkableMask: 1
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &1670968885567343686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,7 +230,6 @@ MonoBehaviour:
   originalSpeed: 25
   intervalBetweenPoints: 2
   patrolDistance: 10
-  navMeshAgent: {fileID: 544904354422995969}
 --- !u!114 &8491629283298615638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,19 +242,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1e5153467ef5dc44aa68f908b9bc15e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &520705233896013614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4876807040678775496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 1
-  m_Area: 1
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
