@@ -10,8 +10,8 @@ public class TestPlayer : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 movementDir;
-
     private Vector2 playerPos = new Vector2(0, 0);
+
     private void Awake()
     {
         // set player position to last checkpoint on respawn

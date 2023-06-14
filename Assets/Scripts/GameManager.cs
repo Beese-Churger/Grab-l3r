@@ -1,30 +1,25 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
-
-    public enum StateType
-    {
-        open,           // game opened, load main menu
-        end,            // move to main menu     
-        start,          // load first level
-        levelChange,    // load next level
-        respawn,        // load level again when player dies
-        boss,           // activate and deactivate boss
-        credits         // show credits
-    }
+public enum StateType
+{
+    open,           // game opened, load main menu
+    end,            // move to main menu     
+    start,          // load first level
+    levelChange,    // load next level
+    respawn,        // load level again when player dies
+    boss,           // activate and deactivate boss
+    credits         // show credits
+}
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance = null;
+
     private float health = 90;
     private int score = 0;
-    //private int enemiesDefeated = 0;
     private bool gamePaused;
-    //private bool triggeredGameEnd;
-
+    private bool triggeredGameEnd;
     private StateType state;
-    //public static event Action<StateType> StateChanged;
-    public static GameManager instance = null;
     private LevelManager levelManager;
 
     public static GameManager GetInstance()
@@ -71,7 +66,6 @@ public class GameManager : MonoBehaviour
                 levelManager.ReLoadLevel();
                 break;
         }
-        //StateChanged?.Invoke(newState);
     }
 
     private void DisplayCredits()

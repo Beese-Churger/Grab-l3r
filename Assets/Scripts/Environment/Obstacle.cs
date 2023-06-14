@@ -17,7 +17,7 @@ public class Obstacle : MonoBehaviour
     }
     [SerializeField] ObstacleType obstacleType;
 
-    // activate levels obstacles
+    // activate obstacles
     private void Awake()
     {
         isActive = true;
@@ -30,6 +30,7 @@ public class Obstacle : MonoBehaviour
         {
             if (collision.transform.CompareTag("Player"))
             {
+                // Damage player
                 manager.TakeDamage();
                 Debug.Log("Obstacle collision");
             }
@@ -40,20 +41,19 @@ public class Obstacle : MonoBehaviour
     public void DisableObstacle()
     {
         isActive = false;
-        Debug.Log(isActive);
     }
 
+    // reactivate obstacle
     public void ActivateObstacle()
     {
         isActive = true;
-        Debug.Log(isActive);
     }
 
     private void Update()
     {
         if (!isActive)
         {
-            // add animation or other function to different types 
+            // TODO: add animation or other function to different types 
             // destroy obstacle?
             switch (obstacleType)
             {
