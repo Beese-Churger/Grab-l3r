@@ -6,7 +6,6 @@ public class rope2 : MonoBehaviour
 {
     public Rigidbody2D hook;
     public GameObject prefabRopeSeg;
-    public int numLinks = 5;
 
     public HingeJoint2D top;
 
@@ -19,15 +18,16 @@ public class rope2 : MonoBehaviour
         //GenerateRope();
     }
 
-    public void GenerateRope(Vector3 direction, int amount)
+    public void GenerateRope(Vector2 direction, int amount)
     {
         Rigidbody2D prevBod = hook;
         for(int i = 0; i < amount; i++)
         {
-            GameObject newSeg = Instantiate(prefabRopeSeg);
+            GameObject newSeg = Instantiate(prefabRopeSeg/*, new Vector3(new Vector2(hook.position + 0.5f * -i * direction.normalized), 0*/);
             ropeSegments.Add(newSeg);
             newSeg.transform.parent = transform;
-            newSeg.transform.position = transform.position;
+            newSeg.transform.position = hook.position + 0.5f * -i * direction.normalized;
+            //newSeg.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             HingeJoint2D hingeJoint = newSeg.GetComponent<HingeJoint2D>();
             hingeJoint.connectedBody = prevBod;
             prevBod = newSeg.GetComponent<Rigidbody2D>();
@@ -37,14 +37,15 @@ public class rope2 : MonoBehaviour
                 top = hingeJoint;
             }
         }
+        //player.GetComponent<HingeJoint2D>().connectedBody = prevBod;
     }
 
-    public void addLink()
+    public void addLink(Vector2 direction)
     {
         GameObject newLink = Instantiate(prefabRopeSeg);
         ropeSegments.Add(newLink);
         newLink.transform.parent = transform;
-        newLink.transform.position = transform.position;
+        newLink.transform.position = hook.position + 0.5f * -(ropeSegments.Count - 1) * direction.normalized;
         HingeJoint2D hingeJoint = newLink.GetComponent<HingeJoint2D>();
         hingeJoint.connectedBody = ropeSegments[ropeSegments.Count - 2].GetComponent<Rigidbody2D>();
         newLink.GetComponent<RopeSegment>().connectedBelow = player;
@@ -56,10 +57,15 @@ public class rope2 : MonoBehaviour
         //HingeJoint2D newTop = top.gameObject.GetComponent<RopeSegment>().connectedBelow.GetComponent<HingeJoint2D>();
 
         //link before last link;
-        ropeSegments[ropeSegments.Count - 2].GetComponent<RopeSegment>().connectedBelow = player;
-        Destroy(ropeSegments[ropeSegments.Count - 1]);
-        ropeSegments.RemoveAt(ropeSegments.Count - 1);
-
+        if (ropeSegments.Count > 1)
+        {
+            ropeSegments[ropeSegments.Count - 2].GetComponent<RopeSegment>().connectedBelow = player;
+            Destroy(ropeSegments[ropeSegments.Count - 1]);
+            ropeSegments.RemoveAt(ropeSegments.Count - 1);
+            Debug.Log(ropeSegments.Count);
+        }
+        else
+            return;
 
     }
 
@@ -70,5 +76,7 @@ public class rope2 : MonoBehaviour
             Destroy(ropeSegments[i]);
         }
         ropeSegments.Clear();
+        hook.gameObject.SetActive(false);
+        player.GetComponent<HingeJoint2D>().enabled = false;
     }
 }

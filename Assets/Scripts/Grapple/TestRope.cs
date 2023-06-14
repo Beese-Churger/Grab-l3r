@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class TestRope : MonoBehaviour
 {
     public int maxLinks = 15;
-    private int numLinks;
+    public int numLinks;
     public LayerMask ropeLayerMask;
     [SerializeField] private rope2 rope;
     public HingeJoint2D hj;
@@ -29,16 +29,22 @@ public class TestRope : MonoBehaviour
 
     public Transform crosshair;
     public SpriteRenderer crosshairSprite;
+
+    Vector3 aimDirection;
     void Awake()
     {
         //rope = transform.parent.GetComponent<rope2>();
-        numLinks = rope.numLinks;
+  
         lastInputTime = Time.time;
         rBody = GetComponent<Rigidbody2D>();
+        hook.SetActive(false);
+        hj.enabled = false;
     }
 
     void Update()
     {
+        numLinks = rope.ropeSegments.Count;
+
         Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
         Vector3 facingDirection = worldMousePosition - transform.position;
         float aimAngle = Mathf.Atan2(facingDirection.y, facingDirection.x);
@@ -47,7 +53,7 @@ public class TestRope : MonoBehaviour
             aimAngle = Mathf.PI * 2 + aimAngle;
         }
 
-        Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
+        aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
         if (!ropeAttached)
         {
@@ -55,6 +61,7 @@ public class TestRope : MonoBehaviour
             //playerMovement.isSwinging = false;
         }
 
+        handleInput(aimDirection);
         handleKBInput();
     }
 
@@ -73,12 +80,15 @@ public class TestRope : MonoBehaviour
                 rope.removeLink();
                 numLinks--;
                 if (rope.ropeSegments.Count > 0)
+                { 
                     hj.connectedBody = rope.ropeSegments[rope.ropeSegments.Count - 1].GetComponent<Rigidbody2D>();
+                }
                 lastInputTime = Time.time;
             }
             else if (verticalInput < 0f && numLinks < 15)
             {
-                rope.addLink();
+                Vector3 swingDirection = rope.ropeSegments[rope.ropeSegments.Count - 1].transform.position - transform.position;
+                rope.addLink(swingDirection.normalized);
                 numLinks++;
                 lastInputTime = Time.time;
             }
@@ -112,10 +122,13 @@ public class TestRope : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             if (ropeAttached) return;
-
+ 
+            hook.SetActive(true);
+            hj.enabled = true;
             RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxLinks, ropeLayerMask);
             if (hit.collider != null)
             {
+                Debug.Log(hit.transform.gameObject);
                 AudioManager.Instance.PlaySFX("hook_attach");
                 ropeAttached = true;
                 hook.transform.position = hit.point;
@@ -131,6 +144,7 @@ public class TestRope : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             rope.resetRope();
+            ropeAttached = false;
         }
     }
     private void SetCrosshairPosition(float aimAngle)
@@ -150,12 +164,15 @@ public class TestRope : MonoBehaviour
     private void Grapple()
     {
         float RopeLinkLength = rope.prefabRopeSeg.transform.localScale.y;
+        //Debug.Log(RopeLinkLength);
         float DistanceBetweenPoints = Vector2.Distance(transform.position, hook.transform.position);
+        //Debug.Log(DistanceBetweenPoints);
         int AmountOfLinksNeeded = Mathf.RoundToInt(DistanceBetweenPoints / RopeLinkLength);
 
+        //Debug.Log(AmountOfLinksNeeded);
         if(AmountOfLinksNeeded <= maxLinks)
         {
-            rope.GenerateRope(Vector3.zero, AmountOfLinksNeeded);
+            rope.GenerateRope(aimDirection, AmountOfLinksNeeded);
         }
     }
     //// increases or decreases speed at first, but only up to a maximum (saturation) level
