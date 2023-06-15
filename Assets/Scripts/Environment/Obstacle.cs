@@ -9,9 +9,11 @@ public class Obstacle : MonoBehaviour
     [SerializeField] public GameManager manager;
     public bool isActive;
 
+    private Vector2 startPos;
+    public Vector2 endPos;
+
     public enum ObstacleType
     {
-        water,
         spikes,
         electricity
     }
@@ -21,6 +23,11 @@ public class Obstacle : MonoBehaviour
     private void Awake()
     {
         isActive = true;
+    }
+
+    private void Start()
+    {
+        startPos = transform.position;
     }
 
     // check collision if object is active
@@ -57,9 +64,11 @@ public class Obstacle : MonoBehaviour
             // destroy obstacle?
             switch (obstacleType)
             {
-                case ObstacleType.water:
-                    break;
                 case ObstacleType.spikes:
+                    if (transform.position.y > endPos.y)
+                    {
+                        transform.Translate(0, -0.01f, 0);
+                    }
                     break;
                 case ObstacleType.electricity:
                     break;
@@ -67,7 +76,17 @@ public class Obstacle : MonoBehaviour
         }
         else
         {
-
+            switch (obstacleType)
+            {
+                case ObstacleType.spikes:
+                    if (transform.position.y < startPos.y)
+                    {
+                        transform.Translate(0, 0.01f, 0);
+                    }
+                    break;
+                case ObstacleType.electricity:
+                    break;
+            }
         }
     }
 }

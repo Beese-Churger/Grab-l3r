@@ -27,20 +27,20 @@ public class Terrain : MonoBehaviour
 
     void Update()
     {
-        // check if player is grabbing platform
-        if (player.GetComponent<Player>().isGrabbing)
-        {
-            switch (terrainType)
-            {
-                case TerrainType.vines:
-                    //attatch player
-                    break;
-                case TerrainType.concreate:
-                    // detatch player 
-                    player.GetComponent<Player>().isGrabbing = false;
-                    break;
-            }
-        }
+        //// check if player is grabbing platform
+        //if (player.GetComponent<Player>().isGrabbing)
+        //{
+        //    switch (terrainType)
+        //    {
+        //        case TerrainType.vines:
+        //            //attatch player
+        //            break;
+        //        case TerrainType.concreate:
+        //            // detatch player 
+        //            player.GetComponent<Player>().isGrabbing = false;
+        //            break;
+        //    }
+        //}
 
         // activate moving platform on pressure plate press
         if (triggerPressurePlate)
