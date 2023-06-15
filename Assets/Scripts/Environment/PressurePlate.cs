@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class PressurePlate : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PressurePlate : MonoBehaviour
 
     public Vector2 endPos;
     public bool isObstacle;
+    public bool isDoor;
 
     // set start position as game objects position in editor
     private void Start()
@@ -34,6 +36,10 @@ public class PressurePlate : MonoBehaviour
             if (isObstacle)
             {
                 obstacle.DisableObstacle();
+            }
+            else if (isDoor)
+            {
+                obstacle.OpenDoor();
             }
             else
             {
@@ -64,7 +70,7 @@ public class PressurePlate : MonoBehaviour
         }
 
         // reactivate obstacle when plate not pressed
-        if(isObstacle && transform.position.y >= startPos.y)
+        if(isObstacle && transform.position.y >= startPos.y && !obstacle.isReactivating)
         {
             obstacle.ActivateObstacle();
         }

@@ -9,13 +9,13 @@ public class Obstacle : MonoBehaviour
     [SerializeField] public GameManager manager;
     public Sprite newSprite;
     public Vector2 endPos;
+    public bool isReactivating;
 
     private Vector2 startPos;
     private SpriteRenderer spriteRender;
     private Sprite mySprite;
     private bool isActive;
-    private bool isReactivating;
-
+    private bool isDoorOpened;
 
     public enum ObstacleType
     {
@@ -62,6 +62,11 @@ public class Obstacle : MonoBehaviour
     public void ActivateObstacle()
     {
         isActive = true;
+    }
+
+    public void OpenDoor()
+    {
+        isDoorOpened = true;
     }
 
     private void Update()
