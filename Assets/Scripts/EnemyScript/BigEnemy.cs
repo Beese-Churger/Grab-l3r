@@ -8,6 +8,7 @@ public class BigEnemy : EnemyBaseClass
         NEUTRAL,
         PATROL,
         AGGRESSIVE,
+        DEAD,
         NUM_STATE
     };
     private GameObject[] waypoints;
