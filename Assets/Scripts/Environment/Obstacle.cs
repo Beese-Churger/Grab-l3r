@@ -7,15 +7,21 @@ using static Terrain;
 public class Obstacle : MonoBehaviour
 {
     [SerializeField] public GameManager manager;
-    public bool isActive;
+    public Sprite newSprite;
+    public Vector2 endPos;
 
     private Vector2 startPos;
-    public Vector2 endPos;
+    private SpriteRenderer spriteRender;
+    private Sprite mySprite;
+    private bool isActive;
+    private bool isReactivating;
+
 
     public enum ObstacleType
     {
         spikes,
-        electricity
+        electricity,
+        door
     }
     [SerializeField] ObstacleType obstacleType;
 
@@ -28,6 +34,8 @@ public class Obstacle : MonoBehaviour
     private void Start()
     {
         startPos = transform.position;
+        spriteRender = gameObject.GetComponent<SpriteRenderer>();
+        mySprite = spriteRender.sprite;
     }
 
     // check collision if object is active
@@ -71,21 +79,26 @@ public class Obstacle : MonoBehaviour
                     }
                     break;
                 case ObstacleType.electricity:
+                    spriteRender.sprite = newSprite;
                     break;
             }
         }
         else
         {
-            switch (obstacleType)
+            if (isReactivating)
             {
-                case ObstacleType.spikes:
-                    if (transform.position.y < startPos.y)
-                    {
-                        transform.Translate(0, 0.01f, 0);
-                    }
-                    break;
-                case ObstacleType.electricity:
-                    break;
+                switch (obstacleType)
+                {
+                    case ObstacleType.spikes:
+                        if (transform.position.y < startPos.y)
+                        {
+                            transform.Translate(0, 0.01f, 0);
+                        }
+                        break;
+                    case ObstacleType.electricity:
+                        spriteRender.sprite = mySprite;
+                        break;
+                }
             }
         }
     }
