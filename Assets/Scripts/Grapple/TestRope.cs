@@ -11,12 +11,13 @@ public class TestRope : MonoBehaviour
     [SerializeField] private rope2 rope;
     public HingeJoint2D hj;
     public GameObject hook;
+    public GameObject attachedTo;
 
     private float inputDelay = 0.3f;
     private float lastInputTime;
 
     public float MAXSPEED = 20f;
-    public float AirAccel = 0.5f;
+    public float AirAccel = 1.5f;
     public float GroundAccel = 3f;
 
     private Rigidbody2D rBody;
@@ -26,7 +27,9 @@ public class TestRope : MonoBehaviour
     private float verticalInput;
     private bool ropeAttached = false;
     public InputActionReference pointer;
-
+    private bool groundCheck;
+    private float halfHeight;
+    private float Accel;
     public Transform crosshair;
     public SpriteRenderer crosshairSprite;
 
@@ -39,6 +42,7 @@ public class TestRope : MonoBehaviour
         rBody = GetComponent<Rigidbody2D>();
         hook.SetActive(false);
         hj.enabled = false;
+        halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
     }
 
     void Update()
@@ -60,6 +64,9 @@ public class TestRope : MonoBehaviour
             SetCrosshairPosition(aimAngle);
             //playerMovement.isSwinging = false;
         }
+
+        groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
+        Accel = groundCheck ? GroundAccel : AirAccel;
 
         handleInput(aimDirection);
         handleKBInput();
@@ -94,17 +101,16 @@ public class TestRope : MonoBehaviour
             }
         }
 
-        float Accel = AirAccel;
         if (horizontalInput > 0f)
         {
             //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
-            rBody.AddForce(new Vector2(1.5f, 0), ForceMode2D.Force);
+            rBody.AddForce(new Vector2(Accel, 0), ForceMode2D.Force);
         }
 
         else if (horizontalInput < 0f)
         {
             //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
-            rBody.AddForce(new Vector2(-1.5f, 0), ForceMode2D.Force);
+            rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
         }
 
 
@@ -128,10 +134,20 @@ public class TestRope : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxLinks, ropeLayerMask);
             if (hit.collider != null)
             {
-                Debug.Log(hit.transform.gameObject);
+                attachedTo = hit.transform.gameObject;
                 AudioManager.Instance.PlaySFX("hook_attach");
                 ropeAttached = true;
                 hook.transform.position = hit.point;
+                hook.transform.SetParent(attachedTo.transform);
+                
+     
+                if(hit.transform.GetComponent<Rigidbody2D>() != null)
+                {
+                    HingeJoint2D toPull = attachedTo.AddComponent<HingeJoint2D>();
+                    toPull.anchor = hook.transform.localPosition;
+                    toPull.connectedBody = hook.GetComponent<Rigidbody2D>();
+                    hook.GetComponent<HingeJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
+                }
                 Grapple();
             }
             else
@@ -145,6 +161,7 @@ public class TestRope : MonoBehaviour
         {
             rope.resetRope();
             ropeAttached = false;
+            Destroy(attachedTo.GetComponent<HingeJoint>());
         }
     }
     private void SetCrosshairPosition(float aimAngle)

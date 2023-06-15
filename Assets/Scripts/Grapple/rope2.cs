@@ -27,9 +27,23 @@ public class rope2 : MonoBehaviour
             ropeSegments.Add(newSeg);
             newSeg.transform.parent = transform;
             newSeg.transform.position = hook.position + 0.5f * -i * direction.normalized;
+            newSeg.transform.LookAt(prevBod.transform);
+            newSeg.transform.rotation = Quaternion.Euler(new Vector3(newSeg.transform.rotation.x, 0, 0));
             //newSeg.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             HingeJoint2D hingeJoint = newSeg.GetComponent<HingeJoint2D>();
             hingeJoint.connectedBody = prevBod;
+
+            if(i != 0)
+            {
+                DistanceJoint2D distanceJoint = newSeg.GetComponent<DistanceJoint2D>();
+                distanceJoint.connectedBody = prevBod;
+            }
+            else
+            {
+                Destroy(newSeg.GetComponent<DistanceJoint2D>());
+            }
+
+
             prevBod = newSeg.GetComponent<Rigidbody2D>();
 
             if(i==0)
@@ -46,6 +60,7 @@ public class rope2 : MonoBehaviour
         ropeSegments.Add(newLink);
         newLink.transform.parent = transform;
         newLink.transform.position = hook.position + 0.5f * -(ropeSegments.Count - 1) * direction.normalized;
+        //newLink.transform.LookAt(ropeSegments[ropeSegments.Count - 2].transform);
         HingeJoint2D hingeJoint = newLink.GetComponent<HingeJoint2D>();
         hingeJoint.connectedBody = ropeSegments[ropeSegments.Count - 2].GetComponent<Rigidbody2D>();
         newLink.GetComponent<RopeSegment>().connectedBelow = player;
@@ -78,5 +93,6 @@ public class rope2 : MonoBehaviour
         ropeSegments.Clear();
         hook.gameObject.SetActive(false);
         player.GetComponent<HingeJoint2D>().enabled = false;
+        hook.transform.SetParent(transform);
     }
 }

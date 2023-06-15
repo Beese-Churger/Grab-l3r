@@ -301,7 +301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 102945270}
   - component: {fileID: 102945269}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Pointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -824,7 +824,7 @@ GameObject:
   - component: {fileID: 489006058}
   - component: {fileID: 489006057}
   - component: {fileID: 489006060}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -839,7 +839,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 489006054}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.09, y: -0.82, z: 0}
+  m_LocalPosition: {x: -0.093, y: -0.936, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -860,12 +860,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxLinks: 15
+  numLinks: 0
   ropeLayerMask:
     serializedVersion: 2
-    m_Bits: 193
+    m_Bits: 65
   rope: {fileID: 1801783875}
   hj: {fileID: 489006060}
   hook: {fileID: 1397453566}
+  attachedTo: {fileID: 0}
   MAXSPEED: 100
   AirAccel: 0.1
   GroundAccel: 3
@@ -976,15 +978,15 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.5}
-  m_ConnectedAnchor: {x: 0, y: -1}
+  m_ConnectedAnchor: {x: -0.093, y: -1.436}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
     m_MaximumMotorForce: 10000
-  m_UseLimits: 1
+  m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: -60
-    m_UpperAngle: 60
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!1 &536994016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1281,9 +1283,9 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!212 &700966494
 SpriteRenderer:
@@ -1936,6 +1938,7 @@ GameObject:
   - component: {fileID: 1397453567}
   - component: {fileID: 1397453568}
   - component: {fileID: 1397453570}
+  - component: {fileID: 1397453571}
   m_Layer: 6
   m_Name: Hook
   m_TagString: Untagged
@@ -2019,9 +2022,29 @@ DistanceJoint2D:
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.005
+  m_MaxDistanceOnly: 1
+--- !u!231 &1397453571
+SpringJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397453566}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
   m_Distance: 0.005
-  m_MaxDistanceOnly: 0
+  m_DampingRatio: 0
+  m_Frequency: 1
 --- !u!1 &1417959576
 GameObject:
   m_ObjectHideFlags: 0
@@ -2418,7 +2441,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hook: {fileID: 1397453567}
   prefabRopeSeg: {fileID: 315281047583182037, guid: 978829ca736c2a640b8e079413442558, type: 3}
-  numLinks: 10
   top: {fileID: 1397453568}
   ropeSegments: []
   player: {fileID: 489006054}
