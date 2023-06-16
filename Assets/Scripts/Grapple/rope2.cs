@@ -23,10 +23,10 @@ public class rope2 : MonoBehaviour
         Rigidbody2D prevBod = hook;
         for(int i = 0; i < amount; i++)
         {
-            GameObject newSeg = Instantiate(prefabRopeSeg/*, new Vector3(new Vector2(hook.position + 0.5f * -i * direction.normalized), 0*/);
+            GameObject newSeg = Instantiate(prefabRopeSeg, hook.position + 0.5f * -i * direction.normalized, Quaternion.identity, transform);
             ropeSegments.Add(newSeg);
-            newSeg.transform.parent = transform;
-            newSeg.transform.position = hook.position + 0.5f * -i * direction.normalized;
+
+            //newSeg.transform.position = hook.position + 0.5f * -i * direction.normalized;
             newSeg.transform.LookAt(prevBod.transform);
             newSeg.transform.rotation = Quaternion.Euler(new Vector3(newSeg.transform.rotation.x, 0, 0));
             //newSeg.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -56,7 +56,7 @@ public class rope2 : MonoBehaviour
 
     public void addLink(Vector2 direction)
     {
-        GameObject newLink = Instantiate(prefabRopeSeg);
+        GameObject newLink = Instantiate(prefabRopeSeg, hook.position + 0.5f * -(ropeSegments.Count - 1) * direction.normalized, Quaternion.identity);
         ropeSegments.Add(newLink);
         newLink.transform.parent = transform;
         newLink.transform.position = hook.position + 0.5f * -(ropeSegments.Count - 1) * direction.normalized;
@@ -92,7 +92,7 @@ public class rope2 : MonoBehaviour
         }
         ropeSegments.Clear();
         hook.gameObject.SetActive(false);
-        player.GetComponent<HingeJoint2D>().enabled = false;
+        //player.GetComponent<HingeJoint2D>().enabled = false;
         hook.transform.SetParent(transform);
     }
 }

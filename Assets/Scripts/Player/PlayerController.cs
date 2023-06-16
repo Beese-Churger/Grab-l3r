@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                animator.SetBool("IsSwinging", false);
+                //animator.SetBool("IsSwinging", false);
                 if (groundCheck)
                 {
                     var groundForce = speed * 2f;
@@ -125,8 +125,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            animator.SetBool("IsSwinging", false);
-            animator.SetFloat("Speed", 0f);
+            //animator.SetBool("IsSwinging", false);
+            //animator.SetFloat("Speed", 0f);
         }
 
         if (!isSwinging)

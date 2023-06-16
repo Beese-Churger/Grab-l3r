@@ -13,7 +13,7 @@ public class SimpleController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
+  
         rBody = GetComponent<Rigidbody2D>();
     }
 
@@ -21,12 +21,29 @@ public class SimpleController : MonoBehaviour
     void Update()
     {
 
-
+        horizontalInput = Input.GetAxis("Horizontal");
         float Accel = AirAccel;
+
         if (horizontalInput > 0f)
-            rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
+        {
+            //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
+            rBody.AddForce(new Vector2(Accel, 0), ForceMode2D.Force);
+        }
+
         else if (horizontalInput < 0f)
-            rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
+        {
+            //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
+            rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
+        }
+
+
+        if (Mathf.Abs(rBody.velocity.x) > MAXSPEED || Mathf.Abs(rBody.velocity.y) > MAXSPEED)
+        {
+            // clamp velocity:
+            Vector3 newVelocity = rBody.velocity.normalized;
+            newVelocity *= MAXSPEED;
+            rBody.velocity = newVelocity;
+        }
     }
 
     private float SaturatedAdd(float Min, float Max, float Current, float Modifier)
