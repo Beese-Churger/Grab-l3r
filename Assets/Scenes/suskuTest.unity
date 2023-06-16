@@ -297,10 +297,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a33817b573faac4e88d2cdda26e325a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerPressurePlate: 0
+  terrainType: 0
   speed: 2
   endPos: {x: 0, y: 0}
-  terrainType: 0
+  triggerPressurePlate: 0
+  player: {fileID: 1332913695}
 --- !u!212 &802842106
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -565,10 +566,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a33817b573faac4e88d2cdda26e325a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerPressurePlate: 0
+  terrainType: 0
   speed: 2
   endPos: {x: 0, y: 0}
-  terrainType: 0
+  triggerPressurePlate: 0
+  player: {fileID: 1332913695}
 --- !u!212 &1384145492
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -36,7 +36,7 @@ public class PressurePlate : MonoBehaviour
             {
                 obstacle.DisableObstacle();
             }
-            else
+            else if(!isObstacle && !isDoor)
             {
                 terrain.ActivateMovingPlatform();
             }
@@ -45,14 +45,20 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        obstacle.OpenDoor();
+        if (isDoor)
+        {
+            obstacle.OpenDoor();
+        }
     }
 
     // set move plate back up when player exits trigger
     private void OnTriggerExit2D(Collider2D collision)
     {
         back = true;
-        obstacle.CloseDoor();
+        if (isDoor)
+        {
+            obstacle.CloseDoor();
+        }
     }
 
     private void Update()
