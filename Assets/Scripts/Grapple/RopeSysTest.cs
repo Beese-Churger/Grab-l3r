@@ -19,7 +19,7 @@ public class RopeSysTest : MonoBehaviour
     private bool ropeAttached;
     private Vector2 playerPosition;
     private List<Vector2> ropePositions = new List<Vector2>();
-    [SerializeField] private float ropeMaxCastDistance = 10f;
+    public float ropeMaxCastDistance = 10f;
     private Rigidbody2D ropeHingeAnchorRb;
     private bool distanceSet;
     private bool isColliding;
@@ -232,7 +232,7 @@ public class RopeSysTest : MonoBehaviour
         {
             ropeJoint.distance -= Time.deltaTime * climbSpeed;
         }
-        else if (Input.GetAxis("Vertical") < 0f && ropeAttached)
+        else if (Input.GetAxis("Vertical") < 0f && ropeAttached && ropeJoint.distance < ropeMaxCastDistance)
         {
             // prevent player from phasing into the ground
             if (PlayerController.Instance.groundCheck)
