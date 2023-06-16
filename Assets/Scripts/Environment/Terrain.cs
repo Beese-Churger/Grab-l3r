@@ -2,46 +2,35 @@ using UnityEngine;
 
 public class Terrain : MonoBehaviour
 {
-    public bool triggerPressurePlate = false;
-    public float speed = 2f;
-    public Vector2 endPos;
-
-    private Vector2 startPos;
-    private GameObject player;
-
     public enum TerrainType
     {
-       concreate,
-       vines,
-       moving
+        concreate,
+        vines,
+        moving
     }
     [SerializeField] TerrainType terrainType;
-    
+
+    public float speed = 2f;
+    public Vector2 endPos;
+    public bool triggerPressurePlate = false;
+    public Obstacle obstacle;
+
+    private Vector2 startPos;
 
     // Find player from scene and set startposotion for moving platform
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
         startPos = transform.position;
     }
 
     void Update()
     {
-        //// check if player is grabbing platform
-        //if (player.GetComponent<Player>().isGrabbing)
+        //switch (terrainType)
         //{
-        //    switch (terrainType)
-        //    {
-        //        case TerrainType.vines:
-        //            //attatch player
+        //    case TerrainType.concreate:
+        //        ResetRope()
         //            break;
-        //        case TerrainType.concreate:
-        //            // detatch player 
-        //            player.GetComponent<Player>().isGrabbing = false;
-        //            break;
-        //    }
         //}
-
         // activate moving platform on pressure plate press
         if (triggerPressurePlate)
         {

@@ -3,15 +3,14 @@ using UnityEngine.Pool;
 
 public class PressurePlate : MonoBehaviour
 {
-    [SerializeField] public Terrain terrain;
-    [SerializeField] public Obstacle obstacle;
-    
-    private bool back = false;
-    private Vector2 startPos;
-
+    public Terrain terrain;
+    public Obstacle obstacle;
     public Vector2 endPos;
     public bool isObstacle;
     public bool isDoor;
+
+    private bool back = false;
+    private Vector2 startPos;
 
     // set start position as game objects position in editor
     private void Start()
@@ -37,21 +36,23 @@ public class PressurePlate : MonoBehaviour
             {
                 obstacle.DisableObstacle();
             }
-            else if (isDoor)
-            {
-                obstacle.OpenDoor();
-            }
             else
             {
                 terrain.ActivateMovingPlatform();
             }
         }
     }
-    
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        obstacle.OpenDoor();
+    }
+
     // set move plate back up when player exits trigger
     private void OnTriggerExit2D(Collider2D collision)
     {
         back = true;
+        obstacle.CloseDoor();
     }
 
     private void Update()
@@ -70,7 +71,7 @@ public class PressurePlate : MonoBehaviour
         }
 
         // reactivate obstacle when plate not pressed
-        if(isObstacle && transform.position.y >= startPos.y && !obstacle.isReactivating)
+        if(isObstacle && transform.position.y >= startPos.y)
         {
             obstacle.ActivateObstacle();
         }

@@ -6,17 +6,6 @@ using static Terrain;
 
 public class Obstacle : MonoBehaviour
 {
-    [SerializeField] public GameManager manager;
-    public Sprite newSprite;
-    public Vector2 endPos;
-    public bool isReactivating;
-
-    private Vector2 startPos;
-    private SpriteRenderer spriteRender;
-    private Sprite mySprite;
-    private bool isActive;
-    private bool isDoorOpened;
-
     public enum ObstacleType
     {
         spikes,
@@ -24,6 +13,17 @@ public class Obstacle : MonoBehaviour
         door
     }
     [SerializeField] ObstacleType obstacleType;
+
+    [SerializeField] public GameManager manager;
+    public Sprite newSprite;
+    public Vector2 endPos;
+    public bool isColliderOff;
+
+    private Vector2 startPos;
+    private SpriteRenderer spriteRender;
+    private Sprite mySprite;
+    private bool isActive;
+    private BoxCollider2D myCollider;
 
     // activate obstacles
     private void Awake()
@@ -36,6 +36,7 @@ public class Obstacle : MonoBehaviour
         startPos = transform.position;
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
         mySprite = spriteRender.sprite;
+        myCollider = gameObject.GetComponent<BoxCollider2D>();
     }
 
     // check collision if object is active
@@ -66,7 +67,16 @@ public class Obstacle : MonoBehaviour
 
     public void OpenDoor()
     {
-        isDoorOpened = true;
+        myCollider.enabled = false;
+        Debug.Log("Collider.enabled" + myCollider.enabled);
+        spriteRender.color = Color.red;
+    }
+
+    public void CloseDoor()
+    {
+        myCollider.enabled = true;
+        Debug.Log("Collider.enabled" + myCollider.enabled);
+        spriteRender.color = Color.white;
     }
 
     private void Update()
@@ -90,8 +100,6 @@ public class Obstacle : MonoBehaviour
         }
         else
         {
-            if (isReactivating)
-            {
                 switch (obstacleType)
                 {
                     case ObstacleType.spikes:
@@ -104,7 +112,6 @@ public class Obstacle : MonoBehaviour
                         spriteRender.sprite = mySprite;
                         break;
                 }
-            }
         }
     }
 }
