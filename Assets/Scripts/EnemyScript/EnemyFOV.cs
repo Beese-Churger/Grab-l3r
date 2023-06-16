@@ -36,6 +36,8 @@ public class EnemyFOV : MonoBehaviour
             {
                 Debug.Log("Big Enemy stopped chasing the player");
                 transform.parent.gameObject.GetComponent<BigEnemy>().SetState(1);
+                transform.parent.gameObject.GetComponent<BigEnemy>().detected = false;
+
             }
         }
 

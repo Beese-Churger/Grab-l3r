@@ -7,6 +7,7 @@ public class CameraMovement : MonoBehaviour
     private Vector2 playerPosition;
     private Vector3 cameraPosition;
 
+    private Camera camera1;
 
 
     //TEMP VARIABLE
@@ -17,6 +18,7 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        camera1 = GetComponent<Camera>();
         // keep cursor confined in the game window
         Cursor.lockState = CursorLockMode.Confined;
 
@@ -28,19 +30,22 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-     
+
     void FixedUpdate()
     {
-         // Converted from screen space to world space
-        mousePosition = Camera.main.ScreenToWorldPoint(pointer.action.ReadValue<Vector2>());
+        if (camera1.enabled)
+        {
+            // Converted from screen space to world space
+            mousePosition = Camera.main.ScreenToWorldPoint(pointer.action.ReadValue<Vector2>());
 
-        // convert vector3 to vector2
-        playerPosition = player.transform.position;
+            // convert vector3 to vector2
+            playerPosition = player.transform.position;
 
-        // The Position Of The Invisible Target
-        cameraPosition = playerPosition + (mousePosition - playerPosition) * 0.2f;
-        cameraPosition.z = -10.0f;
+            // The Position Of The Invisible Target
+            cameraPosition = playerPosition + (mousePosition - playerPosition) * 0.2f;
+            cameraPosition.z = -10.0f;
 
-        transform.position = cameraPosition;
+            transform.position = cameraPosition;
+        }
     }
 }

@@ -1,6 +1,5 @@
 using UnityEngine;
-using Unity.Mathematics;
-
+using Pathfinding;
 public class BigEnemy : EnemyBaseClass
 {
     enum FSM
@@ -11,48 +10,84 @@ public class BigEnemy : EnemyBaseClass
         DEAD,
         NUM_STATE
     };
-    private GameObject[] waypoints;
     [SerializeField] private int weight;
+
+    // Enemy Patrol Variables
     [SerializeField] private float stoppingDistance;
     [SerializeField] private float originalSpeed;
+    [SerializeField] private float chaseSpeed;
     [SerializeField] private float intervalBetweenPoints;
-    [SerializeField] private float patrolDistance = 5.0f;
-
-
-
-    private bool e_Alive;
-    private GameObject playerPrefab;
-    private FSM current;
+    [SerializeField] private float patrolDistance = 10.0f;
+    [SerializeField] private float spriteScale = 3f;
+    private GameObject wayPointObject;
+    private GameObject[] waypoints;
     private int currentWP;
     private float speed;
     private float stationaryTimer;
-    private float rotation;
-    private PlayerController playerInstance;
-    bool isGrounded = false;
+    private Path path;
+    private Seeker seeker;
+    private Rigidbody2D rb;
+    //Current waypoint in the path
+    private int currentWayPoint;
 
+    private Animator animator;
+    private GameObject playerPrefab;
+    private FSM current;
+    private bool e_Alive;
+    private PlayerController playerInstance;
+
+    [SerializeField] LayerMask platformLayer;
+    private float raycastDistance = 1f;
+    private bool isNearEdge = false;
+    public bool detected = false;
     //
     private int type = 1;
-
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
     // Start is called before the first frame update
     void Start()
     {
         playerPrefab = GameObject.FindGameObjectWithTag("Player");
-        waypoints = new GameObject[2];
-        waypoints[0] = new GameObject();
-        waypoints[1] = new GameObject();
+        wayPointObject = GameObject.Find("EnemyWaypoints");
 
-        // Set current state to patrol mode
+        waypoints = new GameObject[2];
+        waypoints[0] = new GameObject("BigEnemyWaypoint");
+        waypoints[1] = new GameObject("BigEnemyWaypoint");
+        waypoints[0].transform.SetParent(wayPointObject.transform);
+        waypoints[1].transform.SetParent(wayPointObject.transform);
+        // Set the current state of the enemy to patrol 
         current = FSM.PATROL;
-        currentWP = 0;
-        speed = 25;
+        speed = originalSpeed;
         stationaryTimer = intervalBetweenPoints;
-        rotation = 180;
-        transform.localRotation = Quaternion.Euler(0, rotation, 0);
         e_Alive = true;
 
-        // Set the position of the enemy at the start of the first waypoint
-        //transform.position = waypoints[currentWP].transform.position;
+        waypoints[0].transform.position = transform.position - new Vector3(patrolDistance + transform.localScale.x, 0, 0);
+        waypoints[1].transform.position = transform.position + new Vector3(patrolDistance + transform.localScale.x, 0, 0);
 
+        seeker = GetComponent<Seeker>();
+        rb = GetComponent<Rigidbody2D>();
+        rb.mass = weight * 0.10131712f;
+
+        InvokeRepeating("UpdatePath", 0f, 0.5f);
+
+
+    }
+    void UpdatePath()
+    {
+        if (!detected)
+            seeker.StartPath(rb.position, waypoints[currentWP].transform.position, OnPathComplete);
+        else
+            seeker.StartPath(rb.position, playerPrefab.transform.position, OnPathComplete);
+    }
+    void OnPathComplete(Path p)
+    {
+        if (!p.error)
+        {
+            path = p;
+            currentWayPoint = 0;
+        }
     }
     public override void FSMUpdate()
     {
@@ -62,38 +97,71 @@ public class BigEnemy : EnemyBaseClass
             switch (current)
             {
                 case FSM.NEUTRAL: // For NEUTRAL State, The enemy temporarily stops moving before it starts moving again
+                    if (animator.gameObject.activeSelf)
+                        animator.SetBool("Patrol", false);
                     Stop();
                     break;
                 case FSM.PATROL:
+                    if (path == null)
+                        return;
                     // For PATROL State, The enemy would be patrolling around it's own platform to find the player
-                    if (math.distance(transform.position.x, waypoints[0].transform.position.x) < 0.05 && currentWP == 0)
+                    //Debug.Log("Path Count:"+path.vectorPath.Count+","+"currentWP;"+currentWayPoint);
+                    // Check if enemy has reached it's final destination
+                    if (currentWayPoint >= path.vectorPath.Count)
                     {
-                        currentWP = 1;
                         current = FSM.NEUTRAL;
+                        CheckCurrentWP();
+                        return;
                     }
-                    if (math.distance(transform.position.x, waypoints[1].transform.position.x) < 0.05 && currentWP == 1)
-                    {
-                        currentWP = 0;
-                        current = FSM.NEUTRAL;
 
+                    EdgeDetection();
+
+                    if (!isNearEdge)
+                    {
+                        Patrol();
+                        Slow();
                     }
-                    Patrol();
-                    Slow();
+
                     break;
                 case FSM.AGGRESSIVE:
                     // TO DO:
-                    Debug.Log("Triggered!!!");
+                    if (path == null)
+                        return;
+                    if (currentWayPoint >= path.vectorPath.Count)
+                    {
+                        speed = originalSpeed;
+                        current = FSM.NEUTRAL;
+                        return;
+                    }
+                    // Debug.Log("Triggered!!!");
                     // If enemy touches the player, the player will instantly die
                     Follow();
+                    Vector2 dir = ((Vector2)playerPrefab.transform.position - rb.position).normalized;
+                    Vector2 force = speed * Time.deltaTime * dir;
+
+                    rb.AddForce(force);
+
+                    float distance = Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
+
+                    if (distance < playerPrefab.transform.localScale.x)
+                    {
+                        currentWayPoint++;
+                    }
+                    if (force.x >= 0.01f)
+                        transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
+                    else if (force.x <= -0.01f)
+                        transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
                     break;
 
             }
         }
+
     }
     public override int GetWeight()
     {
         return weight;
     }
+
     public override void SetStatus(bool b_Status)
     {
         e_Alive = b_Status;
@@ -105,32 +173,6 @@ public class BigEnemy : EnemyBaseClass
     public override int GetEnemyType()
     {
         return type;
-    }
-    private void Patrol()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWP].transform.position, speed * Time.deltaTime);
-        //transform.position = Vector2.Lerp(transform.position, waypoints[currentWP].transform.position, Time.deltaTime);
-        //Debug.Log("ENEMY POSITION: " + gameObject.transform.position);
-        //Debug.Log("WAYPOINT POSITION: " + waypoints[currentWP].transform.position);
-        //Debug.Log("Big Enemy Going Towards WP "+ currentWP);
-    }
-
-    // Slows big enemy movement down as it approaches the waypoint,
-    private void Slow()
-    {
-        float distanceFromDestination = Vector2.Distance(transform.position, waypoints[currentWP].transform.position);
-
-        if (distanceFromDestination < stoppingDistance)
-        {
-            if (speed > 1.5)
-            {
-                speed = distanceFromDestination / stoppingDistance * originalSpeed;
-            }
-        }
-        else
-        {
-            speed = originalSpeed;
-        }
     }
     /* Make the big enemy stationary for 1 second before allowing it to move to
        the next waypoint
@@ -145,9 +187,6 @@ public class BigEnemy : EnemyBaseClass
         else
         {
             stationaryTimer = intervalBetweenPoints;
-            // Flips FOV
-            rotation -= 180;
-            transform.localRotation = Quaternion.Euler(0, rotation, 0);
             current = FSM.PATROL;
             //Debug.Log("Timer over moving to wp" + currentWP);
         }
@@ -156,11 +195,10 @@ public class BigEnemy : EnemyBaseClass
       */
     private void Follow()
     {
-        {
-            Vector3 dir = (playerPrefab.transform.position - transform.position).normalized;
-            dir.y = 0;
-            transform.position += dir * speed * Time.deltaTime;
-        }
+        if (detected)
+            return;
+        detected = true;
+        speed = chaseSpeed;
     }
     public void SetState(int stateNumber)
     {
@@ -181,19 +219,83 @@ public class BigEnemy : EnemyBaseClass
     {
         if (col.gameObject.tag == "Player")
         {
-            //SET THE PLAYER STATUS TO DEAD
+            // TO DO: SET THE PLAYER STATUS TO DEAD
             if (playerInstance != null)
             {
                 playerInstance.p_Alive = false;
             }
 
         }
-        if (col.gameObject.tag == "Terrain")
+    }
+    private void Patrol()
+    {
+        Vector2 dir = ((Vector2)path.vectorPath[currentWayPoint] - rb.position).normalized;
+        Vector2 force = speed * Time.deltaTime * dir;
+
+        rb.AddForce(force);
+        if (animator.gameObject.activeSelf)
+            animator.SetBool("Patrol", true);
+        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
+
+        if (distance < stoppingDistance)
         {
-            //isGrounded = true;
-            waypoints[0].transform.position = transform.position - new Vector3(patrolDistance + transform.localScale.x, 0, 0);
-            waypoints[1].transform.position = transform.position + new Vector3(patrolDistance + transform.localScale.x, 0, 0);
-            Debug.Log("Touched the floor");
+            currentWayPoint++;
         }
+        if (force.x >= 0.01f)
+            transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
+        else if (force.x <= -0.01f)
+            transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
+
+    }
+
+    // Slows big enemy movement down as it approaches the waypoint,
+    private void Slow()
+    {
+        float distanceFromDestination = Vector2.Distance(rb.position, waypoints[currentWP].transform.position);
+        if (distanceFromDestination < stoppingDistance)
+        {
+            if (speed > 0)
+            {
+                speed = distanceFromDestination / stoppingDistance * originalSpeed;
+            }
+        }
+        else
+        {
+            speed = originalSpeed;
+        }
+    }
+    private void EdgeDetection()
+    {
+        // Cast two raycasts downward to check for nearby edges
+        Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
+        Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
+
+        RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.down, raycastDistance, platformLayer);
+        RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.down, raycastDistance, platformLayer);
+
+        //Debug.Log(rb.velocity.x);
+
+        // Check if either of the raycasts hit a platform
+        if ((leftHit.collider == null && rb.velocity.x < 0) || (rightHit.collider == null && rb.velocity.x > 0))
+        {
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0;
+            isNearEdge = true;
+            CheckCurrentWP();
+            current = FSM.NEUTRAL;
+            Debug.Log("Big Enemy is near the edge!");
+        }
+        else
+        {
+            isNearEdge = false;
+        }
+    }
+    private void CheckCurrentWP()
+    {
+        // Change patrol points
+        if (currentWP == 0)
+            currentWP = 1;
+        else
+            currentWP = 0;
     }
 }

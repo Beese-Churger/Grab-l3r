@@ -25,7 +25,7 @@ public class TEMPSCRIPT : MonoBehaviour
         if (jump.action.triggered)
         {
            Debug.Log("Dashed");
-           m_Rigidbody.AddForce(transform.up * 20f, ForceMode2D.Impulse);
+           m_Rigidbody.AddForce(transform.up * 15f, ForceMode2D.Impulse);
         }
 
 
