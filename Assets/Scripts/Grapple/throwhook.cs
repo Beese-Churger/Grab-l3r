@@ -63,7 +63,7 @@ public class throwhook : MonoBehaviour {
 						toPull.anchor = hook.transform.localPosition;
 						toPull.connectedBody = hook.GetComponent<Rigidbody2D>();
 						hook.GetComponent<HingeJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
-						hook.GetComponent<DistanceJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
+						//hook.GetComponent<DistanceJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
 					}
 					ropeActive = true;
 				}

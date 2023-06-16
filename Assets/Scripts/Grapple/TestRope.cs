@@ -12,6 +12,8 @@ public class TestRope : MonoBehaviour
     public HingeJoint2D hj;
     public GameObject hook;
     public GameObject attachedTo;
+    public GameObject pivot;
+    public HingeJoint2D pivothj;
 
     private float inputDelay = 0.3f;
     private float lastInputTime;
@@ -34,6 +36,7 @@ public class TestRope : MonoBehaviour
     public SpriteRenderer crosshairSprite;
 
     Vector3 aimDirection;
+    Vector3 worldMousePosition;
     void Awake()
     {
         //rope = transform.parent.GetComponent<rope2>();
@@ -43,15 +46,19 @@ public class TestRope : MonoBehaviour
         hook.SetActive(false);
         hj.enabled = false;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
+        //pivot.SetActive(false);
     }
 
     void Update()
     {
         numLinks = rope.ropeSegments.Count;
-
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
+        
+        worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
         Vector3 facingDirection = worldMousePosition - transform.position;
         float aimAngle = Mathf.Atan2(facingDirection.y, facingDirection.x);
+
+       
+
         if (aimAngle < 0f)
         {
             aimAngle = Mathf.PI * 2 + aimAngle;
@@ -78,7 +85,7 @@ public class TestRope : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
 
         if (rope.ropeSegments.Count > 0)
-            hj.connectedBody = rope.ropeSegments[rope.ropeSegments.Count - 1].GetComponent<Rigidbody2D>();
+            pivothj.connectedBody = rope.ropeSegments[rope.ropeSegments.Count - 1].GetComponent<Rigidbody2D>();
 
         if (lastInputTime + inputDelay < Time.time)
         {
@@ -88,7 +95,7 @@ public class TestRope : MonoBehaviour
                 numLinks--;
                 if (rope.ropeSegments.Count > 0)
                 { 
-                    hj.connectedBody = rope.ropeSegments[rope.ropeSegments.Count - 1].GetComponent<Rigidbody2D>();
+                    pivothj.connectedBody = rope.ropeSegments[rope.ropeSegments.Count - 1].GetComponent<Rigidbody2D>();
                 }
                 lastInputTime = Time.time;
             }
@@ -128,12 +135,14 @@ public class TestRope : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             if (ropeAttached) return;
- 
+
+
             hook.SetActive(true);
             hj.enabled = true;
             RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxLinks, ropeLayerMask);
             if (hit.collider != null)
             {
+                //pivot.SetActive(true);
                 attachedTo = hit.transform.gameObject;
                 AudioManager.Instance.PlaySFX("hook_attach");
                 ropeAttached = true;
@@ -161,7 +170,10 @@ public class TestRope : MonoBehaviour
         {
             rope.resetRope();
             ropeAttached = false;
-            Destroy(attachedTo.GetComponent<HingeJoint>());
+            hj.enabled = false;
+            pivothj.connectedBody = rBody;
+            //pivot.SetActive(false);
+            Destroy(attachedTo.GetComponent<HingeJoint2D>());
         }
     }
     private void SetCrosshairPosition(float aimAngle)
