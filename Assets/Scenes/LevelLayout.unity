@@ -981,7 +981,7 @@ PrefabInstance:
       objectReference: {fileID: 381133398}
     - target: {fileID: 3238121682551177508, guid: 20ff8a8eaac155b438642c3e2951889a, type: 3}
       propertyPath: ropeMaxCastDistance
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3238121682551177520, guid: 20ff8a8eaac155b438642c3e2951889a, type: 3}
       propertyPath: m_Name
