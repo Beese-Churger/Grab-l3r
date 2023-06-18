@@ -103,7 +103,7 @@ public class RopeScript : MonoBehaviour {
 					//	return;
 
 					//ropeJoint.distance += Time.deltaTime * climbSpeed;
-					CreateNode(2);
+					CreateNode(1);
 
 					lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 					lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
