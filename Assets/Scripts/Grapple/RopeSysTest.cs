@@ -37,6 +37,10 @@ public class RopeSysTest : MonoBehaviour
     [SerializeField] private bool launchToPoint = true;
     [SerializeField] private float launchSpeed = 0.5f;
 
+    private Terrain.TerrainType terrainType;
+    private Terrain t;
+    private Terrain.TerrainType type;
+
     void Awake()
     {
         ropeJoint.enabled = false;
@@ -114,7 +118,6 @@ public class RopeSysTest : MonoBehaviour
         HandleRopeUnwrap();
     }
 
-
     // Handles input within the RopeSystem component
     private void HandleInput(Vector2 aimDirection)
     {
@@ -123,32 +126,52 @@ public class RopeSysTest : MonoBehaviour
             if (ropeAttached) return;
             ropeRenderer.enabled = true;
 
-
-
-
-           
             //m_springJoint2D.enabled = true;
-
             RaycastHit2D hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
+
             if (hit.collider != null)
             {
-                AudioManager.Instance.PlaySFX("hook_attach");
-                ropeAttached = true;
-                //ropeHingeAnchor.transform.parent = hit.transform;
-                if (!ropePositions.Contains(hit.point))
+                if (hit.transform.TryGetComponent<Terrain>(out var terrain))
                 {
-                  
+                    type = terrain.GetTerrainType();
+                    if(type != Terrain.TerrainType.concreate)
+                    {
+                        AudioManager.Instance.PlaySFX("hook_attach");
+                        ropeAttached = true;
+                        //ropeHingeAnchor.transform.parent = hit.transform;
+                        if (!ropePositions.Contains(hit.point))
+                        {
+                            //transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
+                            ropePositions.Add(hit.point);
+                            wrapPointsLookup.Add(hit.point, 0);
+                            //ropeJoint.distance = Vector2.Distance(playerPosition, hit.point);
+                            //ropeJoint.enabled = true;
+                            ropeHingeAnchorSprite.enabled = true;
+                            Grapple();
+                            attachedTo = hit.transform.gameObject;
 
-                    //transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
-                    ropePositions.Add(hit.point);
-                    wrapPointsLookup.Add(hit.point, 0);
-                    //ropeJoint.distance = Vector2.Distance(playerPosition, hit.point);
-                    //ropeJoint.enabled = true;
-                    ropeHingeAnchorSprite.enabled = true;
-                    Grapple();
-                    attachedTo = hit.transform.gameObject;
+                            //hit.collider.transform.SetParent(ropeHingeAnchor.transform);
+                        }
+                    }
+                }
+                else
+                {
+                    AudioManager.Instance.PlaySFX("hook_attach");
+                    ropeAttached = true;
+                    //ropeHingeAnchor.transform.parent = hit.transform;
+                    if (!ropePositions.Contains(hit.point))
+                    {
+                        //transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
+                        ropePositions.Add(hit.point);
+                        wrapPointsLookup.Add(hit.point, 0);
+                        //ropeJoint.distance = Vector2.Distance(playerPosition, hit.point);
+                        //ropeJoint.enabled = true;
+                        ropeHingeAnchorSprite.enabled = true;
+                        Grapple();
+                        attachedTo = hit.transform.gameObject;
 
-                    //hit.collider.transform.SetParent(ropeHingeAnchor.transform);
+                        //hit.collider.transform.SetParent(ropeHingeAnchor.transform);
+                    }
                 }
             }
             else

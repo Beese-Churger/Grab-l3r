@@ -6,21 +6,37 @@ using static Terrain;
 
 public class Obstacle : MonoBehaviour
 {
-    [SerializeField] public GameManager manager;
-    public bool isActive;
-
     public enum ObstacleType
     {
-        water,
         spikes,
-        electricity
+        electricity,
+        door
     }
     [SerializeField] ObstacleType obstacleType;
 
-    // activate levels obstacles
+    [SerializeField] public GameManager manager;
+    public Sprite newSprite;
+    public Vector2 endPos;
+    public bool isColliderOff;
+
+    private Vector2 startPos;
+    private SpriteRenderer spriteRender;
+    private Sprite mySprite;
+    private bool isActive;
+    private Collider2D myCollider;
+
+    // activate obstacles
     private void Awake()
     {
         isActive = true;
+    }
+
+    private void Start()
+    {
+        startPos = transform.position;
+        spriteRender = gameObject.GetComponent<SpriteRenderer>();
+        mySprite = spriteRender.sprite;
+        myCollider = gameObject.GetComponent<Collider2D>();
     }
 
     // check collision if object is active
@@ -30,6 +46,7 @@ public class Obstacle : MonoBehaviour
         {
             if (collision.transform.CompareTag("Player"))
             {
+                // Damage player
                 manager.TakeDamage();
                 Debug.Log("Obstacle collision");
             }
@@ -40,34 +57,61 @@ public class Obstacle : MonoBehaviour
     public void DisableObstacle()
     {
         isActive = false;
-        Debug.Log(isActive);
     }
 
+    // reactivate obstacle
     public void ActivateObstacle()
     {
         isActive = true;
-        Debug.Log(isActive);
+    }
+
+    public void OpenDoor()
+    {
+        myCollider.enabled = false;
+        Debug.Log("Collider.enabled" + myCollider.enabled);
+        spriteRender.color = Color.red;
+    }
+
+    public void CloseDoor()
+    {
+        myCollider.enabled = true;
+        Debug.Log("Collider.enabled" + myCollider.enabled);
+        spriteRender.color = Color.white;
     }
 
     private void Update()
     {
         if (!isActive)
         {
-            // add animation or other function to different types 
+            // TODO: add animation or other function to different types 
             // destroy obstacle?
             switch (obstacleType)
             {
-                case ObstacleType.water:
-                    break;
                 case ObstacleType.spikes:
+                    if (transform.position.y > endPos.y)
+                    {
+                        transform.Translate(0, -0.01f, 0);
+                    }
                     break;
                 case ObstacleType.electricity:
+                    spriteRender.sprite = newSprite;
                     break;
             }
         }
         else
         {
-
+                switch (obstacleType)
+                {
+                    case ObstacleType.spikes:
+                        if (transform.position.y < startPos.y)
+                        {
+                            transform.Translate(0, 0.01f, 0);
+                        }
+                        break;
+                    case ObstacleType.electricity:
+                        spriteRender.sprite = mySprite;
+                        break;
+                }
         }
     }
 }

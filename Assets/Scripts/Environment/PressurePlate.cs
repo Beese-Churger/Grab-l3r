@@ -1,13 +1,16 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class PressurePlate : MonoBehaviour
 {
-    [SerializeField] public Terrain terrain;
-    [SerializeField] public Obstacle obstacle;
-    private Vector2 startPos;
+    public Terrain terrain;
+    public Obstacle obstacle;
     public Vector2 endPos;
     public bool isObstacle;
+    public bool isDoor;
+
     private bool back = false;
+    private Vector2 startPos;
 
     // set start position as game objects position in editor
     private void Start()
@@ -15,10 +18,9 @@ public class PressurePlate : MonoBehaviour
         startPos = transform.position;
     }
 
+    // press plate if player stays on trigger
     private void OnTriggerStay2D(Collider2D collision)
     {
-        // if pressureplate is set to isObstacle, pressureplate disaples obtsacles functionality
-        // when pressureplate is pushed
         if (transform.position.y < collision.transform.position.y)
         {
             // if isObstacle is unchecked, pressureplate activates moving platform
@@ -28,24 +30,40 @@ public class PressurePlate : MonoBehaviour
                 back = false;
             }
 
+            // if pressureplate is set to isObstacle, pressureplate disaples obtsacles functionality
+            // when pressureplate is pushed. Other wise activates moving platform
             if (isObstacle)
             {
                 obstacle.DisableObstacle();
             }
-            else
+            else if(!isObstacle && !isDoor)
             {
                 terrain.ActivateMovingPlatform();
             }
         }
     }
-        
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isDoor)
+        {
+            obstacle.OpenDoor();
+        }
+    }
+
+    // set move plate back up when player exits trigger
     private void OnTriggerExit2D(Collider2D collision)
     {
         back = true;
+        if (isDoor)
+        {
+            obstacle.CloseDoor();
+        }
     }
 
     private void Update()
     {
+        // if player has exited the plate, plate comes back up
         if (back)
         {
             if (transform.position.y < startPos.y)
@@ -58,6 +76,7 @@ public class PressurePlate : MonoBehaviour
             }
         }
 
+        // reactivate obstacle when plate not pressed
         if(isObstacle && transform.position.y >= startPos.y)
         {
             obstacle.ActivateObstacle();
