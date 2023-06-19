@@ -97,15 +97,9 @@ public class throwhook : MonoBehaviour {
 			toPull1.anchor = GameObject.Find("Link1").transform.localPosition;
 			toPull1.connectedBody = GameObject.Find("Link1").GetComponent<Rigidbody2D>();
 
-
-		    
-			
 			pulling = true;
 			change = false;
 		}
-		if(pulling)
-        {
-			hook.GetComponent<LineRenderer>().SetPosition(1, attachedTo.transform.position);
-		}
+
 	}
 }

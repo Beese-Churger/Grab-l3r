@@ -7,7 +7,7 @@ public class RopeScript : MonoBehaviour {
 
 	public Vector2 destiny;
 
-	public float speed= 1;
+	public float speed= 3;
 
 
 	public float distance = 2;
@@ -190,8 +190,8 @@ public class RopeScript : MonoBehaviour {
 		lastNode = Nodes[Nodes.Count - 1];
 		lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 		lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
-		player.transform.position = position;
-		//player.GetComponent<Rigidbody2D>().AddForce(/*(lastNode.transform.position - player.transform.position).normalized*/transform.up * 5f, ForceMode2D.Force);
+		//player.transform.position = position;
+		player.GetComponent<Rigidbody2D>().AddForce(/*(lastNode.transform.position - player.transform.position).normalized*/transform.up * 5f, ForceMode2D.Force);
 		vertexCount--;
     }
 
