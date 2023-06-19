@@ -49,4 +49,9 @@ public class Terrain : MonoBehaviour
     {
         triggerPressurePlate = true;
     }
+
+    public TerrainType GetTerrainType()
+    {
+        return terrainType;
+    }
 }

@@ -705,7 +705,7 @@ MonoBehaviour:
   terrain: {fileID: 1928709457}
   obstacle: {fileID: 2132916545}
   endPos: {x: 36.22, y: -8.79}
-  isObstacle: 0
+  isObstacle: 1
   isDoor: 0
 --- !u!61 &593337843
 BoxCollider2D:
@@ -1280,7 +1280,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1268012549}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.1, y: -4.9, z: 0}
+  m_LocalPosition: {x: 8.34, y: -5.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1438,7 +1438,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272843109}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.77, y: 0, z: -10}
+  m_LocalPosition: {x: 16.06, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1696,7 +1696,7 @@ MonoBehaviour:
   terrain: {fileID: 1928709457}
   obstacle: {fileID: 2027605123}
   endPos: {x: 24.43, y: -8.79}
-  isObstacle: 0
+  isObstacle: 1
   isDoor: 0
 --- !u!61 &1436366358
 BoxCollider2D:

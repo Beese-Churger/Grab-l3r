@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a33817b573faac4e88d2cdda26e325a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainType: 0
+  terrainType: 1
   speed: 2
   endPos: {x: 0, y: 0}
   triggerPressurePlate: 0

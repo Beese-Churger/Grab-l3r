@@ -23,7 +23,7 @@ public class Obstacle : MonoBehaviour
     private SpriteRenderer spriteRender;
     private Sprite mySprite;
     private bool isActive;
-    private BoxCollider2D myCollider;
+    private Collider2D myCollider;
 
     // activate obstacles
     private void Awake()
@@ -36,7 +36,7 @@ public class Obstacle : MonoBehaviour
         startPos = transform.position;
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
         mySprite = spriteRender.sprite;
-        myCollider = gameObject.GetComponent<BoxCollider2D>();
+        myCollider = gameObject.GetComponent<Collider2D>();
     }
 
     // check collision if object is active
