@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 120000014128933588}
   - component: {fileID: 6317663561343164960}
   - component: {fileID: 2919778514612944972}
+  - component: {fileID: 5602044031410745023}
   m_Layer: 6
   m_Name: Hook
   m_TagString: Untagged
@@ -104,7 +105,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 10000
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -193,7 +194,7 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
+  - {x: 29.583532, y: -3.454819, z: 0}
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
@@ -276,9 +277,12 @@ MonoBehaviour:
   distance: 0.2
   nodePrefab: {fileID: 1000014215547198, guid: a613c3294c5089947b76641ce4f39ad4, type: 3}
   player: {fileID: 0}
+  playerScript: {fileID: 0}
   lastNode: {fileID: 0}
   lr: {fileID: 0}
   Nodes: []
+  done: 0
+  hooked: 0
 --- !u!232 &2919778514612944972
 DistanceJoint2D:
   m_ObjectHideFlags: 0
@@ -296,5 +300,20 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.1
+  m_Distance: 0.2
   m_MaxDistanceOnly: 1
+--- !u!114 &5602044031410745023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012688847204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e66bdfae336ec7143a5e6b627cbbb851, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MAXSPEED: 100
+  AirAccel: 10
+  GroundAccel: 3

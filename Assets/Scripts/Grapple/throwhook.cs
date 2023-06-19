@@ -18,8 +18,13 @@ public class throwhook : MonoBehaviour {
 
 	public GameObject attachedTo;
 
+	public RopeScript ropeScript;
+
 	GameObject curHook;
 
+	bool change = false;
+
+	public bool pulling = false;
 	// Use this for initialization
 	void Start () 
 	{
@@ -57,12 +62,12 @@ public class throwhook : MonoBehaviour {
 					//hook.transform.SetParent(attachedTo.transform);
 					curHook.GetComponent<RopeScript>().destiny = hit.point;
 
-					if (hit.transform.GetComponent<Rigidbody2D>() != null)
+					if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
 					{
-						HingeJoint2D toPull = attachedTo.AddComponent<HingeJoint2D>();
-						toPull.anchor = hook.transform.localPosition;
-						toPull.connectedBody = hook.GetComponent<Rigidbody2D>();
-						hook.GetComponent<HingeJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
+						//Debug.Log(hit.transform.gameObject.name);
+						change = true;
+						
+						//hook.GetComponent<HingeJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
 						//hook.GetComponent<DistanceJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
 					}
 					ropeActive = true;
@@ -76,11 +81,31 @@ public class throwhook : MonoBehaviour {
 				Destroy(curHook);
 
 				Destroy(attachedTo.GetComponent<HingeJoint2D>());
+				Destroy(attachedTo.GetComponent<DistanceJoint2D>());
 				ropeActive = false;
-
+				change = false;
+				pulling = false;
 			}
 		}
+		if(ropeActive && change && GameObject.Find("Link1"))
+        {
+			HingeJoint2D toPull = attachedTo.AddComponent<HingeJoint2D>();
+			toPull.anchor = GameObject.Find("Link1").transform.localPosition;
+			toPull.connectedBody = GameObject.Find("Link1").GetComponent<Rigidbody2D>();
+
+			DistanceJoint2D toPull1 = attachedTo.AddComponent<DistanceJoint2D>();
+			toPull1.anchor = GameObject.Find("Link1").transform.localPosition;
+			toPull1.connectedBody = GameObject.Find("Link1").GetComponent<Rigidbody2D>();
 
 
+		    
+			
+			pulling = true;
+			change = false;
+		}
+		if(pulling)
+        {
+			hook.GetComponent<LineRenderer>().SetPosition(1, attachedTo.transform.position);
+		}
 	}
 }

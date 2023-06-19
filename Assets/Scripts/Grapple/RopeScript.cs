@@ -15,6 +15,7 @@ public class RopeScript : MonoBehaviour {
 	public GameObject nodePrefab;
 
 	public GameObject player;
+	public throwhook playerScript;
 
 	public GameObject lastNode;
 
@@ -26,14 +27,15 @@ public class RopeScript : MonoBehaviour {
 	private float lastInputTime;
 	private float inputDelay = 0.05f;
 	private float verticalInput;
-	bool done = false;
-	bool hooked = false;
+	public bool done = false;
+	public bool hooked = false;
 	void Start () {
 	
 
 		lr = GetComponent<LineRenderer> ();
 
 		player = GameObject.FindGameObjectWithTag ("Player");
+		playerScript = player.GetComponent<throwhook>();
 
 		lastNode = transform.gameObject;
 
@@ -54,11 +56,10 @@ public class RopeScript : MonoBehaviour {
 
 		if ((Vector2)transform.position != destiny)
 		{
-			if (Vector2.Distance(player.transform.position, lastNode.transform.position) > distance) 
+			if (Vector2.Distance(player.transform.position, lastNode.transform.position) > distance)
 			{
-				CreateNode (1);
-			}
-			
+				CreateNode(1);
+			}		
 		} 
 
 
@@ -75,6 +76,7 @@ public class RopeScript : MonoBehaviour {
 
 			lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 			lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+			//gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 		}
 		else
 		{
@@ -82,6 +84,7 @@ public class RopeScript : MonoBehaviour {
 		}
 		if (hooked)
         {
+			//transform.position = Vector2.MoveTowards(transform.position, Nodes[1].transform.position, speed);
 			if (lastInputTime + inputDelay < Time.time)
 			{
 				if (verticalInput >= 1f && vertexCount > 0)
@@ -110,7 +113,17 @@ public class RopeScript : MonoBehaviour {
 
 					lastInputTime = Time.time;
 				}
+
+				if(playerScript.pulling && gameObject.GetComponent<HingeJoint2D>().connectedBody)
+                {
+					gameObject.GetComponent<HingeJoint2D>().connectedBody = null;
+					gameObject.GetComponent<DistanceJoint2D>().connectedBody = null;
+					gameObject.GetComponent<SpriteRenderer>().enabled = false;
+					gameObject.GetComponent<Collider2D>().enabled = false;
+
+				}
 			}
+			
 		}
 		RenderLine ();
 	}
@@ -121,10 +134,16 @@ public class RopeScript : MonoBehaviour {
 
         lr.SetVertexCount(vertexCount);
 	
-		int i;
-		for (i = 0; i < Nodes.Count; i++) {
+		int i = 0;
+		if(hooked && playerScript.pulling)
+			lr.SetPosition(i, playerScript.attachedTo.transform.position);
+		else
+			lr.SetPosition(i, Nodes[i].transform.position);
 
-			lr.SetPosition (i, Nodes [i].transform.position);
+		for (i = 1; i < Nodes.Count; i++) 
+		{
+
+			lr.SetPosition(i, Nodes[i].transform.position);
 
 		}
 
@@ -152,17 +171,21 @@ public class RopeScript : MonoBehaviour {
 		lastNode = go;
 
 		Nodes.Add(lastNode);
-
+		lastNode.name = "Link" + (Nodes.Count - 1);
 		vertexCount++;
 
 	}
 
 	public void RemoveNode()
     {
+		if (Nodes.Count <= 1)
+			return;
+
 		GameObject RemoveNode = Nodes[Nodes.Count - 1];
 		Vector2 position = RemoveNode.transform.position;
 		Nodes.RemoveAt(Nodes.Count - 1);
 		Destroy(RemoveNode);
+
 
 		lastNode = Nodes[Nodes.Count - 1];
 		lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
