@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 8491629283298615638}
   - component: {fileID: 3133324154965276133}
   - component: {fileID: 3246113075914379299}
-  - component: {fileID: 1619330798947256485}
+  - component: {fileID: 8631029622403852974}
   m_Layer: 0
   m_Name: SmallEnemy
   m_TagString: Enemy
@@ -158,7 +158,7 @@ Transform:
   m_GameObject: {fileID: 4876807040678775496}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.42, y: 7.59, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7703651270656136045}
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1cff705a9167054bb5c352d334bfb98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weight: 20
+  weight: 15
   stoppingDistance: 5
   originalSpeed: 1000
   chaseSpeed: 2000
@@ -297,10 +297,10 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!95 &3246113075914379299
 Animator:
   serializedVersion: 5
@@ -321,8 +321,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!61 &1619330798947256485
-BoxCollider2D:
+--- !u!58 &8631029622403852974
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -335,15 +335,5 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.49, y: 0.45}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.49, y: 0.45}
-  m_EdgeRadius: 0
+  m_Radius: 0.245
