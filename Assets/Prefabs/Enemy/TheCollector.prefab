@@ -1,5 +1,45 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &726286612625099592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3675414852709908759}
+  m_Layer: 0
+  m_Name: Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3675414852709908759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726286612625099592}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.27608377, y: 2.4730709, z: -10.070338}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8094008751714544119}
+  - {fileID: 2309337137843967733}
+  - {fileID: 291359719000433898}
+  - {fileID: 5318609981194637000}
+  - {fileID: 312195979733702320}
+  - {fileID: 9164624073893623531}
+  - {fileID: 2592061001072867471}
+  - {fileID: 5611025059370040130}
+  - {fileID: 5388096359453187273}
+  m_Father: {fileID: 6205321157901705175}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1379661914662059567
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +102,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6205321157901705175}
-  m_RootOrder: 12
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6880697408549591724
 MonoBehaviour:
@@ -170,7 +210,7 @@ GameObject:
   - component: {fileID: 7500169995856856002}
   - component: {fileID: 8521108035875102465}
   m_Layer: 0
-  m_Name: spriteart-boss-v1-forearm left
+  m_Name: LeftForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,11 +224,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3436478297031832500}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.94500005, y: 2.1699998, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -3.3445816, y: -1.5153551, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7500169995856856002
@@ -229,8 +269,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 10
   m_Sprite: {fileID: -5186224441187584083, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -259,8 +299,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 1385776439448930893}
   m_Bounds:
-    m_Center: {x: 0.0028371736, y: 0.0006608963, z: 0.06}
-    m_Extent: {x: 0.10598381, y: 0.33928362, z: 0}
+    m_Center: {x: 0.002837114, y: 0.0006609261, z: 0.06000042}
+    m_Extent: {x: 0.10598381, y: 0.33928365, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -371,7 +411,7 @@ GameObject:
   - component: {fileID: 2465735934726487470}
   - component: {fileID: 3361632223155268854}
   m_Layer: 0
-  m_Name: spriteart-boss-v1-torso
+  m_Name: Torso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -385,11 +425,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4440237051760180373}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.015000105, y: 3.0049999, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.3054183, y: 2.659645, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2465735934726487470
@@ -430,8 +470,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 2
   m_Sprite: {fileID: -1476606312522104975, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -461,7 +501,7 @@ MonoBehaviour:
   - {fileID: 7481286970446293064}
   - {fileID: 1375281722349915071}
   m_Bounds:
-    m_Center: {x: 0.017003655, y: -0.009165764, z: 0}
+    m_Center: {x: 0.017003596, y: -0.009165645, z: 0}
     m_Extent: {x: 0.75513935, y: 0.9745468, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -478,7 +518,7 @@ GameObject:
   - component: {fileID: 3500392440837660441}
   - component: {fileID: 4970341058187859199}
   m_Layer: 0
-  m_Name: spriteart-boss-v1-head
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -492,11 +532,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4578724706857584081}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00999999, y: 4.16, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.3304188, y: 8.434645, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3500392440837660441
@@ -537,8 +577,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 5
   m_Sprite: {fileID: 4737399311854616876, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -567,8 +607,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 6825578304316724003}
   m_Bounds:
-    m_Center: {x: 0.024199396, y: -0.007567823, z: 0}
-    m_Extent: {x: 0.49170402, y: 0.48787093, z: 0}
+    m_Center: {x: 0.024199396, y: -0.007567495, z: 0}
+    m_Extent: {x: 0.491704, y: 0.48787087, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -595,14 +635,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4664409555678724487}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7078357, w: 0.70637715}
-  m_LocalPosition: {x: -0.014237165, y: 2.12641, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7078357, w: 0.70637715}
+  m_LocalPosition: {x: 1.309233, y: -1.7333043, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7481286970446293064}
-  m_Father: {fileID: 6205321157901705175}
-  m_RootOrder: 9
+  m_Father: {fileID: 1708481140013125642}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.118}
 --- !u!1 &5104165400732043188
 GameObject:
@@ -614,8 +654,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6205321157901705175}
   - component: {fileID: 6850512415702544297}
+  - component: {fileID: 8150797689234064527}
   m_Layer: 0
-  m_Name: the-collector-sprite-fixed
+  m_Name: TheCollector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -630,19 +671,11 @@ Transform:
   m_GameObject: {fileID: 5104165400732043188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -2.51, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8094008751714544119}
-  - {fileID: 2309337137843967733}
-  - {fileID: 291359719000433898}
-  - {fileID: 5318609981194637000}
-  - {fileID: 312195979733702320}
-  - {fileID: 9164624073893623531}
-  - {fileID: 2592061001072867471}
-  - {fileID: 5611025059370040130}
-  - {fileID: 5388096359453187273}
-  - {fileID: 1375281722349915071}
+  - {fileID: 3675414852709908759}
+  - {fileID: 1708481140013125642}
   - {fileID: 4924446606582365725}
   - {fileID: 6669492943411328841}
   - {fileID: 5411487715425718989}
@@ -673,6 +706,22 @@ MonoBehaviour:
     showGizmo: 1
   - color: {r: 0, g: 1, b: 0, a: 1}
     showGizmo: 1
+--- !u!114 &8150797689234064527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104165400732043188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54624820f05ac35478e1c08c2c1237ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyDrop: {fileID: 0}
+  horizontalPlatform: {fileID: 0}
+  verticalPlatform: {fileID: 0}
+  chargeTimer: 3
 --- !u!1 &5110460308419336912
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,7 +734,7 @@ GameObject:
   - component: {fileID: 8463079999931091536}
   - component: {fileID: 8680546274813517019}
   m_Layer: 0
-  m_Name: texture-body
+  m_Name: BodyTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -699,11 +748,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5110460308419336912}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.025000095, y: 2.84, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.2554183, y: 1.8346453, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8463079999931091536
@@ -744,8 +793,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 3
   m_Sprite: {fileID: -2575633186073610244, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -774,8 +823,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 7481286970446293064}
   m_Bounds:
-    m_Center: {x: 0.017665625, y: 0.2776757, z: 0}
-    m_Extent: {x: 0.7656949, y: 0.5034677, z: 0}
+    m_Center: {x: 0.017665565, y: 0.2776758, z: 0}
+    m_Extent: {x: 0.76569486, y: 0.5034676, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -791,7 +840,7 @@ GameObject:
   - component: {fileID: 9066136810853815054}
   - component: {fileID: 846202915506111092}
   m_Layer: 0
-  m_Name: spriteart-boss-v1-hand right
+  m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -805,11 +854,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5312831870316393545}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.0449998, y: 1.435, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 6.605419, y: -5.1903543, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &9066136810853815054
@@ -850,8 +899,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 8
   m_Sprite: {fileID: -7422666144272090528, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -880,8 +929,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 2806751953192247310}
   m_Bounds:
-    m_Center: {x: 0.058102727, y: -0.04854554, z: 0}
-    m_Extent: {x: 0.3700102, y: 0.4919278, z: 0}
+    m_Center: {x: 0.05810249, y: -0.04854533, z: 0}
+    m_Extent: {x: 0.37001017, y: 0.49192777, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -897,7 +946,7 @@ GameObject:
   - component: {fileID: 5418841831492094577}
   - component: {fileID: 5890822800369012601}
   m_Layer: 0
-  m_Name: spriteart-boss-v1-hand left
+  m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -911,11 +960,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5493707869303688257}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.11, y: 1.435, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -4.169582, y: -5.1903543, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5418841831492094577
@@ -956,8 +1005,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 7
   m_Sprite: {fileID: -8371057921283125418, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -986,8 +1035,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 166987144833780012}
   m_Bounds:
-    m_Center: {x: -0.025387049, y: 0.0031786263, z: 0.06}
-    m_Extent: {x: 0.36865667, y: 0.49365848, z: 0}
+    m_Center: {x: -0.02538693, y: 0.0031788647, z: 0.06000042}
+    m_Extent: {x: 0.36865664, y: 0.49365842, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1003,7 +1052,7 @@ GameObject:
   - component: {fileID: 1105900905575118008}
   - component: {fileID: 8998896620996644047}
   m_Layer: 0
-  m_Name: spriteart-boss-v1-arm left
+  m_Name: LeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1017,11 +1066,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6263351670176079947}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.845, y: 2.995, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -2.8445816, y: 2.6096451, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1105900905575118008
@@ -1062,8 +1111,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 12
   m_Sprite: {fileID: -1915283827913568008, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1092,8 +1141,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 7763548956371445610}
   m_Bounds:
-    m_Center: {x: 0.012455389, y: -0.0008678436, z: 0.03}
-    m_Extent: {x: 0.080989055, y: 0.58424276, z: 0}
+    m_Center: {x: 0.012455329, y: -0.0008676648, z: 0.029999733}
+    m_Extent: {x: 0.08098904, y: 0.58424264, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1109,7 +1158,7 @@ GameObject:
   - component: {fileID: 1593655432650292032}
   - component: {fileID: 8945403496004289801}
   m_Layer: 0
-  m_Name: spriteart-boss-v1-forearm right
+  m_Name: RightForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1123,11 +1172,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6806426835383022060}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.845, y: 2.1699998, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 5.605419, y: -1.5153551, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1593655432650292032
@@ -1168,8 +1217,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 9
   m_Sprite: {fileID: -4463863734955675172, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1198,8 +1247,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 668405670830850536}
   m_Bounds:
-    m_Center: {x: 0.038119696, y: -0.05333522, z: 0}
-    m_Extent: {x: 0.10946158, y: 0.3386442, z: 0}
+    m_Center: {x: 0.0381198, y: -0.05333498, z: 0}
+    m_Extent: {x: 0.10946159, y: 0.3386442, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1215,7 +1264,7 @@ GameObject:
   - component: {fileID: 315553282742071874}
   - component: {fileID: 6131190063457788458}
   m_Layer: 0
-  m_Name: spriteart-boss-v1-arm right
+  m_Name: RightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1229,11 +1278,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7231127463374745387}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.7449999, y: 2.995, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 5.105418, y: 2.6096451, z: 10.070338}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6205321157901705175}
+  m_Father: {fileID: 3675414852709908759}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &315553282742071874
@@ -1274,8 +1323,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1064585923
+  m_SortingLayer: -1
   m_SortingOrder: 11
   m_Sprite: {fileID: -8445995038484680295, guid: 740a3e524b8916f43b7172c8f3b6c82b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1304,8 +1353,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 5669482634604143989}
   m_Bounds:
-    m_Center: {x: 0.018204868, y: -0.05819738, z: 0}
-    m_Extent: {x: 0.08710624, y: 0.5836607, z: 0}
+    m_Center: {x: 0.018204734, y: -0.05819702, z: 0}
+    m_Extent: {x: 0.087106235, y: 0.5836607, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1339,7 +1388,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6205321157901705175}
-  m_RootOrder: 11
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8466490970888983000
 MonoBehaviour:
@@ -1469,7 +1518,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6205321157901705175}
-  m_RootOrder: 10
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &210672647224276953
 MonoBehaviour:
@@ -1503,3 +1552,35 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
   m_Flip: 0
+--- !u!1 &8729787594385218642
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1708481140013125642}
+  m_Layer: 0
+  m_Name: Rig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1708481140013125642
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729787594385218642}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.27608377, y: 2.4730709, z: -10.070338}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1375281722349915071}
+  m_Father: {fileID: 6205321157901705175}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
