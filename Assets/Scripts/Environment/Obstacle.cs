@@ -17,7 +17,6 @@ public class Obstacle : MonoBehaviour
     [SerializeField] public GameManager manager;
     public Sprite newSprite;
     public Vector2 endPos;
-    public bool isColliderOff;
 
     private Vector2 startPos;
     private SpriteRenderer spriteRender;
@@ -87,12 +86,6 @@ public class Obstacle : MonoBehaviour
             // destroy obstacle?
             switch (obstacleType)
             {
-                case ObstacleType.spikes:
-                    if (transform.position.y > endPos.y)
-                    {
-                        transform.Translate(0, -0.01f, 0);
-                    }
-                    break;
                 case ObstacleType.electricity:
                     spriteRender.sprite = newSprite;
                     break;
@@ -102,12 +95,6 @@ public class Obstacle : MonoBehaviour
         {
                 switch (obstacleType)
                 {
-                    case ObstacleType.spikes:
-                        if (transform.position.y < startPos.y)
-                        {
-                            transform.Translate(0, 0.01f, 0);
-                        }
-                        break;
                     case ObstacleType.electricity:
                         spriteRender.sprite = mySprite;
                         break;

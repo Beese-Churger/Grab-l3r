@@ -36,10 +36,6 @@ public class PressurePlate : MonoBehaviour
             {
                 obstacle.DisableObstacle();
             }
-            else if(!isObstacle && !isDoor)
-            {
-                terrain.ActivateMovingPlatform();
-            }
         }
     }
 
@@ -48,6 +44,10 @@ public class PressurePlate : MonoBehaviour
         if (isDoor)
         {
             obstacle.OpenDoor();
+        }
+        else if (!isObstacle && !isDoor)
+        {
+            terrain.ActivateMovingPlatform();
         }
     }
 
@@ -58,6 +58,10 @@ public class PressurePlate : MonoBehaviour
         if (isDoor)
         {
             obstacle.CloseDoor();
+        }
+        else if (!isObstacle && !isDoor)
+        {
+            terrain.DeactivateMovingPlatform();
         }
     }
 

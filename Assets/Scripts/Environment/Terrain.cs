@@ -14,15 +14,18 @@ public class Terrain : MonoBehaviour
     public Vector2 endPos;
     public bool triggerPressurePlate = false;
     public GameObject player;
+    public Sprite newSprite;
 
+    private Sprite mySprite;
     private Vector2 startPos;
-    private RopeSysTest ropeScript;
+    private SpriteRenderer spriteRender;
 
     // Find player from scene and set startposotion for moving platform
     void Start()
     {
         startPos = transform.position;
-        ropeScript = player.GetComponent<RopeSysTest>();
+        spriteRender = gameObject.GetComponent<SpriteRenderer>();
+        mySprite = spriteRender.sprite;
     }
 
     void Update()
@@ -48,6 +51,15 @@ public class Terrain : MonoBehaviour
     public void ActivateMovingPlatform()
     {
         triggerPressurePlate = true;
+        spriteRender.color = Color.cyan;
+        spriteRender.sprite = newSprite;
+    }
+
+    public void DeactivateMovingPlatform()
+    {
+        triggerPressurePlate = false;
+        spriteRender.color = Color.white;
+        spriteRender.sprite = mySprite;
     }
 
     public TerrainType GetTerrainType()
