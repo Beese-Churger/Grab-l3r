@@ -5,7 +5,7 @@ public class SmallEnemy : EnemyBaseClass
 {
     enum FSM
     {
-        NEUTRAL,
+        IDLE,
         PATROL,
         AGGRESSIVE,
         DEAD,
@@ -98,34 +98,25 @@ public class SmallEnemy : EnemyBaseClass
         {
             switch (current)
             {
-                case FSM.NEUTRAL: // For NEUTRAL State, The enemy temporarily stops moving before it starts moving again
+                case FSM.IDLE: // For IDLE State, The enemy temporarily stops moving before it starts moving again
                     if (animator.gameObject.activeSelf)
                         animator.SetBool("Patrol", false);
                     Stop();
                     break;
                 case FSM.PATROL:
-                    //if (path == null)
-                    //    return;
-
-                    // For PATROL State, The enemy would be patrolling around it's own platform to find the player
-                    //Debug.Log("In Patrol State");
-
-                    // Check if enemy has reached it's final destination
-                    //if (currentWayPoint >= path.vectorPath.Count)
                     if (Math.Abs(waypoints[currentWP].transform.position.x - rb.position.x) <= 1f)
                     {
                         // Change patrol points
-                        current = FSM.NEUTRAL;
+                        current = FSM.IDLE;
                         CheckCurrentWP();
                         return;
                     }
 
-                    
-
                     if (!EdgeDetection() && !WallDetection())
                     {
                         Patrol();
-                       //Slow();
+                        if (speed == originalSpeed)
+                            Slow();
                     }
 
                     break;
@@ -139,29 +130,14 @@ public class SmallEnemy : EnemyBaseClass
                     if (currentWayPoint >= path.vectorPath.Count)
                     {
                         speed = originalSpeed;
-                        current = FSM.NEUTRAL;
+                        current = FSM.IDLE;
                         Debug.Log("CWP:" + currentWayPoint + "pathcount:" + path.vectorPath.Count);
 
                         return;
                     }
-                    // Debug.Log("Triggered!!!");
                     // If enemy touches the player, the player will instantly die
                     Follow();
-                    Vector2 dir = ((Vector2)playerPrefab.transform.position - rb.position).normalized;
-                    Vector2 force = speed * Time.deltaTime * dir;
-
-                    rb.AddForce(force);
-
-                    float distance = Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
-
-                    if (distance < playerPrefab.transform.localScale.x)
-                    {
-                        currentWayPoint++;
-                    }
-                    if (force.x >= 0.01f)
-                        transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
-                    else if (force.x <= -0.01f)
-                        transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
+                    Following();
                     break;
                 case FSM.DEAD:
                     break;
@@ -214,12 +190,30 @@ public class SmallEnemy : EnemyBaseClass
         detected = true;
         speed = chaseSpeed;
     }
+    private void Following()
+    {
+        Vector2 dir = ((Vector2)playerPrefab.transform.position - rb.position).normalized;
+        Vector2 force = speed * Time.deltaTime * dir;
+
+        rb.AddForce(force);
+
+        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
+
+        if (distance < playerPrefab.transform.localScale.x)
+        {
+            currentWayPoint++;
+        }
+        if (force.x >= 0.01f)
+            transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
+        else if (force.x <= -0.01f)
+            transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
+    }
     public void SetState(int stateNumber)
     {
         switch(stateNumber)
         {
-            case (int)FSM.NEUTRAL:
-            current = FSM.NEUTRAL;
+            case (int)FSM.IDLE:
+            current = FSM.IDLE;
             break;
             case (int)FSM.PATROL:
             current = FSM.PATROL;
@@ -243,13 +237,6 @@ public class SmallEnemy : EnemyBaseClass
     }
     private void Patrol()
     {
-        //Vector2 dir = ((Vector2)path.vectorPath[currentWayPoint] - rb.position).normalized;
-        //float distance = Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
-
-        //if (distance < stoppingDistance)
-        //{
-        //    currentWayPoint++;
-        //}
         Vector2 dir = ((Vector2)waypoints[currentWP].transform.position - rb.position).normalized;
         dir.y = 0;
         Vector2 force = speed * Time.deltaTime * dir;
@@ -267,14 +254,17 @@ public class SmallEnemy : EnemyBaseClass
     private void Slow()
     {
         float distanceFromDestination = Vector2.Distance(rb.position, waypoints[currentWP].transform.position);
-        if (distanceFromDestination < stoppingDistance)
-        {           
-            speed = distanceFromDestination / stoppingDistance * originalSpeed;            
-        }
-        else
         {
-            speed = originalSpeed;
+            if (distanceFromDestination < stoppingDistance)
+            {
+                speed *= 0.7f;
+            }
+            else
+            {
+                speed = originalSpeed;
+            }
         }
+
     }
     private bool EdgeDetection()
     {
@@ -295,7 +285,7 @@ public class SmallEnemy : EnemyBaseClass
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0;
             CheckCurrentWP();
-            current = FSM.NEUTRAL;
+            current = FSM.IDLE;
             Debug.Log("Small Enemy is near the edge!");
             return true;
         }
@@ -315,7 +305,7 @@ public class SmallEnemy : EnemyBaseClass
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0;
             CheckCurrentWP();
-            current = FSM.NEUTRAL;
+            current = FSM.IDLE;
             Debug.Log("Small Enemy is near the wall!");
             return true;
         }

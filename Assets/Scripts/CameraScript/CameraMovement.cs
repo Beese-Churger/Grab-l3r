@@ -14,6 +14,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private InputActionReference pointer;
 
+    private bool boss = true;
+
 
     // Start is called before the first frame update
     void Start()
@@ -33,19 +35,28 @@ public class CameraMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (camera1.enabled)
+        if (!boss)
         {
-            // Converted from screen space to world space
-            mousePosition = Camera.main.ScreenToWorldPoint(pointer.action.ReadValue<Vector2>());
+            if (camera1.enabled)
+            {
+                // Converted from screen space to world space
+                mousePosition = Camera.main.ScreenToWorldPoint(pointer.action.ReadValue<Vector2>());
 
-            // convert vector3 to vector2
-            playerPosition = player.transform.position;
+                // convert vector3 to vector2
+                playerPosition = player.transform.position;
 
-            // The Position Of The Invisible Target
-            cameraPosition = playerPosition + (mousePosition - playerPosition) * 0.2f;
-            cameraPosition.z = -10.0f;
+                // The Position Of The Invisible Target
+                cameraPosition = playerPosition + (mousePosition - playerPosition) * 0.2f;
+                cameraPosition.z = -10.0f;
 
-            transform.position = cameraPosition;
+                transform.position = cameraPosition;
+            }
         }
+        else
+        {
+            camera1.orthographicSize = 12f;
+            transform.position = new Vector3(-3f, 0f, -10f);
+        }
+       
     }
 }
