@@ -6,7 +6,7 @@ public class SimpleController : MonoBehaviour
 {
     private Rigidbody2D rBody;
     public float MAXSPEED = 100f;
-    public float AirAccel = 10f;
+    public float AirAccel = 3f;
     public float GroundAccel = 3f;
     private float jumpInput;
     private float horizontalInput;

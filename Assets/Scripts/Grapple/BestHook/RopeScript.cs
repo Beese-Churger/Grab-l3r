@@ -29,6 +29,9 @@ public class RopeScript : MonoBehaviour {
 	private float verticalInput;
 	public bool done = false;
 	public bool hooked = false;
+
+	public int climbspeed = 500;
+	private float distancePlayer = 0f;
 	void Start () {
 	
 
@@ -74,7 +77,7 @@ public class RopeScript : MonoBehaviour {
 			}
 
 
-			lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+			//lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 			lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 			//gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 		}
@@ -85,17 +88,27 @@ public class RopeScript : MonoBehaviour {
 		if (hooked)
         {
 			//transform.position = Vector2.MoveTowards(transform.position, Nodes[1].transform.position, speed);
-			if (lastInputTime + inputDelay < Time.time)
+			if (verticalInput >= 1f && vertexCount > 0)
 			{
-				if (verticalInput >= 1f && vertexCount > 0)
-				{
-					//ropeJoint.distance -= Time.deltaTime * climbSpeed;
+				//player.GetComponent<Rigidbody2D>().AddForce((Nodes[Nodes.Count - 2].transform.position - player.transform.position).normalized * 50f, ForceMode2D.Force);
+				if (lastNode.GetComponent<DistanceJoint2D>().distance > 0.005f)
+                {
+					lastNode.GetComponent<DistanceJoint2D>().distance -= Time.deltaTime * climbspeed;
+					Nodes[Nodes.Count - 2].GetComponent<DistanceJoint2D>().distance = 0.2f;
+					//player.transform.position = Vector2.MoveTowards(player.transform.position, (player.transform.position - lastNode.transform.position).normalized * distance + lastNode.transform.position, climbspeed);
+				}
+
+				else
 					RemoveNode();
 
 
-					lastInputTime = Time.time;
-				}
-				else if (verticalInput < 0f && vertexCount < 50)
+				//lastInputTime = Time.time;
+			}
+
+			if (lastInputTime + inputDelay < Time.time)
+			{
+
+				if (verticalInput < 0f && vertexCount < 50)
 				{
 					// prevent player from phasing into the ground
 					// if (PlayerController.Instance.groundCheck)
@@ -108,15 +121,15 @@ public class RopeScript : MonoBehaviour {
 					//ropeJoint.distance += Time.deltaTime * climbSpeed;
 					CreateNode(1);
 
-					lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+					//lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 					lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 
 					lastInputTime = Time.time;
 				}
 
-				if(playerScript.pulling && gameObject.GetComponent<HingeJoint2D>().connectedBody)
+				if(playerScript.pulling && gameObject.GetComponent<DistanceJoint2D>().connectedBody)
                 {
-					gameObject.GetComponent<HingeJoint2D>().connectedBody = null;
+					//gameObject.GetComponent<HingeJoint2D>().connectedBody = null;
 					gameObject.GetComponent<DistanceJoint2D>().connectedBody = null;
 					gameObject.GetComponent<SpriteRenderer>().enabled = false;
 					gameObject.GetComponent<Collider2D>().enabled = false;
@@ -125,11 +138,29 @@ public class RopeScript : MonoBehaviour {
 			}
 			
 		}
+		if(distancePlayer != 0f)
+        {
+
+			float prevDistance = distancePlayer;
+			Debug.Log("prev: " + prevDistance);
+			Debug.Log("curr: " + distancePlayer);
+			if(distancePlayer > prevDistance)
+            {
+				TensionNode();
+				Debug.Log("hit");
+			}
+		}
+
+
 		RenderLine ();
+
 	}
 
-
-	private void RenderLine()
+    private void LateUpdate()
+    {
+		distancePlayer = Vector2.Distance(playerScript.attachedTo.transform.position, player.transform.position);
+	}
+    private void RenderLine()
 	{
 
         lr.SetVertexCount(vertexCount);
@@ -156,7 +187,7 @@ public class RopeScript : MonoBehaviour {
 	{
 
 		Vector2 pos2Create = player.transform.position - lastNode.transform.position;
-		pos2Create.Normalize ();
+		pos2Create.Normalize();
 		pos2Create *= distance * modifier;
 		pos2Create += (Vector2)lastNode.transform.position;
 
@@ -165,11 +196,15 @@ public class RopeScript : MonoBehaviour {
 
 		go.transform.SetParent (transform);
 
-		lastNode.GetComponent<HingeJoint2D> ().connectedBody = go.GetComponent<Rigidbody2D> ();
+		//lastNode.GetComponent<HingeJoint2D> ().connectedBody = go.GetComponent<Rigidbody2D> ();
 		lastNode.GetComponent<DistanceJoint2D>().connectedBody = go.GetComponent<Rigidbody2D>();
 
 		lastNode = go;
 
+		// so rigidbodies dont lag behind
+		lastNode.GetComponent<Rigidbody2D>().AddForce(player.GetComponent<Rigidbody2D>().velocity * 0.05f * (Nodes.Count/ 1 + Nodes.Count), ForceMode2D.Force);
+
+		
 		Nodes.Add(lastNode);
 		lastNode.name = "Link" + (Nodes.Count - 1);
 		vertexCount++;
@@ -182,17 +217,50 @@ public class RopeScript : MonoBehaviour {
 			return;
 
 		GameObject RemoveNode = Nodes[Nodes.Count - 1];
-		Vector2 position = RemoveNode.transform.position;
+		//Vector2 position = RemoveNode.transform.position;
 		Nodes.RemoveAt(Nodes.Count - 1);
 		Destroy(RemoveNode);
 
 
 		lastNode = Nodes[Nodes.Count - 1];
-		lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+		//lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 		lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 		//player.transform.position = position;
-		player.GetComponent<Rigidbody2D>().AddForce(/*(lastNode.transform.position - player.transform.position).normalized*/transform.up * 5f, ForceMode2D.Force);
+
 		vertexCount--;
     }
 
+
+	public void TensionNode()
+    {
+		//get distance of player and how many nodes there are
+		//if distance of player is shoerther than the amount of nodes, retract the rope
+		//float distancePlayer = Vector2.Distance(playerScript.attachedTo.transform.position, player.transform.position);
+		int index = 0;
+		bool todel = false;
+		for (int i = 0; i < Nodes.Count; ++i)
+        {
+			float nodeDistance = Vector2.Distance(player.transform.position, Nodes[i].transform.position);
+			if (nodeDistance < lastNode.GetComponent<DistanceJoint2D>().distance)
+            {
+				lastNode = Nodes[i];
+				lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+				index = i;
+				todel = true;
+			}
+        }
+		if(todel)
+        {
+			for (int i = index + 1; i < Nodes.Count; ++i)
+			{
+				GameObject RemoveNode = Nodes[i];
+				Nodes.RemoveAt(i);
+				Destroy(RemoveNode);
+
+			}
+		}
+
+
+
+    }
 }
