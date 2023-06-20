@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     public static Player Instance;
 
     public static Vector2 checkpointPos = new Vector2(-2,0);
-    public bool isGrabbing = false;
     public float speed = 1f;
 
     private Rigidbody2D rb;
@@ -63,7 +62,6 @@ public class Player : MonoBehaviour
         if (collision.transform.tag == "Terrain")
         {
             // TODO: check terrain surface type
-            isGrabbing = true;
             Debug.Log("Collision with terrain");
         }
     }
