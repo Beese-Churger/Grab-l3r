@@ -28,16 +28,23 @@ public class Boss : MonoBehaviour
 
     // Boss Level variables
     [SerializeField] GameObject bodyDrop;
+    [SerializeField] GameObject bodyDropHolder;
+
     [SerializeField] GameObject horizontalPlatform;
     [SerializeField] GameObject verticalPlatform;
     private int phase = 0;
     private int prevPhaseNumber = 0;
     private int usableAbilities = 1;
     [SerializeField] private float chargeTimer = 3f;
+    [SerializeField] private LayerMask platformLayer;
+    private float m_Scale = 0.35f;
+    private float raycastDistance = 20f;
     private float timer;
     private bool abilityUpdated = false;
     private GameObject playerGO;
 
+    // temporary variable
+    bool pTriggered = false;
 
     void Start()
     {
@@ -48,6 +55,12 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Pressure Plate triggered
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            PhaseUpdate();
+            pTriggered = false;
+        }
         // FSM UPDATE
         switch (current)
         {
@@ -76,9 +89,13 @@ public class Boss : MonoBehaviour
     }
     private void PhaseUpdate()
     {
-        // TO DO: If pressure plate is triggered , the boss will move up to the next phase 
-        phase++;
-        usableAbilities++;
+        if (phase == prevPhaseNumber)
+        {
+            // TO DO: If pressure plate is triggered , the boss will move up to the next phase 
+            phase++;
+            usableAbilities++;
+            SpawnBody();
+        }
     }
     private void AbilityUpdate()
     {
@@ -94,6 +111,7 @@ public class Boss : MonoBehaviour
          */
         if (phase != 0)
         {
+            // Generates a random number from 1 to the number of abilities the boss unlocked
             ATTACK randomNo = (ATTACK)Random.Range(1, usableAbilities);
             currentAttack = randomNo;
         }
@@ -131,25 +149,44 @@ public class Boss : MonoBehaviour
                 break;
             case ATTACK.CRUSH:
                 // Logic for the crush attack
+                
                 break;
         }
     }
     private void SpawnBody()
     {
         /* Spawns a body every time the boss enters a new phase
-           Check if there's a change in the phase number*/
+           Check if there's a change in the phase number
+        
+         -------------DONE*/
         if (phase != prevPhaseNumber)
         {
             prevPhaseNumber = phase;
 
+            bool check = false;
+            float minX = transform.position.x - horizontalPlatform.transform.localScale.x * m_Scale;
+            float maxX = transform.position.x + horizontalPlatform.transform.localScale.x * m_Scale;
+            float maxY = 0 + verticalPlatform.transform.localScale.x * m_Scale + 2.0f;
             // Code to spawn the bodies
-            for (int i = 0; i <= phase; i++)
+            for (int i = 0; i < phase; ++i)
             {
-                float minX = transform.position.x - horizontalPlatform.transform.localScale.x + 5.0f;
-                float minY = transform.position.y - verticalPlatform.transform.localScale.y;
-                float maxX = transform.position.x + horizontalPlatform.transform.localScale.x;
-                float maxY = transform.position.y + verticalPlatform.transform.localScale.y;
-                Instantiate(bodyDrop);
+                while (!check)
+                {
+                    float x = Random.Range(minX, maxX);
+                    Vector3 leftRayOrigin = new Vector3(x, maxY, 0) + Vector3.left * raycastDistance;
+                    Vector3 rightRayOrigin = new Vector3(x, maxY, 0) + Vector3.right * raycastDistance;
+
+                    RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
+                    RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
+                    if (leftHit.collider == null || rightHit.collider == null)
+                    {
+                        Instantiate(bodyDrop, new Vector3(x, maxY, 0), Quaternion.identity, bodyDropHolder.transform);
+                        check = true;
+                    }
+                }
+                check = false;
+                //Debug.Log(minX + "," + maxX);
+                //Debug.Log(maxY);
             }
 
         }
@@ -167,4 +204,5 @@ public class Boss : MonoBehaviour
         else
             return true;
     }
+
 }

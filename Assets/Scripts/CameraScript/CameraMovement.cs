@@ -13,8 +13,8 @@ public class CameraMovement : MonoBehaviour
     //TEMP VARIABLE
     [SerializeField] private GameObject player;
     [SerializeField] private InputActionReference pointer;
+    [SerializeField] private bool boss = false;
 
-    private bool boss = false;
 
 
     // Start is called before the first frame update
@@ -29,6 +29,9 @@ public class CameraMovement : MonoBehaviour
 
         // Initialize Player Position
         playerPosition = player.transform.position;
+
+        boss = GameManager.GetInstance().GetGameState() == StateType.boss ? true : false;
+        Debug.Log(GameManager.GetInstance().GetGameState());
 
     }
 
@@ -55,7 +58,7 @@ public class CameraMovement : MonoBehaviour
         else
         {
             camera1.orthographicSize = 12f;
-            transform.position = new Vector3(-3f, 0f, -10f);
+            transform.position = new Vector3(0f, 0f, -10f);
         }
        
     }
