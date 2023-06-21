@@ -42,10 +42,6 @@ public class Options : MonoBehaviour
     [SerializeField] private TMP_Dropdown fullscreenDropdown;
 
 
-    // For the reset button
-    [SerializeField] private string sceneName;
-
-
 
 
 
@@ -180,7 +176,7 @@ public class Options : MonoBehaviour
     }
     public void TriggerReset()
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);        
+        GameManager.instance.SetGameState(StateType.respawn);
     }
     public void ResetAllBindings()
     {

@@ -718,10 +718,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54624820f05ac35478e1c08c2c1237ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyDrop: {fileID: 0}
+  bodyDrop: {fileID: 5667840588862006481, guid: 25a57e34a00f01142a1b27af354289b6, type: 3}
+  bodyDropHolder: {fileID: 0}
   horizontalPlatform: {fileID: 0}
   verticalPlatform: {fileID: 0}
   chargeTimer: 3
+  platformLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &5110460308419336912
 GameObject:
   m_ObjectHideFlags: 0
