@@ -14,7 +14,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private InputActionReference pointer;
 
-    private bool boss = true;
+    private bool boss = false;
 
 
     // Start is called before the first frame update
