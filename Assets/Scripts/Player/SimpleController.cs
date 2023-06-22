@@ -10,6 +10,7 @@ public class SimpleController : MonoBehaviour
     public float GroundAccel = 3f;
     private float jumpInput;
     private float horizontalInput;
+    public bool groundCheck;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,9 +21,13 @@ public class SimpleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
+        groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
 
         horizontalInput = Input.GetAxis("Horizontal");
-        float Accel = AirAccel;
+
+        float Accel = groundCheck ? AirAccel : GroundAccel;
+
 
         if (horizontalInput > 0f)
         {
@@ -35,15 +40,13 @@ public class SimpleController : MonoBehaviour
             //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
             rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
         }
+        
+       
 
 
-        if (Mathf.Abs(rBody.velocity.x) > MAXSPEED || Mathf.Abs(rBody.velocity.y) > MAXSPEED)
-        {
-            // clamp velocity:
-            Vector3 newVelocity = rBody.velocity.normalized;
-            newVelocity *= MAXSPEED;
-            rBody.velocity = newVelocity;
-        }
+        // clamp the velocity to something sane
+        if (rBody.velocity.magnitude > 100)
+            rBody.velocity = rBody.velocity.normalized * 100;
     }
 
     private float SaturatedAdd(float Min, float Max, float Current, float Modifier)

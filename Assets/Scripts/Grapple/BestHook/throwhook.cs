@@ -68,7 +68,7 @@ public class throwhook : MonoBehaviour {
 						change = true;
 						
 						//hook.GetComponent<HingeJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
-						//hook.GetComponent<DistanceJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
+						//hook.GetComponent<SpringJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
 					}
 					ropeActive = true;
 				}
@@ -81,7 +81,7 @@ public class throwhook : MonoBehaviour {
 				Destroy(curHook);
 
 				//Destroy(attachedTo.GetComponent<HingeJoint2D>());
-				Destroy(attachedTo.GetComponent<DistanceJoint2D>());
+				Destroy(attachedTo.GetComponent<SpringJoint2D>());
 				ropeActive = false;
 				change = false;
 				pulling = false;
@@ -93,7 +93,7 @@ public class throwhook : MonoBehaviour {
 			//toPull.anchor = GameObject.Find("Link1").transform.localPosition;
 			//toPull.connectedBody = GameObject.Find("Link1").GetComponent<Rigidbody2D>();
 
-			DistanceJoint2D toPull1 = attachedTo.AddComponent<DistanceJoint2D>();
+			SpringJoint2D toPull1 = attachedTo.AddComponent<SpringJoint2D>();
 			//SpringJoint2D toPull1 = attachedTo.AddComponent<SpringJoint2D>();
 			toPull1.anchor = GameObject.Find("Link1").transform.localPosition;
 			toPull1.connectedBody = GameObject.Find("Link1").GetComponent<Rigidbody2D>();
