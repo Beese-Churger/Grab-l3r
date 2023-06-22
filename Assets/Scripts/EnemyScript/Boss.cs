@@ -23,7 +23,7 @@ public class Boss : MonoBehaviour
     };
 
     // FSM variables
-    FSM current = FSM.IDLE;
+    FSM current = FSM.ATTACK;
     ATTACK currentAttack;
 
     // Boss Level variables
@@ -36,12 +36,18 @@ public class Boss : MonoBehaviour
     private int prevPhaseNumber = 0;
     private int usableAbilities = 1;
     [SerializeField] private float chargeTimer = 3f;
+    [SerializeField] private float gracePeriod = 3f;
     [SerializeField] private LayerMask platformLayer;
     private float m_Scale = 0.35f;
     private float raycastDistance = 20f;
-    private float timer;
+    private float timer, graceTimer;
     private bool abilityUpdated = false;
+
     private GameObject playerGO;
+    private GameObject bossHead;
+    private GameObject bossBeam;
+
+    private GameObject[] bossArm;
 
     // temporary variable
     bool pTriggered = false;
@@ -49,14 +55,20 @@ public class Boss : MonoBehaviour
     void Start()
     {
         playerGO = GameObject.FindGameObjectWithTag("Player");
+        bossHead = GameObject.Find("Head");
+        bossBeam = GameObject.Find("BossBeam");
+
+        bossArm = GameObject.FindGameObjectsWithTag("Boss");
+
         timer = chargeTimer;
+        graceTimer = gracePeriod;
     }
 
     // Update is called once per frame
     void Update()
     {
         // Pressure Plate triggered
-        if (Input.GetKeyDown(KeyCode.K))
+        if (pTriggered)
         {
             PhaseUpdate();
             pTriggered = false;
@@ -65,7 +77,8 @@ public class Boss : MonoBehaviour
         switch (current)
         {
             case FSM.IDLE:
-                abilityUpdated = false;
+                //Debug.Log("In Idle state");
+                GracePeriod();
                 break;
             case FSM.SCAN:
                 // Spawn the beams 
@@ -80,6 +93,7 @@ public class Boss : MonoBehaviour
                 if (ChargeUp())
                 {
                     // Attack the player with an attack
+                    Debug.Log("Boss is performing an attack");
                     Attack();
                 }
                 break;
@@ -96,11 +110,6 @@ public class Boss : MonoBehaviour
             usableAbilities++;
             SpawnBody();
         }
-    }
-    private void AbilityUpdate()
-    {
-        // TO DO: Update the number of usable abilities when the boss enters another phase
-        
     }
     private void GenerateSkill()
     {
@@ -120,6 +129,7 @@ public class Boss : MonoBehaviour
             currentAttack = ATTACK.SLAM;
         }
         abilityUpdated = true;
+        bossBeam.SetActive(true);
 
     }
     /* The logic of the different attacks */
@@ -133,11 +143,23 @@ public class Boss : MonoBehaviour
                 if (dir.x > 0)
                 {
                     // Use Right Hand to slam the player
+                    // TO DO: Play the right hand slam animation
+                    // Only call on collision check at the frame when the boss is slaming
+                    Debug.Log("Attacking Right");
+                    CollisionCheck();
+
                 }
                 else if (dir.x < 0)
                 {
                     // Use Left Hand to slam the player
+                    // TO DO: Play the left hand slam animation
+                    Debug.Log("Attacking Left");
+                    CollisionCheck();
                 }
+
+                current = FSM.IDLE;
+                abilityUpdated = false;
+
                 break;
             case ATTACK.GRINDER:
                 // Logic for the Grinder attack
@@ -146,10 +168,21 @@ public class Boss : MonoBehaviour
                            are already capable of moving, so just
                            in case that's an issue, make the electric platforms
                            translate between 2 points)*/
+                abilityUpdated = false;
                 break;
             case ATTACK.CRUSH:
                 // Logic for the crush attack
-                
+                /* Play Crush Animation 
+                 * Check whether the player is within the AOE of the attack
+                 * If yes the player will lose a life
+                 */
+                // TO DO: Only do the check when it reaches a certain frame of the crush attack animation 
+                if (CollisionCheck())
+                {
+                    // Remove one life from the player
+
+                }
+                abilityUpdated = false;
                 break;
         }
     }
@@ -195,14 +228,52 @@ public class Boss : MonoBehaviour
     private bool ChargeUp()
     {
         // TO DO: Spawn a beam of light above the player
+        // Done
+        Vector2 dir = (Vector2)bossHead.transform.position - (Vector2)playerGO.transform.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        // Add 90 due to the fact that the beam is alr initially rotated by 90 degrees
         // 1 second before the timer runs out the beam will stop following the player
+        if (timer > 1f)
+            bossBeam.transform.rotation = Quaternion.AngleAxis(90 + angle, Vector3.forward);
+        //Debug.Log(angle);
         if (timer > 0f)
         {
             timer -= Time.deltaTime;
             return false;
         }
         else
+        {
+            // Remove the beam
+            bossBeam.SetActive(false);
+            timer = chargeTimer;
             return true;
+        }
+    }
+    private bool CollisionCheck()
+    {
+        foreach (GameObject bossArmComponent in bossArm)
+        {
+            if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position))
+            {
+                Debug.Log(bossArmComponent.name + " has collided with the player");
+                return true;
+            }
+        }
+        return false;
+    }
+    private void GracePeriod()
+    {
+        if (graceTimer > 0f)
+        {
+            graceTimer -= Time.deltaTime;
+        }
+        else
+        {
+            Debug.Log("Scan");
+            current = FSM.ATTACK;
+            graceTimer = gracePeriod;
+        }
+            
     }
 
 }
