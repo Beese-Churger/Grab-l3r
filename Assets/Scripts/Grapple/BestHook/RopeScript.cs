@@ -34,8 +34,10 @@ public class RopeScript : MonoBehaviour {
 	private float distancePlayer;
 	float prevDistance;
 
+	Vector2 prevVel;
 	private bool cancelled = false;
-	void Start () {
+	void Start () 
+	{
 	
 
 		lr = GetComponent<LineRenderer> ();
@@ -52,15 +54,19 @@ public class RopeScript : MonoBehaviour {
 		lastInputTime = Time.time;
 
 		prevDistance = 0;
+		prevVel = rbody.velocity;
+	}
+    void Update()
+    {
+
+		verticalInput = Input.GetAxis("Vertical");
 
 	}
-	
-	void Update () 
+    void FixedUpdate () 
 	{
 		transform.position = Vector2.MoveTowards (transform.position,destiny,speed);
 
 
-		verticalInput = Input.GetAxis("Vertical");
 
 		if ((Vector2)transform.position != destiny)
 		{
@@ -94,11 +100,11 @@ public class RopeScript : MonoBehaviour {
 		if (hooked)
         {
 			changeMass();
-			if(rbody.velocity.y > 0)
-            {
-				Debug.Log("hit");
-				rbody.AddForce(new Vector2(0, 0.3f), ForceMode2D.Force);
-            }
+			//if(rbody.velocity.y > 0)
+   //         {
+			//	Debug.Log("hit");
+			//	rbody.AddForce(new Vector2(0, 0.3f), ForceMode2D.Force);
+   //         }
 			//transform.position = Vector2.MoveTowards(transform.position, Nodes[1].transform.position, speed);
 			if (verticalInput >= 1f && vertexCount > 0)
 			{
@@ -110,7 +116,7 @@ public class RopeScript : MonoBehaviour {
 				if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
                 {
 					rbody.AddForce((Nodes[0].transform.position - player.transform.position).normalized * 1.1f, ForceMode2D.Force);
-					lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
+					lastNode.GetComponent<SpringJoint2D>().distance -= Time.fixedDeltaTime * climbspeed;
 				
 					//player.transform.position = Vector2.MoveTowards(player.transform.position, (player.transform.position - lastNode.transform.position).normalized * distance + lastNode.transform.position, climbspeed);
 				}
@@ -166,7 +172,7 @@ public class RopeScript : MonoBehaviour {
                 if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
                 {
 					rbody.AddForce((Nodes[0].transform.position - player.transform.position).normalized * 1.1f, ForceMode2D.Force);
-                    lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 10 * Mathf.Pow(10f, -1f);
+                    lastNode.GetComponent<SpringJoint2D>().distance -= Time.fixedDeltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 10 * Mathf.Pow(10f, -1f);
                     //player.GetComponent<Rigidbody2D>().velocity *= 1.1f;
                     //player.transform.position = Vector2.MoveTowards(player.transform.position, (player.transform.position - lastNode.transform.position).normalized * distance + lastNode.transform.position, climbspeed);
                 }
