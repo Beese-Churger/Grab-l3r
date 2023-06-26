@@ -16,10 +16,10 @@ public class Obstacle : MonoBehaviour
 
     [SerializeField] public GameManager manager;
     public Sprite newSprite;
-    public Vector2 endPos;
-    public bool isColliderOff;
+    //public Vector2 endPos;
+    public Animator animator;
 
-    private Vector2 startPos;
+    //private Vector2 startPos;
     private SpriteRenderer spriteRender;
     private Sprite mySprite;
     private bool isActive;
@@ -33,7 +33,7 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        startPos = transform.position;
+        //startPos = transform.position;
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
         mySprite = spriteRender.sprite;
         myCollider = gameObject.GetComponent<Collider2D>();
@@ -44,7 +44,7 @@ public class Obstacle : MonoBehaviour
     {
         if (isActive)
         {
-            if (collision.transform.CompareTag("Player"))
+            if (collision.transform.CompareTag("Player") & obstacleType !=ObstacleType.door)
             {
                 // Damage player
                 manager.TakeDamage();
@@ -67,16 +67,18 @@ public class Obstacle : MonoBehaviour
 
     public void OpenDoor()
     {
+        animator.SetBool("isOpen", true);
         myCollider.enabled = false;
         Debug.Log("Collider.enabled" + myCollider.enabled);
-        spriteRender.color = Color.red;
+        //spriteRender.color = Color.red;
     }
 
     public void CloseDoor()
     {
+        animator.SetBool("isOpen", false);
         myCollider.enabled = true;
         Debug.Log("Collider.enabled" + myCollider.enabled);
-        spriteRender.color = Color.white;
+        //spriteRender.color = Color.white;
     }
 
     private void Update()
@@ -87,12 +89,6 @@ public class Obstacle : MonoBehaviour
             // destroy obstacle?
             switch (obstacleType)
             {
-                case ObstacleType.spikes:
-                    if (transform.position.y > endPos.y)
-                    {
-                        transform.Translate(0, -0.01f, 0);
-                    }
-                    break;
                 case ObstacleType.electricity:
                     spriteRender.sprite = newSprite;
                     break;
@@ -102,12 +98,6 @@ public class Obstacle : MonoBehaviour
         {
                 switch (obstacleType)
                 {
-                    case ObstacleType.spikes:
-                        if (transform.position.y < startPos.y)
-                        {
-                            transform.Translate(0, 0.01f, 0);
-                        }
-                        break;
                     case ObstacleType.electricity:
                         spriteRender.sprite = mySprite;
                         break;
