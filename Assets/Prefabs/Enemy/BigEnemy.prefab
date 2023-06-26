@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 787646492280795564}
   - component: {fileID: 1075146799943930540}
   - component: {fileID: 2965392650670631293}
-  - component: {fileID: 4343433334537546407}
+  - component: {fileID: 4296890332623551589}
   m_Layer: 0
   m_Name: BigEnemy
   m_TagString: Enemy
@@ -158,7 +158,7 @@ Transform:
   m_GameObject: {fileID: 8022749620751474673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.09, y: 2.69, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3816666631649797644}
@@ -235,7 +235,7 @@ MonoBehaviour:
   chaseSpeed: 1100
   intervalBetweenPoints: 3
   patrolDistance: 10
-  spriteScale: 1.5
+  spriteScale: 1
   platformLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -321,7 +321,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!58 &4343433334537546407
+--- !u!58 &4296890332623551589
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -334,6 +334,6 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0000009536743, y: -0.000000044703484}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.96153843

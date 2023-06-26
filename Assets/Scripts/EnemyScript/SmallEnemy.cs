@@ -19,7 +19,7 @@ public class SmallEnemy : EnemyBaseClass
     [SerializeField] private float chaseSpeed;
     [SerializeField] private float intervalBetweenPoints;
     [SerializeField] private float patrolDistance = 10.0f;
-    [SerializeField] private float spriteScale = 2f;
+    [SerializeField] private float spriteScale = 1f;
 
     private GameObject[] waypoints;
     private GameObject wayPointObject;

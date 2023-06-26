@@ -49,6 +49,11 @@ public class Boss : MonoBehaviour
 
     private GameObject[] bossArm;
 
+    // Boss animation variables
+    [SerializeField] AnimationClip crushClip;
+    private Animator animator;
+    bool isPlaying = false;
+    float crushTimer = 0.0f;
     // temporary variable
     bool pTriggered = false;
 
@@ -59,6 +64,8 @@ public class Boss : MonoBehaviour
         bossBeam = GameObject.Find("BossBeam");
 
         bossArm = GameObject.FindGameObjectsWithTag("Boss");
+
+        animator = GetComponent<Animator>();
 
         timer = chargeTimer;
         graceTimer = gracePeriod;
@@ -126,7 +133,7 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            currentAttack = ATTACK.SLAM;
+            currentAttack = ATTACK.CRUSH;
         }
         abilityUpdated = true;
         bossBeam.SetActive(true);
@@ -177,12 +184,32 @@ public class Boss : MonoBehaviour
                  * If yes the player will lose a life
                  */
                 // TO DO: Only do the check when it reaches a certain frame of the crush attack animation 
+                if (!isPlaying)
+                {
+                    animator.SetBool("Crush", true);
+                    isPlaying = true;
+                }
+
                 if (CollisionCheck())
                 {
                     // Remove one life from the player
 
                 }
-                abilityUpdated = false;
+                if (crushTimer > crushClip.averageDuration)
+                {
+                    Debug.Log("Animation done playing");
+                    abilityUpdated = false;
+                    isPlaying = false;
+                    crushTimer = 0f;
+                    animator.SetBool("Crush", false);
+                    current = FSM.IDLE;
+                }
+                else
+                {
+                    crushTimer += Time.deltaTime;
+                    Debug.Log(crushTimer);
+                }
+
                 break;
         }
     }
@@ -245,7 +272,6 @@ public class Boss : MonoBehaviour
         {
             // Remove the beam
             bossBeam.SetActive(false);
-            timer = chargeTimer;
             return true;
         }
     }
@@ -253,7 +279,7 @@ public class Boss : MonoBehaviour
     {
         foreach (GameObject bossArmComponent in bossArm)
         {
-            if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position))
+            if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) && crushTimer > 7)
             {
                 Debug.Log(bossArmComponent.name + " has collided with the player");
                 return true;
@@ -270,10 +296,12 @@ public class Boss : MonoBehaviour
         else
         {
             Debug.Log("Scan");
-            current = FSM.ATTACK;
             graceTimer = gracePeriod;
+            timer = chargeTimer;
+            current = FSM.ATTACK;
+
         }
-            
+
     }
 
 }
