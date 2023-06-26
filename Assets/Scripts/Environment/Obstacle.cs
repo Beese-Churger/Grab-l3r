@@ -17,6 +17,7 @@ public class Obstacle : MonoBehaviour
     [SerializeField] public GameManager manager;
     public Sprite newSprite;
     public Vector2 endPos;
+    public Animator animator;
 
     private Vector2 startPos;
     private SpriteRenderer spriteRender;
@@ -66,16 +67,18 @@ public class Obstacle : MonoBehaviour
 
     public void OpenDoor()
     {
+        animator.SetBool("isOpen", true);
         myCollider.enabled = false;
         Debug.Log("Collider.enabled" + myCollider.enabled);
-        spriteRender.color = Color.red;
+        //spriteRender.color = Color.red;
     }
 
     public void CloseDoor()
     {
+        animator.SetBool("isOpen", false);
         myCollider.enabled = true;
         Debug.Log("Collider.enabled" + myCollider.enabled);
-        spriteRender.color = Color.white;
+        //spriteRender.color = Color.white;
     }
 
     private void Update()
