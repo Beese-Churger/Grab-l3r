@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Terrain
-  - Key
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -19,7 +19,7 @@ TagManager:
   - Background
   - PostProcessVolume
   - Obstacle
-  - 
+  - Boss
   - 
   - 
   - 
@@ -41,9 +41,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Background
     uniqueID: 1510802035
+    locked: 0
+  - name: Boss
+    uniqueID: 1064585923
+    locked: 0
+  - name: BossBeam
+    uniqueID: 4119443019
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0

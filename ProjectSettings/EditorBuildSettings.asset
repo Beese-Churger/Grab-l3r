@@ -29,7 +29,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/BossLevel.unity
     guid: 9a20eeef34bc93a4ab3d3405f120fa71
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CAMERA_TEST.unity
     guid: bbef1035cf3f65549b4b9859338546ea
+  - enabled: 1
+    path: Assets/Scenes/Jontest.unity
+    guid: 11af90cb2011bbf4c8c41c0e73acb1f8
   m_configObjects: {}

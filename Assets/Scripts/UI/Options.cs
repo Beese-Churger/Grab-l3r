@@ -23,13 +23,13 @@ public class Options : MonoBehaviour
     [SerializeField] private GameObject VideoPanel;
     [SerializeField] private GameObject ButtonPanel;
     [SerializeField] private GameObject ControlPanel;
+    private List<GameObject> panelList;
   
 
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private InputActionReference switchToOptionsControls;
     [SerializeField] private InputActionReference ToggleOptionsScreen;
-    private InputActionMap controlActionMap;
 
     // Resolution Variables
     [SerializeField] private TMP_Dropdown resolutionDropdown;
@@ -42,17 +42,9 @@ public class Options : MonoBehaviour
     [SerializeField] private TMP_Dropdown fullscreenDropdown;
 
 
-    // For the reset button
-    [SerializeField] private string sceneName;
 
 
-    // Key binding
-    [SerializeField] private TMP_Text bindingDisplayNameText = null;
-    [SerializeField] private GameObject startRebindObject = null;
-    [SerializeField] private GameObject waitingForInputObject = null;
 
-    private InputAction currentAction;
-    private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     private void Start()
     {
         // Toggling between fullscreen and windowed
@@ -94,16 +86,10 @@ public class Options : MonoBehaviour
         AudioManager.Instance.SFXvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.SFXVolume);
         AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
 
-        //----------------------------------------------------------------------------------------------------------------
-        controlActionMap = playerInput.currentActionMap;
-        // Check for which action I'm currently changing the keybind for
-        currentAction = controlActionMap.actions[0];
-        //int bindingIndex = currentAction.GetBindingIndexForControl(currentAction.controls[0]);
-        //bindingDisplayNameText.text = InputControlPath.ToHumanReadableString(
-        //        currentAction.bindings[bindingIndex].effectivePath,
-        //        InputControlPath.HumanReadableStringOptions.OmitDevice);
-
-
+        panelList = new List<GameObject>();
+        panelList.Add(SoundPanel);
+        panelList.Add(VideoPanel);
+        panelList.Add(ControlPanel);
     }
 
     public void OnResolutionChanged(int resolutionIndex)
@@ -151,6 +137,7 @@ public class Options : MonoBehaviour
             if (OptionsMenu.activeSelf)
             {
                 playerInput.SwitchCurrentActionMap("Gameplay");
+                CheckActivePanel();
                 Time.timeScale = 1;
             }
 
@@ -189,33 +176,7 @@ public class Options : MonoBehaviour
     }
     public void TriggerReset()
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);        
-    }
-    public void StartRebinding()
-    {
-        startRebindObject.SetActive(false);
-        waitingForInputObject.SetActive(true);
-
-        rebindingOperation = currentAction.PerformInteractiveRebinding()
-                .WithExpectedControlType("Button")
-                .WithControlsExcluding("Mouse")
-                .OnMatchWaitForAnother(0.1f)
-                .OnComplete(operation => RebindComplete())
-                .Start();
-    }
-    public void RebindComplete()
-    {
-        int bindingIndex = currentAction.GetBindingIndexForControl(currentAction.controls[0]);
-        bindingDisplayNameText.text = InputControlPath.ToHumanReadableString(
-                currentAction.bindings[bindingIndex].effectivePath,
-                InputControlPath.HumanReadableStringOptions.OmitDevice);
-
-
-        rebindingOperation.Dispose();
-
-        startRebindObject.SetActive(true);
-        waitingForInputObject.SetActive(false);
-
+        GameManager.instance.SetGameState(StateType.respawn);
     }
     public void ResetAllBindings()
     {
@@ -225,5 +186,13 @@ public class Options : MonoBehaviour
         }
         PlayerPrefs.DeleteKey("rebinds");
     }
-
+    private void CheckActivePanel()
+    {
+        foreach (GameObject panel in panelList)
+        {
+            if (panel.activeSelf)
+                panel.SetActive(false);
+        }
+        ButtonPanel.SetActive(true);
+    }
 }
