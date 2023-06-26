@@ -25,16 +25,20 @@ public class throwhook : MonoBehaviour {
 	bool change = false;
 
 	public bool pulling = false;
+
+	Vector3 oldPos;
+	float totalDistance;
 	// Use this for initialization
+	bool toDelete = false;
 	void Start () 
 	{
-	
+		oldPos = transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-
+					
 		Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
 		Vector3 facingDirection = worldMousePosition - transform.position;
 		float aimAngle = Mathf.Atan2(facingDirection.y, facingDirection.x);
@@ -47,6 +51,12 @@ public class throwhook : MonoBehaviour {
 		}
 
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
+
+		//// get distance travelled from prev pos
+		//Vector3 distanceVector = transform.position - oldPos;
+		//float distanceThisFrame = distanceVector.magnitude;
+		//totalDistance += distanceThisFrame;
+		
 
 		if (Input.GetMouseButtonDown (0)) {
 
@@ -71,18 +81,26 @@ public class throwhook : MonoBehaviour {
 						//hook.GetComponent<SpringJoint2D>().connectedBody = hit.transform.GetComponent<Rigidbody2D>();
 					}
 					ropeActive = true;
+					//toDelete = false;
 				}
+				
 			}
 			else
 			{
 
 				//delete rope
+				//ropeScript.changeMass();
+				ropeScript.cancelled = true;
+				Debug.Log("main" + ropeScript.cancelled);
+				//Debug.Log("NIGGER");
+				//ropeScript.verticalInput = 0;
+				//toDelete = true;
 
-				Destroy(curHook);
+				//Destroy(curHook, 0.1f);
 
 				//Destroy(attachedTo.GetComponent<HingeJoint2D>());
 				Destroy(attachedTo.GetComponent<SpringJoint2D>());
-				ropeActive = false;
+				//ropeActive = false;
 				change = false;
 				pulling = false;
 			}
@@ -101,6 +119,6 @@ public class throwhook : MonoBehaviour {
 			pulling = true;
 			change = false;
 		}
-
+		oldPos = transform.position;
 	}
 }

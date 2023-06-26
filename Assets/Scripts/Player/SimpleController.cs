@@ -51,7 +51,7 @@ public class SimpleController : MonoBehaviour
 
         else
         {
-            rBody.velocity = new Vector2(rBody.velocity.x * 0.75f, rBody.velocity.y);
+            rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
         }
 
         if (groundCheck)
@@ -64,8 +64,8 @@ public class SimpleController : MonoBehaviour
         }
 
         // clamp the velocity to something sane
-        if (rBody.velocity.magnitude > 100)
-            rBody.velocity = rBody.velocity.normalized * 100;
+        if (rBody.velocity.magnitude > 50)
+            rBody.velocity = rBody.velocity.normalized * 50;
     }
 
     private float SaturatedAdd(float Min, float Max, float Current, float Modifier)

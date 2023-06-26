@@ -168,7 +168,7 @@ DistanceJoint2D:
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
   m_Distance: 0.2
-  m_MaxDistanceOnly: 0
+  m_MaxDistanceOnly: 1
 --- !u!231 &-6402964308218351739
 SpringJoint2D:
   m_ObjectHideFlags: 0
