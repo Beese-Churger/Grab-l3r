@@ -16,10 +16,10 @@ public class Obstacle : MonoBehaviour
 
     [SerializeField] public GameManager manager;
     public Sprite newSprite;
-    public Vector2 endPos;
+    //public Vector2 endPos;
     public Animator animator;
 
-    private Vector2 startPos;
+    //private Vector2 startPos;
     private SpriteRenderer spriteRender;
     private Sprite mySprite;
     private bool isActive;
@@ -33,7 +33,7 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        startPos = transform.position;
+        //startPos = transform.position;
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
         mySprite = spriteRender.sprite;
         myCollider = gameObject.GetComponent<Collider2D>();
@@ -44,7 +44,7 @@ public class Obstacle : MonoBehaviour
     {
         if (isActive)
         {
-            if (collision.transform.CompareTag("Player"))
+            if (collision.transform.CompareTag("Player") & obstacleType !=ObstacleType.door)
             {
                 // Damage player
                 manager.TakeDamage();
