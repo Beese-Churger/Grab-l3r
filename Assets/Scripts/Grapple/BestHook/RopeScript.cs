@@ -153,15 +153,15 @@ public class RopeScript : MonoBehaviour {
 
 			if (Nodes.Count > stopAt && !down)
             {
-                //Debug.Log("nodes: "+Nodes.Count+" |stopat: "+stopAt);
-                if(Nodes[1].GetComponent<Rigidbody2D>().mass != 10f)
-                {
-                    for (int i = 0; i < vertexCount; ++i)
-					{
-						Nodes[i].GetComponent<Rigidbody2D>().mass = 10f;
+				//Debug.Log("nodes: "+Nodes.Count+" |stopat: "+stopAt);
+				//if (Nodes[1].GetComponent<Rigidbody2D>().mass != Nodes.Count * 0.3f)
+                //{
+                for (int i = 0; i < vertexCount; ++i)
+				{
+					Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
 
-					}
 				}
+				//}
 
 				if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
 				{

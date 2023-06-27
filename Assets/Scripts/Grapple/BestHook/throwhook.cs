@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class throwhook : MonoBehaviour {
-
-
+public class throwhook : MonoBehaviour 
+{
 	public GameObject hook;
 
 	public InputActionReference pointer;
@@ -68,9 +67,11 @@ public class throwhook : MonoBehaviour {
 			else
 			{
 				//delete rope
-				Destroy(curHook, 0.2f);
+				Destroy(curHook, 0.1f);
 
 				Destroy(attachedTo.GetComponent<SpringJoint2D>());
+				Destroy(attachedTo.GetComponent<DistanceJoint2D>());
+
 				ropeActive = false;
 				change = false;
 				pulling = false;
@@ -84,6 +85,9 @@ public class throwhook : MonoBehaviour {
 			DistanceJoint2D toPull = attachedTo.AddComponent<DistanceJoint2D>();
 			toPull.anchor = Link1.transform.localPosition;
 			toPull.connectedBody = Link1.GetComponent<Rigidbody2D>();
+			toPull.autoConfigureDistance = false;
+			toPull.maxDistanceOnly = true;
+			toPull.distance = 0.2f;
 
 			SpringJoint2D toPull1 = attachedTo.AddComponent<SpringJoint2D>();
 			toPull1.anchor = Link1.transform.localPosition;
