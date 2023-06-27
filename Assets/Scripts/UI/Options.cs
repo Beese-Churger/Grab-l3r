@@ -162,7 +162,6 @@ public class Options : MonoBehaviour
         {
             GameManager.instance.SetGameState(StateType.levelChange);
             EnemyManager.enemyManager.ClearEnemyList();
-            EnemyManager.enemyManager.AddEnemies();
         }
     }
     IEnumerator Wait()

@@ -28,13 +28,19 @@ public class EnemyManager : MonoBehaviour
             if (enemy != null)
                 enemy.FSMUpdate();
         }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            AddEnemies();
+        }
     }
     public void AddEnemies()
     {
         EnemyGOArray = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemyObject in EnemyGOArray)
         {
-            EnemyList.Add(enemyObject.GetComponent<EnemyBaseClass>());
+            if (!EnemyList.Contains(enemyObject.GetComponent<EnemyBaseClass>()))
+                EnemyList.Add(enemyObject.GetComponent<EnemyBaseClass>());
+
         }
     }
     public int GetEnemyWeight(GameObject enemy)

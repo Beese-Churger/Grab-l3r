@@ -64,6 +64,8 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
+
+        EnemyManager.enemyManager.AddEnemies();
     }
 
     // Load level by name
