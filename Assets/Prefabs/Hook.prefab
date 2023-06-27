@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 212000012579597294}
   - component: {fileID: 50000011407619950}
   - component: {fileID: 58000011381285992}
-  - component: {fileID: 233000010374877026}
   - component: {fileID: 120000014128933588}
   - component: {fileID: 6317663561343164960}
   - component: {fileID: 2919778514612944972}
@@ -130,30 +129,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!233 &233000010374877026
-HingeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000012688847204}
-  m_Enabled: 0
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.03, y: -0.03}
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
 --- !u!120 &120000014128933588
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -195,9 +170,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 25.901196, y: -3.2065587, z: 0}
-  - {x: -4.83, y: 0.57, z: 0}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -283,8 +256,6 @@ MonoBehaviour:
   lastNode: {fileID: 0}
   lr: {fileID: 0}
   Nodes: []
-  done: 0
-  hooked: 0
   climbspeed: 10
 --- !u!232 &2919778514612944972
 DistanceJoint2D:
@@ -320,6 +291,9 @@ MonoBehaviour:
   MAXSPEED: 100
   AirAccel: 10
   GroundAccel: 3
+  groundCheck: 0
+  jumpSpeed: 3
+  isJumping: 0
 --- !u!61 &3498350146469850755
 BoxCollider2D:
   m_ObjectHideFlags: 0
