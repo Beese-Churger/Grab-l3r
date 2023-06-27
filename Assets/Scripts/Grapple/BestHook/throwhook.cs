@@ -71,7 +71,10 @@ public class throwhook : MonoBehaviour
 
 				Destroy(attachedTo.GetComponent<SpringJoint2D>());
 				Destroy(attachedTo.GetComponent<DistanceJoint2D>());
-
+				if (attachedTo.CompareTag("Enemy"))
+				{
+					EnemyManager.enemyManager.SetEnemyWeight(attachedTo, EnemyManager.enemyManager.GetEnemyWeight(attachedTo) * 2);
+				}
 				ropeActive = false;
 				change = false;
 				pulling = false;
@@ -92,6 +95,11 @@ public class throwhook : MonoBehaviour
 			SpringJoint2D toPull1 = attachedTo.AddComponent<SpringJoint2D>();
 			toPull1.anchor = Link1.transform.localPosition;
 			toPull1.connectedBody = Link1.GetComponent<Rigidbody2D>();
+			if (attachedTo.CompareTag("Enemy"))
+			{
+				EnemyManager.enemyManager.SetEnemyWeight(attachedTo, (int)(EnemyManager.enemyManager.GetEnemyWeight(attachedTo) * 0.5f));
+			}
+				
 
 			pulling = true;
 			change = false;

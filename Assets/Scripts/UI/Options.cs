@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 
 public class Options : MonoBehaviour
 {
-
+    public static Options instance = null;
 
     private float w, h;
     private static bool isPressed = false;
@@ -44,7 +44,13 @@ public class Options : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
     }
 
 
@@ -195,7 +201,7 @@ public class Options : MonoBehaviour
         }
         PlayerPrefs.DeleteKey("rebinds");
     }
-    private void CheckActivePanel()
+    public void CheckActivePanel()
     {
         foreach (GameObject panel in panelList)
         {

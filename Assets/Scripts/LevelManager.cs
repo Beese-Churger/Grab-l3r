@@ -66,6 +66,8 @@ public class LevelManager : MonoBehaviour
         }
 
         EnemyManager.enemyManager.AddEnemies();
+        AudioManager.Instance.PlayBGM("level1bgm");
+
     }
 
     // Load level by name

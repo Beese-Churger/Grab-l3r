@@ -31,7 +31,7 @@ public class CameraMovement : MonoBehaviour
         playerPosition = player.transform.position;
 
         boss = GameManager.GetInstance().GetGameState() == StateType.boss ? true : false;
-        Debug.Log(GameManager.GetInstance().GetGameState());
+       // Debug.Log(GameManager.GetInstance().GetGameState());
 
     }
 

@@ -158,6 +158,10 @@ public class BigEnemy : EnemyBaseClass
     {
         return weight;
     }
+    public override void SetWeight(int newWeight)
+    {
+        return;
+    }
 
     public override void SetStatus(bool b_Status)
     {

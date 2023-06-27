@@ -28,10 +28,6 @@ public class EnemyManager : MonoBehaviour
             if (enemy != null)
                 enemy.FSMUpdate();
         }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            AddEnemies();
-        }
     }
     public void AddEnemies()
     {
@@ -53,6 +49,10 @@ public class EnemyManager : MonoBehaviour
             }
         }
         return -1;
+    }
+    public void SetEnemyWeight(GameObject enemy, int weight)
+    {
+        enemy.GetComponent<EnemyBaseClass>().SetWeight(weight);
     }
     public void SetEnemyStatus(GameObject enemy, bool newStatus)
     {

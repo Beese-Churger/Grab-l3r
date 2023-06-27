@@ -54,6 +54,7 @@ public class Boss : MonoBehaviour
     private Animator animator;
     bool isPlaying = false;
     float crushTimer = 0.0f;
+    bool p_Hit = false;
     // temporary variable
     bool pTriggered = false;
 
@@ -100,7 +101,7 @@ public class Boss : MonoBehaviour
                 if (ChargeUp())
                 {
                     // Attack the player with an attack
-                    Debug.Log("Boss is performing an attack");
+                    //Debug.Log("Boss is performing an attack");
                     Attack();
                 }
                 break;
@@ -193,6 +194,7 @@ public class Boss : MonoBehaviour
                 if (CollisionCheck())
                 {
                     // Remove one life from the player
+                    p_Hit = true;
 
                 }
                 if (crushTimer > crushClip.averageDuration)
@@ -200,6 +202,7 @@ public class Boss : MonoBehaviour
                     Debug.Log("Animation done playing");
                     abilityUpdated = false;
                     isPlaying = false;
+                    p_Hit = false;
                     crushTimer = 0f;
                     animator.SetBool("Crush", false);
                     current = FSM.IDLE;
@@ -207,7 +210,7 @@ public class Boss : MonoBehaviour
                 else
                 {
                     crushTimer += Time.deltaTime;
-                    Debug.Log(crushTimer);
+                    //Debug.Log(crushTimer);
                 }
 
                 break;
@@ -256,13 +259,16 @@ public class Boss : MonoBehaviour
     {
         // TO DO: Spawn a beam of light above the player
         // Done
-        Vector2 dir = (Vector2)bossHead.transform.position - (Vector2)playerGO.transform.position;
+        Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
+        //Debug.Log(angle);
         // Add 90 due to the fact that the beam is alr initially rotated by 90 degrees
         // 1 second before the timer runs out the beam will stop following the player
         if (timer > 1f)
-            bossBeam.transform.rotation = Quaternion.AngleAxis(90 + angle, Vector3.forward);
-        //Debug.Log(angle);
+            bossBeam.transform.localRotation = rotation;
+            //bossBeam.transform.rotation = Quaternion.Slerp(bossBeam.transform.rotation, rotation, 10f * Time.deltaTime);
+
         if (timer > 0f)
         {
             timer -= Time.deltaTime;
@@ -279,7 +285,7 @@ public class Boss : MonoBehaviour
     {
         foreach (GameObject bossArmComponent in bossArm)
         {
-            if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) && crushTimer > 7)
+            if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) && crushTimer > crushClip.averageDuration * 0.5f && !p_Hit)
             {
                 Debug.Log(bossArmComponent.name + " has collided with the player");
                 return true;
@@ -303,5 +309,13 @@ public class Boss : MonoBehaviour
         }
 
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        if (bossHead != null && playerGO != null)
+            Gizmos.DrawLine(bossHead.transform.position, playerGO.transform.position);
+
+    }
+
 
 }

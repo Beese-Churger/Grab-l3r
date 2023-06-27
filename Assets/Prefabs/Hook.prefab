@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 120000014128933588}
   - component: {fileID: 6317663561343164960}
   - component: {fileID: 2919778514612944972}
-  - component: {fileID: 5602044031410745023}
   - component: {fileID: 3498350146469850755}
   - component: {fileID: 4169297036615084770}
   m_Layer: 6
@@ -283,8 +282,6 @@ MonoBehaviour:
   lastNode: {fileID: 0}
   lr: {fileID: 0}
   Nodes: []
-  done: 0
-  hooked: 0
   climbspeed: 10
 --- !u!232 &2919778514612944972
 DistanceJoint2D:
@@ -305,21 +302,6 @@ DistanceJoint2D:
   m_AutoConfigureDistance: 0
   m_Distance: 0.2
   m_MaxDistanceOnly: 1
---- !u!114 &5602044031410745023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000012688847204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e66bdfae336ec7143a5e6b627cbbb851, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MAXSPEED: 100
-  AirAccel: 10
-  GroundAccel: 3
 --- !u!61 &3498350146469850755
 BoxCollider2D:
   m_ObjectHideFlags: 0

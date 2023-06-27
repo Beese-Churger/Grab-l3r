@@ -7,7 +7,7 @@ public class SimpleController : MonoBehaviour
     private Rigidbody2D rBody;
     public float MAXSPEED = 100f;
     public float AirAccel = 3f;
-    public float GroundAccel = 3f;
+    public float GroundAccel = 0f;
     private float jumpInput;
     private float horizontalInput;
     public bool groundCheck;
@@ -37,22 +37,7 @@ public class SimpleController : MonoBehaviour
         float Accel = groundCheck ? AirAccel : GroundAccel;
 
 
-        if (horizontalInput > 0f)
-        {
-            //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
-            rBody.AddForce(new Vector2(Accel * 8, 0), ForceMode2D.Force);
-        }
-
-        else if (horizontalInput < 0f)
-        {
-            //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
-            rBody.AddForce(new Vector2(-Accel * 8, 0), ForceMode2D.Force);
-        }
-
-        else
-        {
-            rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
-        }
+       
 
         if (groundCheck)
         {
@@ -60,6 +45,24 @@ public class SimpleController : MonoBehaviour
             if (isJumping)
             {
                 rBody.velocity = new Vector2(rBody.velocity.x, jumpSpeed);
+            }
+        }
+        else
+        {
+            if (horizontalInput > 0f)
+            {
+                //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
+                rBody.AddForce(new Vector2(Accel * 8, 0), ForceMode2D.Force);
+            }
+
+            else if (horizontalInput < 0f)
+            {
+                //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
+                rBody.AddForce(new Vector2(-Accel * 8, 0), ForceMode2D.Force);
+            }
+            else
+            {
+                rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
             }
         }
 

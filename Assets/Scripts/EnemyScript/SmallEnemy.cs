@@ -146,6 +146,15 @@ public class SmallEnemy : EnemyBaseClass
         }
 
     }
+    public override void SetWeight(int newWeight)
+    {
+        if (newWeight <= 15)
+        {
+            weight = newWeight;
+            rb.mass = weight * 0.10131712f;
+        }
+
+    }
     public override int GetWeight()
     {
         return weight;
