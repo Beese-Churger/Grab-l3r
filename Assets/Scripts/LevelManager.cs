@@ -4,7 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    private string[] levels = { "MainMenu", "Environment", "Level1", "Level2", "BossLevel", "LevelLayout Boss" };
+    //private string[] levels = { "MainMenu", "Environment", "Level1", "Level2", "BossLevel", "LevelLayout Boss" };
+    private string[] levels = { "MainMenu", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+
     private static LevelManager instance = null;
     private GameManager gameManager;
     private int currentLevelIndex = 0;

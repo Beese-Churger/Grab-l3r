@@ -340,7 +340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123913665248223676, guid: 83ffa39c0ead05944be196d500957af6, type: 3}
       propertyPath: sceneName
-      value: CAMERA_TEST
+      value: LevelLayout
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83ffa39c0ead05944be196d500957af6, type: 3}

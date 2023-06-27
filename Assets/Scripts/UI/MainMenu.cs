@@ -11,8 +11,8 @@ public class MainMenu : MonoBehaviour
         // TEMPORARY until GameManager works
 
         //Debug.Log("Changed Level");
-        GameManager.instance.SetGameState(StateType.boss);
-        //GameManager.instance.SetGameState(StateType.levelChange);
+        //GameManager.instance.SetGameState(StateType.boss);
+        GameManager.instance.SetGameState(StateType.levelChange);
     }
     public void TriggerExit()
     {

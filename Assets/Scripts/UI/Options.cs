@@ -42,11 +42,18 @@ public class Options : MonoBehaviour
     [SerializeField] private TMP_Dropdown fullscreenDropdown;
 
 
-
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
 
     private void Start()
     {
+        panelList = new List<GameObject>();
+        panelList.Add(SoundPanel);
+        panelList.Add(VideoPanel);
+        panelList.Add(ControlPanel);
         // Toggling between fullscreen and windowed
         // Set the default option based on the current screen mode
         fullscreenDropdown.value = Screen.fullScreen ? 0 : 1;
@@ -86,10 +93,6 @@ public class Options : MonoBehaviour
         AudioManager.Instance.SFXvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.SFXVolume);
         AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
 
-        panelList = new List<GameObject>();
-        panelList.Add(SoundPanel);
-        panelList.Add(VideoPanel);
-        panelList.Add(ControlPanel);
     }
 
     public void OnResolutionChanged(int resolutionIndex)
@@ -154,6 +157,13 @@ public class Options : MonoBehaviour
         }
         else
             isPressed = false;
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            GameManager.instance.SetGameState(StateType.levelChange);
+            EnemyManager.enemyManager.ClearEnemyList();
+            EnemyManager.enemyManager.AddEnemies();
+        }
     }
     IEnumerator Wait()
     {
