@@ -26,16 +26,11 @@ public class throwhook : MonoBehaviour {
 
 	public bool pulling = false;
 
-	Vector3 oldPos;
-	float totalDistance;
-	// Use this for initialization
-	bool toDelete = false;
 	void Start () 
 	{
-		oldPos = transform.position;
+		//oldPos = transform.position;
 	}
-	
-	// Update is called once per frame
+
 	void Update () 
 	{		
 		Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
@@ -97,6 +92,5 @@ public class throwhook : MonoBehaviour {
 			pulling = true;
 			change = false;
 		}
-		oldPos = transform.position;
 	}
 }
