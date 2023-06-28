@@ -7,9 +7,9 @@
             <ui:Button text="New Game" display-tooltip-when-elided="true" name="NewGameButton" class="button-main-title" />
             <ui:Button text="Load Game" display-tooltip-when-elided="true" name="LoadGameButton" class="button-main-title" />
             <ui:Button text="Highscore" display-tooltip-when-elided="true" name="HighscoreButton" class="button-main-title" />
+            <ui:Button text="Cutscenes" display-tooltip-when-elided="true" name="CutscenesButton" class="button-main-title" />
             <ui:Button text="Options" display-tooltip-when-elided="true" name="OptionsButton" class="button-main-title" />
             <ui:Button text="Credits" display-tooltip-when-elided="true" name="CreditsButton" class="button-main-title" />
-            <ui:Button text="Cutscenes" display-tooltip-when-elided="true" name="CutscenesButton" class="button-main-title" />
             <ui:Button text="Quit" display-tooltip-when-elided="true" name="QuitButton" class="button-main-title" />
         </ui:VisualElement>
     </ui:VisualElement>
