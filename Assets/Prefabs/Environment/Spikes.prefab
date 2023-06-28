@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7436573719586662037}
   - component: {fileID: 4728677886998935369}
   - component: {fileID: -6729207984781686379}
+  - component: {fileID: 2708476582084200889}
   m_Layer: 0
   m_Name: Spikes
   m_TagString: Untagged
@@ -101,3 +102,29 @@ MonoBehaviour:
   manager: {fileID: 0}
   newSprite: {fileID: 0}
   animator: {fileID: 0}
+--- !u!61 &2708476582084200889
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822383222303520397}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.11}
+  m_SpriteTilingProperty:
+    border: {x: 1.0576923, y: 0, z: 1.0576923, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.1153846, y: 1.4230769}
+    newSize: {x: 4.234646, y: 1.42}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 4.2, y: 1.15}
+  m_EdgeRadius: 0

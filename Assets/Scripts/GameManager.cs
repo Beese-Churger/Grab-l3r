@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
-
     }
 
     private void Start()
@@ -77,6 +76,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
     public StateType GetGameState()
     {
         return state;
@@ -98,6 +98,15 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             SetGameState(StateType.levelChange);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.ExitPlaymode();
+#else
+            Application.Quit();
+#endif
         }
     }
 
