@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class PressurePlate : MonoBehaviour
 {
@@ -11,6 +11,7 @@ public class PressurePlate : MonoBehaviour
     public Animator animator;
 
     private bool back = false;
+    public List<GameObject> objectsInTrigger;
     //private Vector2 startPos;
 
     // set start position as game objects position in editor
@@ -42,6 +43,7 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        objectsInTrigger.Add(collision.gameObject);
         animator.SetBool("isPressed", true);
         if (isDoor)
         {
@@ -56,19 +58,24 @@ public class PressurePlate : MonoBehaviour
     // set move plate back up when player exits trigger
     private void OnTriggerExit2D(Collider2D collision)
     {
-        animator.SetBool("isPressed", false);
-        back = true;
-        if (isDoor)
+        objectsInTrigger.Remove(collision.gameObject) ;
+
+        if(objectsInTrigger.Count <= 0)
         {
-            obstacle.CloseDoor();
-        }
-        else if (!isObstacle && !isDoor)
-        {
-            terrain.DeactivateMovingPlatform();
-        }
-        else if (isObstacle)
-        {
-            obstacle.ActivateObstacle();
+            animator.SetBool("isPressed", false);
+            back = true;
+            if (isDoor)
+            {
+                obstacle.CloseDoor();
+            }
+            else if (!isObstacle && !isDoor)
+            {
+                terrain.DeactivateMovingPlatform();
+            }
+            else if (isObstacle)
+            {
+                obstacle.ActivateObstacle();
+            }
         }
     }
 
