@@ -126,7 +126,7 @@ public class BigEnemy : EnemyBaseClass
                     {
                         speed = originalSpeed;
                         current = FSM.IDLE;
-                        Debug.Log("CWP:" + currentWayPoint + "pathcount:" + path.vectorPath.Count);
+                        //Debug.Log("CWP:" + currentWayPoint + "pathcount:" + path.vectorPath.Count);
 
                         return;
                     }
@@ -232,14 +232,15 @@ public class BigEnemy : EnemyBaseClass
     {
         Vector2 dir = ((Vector2)waypoints[currentWP].transform.position - rb.position).normalized;
         dir.y = 0;
-        Vector2 force = speed * Time.deltaTime * dir;
+        //Vector2 force = speed * Time.deltaTime * dir;
+        //rb.AddForce(force);
+        transform.position = Vector2.MoveTowards(transform.position, waypoints[currentWP].transform.position, speed * Time.deltaTime);
 
-        rb.AddForce(force);
         if (animator.gameObject.activeSelf)
             animator.SetBool("Patrol", true);
-        if (force.x >= 0.01f)
+        if (dir.x >= 0.01f)
             transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
-        else if (force.x <= -0.01f)
+        else if (dir.x <= -0.01f)
             transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
 
     }
@@ -270,15 +271,15 @@ public class BigEnemy : EnemyBaseClass
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.down, raycastDistance, platformLayer);
 
         //Debug.Log(rb.velocity.x);
-
+        Vector2 dir = ((Vector2)waypoints[currentWP].transform.position - rb.position).normalized;
         // Check if either of the raycasts hit a platform
-        if ((leftHit.collider == null && rb.velocity.x < 0) || (rightHit.collider == null && rb.velocity.x > 0))
+        if ((leftHit.collider == null && dir.x < 0) || (rightHit.collider == null && dir.x > 0))
         {
             rb.velocity = Vector2.zero;
-            rb.angularVelocity = 0;
+            speed = 0;
             CheckCurrentWP();
             current = FSM.IDLE;
-            Debug.Log("Big Enemy is near the edge!");
+            //Debug.Log("Big Enemy is near the edge!");
             return true;
         }
         return false;
@@ -291,19 +292,24 @@ public class BigEnemy : EnemyBaseClass
 
         RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, raycastDistance, platformLayer);
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, raycastDistance, platformLayer);
-        if ((leftHit.collider != null && rb.velocity.x < 0) || (rightHit.collider != null && rb.velocity.x > 0))
+
+        Vector2 dir = ((Vector2)waypoints[currentWP].transform.position - rb.position).normalized;
+        
+
+        if ((leftHit.collider != null && dir.x < 0) || (rightHit.collider != null && dir.x > 0))
         {
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0;
             CheckCurrentWP();
             current = FSM.IDLE;
-            Debug.Log("Big Enemy is near the wall!");
+            //Debug.Log("Big Enemy is near the wall!");
             return true;
         }
         return false;
     }
     private void CheckCurrentWP()
     {
+        speed = originalSpeed;
         // Change patrol points
         if (currentWP == 0)
             currentWP = 1;

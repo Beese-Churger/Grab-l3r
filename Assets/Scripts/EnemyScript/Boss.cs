@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
+    public static Boss instance = null;
     // Start is called before the first frame update
     enum ATTACK
     {
@@ -27,11 +28,11 @@ public class Boss : MonoBehaviour
     ATTACK currentAttack;
 
     // Boss Level variables
-    [SerializeField] GameObject bodyDrop;
-    [SerializeField] GameObject bodyDropHolder;
+    [SerializeField] private GameObject bodyDrop;
+    [SerializeField] private GameObject bodyDropHolder;
 
-    [SerializeField] GameObject horizontalPlatform;
-    [SerializeField] GameObject verticalPlatform;
+    [SerializeField] private GameObject horizontalPlatform;
+    [SerializeField] private GameObject verticalPlatform;
     private int phase = 0;
     private int prevPhaseNumber = 0;
     private int usableAbilities = 1;
@@ -58,7 +59,13 @@ public class Boss : MonoBehaviour
     // temporary variable
     bool pTriggered = false;
 
-    void Start()
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+   
+    }
+    private void Start()
     {
         playerGO = GameObject.FindGameObjectWithTag("Player");
         bossHead = GameObject.Find("Head");
@@ -75,12 +82,8 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Pressure Plate triggered
-        if (pTriggered)
-        {
-            PhaseUpdate();
-            pTriggered = false;
-        }
+        // Updates phase
+        PhaseUpdate();
         // FSM UPDATE
         switch (current)
         {
@@ -111,13 +114,25 @@ public class Boss : MonoBehaviour
     }
     private void PhaseUpdate()
     {
-        if (phase == prevPhaseNumber)
+        if (pTriggered)
         {
-            // TO DO: If pressure plate is triggered , the boss will move up to the next phase 
-            phase++;
-            usableAbilities++;
-            SpawnBody();
+            Debug.Log("Triggered");
+            pTriggered = false;
+            if (phase == prevPhaseNumber)
+            {
+                // TO DO: If pressure plate is triggered , the boss will move up to the next phase 
+                phase++;
+                usableAbilities++;
+                SpawnBody();
+                Debug.Log("Phase:" + phase);
+            }
+
         }
+
+    }
+    public void SetPPlate(bool active)
+    {
+        pTriggered = active;
     }
     private void GenerateSkill()
     {
@@ -176,6 +191,11 @@ public class Boss : MonoBehaviour
                            are already capable of moving, so just
                            in case that's an issue, make the electric platforms
                            translate between 2 points)*/
+                if (!isPlaying)
+                {
+                    animator.SetBool("Crush", true);
+                    isPlaying = true;
+                }
                 abilityUpdated = false;
                 break;
             case ATTACK.CRUSH:
@@ -245,6 +265,7 @@ public class Boss : MonoBehaviour
                     {
                         Instantiate(bodyDrop, new Vector3(x, maxY, 0), Quaternion.identity, bodyDropHolder.transform);
                         check = true;
+                        Debug.Log("Spawned body");
                     }
                 }
                 check = false;
@@ -285,7 +306,7 @@ public class Boss : MonoBehaviour
     {
         foreach (GameObject bossArmComponent in bossArm)
         {
-            if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) && crushTimer > crushClip.averageDuration * 0.5f && !p_Hit)
+            if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) && crushTimer > crushClip.averageDuration * 0.6f && !p_Hit)
             {
                 Debug.Log(bossArmComponent.name + " has collided with the player");
                 return true;

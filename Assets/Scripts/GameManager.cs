@@ -133,5 +133,9 @@ public class GameManager : MonoBehaviour
         health -= 30;
         Debug.Log("Health:"+health);
     }
+    public LevelManager GetLevelManager()
+    {
+        return levelManager;
+    }
 
 }

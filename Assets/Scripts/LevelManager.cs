@@ -81,4 +81,17 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
     }
+
+    // Get Current level
+    public string GetCurrentLevel()
+    {
+        foreach (string levelName in levels)
+        {
+            if (SceneManager.GetActiveScene().name == levelName)
+            {
+                return levelName;
+            }
+        }
+        return "";
+    }
 }

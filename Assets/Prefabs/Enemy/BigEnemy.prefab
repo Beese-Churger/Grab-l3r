@@ -141,8 +141,8 @@ GameObject:
   - component: {fileID: 787646492280795564}
   - component: {fileID: 1075146799943930540}
   - component: {fileID: 2965392650670631293}
-  - component: {fileID: 4296890332623551589}
-  m_Layer: 10
+  - component: {fileID: 4449577024413100422}
+  m_Layer: 11
   m_Name: BigEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -229,10 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73cab14926c76cd40b93b8bc15e60695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weight: 30
+  weight: 2147483647
   stoppingDistance: 2
-  originalSpeed: 1000
-  chaseSpeed: 1100
+  originalSpeed: 2
+  chaseSpeed: 5
   intervalBetweenPoints: 3
   patrolDistance: 10
   spriteScale: 1
@@ -321,8 +321,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!58 &4296890332623551589
-CircleCollider2D:
+--- !u!70 &4449577024413100422
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -335,5 +335,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.96153843
+  m_Size: {x: 1.9230769, y: 1.7307693}
+  m_Direction: 0
