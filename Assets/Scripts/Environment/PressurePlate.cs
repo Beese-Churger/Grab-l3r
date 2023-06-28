@@ -36,7 +36,8 @@ public class PressurePlate : MonoBehaviour
             // when pressureplate is pushed. Other wise activates moving platform
             if (isObstacle)
             {
-                obstacle.DisableObstacle();
+                if (obstacle != null)
+                    obstacle.DisableObstacle();
             }
         }
     }
@@ -44,15 +45,32 @@ public class PressurePlate : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         objectsInTrigger.Add(collision.gameObject);
-        animator.SetBool("isPressed", true);
-        if (isDoor)
+        if (collision.gameObject.name != "FOV")
         {
-            obstacle.OpenDoor();
+            animator.SetBool("isPressed", true);
+            if (isDoor)
+            {
+                if (obstacle != null)
+                    obstacle.OpenDoor();
+            }
+            else if (!isObstacle && !isDoor)
+            {
+                if (terrain != null)
+                    terrain.ActivateMovingPlatform();
+
+            }
+            else
+            {
+                if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+                {
+                    Debug.Log("Boss Stepped Blah");
+                    Boss.instance.SetPPlate(true);
+
+                }
+            }
         }
-        else if (!isObstacle && !isDoor)
-        {
-            terrain.ActivateMovingPlatform();
-        }
+    
+
     }
 
     // set move plate back up when player exits trigger

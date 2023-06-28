@@ -44,6 +44,9 @@ public class SmallEnemy : EnemyBaseClass
     //
     private int type = 0;
 
+    float y, prevY;
+    bool isGrounded = true;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -249,8 +252,8 @@ public class SmallEnemy : EnemyBaseClass
         Vector2 dir = ((Vector2)waypoints[currentWP].transform.position - rb.position).normalized;
         dir.y = 0;
         Vector2 force = speed * Time.deltaTime * dir;
-
         rb.AddForce(force);
+
         if (animator.gameObject.activeSelf)
             animator.SetBool("Patrol", true);
         if (force.x >= 0.01f)
@@ -295,7 +298,7 @@ public class SmallEnemy : EnemyBaseClass
             rb.angularVelocity = 0;
             CheckCurrentWP();
             current = FSM.IDLE;
-            Debug.Log("Small Enemy is near the edge!");
+            //Debug.Log("Small Enemy is near the edge!");
             return true;
         }
         return false;
@@ -312,10 +315,9 @@ public class SmallEnemy : EnemyBaseClass
         if ((leftHit.collider != null && rb.velocity.x < 0) || (rightHit.collider != null && rb.velocity.x > 0))
         {
             rb.velocity = Vector2.zero;
-            rb.angularVelocity = 0;
             CheckCurrentWP();
             current = FSM.IDLE;
-            Debug.Log("Small Enemy is near the wall!");
+            //Debug.Log("Small Enemy is near the wall!");
             return true;
         }
         return false;

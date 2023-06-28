@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e579333d7e322548aae6698c15a3806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boss: {fileID: 8150797689234064527, guid: 64e3f3edc69ef0f4d8545256a451a741, type: 3}
   terrain: {fileID: 0}
   obstacle: {fileID: 0}
   isObstacle: 0

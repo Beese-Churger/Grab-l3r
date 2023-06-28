@@ -141,8 +141,8 @@ GameObject:
   - component: {fileID: 8491629283298615638}
   - component: {fileID: 3133324154965276133}
   - component: {fileID: 3246113075914379299}
-  - component: {fileID: 5236111571491524190}
-  m_Layer: 10
+  - component: {fileID: 212562186553342918}
+  m_Layer: 11
   m_Name: SmallEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1cff705a9167054bb5c352d334bfb98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weight: 15
+  weight: 3
   stoppingDistance: 5
   originalSpeed: 1000
   chaseSpeed: 2000
@@ -292,7 +292,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.5
   m_LinearDrag: 1.5
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -321,8 +321,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!58 &5236111571491524190
-CircleCollider2D:
+--- !u!70 &212562186553342918
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -335,5 +335,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.47115386
+  m_Size: {x: 0.9423077, y: 0.86538464}
+  m_Direction: 0

@@ -69,7 +69,7 @@ public class Obstacle : MonoBehaviour
     {
         animator.SetBool("isOpen", true);
         myCollider.enabled = false;
-        Debug.Log("Collider.enabled" + myCollider.enabled);
+        //Debug.Log("Collider.enabled" + myCollider.enabled);
         //spriteRender.color = Color.red;
     }
 
