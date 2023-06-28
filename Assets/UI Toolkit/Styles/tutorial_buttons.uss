@@ -1,0 +1,29 @@
+.button-main-title {
+    -unity-font-style: normal;
+    font-size: 45px;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(255, 255, 255, 255);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    -unity-text-align: upper-left;
+}
+
+.button-main-title:hover {
+    font-size: 50px;
+    -unity-font-style: normal;
+}
+
+.button-main-title:active {
+    font-size: 50px;
+    -unity-font-style: bold;
+}
