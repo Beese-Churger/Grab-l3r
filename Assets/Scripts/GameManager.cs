@@ -102,11 +102,11 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.ExitPlaymode();
-#else
-            Application.Quit();
-#endif
+//#if UNITY_EDITOR
+//            UnityEditor.EditorApplication.ExitPlaymode();
+//#else
+//            Application.Quit();
+//#endif
         }
     }
 

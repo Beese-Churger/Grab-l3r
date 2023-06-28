@@ -99,7 +99,7 @@ public class RopeScript : MonoBehaviour {
 
 		if (hooked)
 		{
-			if (verticalInput >= 1f && vertexCount > 0)
+			if (verticalInput >= 1f && vertexCount > 2)
 			{
 				for (int i = 0; i < vertexCount; ++i)
 				{
@@ -140,7 +140,7 @@ public class RopeScript : MonoBehaviour {
 			}
 
 			if (Input.GetMouseButtonDown(0))
-			{
+			{ 
 				changeMass();
 				cancelled = true;
 				down = true;
@@ -148,7 +148,8 @@ public class RopeScript : MonoBehaviour {
 
 			if (!cancelled)
             {
-				stopAt = Nodes.Count - 1;
+				if(Nodes.Count > 2)
+					stopAt = Nodes.Count - 1;
             }
 
 			if (Nodes.Count > stopAt && !down)
