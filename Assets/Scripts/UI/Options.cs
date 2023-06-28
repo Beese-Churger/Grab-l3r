@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 
 public class Options : MonoBehaviour
 {
-
+    public static Options instance = null;
 
     private float w, h;
     private static bool isPressed = false;
@@ -42,15 +42,24 @@ public class Options : MonoBehaviour
     [SerializeField] private TMP_Dropdown fullscreenDropdown;
 
 
-    // For the reset button
-    [SerializeField] private string sceneName;
-
-
-
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
+    }
 
 
     private void Start()
     {
+        panelList = new List<GameObject>();
+        panelList.Add(SoundPanel);
+        panelList.Add(VideoPanel);
+        panelList.Add(ControlPanel);
         // Toggling between fullscreen and windowed
         // Set the default option based on the current screen mode
         fullscreenDropdown.value = Screen.fullScreen ? 0 : 1;
@@ -90,10 +99,6 @@ public class Options : MonoBehaviour
         AudioManager.Instance.SFXvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.SFXVolume);
         AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
 
-        panelList = new List<GameObject>();
-        panelList.Add(SoundPanel);
-        panelList.Add(VideoPanel);
-        panelList.Add(ControlPanel);
     }
 
     public void OnResolutionChanged(int resolutionIndex)
@@ -158,6 +163,12 @@ public class Options : MonoBehaviour
         }
         else
             isPressed = false;
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            GameManager.instance.SetGameState(StateType.levelChange);
+            EnemyManager.enemyManager.ClearEnemyList();
+        }
     }
     IEnumerator Wait()
     {
@@ -180,7 +191,7 @@ public class Options : MonoBehaviour
     }
     public void TriggerReset()
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);        
+        GameManager.instance.SetGameState(StateType.respawn);
     }
     public void ResetAllBindings()
     {
@@ -190,7 +201,7 @@ public class Options : MonoBehaviour
         }
         PlayerPrefs.DeleteKey("rebinds");
     }
-    private void CheckActivePanel()
+    public void CheckActivePanel()
     {
         foreach (GameObject panel in panelList)
         {

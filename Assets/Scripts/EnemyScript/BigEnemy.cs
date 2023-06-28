@@ -6,7 +6,7 @@ public class BigEnemy : EnemyBaseClass
 {
     enum FSM
     {
-        NEUTRAL,
+        IDLE,
         PATROL,
         AGGRESSIVE,
         DEAD,
@@ -95,7 +95,7 @@ public class BigEnemy : EnemyBaseClass
         {
             switch (current)
             {
-                case FSM.NEUTRAL: // For NEUTRAL State, The enemy temporarily stops moving before it starts moving again
+                case FSM.IDLE: // For IDLE State, The enemy temporarily stops moving before it starts moving again
                     if (animator.gameObject.activeSelf)
                         animator.SetBool("Patrol", false);
                     Stop();
@@ -103,7 +103,7 @@ public class BigEnemy : EnemyBaseClass
                 case FSM.PATROL:
                     if (Math.Abs(waypoints[currentWP].transform.position.x - rb.position.x) <= 1f)
                     {
-                        current = FSM.NEUTRAL;
+                        current = FSM.IDLE;
                         CheckCurrentWP();
                         return;
                     }
@@ -125,7 +125,7 @@ public class BigEnemy : EnemyBaseClass
                     if (currentWayPoint >= path.vectorPath.Count)
                     {
                         speed = originalSpeed;
-                        current = FSM.NEUTRAL;
+                        current = FSM.IDLE;
                         Debug.Log("CWP:" + currentWayPoint + "pathcount:" + path.vectorPath.Count);
 
                         return;
@@ -157,6 +157,10 @@ public class BigEnemy : EnemyBaseClass
     public override int GetWeight()
     {
         return weight;
+    }
+    public override void SetWeight(int newWeight)
+    {
+        return;
     }
 
     public override void SetStatus(bool b_Status)
@@ -201,8 +205,8 @@ public class BigEnemy : EnemyBaseClass
     {
         switch (stateNumber)
         {
-            case (int)FSM.NEUTRAL:
-                current = FSM.NEUTRAL;
+            case (int)FSM.IDLE:
+                current = FSM.IDLE;
                 break;
             case (int)FSM.PATROL:
                 current = FSM.PATROL;
@@ -273,7 +277,7 @@ public class BigEnemy : EnemyBaseClass
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0;
             CheckCurrentWP();
-            current = FSM.NEUTRAL;
+            current = FSM.IDLE;
             Debug.Log("Big Enemy is near the edge!");
             return true;
         }
@@ -292,7 +296,7 @@ public class BigEnemy : EnemyBaseClass
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0;
             CheckCurrentWP();
-            current = FSM.NEUTRAL;
+            current = FSM.IDLE;
             Debug.Log("Big Enemy is near the wall!");
             return true;
         }

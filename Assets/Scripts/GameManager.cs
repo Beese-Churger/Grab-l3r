@@ -34,7 +34,13 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+            Destroy(gameObject);
     }
 
     private void Start()
@@ -65,7 +71,15 @@ public class GameManager : MonoBehaviour
                 ResetGame();
                 levelManager.ReLoadLevel();
                 break;
+            case StateType.boss:
+                StartCoroutine(levelManager.LoadLevel("LevelLayout Boss"));
+                break;
         }
+    }
+
+    public StateType GetGameState()
+    {
+        return state;
     }
 
     private void DisplayCredits()
@@ -84,6 +98,15 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             SetGameState(StateType.levelChange);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+//#if UNITY_EDITOR
+//            UnityEditor.EditorApplication.ExitPlaymode();
+//#else
+//            Application.Quit();
+//#endif
         }
     }
 

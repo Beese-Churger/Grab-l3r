@@ -141,8 +141,8 @@ GameObject:
   - component: {fileID: 8491629283298615638}
   - component: {fileID: 3133324154965276133}
   - component: {fileID: 3246113075914379299}
-  - component: {fileID: 8631029622403852974}
-  m_Layer: 0
+  - component: {fileID: 5236111571491524190}
+  m_Layer: 10
   m_Name: SmallEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ Transform:
   m_GameObject: {fileID: 4876807040678775496}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.42, y: 7.59, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7703651270656136045}
@@ -263,7 +263,7 @@ MonoBehaviour:
   chaseSpeed: 2000
   intervalBetweenPoints: 2
   patrolDistance: 10
-  spriteScale: 2
+  spriteScale: 1
   platformLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -321,7 +321,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!58 &8631029622403852974
+--- !u!58 &5236111571491524190
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -336,4 +336,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.245
+  m_Radius: 0.47115386

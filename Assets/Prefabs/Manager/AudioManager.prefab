@@ -174,7 +174,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2401c878caaa74eabdb27091de3c22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmSounds: []
+  SFXvolumeSlider: {fileID: 0}
+  BGMvolumeSlider: {fileID: 0}
+  bgmSounds:
+  - name: level1bgm
+    clip: {fileID: 8300000, guid: 4043a281fceeaa54291ff525ceba8ae7, type: 3}
   sfxSounds:
   - name: hook_attach
     clip: {fileID: 8300000, guid: db662ce049d3d944c8f706ea21c8baf6, type: 3}

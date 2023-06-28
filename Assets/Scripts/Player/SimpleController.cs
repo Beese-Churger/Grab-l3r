@@ -6,10 +6,13 @@ public class SimpleController : MonoBehaviour
 {
     private Rigidbody2D rBody;
     public float MAXSPEED = 100f;
-    public float AirAccel = 10f;
-    public float GroundAccel = 3f;
+    public float AirAccel = 3f;
+    public float GroundAccel = 0f;
     private float jumpInput;
     private float horizontalInput;
+    public bool groundCheck;
+    public float jumpSpeed = 3f;
+    public bool isJumping = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,29 +24,51 @@ public class SimpleController : MonoBehaviour
     void Update()
     {
 
+        jumpInput = Input.GetAxis("Jump");
+        var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
+        groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
         horizontalInput = Input.GetAxis("Horizontal");
-        float Accel = AirAccel;
 
-        if (horizontalInput > 0f)
+       
+    }
+
+    private void FixedUpdate()
+    {
+        float Accel = groundCheck ? AirAccel : GroundAccel;
+
+
+       
+
+        if (groundCheck)
         {
-            //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
-            rBody.AddForce(new Vector2(Accel, 0), ForceMode2D.Force);
+            isJumping = jumpInput > 0f;
+            if (isJumping)
+            {
+                rBody.velocity = new Vector2(rBody.velocity.x, jumpSpeed);
+            }
+        }
+        else
+        {
+            if (horizontalInput > 0f)
+            {
+                //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
+                rBody.AddForce(new Vector2(Accel * 8, 0), ForceMode2D.Force);
+            }
+
+            else if (horizontalInput < 0f)
+            {
+                //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
+                rBody.AddForce(new Vector2(-Accel * 8, 0), ForceMode2D.Force);
+            }
+            else
+            {
+                rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
+            }
         }
 
-        else if (horizontalInput < 0f)
-        {
-            //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
-            rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
-        }
-
-
-        if (Mathf.Abs(rBody.velocity.x) > MAXSPEED || Mathf.Abs(rBody.velocity.y) > MAXSPEED)
-        {
-            // clamp velocity:
-            Vector3 newVelocity = rBody.velocity.normalized;
-            newVelocity *= MAXSPEED;
-            rBody.velocity = newVelocity;
-        }
+        // clamp the velocity to something sane
+        if (rBody.velocity.magnitude > 50)
+            rBody.velocity = rBody.velocity.normalized * 50;
     }
 
     private float SaturatedAdd(float Min, float Max, float Current, float Modifier)

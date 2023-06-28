@@ -8,12 +8,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
-    path: Assets/Scenes/LevelLayout.unity
-    guid: e1796d51b3a8de64ab3973e156bc68ee
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 7549ee2e2cd339744a865ea4d71c53b3
+  - enabled: 1
+    path: Assets/Scenes/LevelLayout.unity
+    guid: e1796d51b3a8de64ab3973e156bc68ee
+  - enabled: 1
+    path: Assets/Scenes/LevelLayout 2.unity
+    guid: 1cf47c7d72e1f8d4aac8e05e8191204d
+  - enabled: 1
+    path: Assets/Scenes/LevelLayout Boss.unity
+    guid: fcaba6a0817e63546a5af2ad3684286b
   - enabled: 0
     path: Assets/Scenes/Gameplay.unity
     guid: bff3fd10852563043b93e559e637d801
@@ -29,7 +35,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/BossLevel.unity
     guid: 9a20eeef34bc93a4ab3d3405f120fa71
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CAMERA_TEST.unity
     guid: bbef1035cf3f65549b4b9859338546ea
+  - enabled: 0
+    path: Assets/Scenes/Jontest.unity
+    guid: 11af90cb2011bbf4c8c41c0e73acb1f8
   m_configObjects: {}
