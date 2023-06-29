@@ -24,8 +24,9 @@ public class throwhook : MonoBehaviour
 	bool change = false;
 
 	public bool pulling = false;
+    private Terrain.TerrainType type;
 
-	void Start () 
+    void Start () 
 	{
 		//oldPos = transform.position;
 	}
@@ -51,16 +52,36 @@ public class throwhook : MonoBehaviour
 				RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxLinks, ropeLayerMask);
 				if (hit.collider != null)
 				{
-					attachedTo = hit.transform.gameObject;
-					AudioManager.Instance.PlaySFX("hook_attach");
-					curHook = Instantiate(hook, transform.position, Quaternion.identity);
-					curHook.GetComponent<RopeScript>().destiny = hit.point;
-
-					if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
+					if (hit.transform.TryGetComponent<Terrain>(out var terrain))
 					{
-						change = true;
+						type = terrain.GetTerrainType();
+						if (type != Terrain.TerrainType.concreate)
+						{
+							attachedTo = hit.transform.gameObject;
+							AudioManager.Instance.PlaySFX("hook_attach");
+							curHook = Instantiate(hook, transform.position, Quaternion.identity);
+							curHook.GetComponent<RopeScript>().destiny = hit.point;
+
+							if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
+							{
+								change = true;
+							}
+							ropeActive = true;
+						}
 					}
-					ropeActive = true;
+					else
+					{
+                        attachedTo = hit.transform.gameObject;
+                        AudioManager.Instance.PlaySFX("hook_attach");
+                        curHook = Instantiate(hook, transform.position, Quaternion.identity);
+                        curHook.GetComponent<RopeScript>().destiny = hit.point;
+
+                        if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
+                        {
+                            change = true;
+                        }
+                        ropeActive = true;
+                    }
 				}
 				
 			}
@@ -119,3 +140,4 @@ public class throwhook : MonoBehaviour
 		}
 	}
 }
+

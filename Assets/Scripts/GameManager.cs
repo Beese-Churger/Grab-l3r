@@ -11,15 +11,17 @@ public enum StateType
     credits         // show credits
 }
 
+public delegate void OnStateChangedHandler();
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-
+    public event OnStateChangedHandler OnStateChange;
     private float health = 90;
     private int score = 0;
     private bool gamePaused;
     private bool triggeredGameEnd;
-    private StateType state;
+    public StateType state;
     private LevelManager levelManager;
 
     public static GameManager GetInstance()
@@ -40,7 +42,9 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(instance);
         }
         else
+        {
             Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -50,7 +54,8 @@ public class GameManager : MonoBehaviour
 
     public void SetGameState(StateType newState)
     {
-        state = newState;
+        this.state = newState;
+        OnStateChange();
 
         switch (newState)
         {
@@ -77,9 +82,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnApplicationQuit()
+    {
+        instance = null;
+    }
+
     public StateType GetGameState()
     {
-        return state;
+        return this.state;
     }
 
     private void DisplayCredits()
@@ -99,22 +109,13 @@ public class GameManager : MonoBehaviour
         {
             SetGameState(StateType.levelChange);
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-//#if UNITY_EDITOR
-//            UnityEditor.EditorApplication.ExitPlaymode();
-//#else
-//            Application.Quit();
-//#endif
-        }
     }
 
     public void ResetGame()
     {
         // TODO: reset all variables to initials
-        health = 100;
-        score = 0;
+        this.health = 100;
+        this.score = 0;
         //enemiesDefeated = 0;
         //triggeredGameEnd = false;
     }
@@ -125,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     public int GetScore()
     {
-        return score;
+        return this.score;
     }
 
     public void TakeDamage()
@@ -135,7 +136,7 @@ public class GameManager : MonoBehaviour
     }
     public LevelManager GetLevelManager()
     {
-        return levelManager;
+        return this.levelManager;
     }
 
 }
