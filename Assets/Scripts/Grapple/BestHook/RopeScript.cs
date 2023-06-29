@@ -114,6 +114,13 @@ public class RopeScript : MonoBehaviour {
 				else
 					RemoveNode();
 			}
+			else
+            {
+				for (int i = 0; i < vertexCount; ++i)
+				{
+					Nodes[i].GetComponent<Rigidbody2D>().mass = 0.1f;
+				}
+			}
 
 
 			if (lastInputTime + inputDelay < Time.time)
@@ -134,7 +141,7 @@ public class RopeScript : MonoBehaviour {
 					gameObject.GetComponent<SpringJoint2D>().connectedBody = null;
 					gameObject.GetComponent<DistanceJoint2D>().connectedBody = null;
 					gameObject.GetComponent<SpriteRenderer>().enabled = false;
-					gameObject.GetComponent<Collider2D>().enabled = false;
+					//gameObject.GetComponent<Collider2D>().enabled = false;
 
 				}
 			}

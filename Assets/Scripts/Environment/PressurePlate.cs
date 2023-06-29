@@ -8,6 +8,7 @@ public class PressurePlate : MonoBehaviour
     //public Vector2 endPos;
     public bool isObstacle;
     public bool isDoor;
+    public bool isOppDoor;
     public Animator animator;
 
     private bool back = false;
@@ -18,6 +19,10 @@ public class PressurePlate : MonoBehaviour
     private void Start()
     {
         //startPos = transform.position;
+        if(isOppDoor)
+        {
+            obstacle.OpenDoor();
+        }
     }
 
     // press plate if player stays on trigger
@@ -53,6 +58,11 @@ public class PressurePlate : MonoBehaviour
                 if (obstacle != null)
                     obstacle.OpenDoor();
             }
+            if(isOppDoor)
+            {
+                if (obstacle != null)
+                    obstacle.CloseDoor();
+            }
             else if (!isObstacle && !isDoor)
             {
                 if (terrain != null)
@@ -85,6 +95,11 @@ public class PressurePlate : MonoBehaviour
             if (isDoor)
             {
                 obstacle.CloseDoor();
+            }
+            if(isOppDoor)
+            {
+                if (obstacle != null)
+                    obstacle.OpenDoor();
             }
             else if (!isObstacle && !isDoor)
             {

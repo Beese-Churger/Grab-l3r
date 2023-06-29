@@ -11,7 +11,7 @@ public class throwhook : MonoBehaviour
 
 	public bool ropeActive;
 
-	public int maxLinks = 15;
+	public int maxDistance = 10;
 
 	public LayerMask ropeLayerMask;
 
@@ -49,7 +49,7 @@ public class throwhook : MonoBehaviour
 
 			if (ropeActive == false) {
 
-				RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxLinks, ropeLayerMask);
+				RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxDistance, ropeLayerMask);
 				if (hit.collider != null)
 				{
 					if (hit.transform.TryGetComponent<Terrain>(out var terrain))
