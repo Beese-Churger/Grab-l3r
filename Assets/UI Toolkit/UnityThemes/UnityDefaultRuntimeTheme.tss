@@ -1,1 +1,8 @@
 @import url("unity-theme://default");
+
+@import url("/Assets/UI Toolkit/Styles/tutorial_buttons.uss");
+@import url("/Assets/UI Toolkit/Styles/tutorial_labels.uss");
+
+
+
+

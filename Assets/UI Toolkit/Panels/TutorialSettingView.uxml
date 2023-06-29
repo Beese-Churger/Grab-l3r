@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_buttons.uss?fileID=7433441132597879392&amp;guid=b17abf3b89997334d88072f70a3f5d7f&amp;type=3#tutorial_buttons" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_labels.uss?fileID=7433441132597879392&amp;guid=c4a2fed264642164f8aafdb5a5274972&amp;type=3#tutorial_labels" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_toggles.uss?fileID=7433441132597879392&amp;guid=db0b980bb5b82b04ca4d8853e4df9ae8&amp;type=3#tutorial_toggles" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_dropdowns.uss?fileID=7433441132597879392&amp;guid=d4b48ae837a8db243847286f3926a0d7&amp;type=3#tutorial_dropdowns" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(46, 32, 32); opacity: 1;">
+        <ui:Label text="Load Game" display-tooltip-when-elided="true" name="LoadGameTitle" class="screentitle" />
+        <ui:Button text="Level 1" display-tooltip-when-elided="true" name="Level1Button" class="button-main-title" />
+        <ui:Button text="Level 2" display-tooltip-when-elided="true" name="Level2Button" class="button-main-title" />
+        <ui:Button text="Level 3" display-tooltip-when-elided="true" name="Level3Button" class="button-main-title" />
+        <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" />
+        <ui:Toggle label="Fullscreen" name="FullScreenToggle" class="button-main-title" />
+        <ui:DropdownField label="Resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="ResolutionDropDown" class="button-main-title" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,5 +1,15 @@
 .label-main-title {
-    color: rgba(235, 149, 52, 255);
+    color: rgb(235, 149, 52);
     -unity-font-style: bold;
     font-size: 60px;
+}
+
+.screentitle {
+    font-size: 55px;
+    -unity-font-style: bold;
+    color: rgba(255, 255, 255, 255);
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

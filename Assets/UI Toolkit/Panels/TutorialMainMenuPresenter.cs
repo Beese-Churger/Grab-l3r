@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.UIElements;
 
 public class TutorialMainMenuPresenter : MonoBehaviour
 {
+    public Action OpenLoadGameButton { get; internal set; }
+
     private void Awake()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
