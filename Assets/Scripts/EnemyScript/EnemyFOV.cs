@@ -6,7 +6,7 @@ public class EnemyFOV : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.CompareTag("Player"))
         {
             int enemyType = EnemyManager.enemyManager.GetEnemyType(transform.parent.gameObject);
             if (enemyType == 0)
@@ -23,7 +23,7 @@ public class EnemyFOV : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
             int enemyType = EnemyManager.enemyManager.GetEnemyType(transform.parent.gameObject);
             if (enemyType == 0)
@@ -35,7 +35,7 @@ public class EnemyFOV : MonoBehaviour
             else if (enemyType == 1)
             {
                 Debug.Log("Big Enemy stopped chasing the player");
-                transform.parent.gameObject.GetComponent<BigEnemy>().SetState(1);
+                transform.parent.gameObject.GetComponent<BigEnemy>().SetState(0);
                 transform.parent.gameObject.GetComponent<BigEnemy>().detected = false;
 
             }

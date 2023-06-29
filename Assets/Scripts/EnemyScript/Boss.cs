@@ -193,7 +193,7 @@ public class Boss : MonoBehaviour
                            translate between 2 points)*/
                 if (!isPlaying)
                 {
-                    animator.SetBool("Crush", true);
+                    animator.SetBool("Grinder", true);
                     isPlaying = true;
                 }
                 abilityUpdated = false;

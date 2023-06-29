@@ -96,7 +96,9 @@ public class throwhook : MonoBehaviour
 				{
 					int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
 					if (enemyType == 0)
+					{
 						EnemyManager.enemyManager.SetEnemyWeight(attachedTo, EnemyManager.enemyManager.GetEnemyWeight(attachedTo) * 2);
+					}
 					else if (enemyType == 1)
 					{
 						attachedTo.GetComponent<Rigidbody2D>().isKinematic = false;
@@ -127,7 +129,9 @@ public class throwhook : MonoBehaviour
 			{
 				int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
 				if (enemyType == 0)
+				{
 					EnemyManager.enemyManager.SetEnemyWeight(attachedTo, (int)(EnemyManager.enemyManager.GetEnemyWeight(attachedTo) * 0.5f));
+				}
 				else if (enemyType == 1)
 				{
 					attachedTo.GetComponent<Rigidbody2D>().isKinematic = true;

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -4774512063997955992}
   - component: {fileID: -4181863337856160665}
   - component: {fileID: 6468801971551790173}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: PressurePlate obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,12 +152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e579333d7e322548aae6698c15a3806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: {fileID: 8150797689234064527, guid: 64e3f3edc69ef0f4d8545256a451a741, type: 3}
   terrain: {fileID: 0}
   obstacle: {fileID: 0}
   isObstacle: 0
   isDoor: 0
   animator: {fileID: 6468801971551790173}
+  objectsInTrigger: []
 --- !u!95 &6468801971551790173
 Animator:
   serializedVersion: 5

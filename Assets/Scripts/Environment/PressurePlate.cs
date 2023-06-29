@@ -49,9 +49,9 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        objectsInTrigger.Add(collision.gameObject);
         if (collision.gameObject.name != "FOV")
         {
+            objectsInTrigger.Add(collision.gameObject);
             animator.SetBool("isPressed", true);
             if (isDoor)
             {

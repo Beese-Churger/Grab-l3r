@@ -1,6 +1,5 @@
 using UnityEngine;
-using Pathfinding;
-using System;
+
 public class SmallEnemy : EnemyBaseClass
 {
     enum FSM
@@ -21,16 +20,14 @@ public class SmallEnemy : EnemyBaseClass
     [SerializeField] private float patrolDistance = 10.0f;
     [SerializeField] private float spriteScale = 1f;
 
-    private GameObject[] waypoints;
-    private GameObject wayPointObject;
-    private int currentWP;
     private float speed;
     private float stationaryTimer;
-    private Path path;
-    private Seeker seeker;
+    
     private Rigidbody2D rb;
     //Current waypoint in the path
-    private int currentWayPoint;
+    //private Path path;
+    //private Seeker seeker;
+    //private int currentWayPoint;
 
     private Animator animator;
     private GameObject playerPrefab;
@@ -39,13 +36,14 @@ public class SmallEnemy : EnemyBaseClass
     private PlayerController playerInstance;
 
     [SerializeField] LayerMask platformLayer;
-    private float raycastDistance = 1f;
+    private float raycastDistance = 1.0f;
     public bool detected = false;
+    RaycastHit2D empty;
     //
     private int type = 0;
-
-    float y, prevY;
-    bool isGrounded = true;
+    float direction = 1;
+    bool onPPlate = false;
+    bool isJumping = false;
 
     private void Awake()
     {
@@ -55,99 +53,58 @@ public class SmallEnemy : EnemyBaseClass
     void Start()
     {
         playerPrefab = GameObject.FindGameObjectWithTag("Player");
-        wayPointObject = GameObject.Find("EnemyWaypoints");
 
-        waypoints = new GameObject[2];
-        waypoints[0] = new GameObject("SmallEnemyWaypoint");
-        waypoints[1] = new GameObject("SmallEnemyWaypoint");
-
-        waypoints[0].transform.SetParent(wayPointObject.transform);
-        waypoints[1].transform.SetParent(wayPointObject.transform);
         // Set the current state of the enemy to patrol 
         current = FSM.PATROL;
         speed = originalSpeed;
         stationaryTimer = intervalBetweenPoints;
         e_Alive = true;
-
-        waypoints[0].transform.position = transform.position - new Vector3(patrolDistance, 0, 0);
-        waypoints[1].transform.position = transform.position + new Vector3(patrolDistance, 0, 0);
-
-        seeker = GetComponent<Seeker>();
+        //seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         rb.mass = weight * 0.10131712f;
 
-        InvokeRepeating("UpdatePath", 0f, 0.5f);
+    }
 
-    }
-    void UpdatePath()
-    {    
-        //if (!detected)
-        //    seeker.StartPath(rb.position, waypoints[currentWP].transform.position, OnPathComplete);
-        //else
-        seeker.StartPath(rb.position, playerPrefab.transform.position, OnPathComplete);   
-    }
-    void OnPathComplete(Path p)
-    {
-        if (!p.error)
-        {
-            path = p;
-            currentWayPoint = 0;
-        }
-    }
     public override void FSMUpdate()
-    {
-        // Might change this implementation if there is a DEAD state
-        //if (e_Alive)
+    {        
+        switch (current)
         {
-            switch (current)
-            {
-                case FSM.IDLE: // For IDLE State, The enemy temporarily stops moving before it starts moving again
-                    if (animator.gameObject.activeSelf)
-                        animator.SetBool("Patrol", false);
-                    Stop();
-                    break;
-                case FSM.PATROL:
-                    if (Math.Abs(waypoints[currentWP].transform.position.x - rb.position.x) <= 1f)
-                    {
-                        // Change patrol points
-                        current = FSM.IDLE;
-                        CheckCurrentWP();
-                        return;
-                    }
+            case FSM.IDLE: // For IDLE State, The enemy temporarily stops moving before it starts moving again
+                if (animator.gameObject.activeSelf)
+                    animator.SetBool("Patrol", false);
+                Stop();
+                break;
+            case FSM.PATROL:
+                if (!EdgeDetection() && !ObstacleDetection())
+                {
+                    Patrol();
+                    //Slow();
+                }
 
-                    if (!EdgeDetection() && !WallDetection())
-                    {
-                        Patrol();
-                        if (speed == originalSpeed)
-                            Slow();
-                    }
+                break;
+            case FSM.AGGRESSIVE:
+                // TO DO:
+                // If enemy touches the player, the player will instantly die
+                Follow();
 
-                    break;
-                case FSM.AGGRESSIVE:
-                    // TO DO:
-                    if (path == null)
-                    {
-                        Debug.Log("No path found");
-                        return;
-                    }
-                    if (currentWayPoint >= path.vectorPath.Count)
-                    {
-                        speed = originalSpeed;
-                        current = FSM.IDLE;
-                        Debug.Log("CWP:" + currentWayPoint + "pathcount:" + path.vectorPath.Count);
+                Vector2 dir = ((Vector2)playerPrefab.transform.position - rb.position).normalized;
+                dir.y = 0;
+                direction = dir.x;
 
-                        return;
-                    }
-                    // If enemy touches the player, the player will instantly die
-                    Follow();
-                    Following();
-                    break;
-                case FSM.DEAD:
-                    break;
+                if (!EdgeDetection())
+                {
+                    Vector2 force = speed * Time.deltaTime * dir;
+                    rb.AddForce(force);
+                }
+                if (dir.x >= 0.01f)
+                    transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
+                else if (dir.x <= -0.01f)
+                    transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
+                break;
+            case FSM.DEAD:
+                break;
 
-            }
-        }
-
+        }      
     }
     public override void SetWeight(int newWeight)
     {
@@ -202,24 +159,6 @@ public class SmallEnemy : EnemyBaseClass
         detected = true;
         speed = chaseSpeed;
     }
-    private void Following()
-    {
-        Vector2 dir = ((Vector2)playerPrefab.transform.position - rb.position).normalized;
-        Vector2 force = speed * Time.deltaTime * dir;
-
-        rb.AddForce(force);
-
-        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
-
-        if (distance < playerPrefab.transform.localScale.x)
-        {
-            currentWayPoint++;
-        }
-        if (force.x >= 0.01f)
-            transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
-        else if (force.x <= -0.01f)
-            transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
-    }
     public void SetState(int stateNumber)
     {
         switch(stateNumber)
@@ -237,7 +176,7 @@ public class SmallEnemy : EnemyBaseClass
     }
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.CompareTag("Player"))
         {
             // TO DO: SET THE PLAYER STATUS TO DEAD
             if (playerInstance != null)
@@ -247,36 +186,28 @@ public class SmallEnemy : EnemyBaseClass
 
         }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
+        {
+            Debug.Log(gameObject.name + " is on p plate");
+            onPPlate = true;
+        }
+        else
+            onPPlate = false;
+    }
     private void Patrol()
     {
-        Vector2 dir = ((Vector2)waypoints[currentWP].transform.position - rb.position).normalized;
-        dir.y = 0;
+        Vector2 dir = new(direction, 0);
         Vector2 force = speed * Time.deltaTime * dir;
         rb.AddForce(force);
 
         if (animator.gameObject.activeSelf)
             animator.SetBool("Patrol", true);
-        if (force.x >= 0.01f)
+        if (direction >= 0.01f)
             transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
-        else if (force.x <= -0.01f)
+        else if (direction <= -0.01f)
             transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
-    }
-
-    // Slows big enemy movement down as it approaches the waypoint,
-    private void Slow()
-    {
-        float distanceFromDestination = Vector2.Distance(rb.position, waypoints[currentWP].transform.position);
-        {
-            if (distanceFromDestination < stoppingDistance)
-            {
-                speed *= 0.7f;
-            }
-            else
-            {
-                speed = originalSpeed;
-            }
-        }
-
     }
     private bool EdgeDetection()
     {
@@ -287,24 +218,21 @@ public class SmallEnemy : EnemyBaseClass
         RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.down, raycastDistance, platformLayer);
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.down, raycastDistance, platformLayer);
 
-        //Debug.Log(rb.velocity.x);
-        Vector2 dir = (Vector2)waypoints[currentWP].transform.position - rb.position;
-        
         // Check if either of the raycasts hit a platform
-        if ((leftHit.collider == null && dir.x < 0)  || (rightHit.collider == null && dir.x > 0))
+        if (((leftHit.collider == null && direction < 0) || (rightHit.collider == null && direction > 0)) && !onPPlate && !isJumping)
         {
             // Debug.Log(dir);
             rb.velocity = Vector2.zero;
-            rb.angularVelocity = 0;
-            CheckCurrentWP();
+            ChangeDirection();
             current = FSM.IDLE;
             //Debug.Log("Small Enemy is near the edge!");
             return true;
         }
+
         return false;
 
     }
-    private bool WallDetection()
+    private bool ObstacleDetection()
     {
         // Cast two raycasts downward to check for nearby edges
         Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
@@ -312,23 +240,69 @@ public class SmallEnemy : EnemyBaseClass
 
         RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
-        if ((leftHit.collider != null && rb.velocity.x < 0) || (rightHit.collider != null && rb.velocity.x > 0))
+        if ((leftHit.collider != null && direction < 0) || (rightHit.collider != null && direction > 0))
         {
+            CheckHit(leftHit, rightHit);
+
+            if (empty.transform.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
+            {
+                rb.AddForce(new Vector2(0, 1) * 0.7f, ForceMode2D.Impulse);
+                isJumping = true;
+                //Debug.Log("Direction after jumping" + direction);
+                return false;
+            }
+            
             rb.velocity = Vector2.zero;
-            CheckCurrentWP();
+            ChangeDirection();
             current = FSM.IDLE;
-            //Debug.Log("Small Enemy is near the wall!");
+            isJumping = false;
+            //Debug.Log("Big Enemy is near the wall!");  
             return true;
         }
         return false;
     }
-    private void CheckCurrentWP()
+    private void ChangeDirection()
     {
-        // Change patrol points
-        if (currentWP == 0)
-            currentWP = 1;
+        // Change small enemy direction
+        direction *= -1;
+    }
+
+    // Slows big enemy movement down as it approaches the waypoint,
+    // Not using at the moment
+    private void Slow()
+    {
+        Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
+        Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
+
+        RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 20f, platformLayer);
+        RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 20f, platformLayer);
+
+        float distanceFromDestination = 0f;
+        if (leftHit.collider != null && direction < 0)
+        {
+            distanceFromDestination = leftHit.distance;
+        }
+        else if (rightHit.collider != null && direction > 0)
+        {
+            distanceFromDestination = rightHit.distance;
+        }
+        
+        if (distanceFromDestination < stoppingDistance)
+        {
+            speed *= 0.7f;
+        }
         else
-            currentWP = 0;
+        {
+            speed = originalSpeed;
+        }
+       
+    }
+    private void CheckHit(RaycastHit2D left, RaycastHit2D right)
+    {
+        if (left.collider != null)
+            empty = left;
+        else if (right.collider != null)
+            empty = right;
     }
 
 }

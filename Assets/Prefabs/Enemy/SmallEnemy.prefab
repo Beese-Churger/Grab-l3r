@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 8491629283298615638}
   - component: {fileID: 3133324154965276133}
   - component: {fileID: 3246113075914379299}
-  - component: {fileID: 212562186553342918}
+  - component: {fileID: 7380185740810054813}
   m_Layer: 11
   m_Name: SmallEnemy
   m_TagString: Enemy
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1cff705a9167054bb5c352d334bfb98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weight: 3
+  weight: 15
   stoppingDistance: 5
   originalSpeed: 1000
   chaseSpeed: 2000
@@ -266,7 +266,7 @@ MonoBehaviour:
   spriteScale: 1
   platformLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 11264
   detected: 0
 --- !u!114 &8491629283298615638
 MonoBehaviour:
@@ -299,7 +299,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!95 &3246113075914379299
 Animator:
@@ -321,7 +321,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!70 &212562186553342918
+--- !u!70 &7380185740810054813
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
