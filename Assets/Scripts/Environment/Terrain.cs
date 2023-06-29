@@ -13,7 +13,7 @@ public class Terrain : MonoBehaviour
     public float speed = 2f;
     public Vector2 endPos;
     public bool triggerPressurePlate = false;
-    public GameObject player;
+    private GameObject player;
     public Sprite newSprite;
 
     private Sprite mySprite;
@@ -26,6 +26,7 @@ public class Terrain : MonoBehaviour
         startPos = transform.position;
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
         mySprite = spriteRender.sprite;
+        player = GameObject.Find("Player");
     }
 
     void Update()
