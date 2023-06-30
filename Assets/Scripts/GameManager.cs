@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
 
     public void SetGameState(StateType newState)
     {
-        this.state = newState;
+        state = newState;
         //OnStateChange();
 
         switch (newState)

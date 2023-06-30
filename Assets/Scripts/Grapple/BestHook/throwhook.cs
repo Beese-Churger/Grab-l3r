@@ -26,6 +26,8 @@ public class throwhook : MonoBehaviour
 	public bool pulling = false;
     private Terrain.TerrainType type;
 
+	public bool hookedSE = false;
+
     void Start () 
 	{
 		//oldPos = transform.position;
@@ -97,7 +99,8 @@ public class throwhook : MonoBehaviour
 					int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
 					if (enemyType == 0)
 					{
-						EnemyManager.enemyManager.SetEnemyWeight(attachedTo, EnemyManager.enemyManager.GetEnemyWeight(attachedTo) * 2);
+						attachedTo.GetComponent<SmallEnemy>().SetWeight((attachedTo.GetComponent<SmallEnemy>().GetWeight() * 10));
+						hookedSE = false;
 					}
 					else if (enemyType == 1)
 					{
@@ -130,7 +133,8 @@ public class throwhook : MonoBehaviour
 				int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
 				if (enemyType == 0)
 				{
-					EnemyManager.enemyManager.SetEnemyWeight(attachedTo, (int)(EnemyManager.enemyManager.GetEnemyWeight(attachedTo) * 0.5f));
+					attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.1));
+					hookedSE = true;
 				}
 				else if (enemyType == 1)
 				{

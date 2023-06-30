@@ -36,7 +36,8 @@ public class SmallEnemy : EnemyBaseClass
     private PlayerController playerInstance;
 
     [SerializeField] LayerMask platformLayer;
-    private float raycastDistance = 1.0f;
+    [SerializeField] LayerMask Layer;
+    private float raycastDistance = 1f;
     public bool detected = false;
     RaycastHit2D empty;
     //
@@ -44,6 +45,7 @@ public class SmallEnemy : EnemyBaseClass
     float direction = 1;
     bool onPPlate = false;
     bool isJumping = false;
+    public bool isHooked = false;
 
     private void Awake()
     {
@@ -66,45 +68,52 @@ public class SmallEnemy : EnemyBaseClass
     }
 
     public override void FSMUpdate()
-    {        
-        switch (current)
+    {
+        if (IsGround())
         {
-            case FSM.IDLE: // For IDLE State, The enemy temporarily stops moving before it starts moving again
-                if (animator.gameObject.activeSelf)
-                    animator.SetBool("Patrol", false);
-                Stop();
-                break;
-            case FSM.PATROL:
-                if (!EdgeDetection() && !ObstacleDetection())
-                {
-                    Patrol();
-                    //Slow();
-                }
+            if (isHooked)
+                current = FSM.IDLE;
+            
+            switch (current)
+            {
+                case FSM.IDLE: // For IDLE State, The enemy temporarily stops moving before it starts moving again
+                    if (animator.gameObject.activeSelf)
+                        animator.SetBool("Patrol", false);
+                    Stop();
+                    break;
+                case FSM.PATROL:
+                    if (!EdgeDetection() && !ObstacleDetection())
+                    {
+                        Patrol();
+                        //Slow();
+                    }
+                    break;
+                case FSM.AGGRESSIVE:
+                    // TO DO:
+                    // If enemy touches the player, the player will instantly die      
+                    Follow();
 
-                break;
-            case FSM.AGGRESSIVE:
-                // TO DO:
-                // If enemy touches the player, the player will instantly die
-                Follow();
+                    Vector2 dir = ((Vector2)playerPrefab.transform.position - rb.position).normalized;
+                    dir.y = 0;
+                    direction = dir.x;
 
-                Vector2 dir = ((Vector2)playerPrefab.transform.position - rb.position).normalized;
-                dir.y = 0;
-                direction = dir.x;
+                    if (!EdgeDetection())
+                    {
+                        Vector2 force = speed * Time.deltaTime * dir;
+                        rb.AddForce(force);
+                    }
+                    if (dir.x >= 0.01f)
+                        transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
+                    else if (dir.x <= -0.01f)
+                        transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
 
-                if (!EdgeDetection())
-                {
-                    Vector2 force = speed * Time.deltaTime * dir;
-                    rb.AddForce(force);
-                }
-                if (dir.x >= 0.01f)
-                    transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
-                else if (dir.x <= -0.01f)
-                    transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
-                break;
-            case FSM.DEAD:
-                break;
+                    break;
+                case FSM.DEAD:
+                    break;
 
-        }      
+            }
+            
+        }
     }
     public override void SetWeight(int newWeight)
     {
@@ -226,6 +235,8 @@ public class SmallEnemy : EnemyBaseClass
             ChangeDirection();
             current = FSM.IDLE;
             //Debug.Log("Small Enemy is near the edge!");
+
+
             return true;
         }
 
@@ -266,37 +277,6 @@ public class SmallEnemy : EnemyBaseClass
         // Change small enemy direction
         direction *= -1;
     }
-
-    // Slows big enemy movement down as it approaches the waypoint,
-    // Not using at the moment
-    private void Slow()
-    {
-        Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
-        Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
-
-        RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 20f, platformLayer);
-        RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 20f, platformLayer);
-
-        float distanceFromDestination = 0f;
-        if (leftHit.collider != null && direction < 0)
-        {
-            distanceFromDestination = leftHit.distance;
-        }
-        else if (rightHit.collider != null && direction > 0)
-        {
-            distanceFromDestination = rightHit.distance;
-        }
-        
-        if (distanceFromDestination < stoppingDistance)
-        {
-            speed *= 0.7f;
-        }
-        else
-        {
-            speed = originalSpeed;
-        }
-       
-    }
     private void CheckHit(RaycastHit2D left, RaycastHit2D right)
     {
         if (left.collider != null)
@@ -304,5 +284,53 @@ public class SmallEnemy : EnemyBaseClass
         else if (right.collider != null)
             empty = right;
     }
+    private bool IsGround()
+    {
+        RaycastHit2D groundHit = Physics2D.Raycast(transform.position + Vector3.down * 1f, Vector2.down, 1f, Layer);
+        Debug.DrawRay(transform.position, Vector2.down * 1f, Color.red);
+        if (groundHit.collider != null)
+        {
+            //Debug.Log(groundHit.collider.name);
+            if (groundHit.distance <= 0.02f)
+            {
+                //Debug.Log("Ground");
+                return true;
+            }
+        }
+        Debug.Log("InTheAir");
+        return false;
+              
+    }
+
+    // Slows big enemy movement down as it approaches the waypoint,
+    // Not using at the moment
+    //private void Slow()
+    //{
+    //    Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
+    //    Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
+
+    //    RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 20f, platformLayer);
+    //    RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 20f, platformLayer);
+
+    //    float distanceFromDestination = 0f;
+    //    if (leftHit.collider != null && direction < 0)
+    //    {
+    //        distanceFromDestination = leftHit.distance;
+    //    }
+    //    else if (rightHit.collider != null && direction > 0)
+    //    {
+    //        distanceFromDestination = rightHit.distance;
+    //    }
+
+    //    if (distanceFromDestination < stoppingDistance)
+    //    {
+    //        speed *= 0.7f;
+    //    }
+    //    else
+    //    {
+    //        speed = originalSpeed;
+    //    }
+
+    //}
 
 }

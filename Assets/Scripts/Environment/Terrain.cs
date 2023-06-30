@@ -25,7 +25,8 @@ public class Terrain : MonoBehaviour
     {
         startPos = transform.position;
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
-        mySprite = spriteRender.sprite;
+        if (spriteRender != null)
+            mySprite = spriteRender.sprite;
         player = GameObject.Find("Player");
     }
 

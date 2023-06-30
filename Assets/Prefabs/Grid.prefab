@@ -31159,7 +31159,7 @@ GameObject:
   - component: {fileID: 8453596996160759006}
   - component: {fileID: 8453596996160759007}
   - component: {fileID: 8453596996160759004}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99039,7 +99039,6 @@ MonoBehaviour:
   speed: 2
   endPos: {x: 0, y: 0}
   triggerPressurePlate: 0
-  player: {fileID: 0}
   newSprite: {fileID: 0}
 --- !u!1001 &2449981055404950660
 PrefabInstance:
