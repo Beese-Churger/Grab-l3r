@@ -66,20 +66,25 @@ public class Obstacle : MonoBehaviour
 
     public void OpenDoor()
     {
-        animator.SetBool("isOpen", true);
-        if (myCollider != null)
+        
+        //if (myCollider != null)
+        {
+            animator.SetBool("isOpen", true);
             myCollider.enabled = false;
-        //Debug.Log("Collider.enabled" + myCollider.enabled);
+            Debug.Log("Collider.enabled" + myCollider.enabled);
+        }
         //spriteRender.color = Color.red;
     }
 
     public void CloseDoor()
     {
-        
-        animator.SetBool("isOpen", false);
-        if (myCollider != null)
+        //if (myCollider != null)
+        {
+            animator.SetBool("isOpen", false);
             myCollider.enabled = true;
-        //Debug.Log("Collider.enabled" + myCollider.enabled);
+            Debug.Log("Collider.enabled" + myCollider.enabled);
+        }
+
         //spriteRender.color = Color.white;
     }
 
