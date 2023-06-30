@@ -17,7 +17,6 @@ public class SmallEnemy : EnemyBaseClass
     [SerializeField] private float originalSpeed;
     [SerializeField] private float chaseSpeed;
     [SerializeField] private float intervalBetweenPoints;
-    [SerializeField] private float patrolDistance = 10.0f;
     [SerializeField] private float spriteScale = 1f;
 
     private float speed;
@@ -247,19 +246,25 @@ public class SmallEnemy : EnemyBaseClass
     {
         // Cast two raycasts downward to check for nearby edges
         Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
+        leftRayOrigin.y -= 0.1f;
         Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
+        rightRayOrigin.y -= 0.1f;
 
         RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
+
         if ((leftHit.collider != null && direction < 0) || (rightHit.collider != null && direction > 0))
         {
             CheckHit(leftHit, rightHit);
-
+            Debug.Log(empty.transform.name);
+            Debug.DrawRay(transform.position, (empty.transform.position - transform.position).normalized * 1f, Color.red);
             if (empty.transform.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
             {
-                rb.AddForce(new Vector2(0, 1) * 0.7f, ForceMode2D.Impulse);
+                rb.velocity = Vector2.zero;
+                rb.AddForce(new Vector2(0, 1) * 5f, ForceMode2D.Impulse);
+                rb.AddForce(new Vector2(direction, 0) * 3f, ForceMode2D.Impulse);
                 isJumping = true;
-                //Debug.Log("Direction after jumping" + direction);
+                Debug.Log("Direction after jumping" + direction);
                 return false;
             }
             
@@ -287,8 +292,8 @@ public class SmallEnemy : EnemyBaseClass
     private bool IsGround()
     {
         RaycastHit2D groundHit = Physics2D.Raycast(transform.position + Vector3.down * 1f, Vector2.down, 1f, Layer);
-        Debug.DrawRay(transform.position, Vector2.down * 1f, Color.red);
-        if (groundHit.collider != null)
+        RaycastHit2D groundHit2 = Physics2D.Raycast(transform.position + Vector3.down + new Vector3(direction, 0, 0) * 1f, Vector2.down, 1f, Layer);
+        if (groundHit.collider != null || groundHit2.collider != null)
         {
             //Debug.Log(groundHit.collider.name);
             if (groundHit.distance <= 0.02f)

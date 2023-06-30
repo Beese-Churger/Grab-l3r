@@ -106,7 +106,8 @@ public class throwhook : MonoBehaviour
 					int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
 					if (enemyType == 0)
 					{
-						attachedTo.GetComponent<SmallEnemy>().SetWeight((attachedTo.GetComponent<SmallEnemy>().GetWeight() * 10));
+						attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
+						attachedTo.GetComponent<SmallEnemy>().isHooked = false;
 						hookedSE = false;
 					}
 					else if (enemyType == 1)
@@ -140,8 +141,9 @@ public class throwhook : MonoBehaviour
 				int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
 				if (enemyType == 0)
 				{
-					attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.1));
+					attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.2));
 					hookedSE = true;
+					attachedTo.GetComponent<SmallEnemy>().isHooked = true;
 				}
 				else if (enemyType == 1)
 				{
