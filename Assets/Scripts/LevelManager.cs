@@ -5,8 +5,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
-    private static LevelManager instance = null;
-    private GameManager gameManager;
+    public static LevelManager instance = null;
     private int currentLevelIndex = 0;
 
     private void Awake()
@@ -22,9 +21,9 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void OnApplicationQuit()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        instance = null;
     }
 
     // load level after current level is finnished
@@ -40,7 +39,7 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("All levels loaded");
             // after all levels are finnished, return to main menu
-            gameManager.SetGameState(StateType.end);
+            GameManager.instance.SetGameState(StateType.end);
         }
 
     }
@@ -64,7 +63,6 @@ public class LevelManager : MonoBehaviour
 
         EnemyManager.enemyManager.AddEnemies();
         AudioManager.Instance.PlayBGM("level1bgm");
-
     }
 
     // Load level by name
