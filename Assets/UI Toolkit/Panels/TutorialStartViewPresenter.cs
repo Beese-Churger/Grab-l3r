@@ -15,18 +15,18 @@ public class TutorialStartViewPresenter : MonoBehaviour
         _loadgameView = root.Q("TutorialLoadGameView");
 
         SetupTutorialStartMenu();
-        SetupLoadGameMenu();
+        SetupTutorialLoadGameMenu();
     }
 
     private void SetupTutorialStartMenu()
     {
-        TutorialMainMenuPresenter menuPresenter = new TutorialMainMenuPresenter();
-        menuPresenter.OpenLoadGameButton = () => ToggleSettingsMenu(true);
+        TutorialMainMenuPresenter menuPresenter = new TutorialMainMenuPresenter(_startView);
+        menuPresenter.OpenLoadGame = () => ToggleSettingsMenu(true);
     }
 
-    private void SetupLoadGameMenu()
+    private void SetupTutorialLoadGameMenu()
     {
-        TutorialLoadGamePresenter loadgamePresenter = new TutorialLoadGamePresenter();
+        TutorialLoadGameViewPresenter loadgamePresenter = new TutorialLoadGameViewPresenter(_loadgameView);
         loadgamePresenter.BackAction = () => ToggleSettingsMenu(false);
     }
 
