@@ -63,7 +63,7 @@ public class throwhook : MonoBehaviour
 							AudioManager.Instance.PlaySFX("hook_attach");
 							curHook = Instantiate(hook, transform.position, Quaternion.identity);
 							curHook.GetComponent<RopeScript>().destiny = hit.point;
-
+							curHook.GetComponent<RopeScript>().SetCanHook(true);
 							if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
 							{
 								change = true;
@@ -77,13 +77,20 @@ public class throwhook : MonoBehaviour
                         AudioManager.Instance.PlaySFX("hook_attach");
                         curHook = Instantiate(hook, transform.position, Quaternion.identity);
                         curHook.GetComponent<RopeScript>().destiny = hit.point;
-
-                        if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
+						curHook.GetComponent<RopeScript>().SetCanHook(true);
+						if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
                         {
                             change = true;
                         }
                         ropeActive = true;
                     }
+				}
+				else
+                {
+					curHook = Instantiate(hook, transform.position, Quaternion.identity);
+					curHook.GetComponent<RopeScript>().SetCanHook(false);
+					curHook.GetComponent<RopeScript>().destiny = transform.position + (aimDirection * maxDistance);
+
 				}
 				
 			}
