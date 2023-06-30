@@ -32871,6 +32871,7 @@ GameObject:
   - component: {fileID: 1931547800}
   - component: {fileID: 1931547802}
   - component: {fileID: 1931547801}
+  - component: {fileID: 1931547803}
   m_Layer: 0
   m_Name: MovingPlatform
   m_TagString: Untagged
@@ -32974,6 +32975,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1931547803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931547799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a33817b573faac4e88d2cdda26e325a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainType: 2
+  speed: 0.5
+  endPos: {x: 91, y: 4.95}
+  triggerPressurePlate: 1
+  newSprite: {fileID: 0}
+--- !u!114 &1934848723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5598466942564548034, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
+  m_PrefabInstance: {fileID: 6457325865713419691}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 997d7086f00037342b8d6a62ea46a53f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1945059762
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33300,9 +33329,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2047465312736992500, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
+      propertyPath: terrain
+      value: 
+      objectReference: {fileID: 1931547803}
+    - target: {fileID: 2047465312736992500, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
+      propertyPath: obstacle
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2047465312736992500, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
       propertyPath: isOppDoor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2047465314112015594, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
+      propertyPath: isDoor
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2047465314112015594, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
+      propertyPath: obstacle
+      value: 
+      objectReference: {fileID: 1934848723}
     - target: {fileID: 2937449453894627244, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
       propertyPath: m_Name
       value: interact
