@@ -14,7 +14,6 @@ public class Obstacle : MonoBehaviour
     }
     [SerializeField] ObstacleType obstacleType;
 
-    [SerializeField] public GameManager manager;
     public Sprite newSprite;
     //public Vector2 endPos;
     public Animator animator;
@@ -47,7 +46,7 @@ public class Obstacle : MonoBehaviour
             if (collision.transform.CompareTag("Player") & obstacleType !=ObstacleType.door)
             {
                 // Damage player
-                manager.TakeDamage();
+                GameManager.instance.TakeDamage();
                 Debug.Log("Obstacle collision");
             }
         }
@@ -96,12 +95,12 @@ public class Obstacle : MonoBehaviour
         }
         else
         {
-                switch (obstacleType)
-                {
-                    case ObstacleType.electricity:
-                        spriteRender.sprite = mySprite;
-                        break;
-                }
+            switch (obstacleType)
+            {
+                case ObstacleType.electricity:
+                    spriteRender.sprite = mySprite;
+                    break;
+            }
         }
     }
 }

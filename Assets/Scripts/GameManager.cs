@@ -3,26 +3,20 @@ using UnityEngine;
 public enum StateType
 {
     open,           // game opened, load main menu
-    end,            // move to main menu     
-    start,          // load first level
+    end,            // move to main menu
     levelChange,    // load next level
     respawn,        // load level again when player dies
     boss,           // activate and deactivate boss
     credits         // show credits
 }
 
-public delegate void OnStateChangedHandler();
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-    public event OnStateChangedHandler OnStateChange;
     private float health = 90;
     private int score = 0;
-    private bool gamePaused;
     private bool triggeredGameEnd;
     public StateType state;
-    private LevelManager levelManager;
 
     public static GameManager GetInstance()
     {
@@ -49,35 +43,29 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        //SetGameState(StateType.open);
     }
 
     public void SetGameState(StateType newState)
     {
         this.state = newState;
-        OnStateChange();
+        //OnStateChange();
 
         switch (newState)
         {
             case StateType.end:
                 //DisplayCredits();
-                //StartCoroutine(levelManager.LoadLevel("MainMenu"));
+                StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
                 break; ;
-            case StateType.start:
-                levelManager.LoadNextLevel();
-                break;
             case StateType.open:
-                StartCoroutine(levelManager.LoadLevel("MainMenu"));
+                StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
                 break;
             case StateType.levelChange:
-                levelManager.LoadNextLevel();
+                LevelManager.instance.LoadNextLevel();
                 break;
             case StateType.respawn:
                 ResetGame();
-                levelManager.ReLoadLevel();
-                break;
-            case StateType.boss:
-                StartCoroutine(levelManager.LoadLevel("LevelLayout Boss"));
+                LevelManager.instance.ReLoadLevel();
                 break;
         }
     }
@@ -116,7 +104,6 @@ public class GameManager : MonoBehaviour
         // TODO: reset all variables to initials
         this.health = 100;
         this.score = 0;
-        //enemiesDefeated = 0;
         //triggeredGameEnd = false;
     }
 
@@ -131,12 +118,12 @@ public class GameManager : MonoBehaviour
 
     public void TakeDamage()
     {
-        health -= 30;
-        Debug.Log("Health:"+health);
+        health -= 90;
     }
+
     public LevelManager GetLevelManager()
     {
-        return this.levelManager;
+        return LevelManager.instance;
     }
 
 }
