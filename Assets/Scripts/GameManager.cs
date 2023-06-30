@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         // TODO: reset all variables to initials
-        this.health = 100;
+        this.health = 1;
         this.score = 0;
         //triggeredGameEnd = false;
     }
@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
 
     public void TakeDamage()
     {
-        health -= 90;
+        health -= 1;
     }
 
     public LevelManager GetLevelManager()

@@ -10,7 +10,8 @@ public class Obstacle : MonoBehaviour
     {
         spikes,
         electricity,
-        door
+        door,
+        water
     }
     [SerializeField] ObstacleType obstacleType;
 
@@ -69,18 +70,13 @@ public class Obstacle : MonoBehaviour
         animator.SetBool("isOpen", true);
         if (myCollider != null)
             myCollider.enabled = false;
-        //Debug.Log("Collider.enabled" + myCollider.enabled);
-        //spriteRender.color = Color.red;
     }
 
     public void CloseDoor()
     {
-        
         animator.SetBool("isOpen", false);
         if (myCollider != null)
             myCollider.enabled = true;
-        //Debug.Log("Collider.enabled" + myCollider.enabled);
-        //spriteRender.color = Color.white;
     }
 
     private void Update()
