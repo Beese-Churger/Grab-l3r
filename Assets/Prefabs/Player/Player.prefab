@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: d9be07f8ffc3b714fbfcdc4fef471ff7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   hook: {fileID: 1000012688847204, guid: fd71233abbbbf1d448c5f86a2f5926f0, type: 3}
   pointer: {fileID: -5079066100166309683, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   ropeActive: 0
-  maxLinks: 15
+  maxDistance: 10
   ropeLayerMask:
     serializedVersion: 2
     m_Bits: 1089
