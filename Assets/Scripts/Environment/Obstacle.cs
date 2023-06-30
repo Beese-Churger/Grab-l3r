@@ -15,10 +15,8 @@ public class Obstacle : MonoBehaviour
     [SerializeField] ObstacleType obstacleType;
 
     public Sprite newSprite;
-    //public Vector2 endPos;
     public Animator animator;
 
-    //private Vector2 startPos;
     private SpriteRenderer spriteRender;
     private Sprite mySprite;
     private bool isActive;
@@ -32,7 +30,6 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        //startPos = transform.position;
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
         mySprite = spriteRender.sprite;
         myCollider = gameObject.GetComponent<Collider2D>();
@@ -68,24 +65,18 @@ public class Obstacle : MonoBehaviour
     {
         animator.SetBool("isOpen", true);
         myCollider.enabled = false;
-        //Debug.Log("Collider.enabled" + myCollider.enabled);
-        //spriteRender.color = Color.red;
     }
 
     public void CloseDoor()
     {
         animator.SetBool("isOpen", false);
         myCollider.enabled = true;
-        //Debug.Log("Collider.enabled" + myCollider.enabled);
-        //spriteRender.color = Color.white;
     }
 
     private void Update()
     {
         if (!isActive)
         {
-            // TODO: add animation or other function to different types 
-            // destroy obstacle?
             switch (obstacleType)
             {
                 case ObstacleType.electricity:
