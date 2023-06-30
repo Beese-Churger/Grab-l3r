@@ -29,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7980640485310085717}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalPosition: {x: 3.061, y: -0.1988, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,8 +81,8 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.6, y: 0.13}
+  m_DrawMode: 2
+  m_Size: {x: 1.1830951, y: 0.25093734}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -101,18 +101,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.02}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 0.59615386, y: 0, z: 0.13461539, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.6, y: 0.13}
-    newSize: {x: 0.6, y: 0.13}
+    oldSize: {x: 1.1538461, y: 0.25}
+    newSize: {x: 1.1830951, y: 0.25093734}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.13}
+  m_Size: {x: 1.19, y: 0.2}
   m_EdgeRadius: 0
 --- !u!61 &-4774512063997955992
 BoxCollider2D:
@@ -127,18 +127,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.02}
+  m_Offset: {x: 0, y: 0.03}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 0.59615386, y: 0, z: 0.13461539, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.6, y: 0.13}
-    newSize: {x: 0.6, y: 0.13}
+    oldSize: {x: 1.1538461, y: 0.25}
+    newSize: {x: 1.1830951, y: 0.25093734}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.54, y: 0.13}
+  m_Size: {x: 0.98, y: 0.21}
   m_EdgeRadius: 0
 --- !u!114 &-4181863337856160665
 MonoBehaviour:
@@ -156,6 +156,7 @@ MonoBehaviour:
   obstacle: {fileID: 0}
   isObstacle: 0
   isDoor: 0
+  isOppDoor: 0
   animator: {fileID: 6468801971551790173}
   objectsInTrigger: []
 --- !u!95 &6468801971551790173
