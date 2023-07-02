@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleType: 0
-  manager: {fileID: 0}
   newSprite: {fileID: 0}
   animator: {fileID: 0}
 --- !u!61 &2708476582084200889
@@ -125,9 +124,9 @@ BoxCollider2D:
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
-  m_Size: {x: 4.2, y: 1.15}
+  m_Size: {x: 3.12, y: 1.63}
   m_EdgeRadius: 0
 --- !u!114 &2508744810590840746
 MonoBehaviour:
@@ -145,5 +144,4 @@ MonoBehaviour:
   speed: 2
   endPos: {x: 0, y: 0}
   triggerPressurePlate: 0
-  player: {fileID: 0}
   newSprite: {fileID: 0}
