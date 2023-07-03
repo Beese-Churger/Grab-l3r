@@ -46,7 +46,7 @@ public class throwhook : MonoBehaviour
 
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
-		if (grappleAction.action.triggered && !Options.isPaused) {
+		if (grappleAction.action.triggered) {
 
 
 			if (ropeActive == false) {
