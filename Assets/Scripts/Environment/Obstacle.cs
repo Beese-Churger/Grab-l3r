@@ -42,7 +42,6 @@ public class Obstacle : MonoBehaviour
             if (collision.transform.CompareTag("Player") & obstacleType !=ObstacleType.door)
             {
                 GameManager.instance.TakeDamage();
-                Debug.Log("Obstacle collision");
             }
         }
     }
@@ -73,6 +72,11 @@ public class Obstacle : MonoBehaviour
         {
             myCollider.enabled = true;
         }  
+    }
+
+    public ObstacleType GetObstacleType()
+    {
+        return obstacleType;
     }
 
     private void Update()

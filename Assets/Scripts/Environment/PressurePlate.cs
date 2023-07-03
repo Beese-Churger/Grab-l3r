@@ -5,19 +5,38 @@ public class PressurePlate : MonoBehaviour
 {
     public Terrain terrain;
     public Obstacle obstacle;
-    public bool isObstacle;
-    public bool isDoor;
-    public bool isOppDoor;
+    public bool isDoorOpen;
     public Animator animator;
-
-    private bool back = false;
     public List<GameObject> objectsInTrigger;
+
+    private Obstacle.ObstacleType type;
+    private bool bossState;
+    private bool isObstacle;
+    private bool isDoor;
+
 
     private void Start()
     {
-        if(isOppDoor)
+        if (obstacle != null)
         {
-            obstacle.OpenDoor();
+            type = obstacle.GetObstacleType();
+            if (type == Obstacle.ObstacleType.door)
+            {
+                isDoor = true;
+                if (isDoorOpen)
+                {
+                    obstacle.OpenDoor();
+                }
+            }
+            else
+            {
+                isDoor = false;
+                isObstacle = true;
+            }
+        }
+        else
+        {
+            isObstacle = false;
         }
     }
 
@@ -42,17 +61,25 @@ public class PressurePlate : MonoBehaviour
             if (isDoor)
             {
                 if (obstacle != null)
+                {
                     obstacle.OpenDoor();
+                } 
             }
-            if(isOppDoor)
+            if(isDoorOpen)
             {
                 if (obstacle != null)
+                {
                     obstacle.CloseDoor();
+                }
+                    
             }
             else if (!isObstacle && !isDoor)
             {
                 if (terrain != null)
+                {
                     terrain.ActivateMovingPlatform();
+                }
+                    
             }
             else
             {
@@ -73,15 +100,17 @@ public class PressurePlate : MonoBehaviour
         if(objectsInTrigger.Count <= 0)
         {
             animator.SetBool("isPressed", false);
-            back = true;
             if (isDoor)
             {
                 obstacle.CloseDoor();
             }
-            if(isOppDoor)
+            if(isDoorOpen)
             {
                 if (obstacle != null)
+                {
                     obstacle.OpenDoor();
+                }
+                    
             }
             else if (!isObstacle && !isDoor)
             {

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "Level1", "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
     public static LevelManager instance = null;
     private int currentLevelIndex = 0;
 
@@ -26,22 +26,17 @@ public class LevelManager : MonoBehaviour
         instance = null;
     }
 
-    // load level after current level is finnished
     public void LoadNextLevel()
     {
         currentLevelIndex++;
-
         if (currentLevelIndex < levels.Length)
         {
             StartCoroutine(LoadLevel(currentLevelIndex));
         }
         else
         {
-            Debug.Log("All levels loaded");
-            // after all levels are finnished, return to main menu
             GameManager.instance.SetGameState(StateType.end);
         }
-
     }
 
     public void ReLoadLevel()
@@ -50,7 +45,6 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(LoadLevel(level));
     }
 
-    // Load level by index
     private IEnumerator LoadLevel(int index)
     {
         string scene = levels[index];
@@ -65,8 +59,6 @@ public class LevelManager : MonoBehaviour
         AudioManager.Instance.PlayBGM("level1bgm");
     }
 
-    // Load level by name
-    // Can be used in level selection or for testing purpouses
     public IEnumerator LoadLevel(string scene)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
@@ -77,7 +69,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // Get Current level
     public string GetCurrentLevel()
     {
         foreach (string levelName in levels)

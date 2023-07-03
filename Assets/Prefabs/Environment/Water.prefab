@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6250945722360653178}
   - component: {fileID: 539980497794520619}
   - component: {fileID: -4711650883116312568}
+  - component: {fileID: 8259978749335424962}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -127,3 +128,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8259978749335424962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9155708117494070876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a33817b573faac4e88d2cdda26e325a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainType: 0
+  speed: 2
+  endPos: {x: 0, y: 0}
+  triggerPressurePlate: 0
+  newSprite: {fileID: 0}
