@@ -14,6 +14,7 @@ public class Options : MonoBehaviour
 
     private float w, h;
     private static bool isPressed = false;
+    public static bool isPaused = false;
     // Options GO prefab
     [SerializeField] private GameObject OptionsMenu;
 
@@ -51,6 +52,8 @@ public class Options : MonoBehaviour
         }
         else
             Destroy(gameObject);
+
+        isPaused = false;
     }
 
 
@@ -148,6 +151,7 @@ public class Options : MonoBehaviour
                 playerInput.SwitchCurrentActionMap("Gameplay");
                 CheckActivePanel();
                 Time.timeScale = 1;
+                isPaused = false;
             }
 
             else
@@ -155,6 +159,7 @@ public class Options : MonoBehaviour
                 // Switch to Options action map to prevent the player from controlling it
                 playerInput.SwitchCurrentActionMap("Options");
                 Time.timeScale = 0;
+                isPaused = true;
             }
 
             OptionsMenu.SetActive(!OptionsMenu.activeSelf);
