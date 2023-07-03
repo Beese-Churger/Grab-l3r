@@ -155,6 +155,8 @@ public class throwhook : MonoBehaviour
 			pulling = true;
 			change = false;
 		}
+
+		gameObject.GetComponent<SimpleController>().SetHook(ropeActive);
 	}
 }
 

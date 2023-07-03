@@ -293,6 +293,10 @@ public class RopeScript : MonoBehaviour {
 	public void SetCanHook(bool _hook)
     {
 		canHook = _hook;
-		Debug.Log("set");
+    }
+
+	public bool isHooked()
+    {
+		return hooked;
     }
 }

@@ -13,6 +13,8 @@ public class SimpleController : MonoBehaviour
     public bool groundCheck;
     public float jumpSpeed = 3f;
     public bool isJumping = false;
+    private RopeScript ropeScript;
+    private bool isHooked = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,6 @@ public class SimpleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         jumpInput = Input.GetAxis("Jump");
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
@@ -52,13 +53,19 @@ public class SimpleController : MonoBehaviour
             if (horizontalInput > 0f)
             {
                 //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
-                rBody.AddForce(new Vector2(Accel * 8, 0), ForceMode2D.Force);
+                if(isHooked)
+                    rBody.AddForce(new Vector2(Accel * 8, 0), ForceMode2D.Force);
+                else
+                    rBody.AddForce(new Vector2(Accel, 0), ForceMode2D.Force);
             }
 
             else if (horizontalInput < 0f)
             {
                 //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
-                rBody.AddForce(new Vector2(-Accel * 8, 0), ForceMode2D.Force);
+                if (isHooked)
+                    rBody.AddForce(new Vector2(-Accel * 8, 0), ForceMode2D.Force);
+                else
+                    rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
             }
             else
             {
@@ -69,8 +76,15 @@ public class SimpleController : MonoBehaviour
         // clamp the velocity to something sane
         if (rBody.velocity.magnitude > 50)
             rBody.velocity = rBody.velocity.normalized * 50;
+
+        if(groundCheck)
+            rBody.velocity = new Vector2(rBody.velocity.x * 0.9f, rBody.velocity.y);
     }
 
+    public void SetHook(bool _hook)
+    {
+        isHooked = _hook;
+    }
     private float SaturatedAdd(float Min, float Max, float Current, float Modifier)
     {
         if (Modifier < 0)
