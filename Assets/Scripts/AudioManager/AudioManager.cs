@@ -39,8 +39,14 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            bgmSource.clip = s.clip;
-            bgmSource.PlayOneShot(s.clip);
+            if (bgmSource != null)
+            {
+                if (!bgmSource.isPlaying)
+                {
+                    bgmSource.clip = s.clip;
+                    bgmSource.PlayOneShot(s.clip);
+                }
+            }
         }
     }
 
@@ -64,7 +70,11 @@ public class AudioManager : MonoBehaviour
             {
                 bgmSource.loop = true;
             }
-            bgmSource.Play();
+            if (bgmSource != null)
+            {
+                if (!bgmSource.isPlaying)
+                    bgmSource.Play();
+            }
         }
     }
 
@@ -160,15 +170,11 @@ public class AudioManager : MonoBehaviour
     public void BGMVolume(float volume)
     {
         bgmSource.volume = volume;
-        Debug.Log(volume);
-        //bgSource.volume = volume;
     }
 
     public void SFXVolume(float volume)
     {
         sfxSource.volume = volume;
-        Debug.Log("SFX Slider:" +volume);
-
     }
 
 }

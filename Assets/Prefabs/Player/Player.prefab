@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a40a2058cd47947a6743d1cc6d20ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grappleAction: {fileID: 679559859759175287, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   hook: {fileID: 1000012688847204, guid: fd71233abbbbf1d448c5f86a2f5926f0, type: 3}
   pointer: {fileID: -5079066100166309683, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   ropeActive: 0
