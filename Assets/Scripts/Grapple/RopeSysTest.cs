@@ -400,31 +400,6 @@ public class RopeSysTest : MonoBehaviour
             // 4
             wrapPointsLookup[hingePosition] = 1;
         }
-
-        if (objectAngle < inverseHingeAngle)
-        {
-            // unwrap
-            if (wrapPointsLookup[hingePosition] == 1)
-            {
-                UnwrapRopePosition(0, inverseHingeIndex);
-                return;
-            }
-
-            // 2
-            wrapPointsLookup[inverseHingePosition] = -1;
-        }
-        else
-        {
-            // 3
-            if (wrapPointsLookup[inverseHingePosition] == -1)
-            {
-                UnwrapRopePosition(0, inverseHingeIndex);
-                return;
-            }
-
-            // 4
-            wrapPointsLookup[hingePosition] = 1;
-        }
     }
 
     private void UnwrapRopePosition(int anchorIndex, int hingeIndex)
