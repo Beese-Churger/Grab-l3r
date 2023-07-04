@@ -205,7 +205,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 74cc865b4dc73cb4f88753182fb417fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -262,7 +262,6 @@ MonoBehaviour:
   originalSpeed: 1000
   chaseSpeed: 2000
   intervalBetweenPoints: 2
-  patrolDistance: 10
   spriteScale: 1
   platformLayer:
     serializedVersion: 2
@@ -271,6 +270,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 9216
   detected: 0
+  isHooked: 0
 --- !u!114 &8491629283298615638
 MonoBehaviour:
   m_ObjectHideFlags: 0
