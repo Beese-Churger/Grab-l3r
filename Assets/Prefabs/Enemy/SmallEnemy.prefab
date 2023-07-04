@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7703651270656136045}
   - component: {fileID: 8182832587624110730}
   - component: {fileID: 1913265785698115141}
-  - component: {fileID: 1083270572286015954}
   m_Layer: 0
   m_Name: FOV
   m_TagString: Untagged
@@ -114,18 +113,6 @@ PolygonCollider2D:
     - - {x: 0, y: 0.5773587}
       - {x: -0.5, y: -0.28866667}
       - {x: 0.5, y: -0.28866667}
---- !u!114 &1083270572286015954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127371286278384171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e199a3ae9cc432d42ac138d99d383090, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4876807040678775496
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,7 +32,6 @@ public class SmallEnemy : EnemyBaseClass
     private GameObject playerPrefab;
     private FSM current;
     private bool e_Alive;
-    private PlayerController playerInstance;
 
     [SerializeField] LayerMask platformLayer;
     [SerializeField] LayerMask Layer;
@@ -182,27 +181,33 @@ public class SmallEnemy : EnemyBaseClass
             break;
         }
     }
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            // TO DO: SET THE PLAYER STATUS TO DEAD
-            if (playerInstance != null)
-            {
-                playerInstance.p_Alive = false;
-            }
-
+            current = FSM.AGGRESSIVE;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            current = FSM.IDLE;
+            detected = false;
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
         {
-            Debug.Log(gameObject.name + " is on p plate");
+            //Debug.Log(gameObject.name + " is on p plate");
             onPPlate = true;
         }
         else
             onPPlate = false;
+        // TO DO: SET THE PLAYER STATUS TO DEAD
+        //if (collision.gameObject.CompareTag("Player"))
+            //GameManager.instance.TakeDamage();
     }
     private void Patrol()
     {
@@ -256,7 +261,7 @@ public class SmallEnemy : EnemyBaseClass
         if ((leftHit.collider != null && direction < 0) || (rightHit.collider != null && direction > 0))
         {
             CheckHit(leftHit, rightHit);
-            Debug.Log(empty.transform.name);
+            //Debug.Log(empty.transform.name);
             Debug.DrawRay(transform.position, (empty.transform.position - transform.position).normalized * 1f, Color.red);
             if (empty.transform.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
             {
@@ -264,7 +269,7 @@ public class SmallEnemy : EnemyBaseClass
                 rb.AddForce(new Vector2(0, 1) * 5f, ForceMode2D.Impulse);
                 rb.AddForce(new Vector2(direction, 0) * 3f, ForceMode2D.Impulse);
                 isJumping = true;
-                Debug.Log("Direction after jumping" + direction);
+                //Debug.Log("Direction after jumping" + direction);
                 return false;
             }
             
@@ -292,8 +297,9 @@ public class SmallEnemy : EnemyBaseClass
     private bool IsGround()
     {
         RaycastHit2D groundHit = Physics2D.Raycast(transform.position + Vector3.down * 1f, Vector2.down, 1f, Layer);
-        RaycastHit2D groundHit2 = Physics2D.Raycast(transform.position + Vector3.down + new Vector3(direction, 0, 0) * 1f, Vector2.down, 1f, Layer);
-        if (groundHit.collider != null || groundHit2.collider != null)
+        //RaycastHit2D groundHit2 = Physics2D.Raycast(transform.position + Vector3.down + new Vector3(direction, 0, 0) * 1f, Vector2.down, 1f, Layer);
+        //|| groundHit2.collider != null
+        if (groundHit.collider != null)
         {
             //Debug.Log(groundHit.collider.name);
             if (groundHit.distance <= 0.02f)
@@ -302,7 +308,7 @@ public class SmallEnemy : EnemyBaseClass
                 return true;
             }
         }
-        Debug.Log("InTheAir");
+        Debug.Log(gameObject.name + "In The Air");
         return false;
               
     }

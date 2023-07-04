@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
+    [SerializeField] private InputActionReference movement;
+    [SerializeField] private InputActionReference jump;
     private Rigidbody2D rBody;
     public float MAXSPEED = 100f;
     public float AirAccel = 3f;
@@ -25,10 +27,10 @@ public class SimpleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        jumpInput = Input.GetAxis("Jump");
+        jumpInput = jump.action.ReadValue<float>();
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
-        horizontalInput = Input.GetAxis("Horizontal");
+        horizontalInput = movement.action.ReadValue<Vector2>().x;
 
        
     }
@@ -38,7 +40,7 @@ public class SimpleController : MonoBehaviour
         float Accel = groundCheck ? AirAccel : GroundAccel;
 
 
-       
+        Debug.Log(jumpInput);
 
         if (groundCheck)
         {
