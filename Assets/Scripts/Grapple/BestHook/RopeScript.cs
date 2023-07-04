@@ -42,6 +42,9 @@ public class RopeScript : MonoBehaviour {
 	private bool toDelete = false;
 	private float stopAt;
 	private bool down = false;
+	private bool canHook;
+
+
 	void Start () 
 	{
 
@@ -64,6 +67,7 @@ public class RopeScript : MonoBehaviour {
 
 		oldPos = transform.position;
 		stopAt = 0;
+
 	}
     void Update()
     {
@@ -95,7 +99,13 @@ public class RopeScript : MonoBehaviour {
 			lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 		}
 		else
+        {
+			//Debug.Log(canHook);
+			if (!canHook)
+				Destroy(gameObject);
 			hooked = true;
+		}
+
 
 		if (hooked)
 		{
@@ -278,5 +288,15 @@ public class RopeScript : MonoBehaviour {
         {
 			Nodes[i].GetComponent<Rigidbody2D>().mass = 0.1f;
         }
+    }
+
+	public void SetCanHook(bool _hook)
+    {
+		canHook = _hook;
+    }
+
+	public bool isHooked()
+    {
+		return hooked;
     }
 }

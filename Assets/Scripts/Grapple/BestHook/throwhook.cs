@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class throwhook : MonoBehaviour 
 {
+	[SerializeField] private InputActionReference grappleAction;
+
 	public GameObject hook;
 
 	public InputActionReference pointer;
@@ -26,8 +28,6 @@ public class throwhook : MonoBehaviour
 	public bool pulling = false;
     private Terrain.TerrainType type;
 
-	public bool hookedSE = false;
-
     void Start () 
 	{
 		//oldPos = transform.position;
@@ -46,7 +46,7 @@ public class throwhook : MonoBehaviour
 
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
-		if (Input.GetMouseButtonDown (0)) {
+		if (grappleAction.action.triggered) {
 
 
 			if (ropeActive == false) {
@@ -63,7 +63,7 @@ public class throwhook : MonoBehaviour
 							AudioManager.Instance.PlaySFX("hook_attach");
 							curHook = Instantiate(hook, transform.position, Quaternion.identity);
 							curHook.GetComponent<RopeScript>().destiny = hit.point;
-
+							curHook.GetComponent<RopeScript>().SetCanHook(true);
 							if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
 							{
 								change = true;
@@ -77,13 +77,20 @@ public class throwhook : MonoBehaviour
                         AudioManager.Instance.PlaySFX("hook_attach");
                         curHook = Instantiate(hook, transform.position, Quaternion.identity);
                         curHook.GetComponent<RopeScript>().destiny = hit.point;
-
-                        if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
+						curHook.GetComponent<RopeScript>().SetCanHook(true);
+						if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
                         {
                             change = true;
                         }
                         ropeActive = true;
                     }
+				}
+				else
+                {
+					curHook = Instantiate(hook, transform.position, Quaternion.identity);
+					curHook.GetComponent<RopeScript>().SetCanHook(false);
+					curHook.GetComponent<RopeScript>().destiny = transform.position + (aimDirection * maxDistance);
+
 				}
 				
 			}
@@ -99,8 +106,8 @@ public class throwhook : MonoBehaviour
 					int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
 					if (enemyType == 0)
 					{
-						attachedTo.GetComponent<SmallEnemy>().SetWeight((attachedTo.GetComponent<SmallEnemy>().GetWeight() * 10));
-						hookedSE = false;
+						attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
+						attachedTo.GetComponent<SmallEnemy>().isHooked = false;
 					}
 					else if (enemyType == 1)
 					{
@@ -133,8 +140,8 @@ public class throwhook : MonoBehaviour
 				int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
 				if (enemyType == 0)
 				{
-					attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.1));
-					hookedSE = true;
+					attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.2));
+					attachedTo.GetComponent<SmallEnemy>().isHooked = true;
 				}
 				else if (enemyType == 1)
 				{
@@ -146,6 +153,8 @@ public class throwhook : MonoBehaviour
 			pulling = true;
 			change = false;
 		}
+
+		gameObject.GetComponent<SimpleController>().SetHook(ropeActive);
 	}
 }
 

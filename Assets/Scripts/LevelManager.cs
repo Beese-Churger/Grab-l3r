@@ -54,9 +54,9 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
-
-        EnemyManager.enemyManager.AddEnemies();
-        AudioManager.Instance.PlayBGM("level1bgm");
+        if (EnemyManager.enemyManager != null)
+            EnemyManager.enemyManager.AddEnemies();
+        AudioManager.Instance.PlayBGMLoop("level1bgm", false);
     }
 
     public IEnumerator LoadLevel(string scene)
@@ -67,6 +67,10 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
+        if (EnemyManager.enemyManager != null)
+            EnemyManager.enemyManager.AddEnemies();
+
+        AudioManager.Instance.PlayBGMLoop("level1bgm", false);
     }
 
     public string GetCurrentLevel()
