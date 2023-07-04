@@ -14,14 +14,15 @@ public class TestPlayer : MonoBehaviour
     private void Awake()
     {
         // set player position to last checkpoint on respawn
-        var point = GameManager.instance.GetCheckPointPos();
-        transform.position = point;
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        var point = GameManager.instance.GetCheckPointPos();
+        transform.position = point;
     }
 
     // Player movement for testing purpouses
