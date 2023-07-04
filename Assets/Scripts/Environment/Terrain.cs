@@ -12,22 +12,15 @@ public class Terrain : MonoBehaviour
 
     public float speed = 0.5f;
     public Vector2 endPos;
-    public Sprite newSprite;
+    public Animator animator;
 
     private bool triggerPressurePlate = false;
-    private SpriteRenderer spriteRender;
-    private Sprite mySprite;
     private Vector2 startPos;
     private GameObject player;
 
     void Start()
     {
         startPos = transform.position;
-        spriteRender = gameObject.GetComponent<SpriteRenderer>();
-        if (spriteRender != null)
-        {
-            mySprite = spriteRender.sprite;
-        }
         player = GameObject.Find("Player");
     }
 
@@ -47,13 +40,13 @@ public class Terrain : MonoBehaviour
     public void ActivateMovingPlatform()
     {
         triggerPressurePlate = true;
-        spriteRender.sprite = newSprite;
+        animator.SetBool("isActivated", true);
     }
 
     public void DeactivateMovingPlatform()
     {
         triggerPressurePlate = false;
-        spriteRender.sprite = mySprite;
+        animator.SetBool("isActivated", false);
     }
 
     public TerrainType GetTerrainType()

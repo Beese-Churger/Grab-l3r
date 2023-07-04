@@ -105,7 +105,7 @@ public class BigEnemy : EnemyBaseClass
                     Vector2 dir = ((Vector2)playerPrefab.transform.position - rb.position).normalized;
                     dir.y = 0;
                     direction = dir.x;
-                    Debug.Log(dir);
+                    //Debug.Log(dir);
 
                     if (!EdgeDetection())
                     {
@@ -189,13 +189,22 @@ public class BigEnemy : EnemyBaseClass
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            // TO DO: SET THE PLAYER STATUS TO DEAD
-            if (playerInstance != null)
-            {
-                playerInstance.p_Alive = false;
-            }
-
+            current = FSM.AGGRESSIVE;
         }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            current = FSM.IDLE;
+            detected = false;
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // TO DO: SET THE PLAYER STATUS TO DEAD
+        //if (collision.gameObject.CompareTag("Player"))
+        //GameManager.instance.TakeDamage();
     }
     private void Patrol()
     {

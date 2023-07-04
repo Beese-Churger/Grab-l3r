@@ -62,7 +62,8 @@ public class Obstacle : MonoBehaviour
         if (myCollider != null)
         {
             myCollider.enabled = false;
-        }  
+        }
+        AudioManager.Instance.PlaySFX("door_open");
     }
 
     public void CloseDoor()
@@ -71,7 +72,8 @@ public class Obstacle : MonoBehaviour
         if (myCollider != null)
         {
             myCollider.enabled = true;
-        }  
+        }
+        AudioManager.Instance.PlaySFX("door_close");
     }
 
     public ObstacleType GetObstacleType()

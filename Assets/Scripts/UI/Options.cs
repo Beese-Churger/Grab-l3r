@@ -148,35 +148,38 @@ public class Options : MonoBehaviour
 
     private void Update()
     {
-        if ((switchToOptionsControls.action.triggered || ToggleOptionsScreen.action.triggered) && !isPressed)
+        //if (LevelManager.instance.GetCurrentLevelIndex() > 1)
         {
-            if (OptionsMenu.activeSelf)
+            if ((switchToOptionsControls.action.triggered || ToggleOptionsScreen.action.triggered) && !isPressed)
             {
-                playerInput.SwitchCurrentActionMap("Gameplay");
-                CheckActivePanel();
-                Time.timeScale = 1;
-                isPaused = false;
-            }
+                if (OptionsMenu.activeSelf)
+                {
+                    playerInput.SwitchCurrentActionMap("Gameplay");
+                    CheckActivePanel();
+                    Time.timeScale = 1;
+                    isPaused = false;
+                }
 
+                else
+                {
+                    // Switch to Options action map to prevent the player from controlling it
+                    playerInput.SwitchCurrentActionMap("Options");
+                    Time.timeScale = 0;
+                    isPaused = true;
+                }
+
+                OptionsMenu.SetActive(!OptionsMenu.activeSelf);
+                ButtonPanel.SetActive(!ButtonPanel.activeSelf);
+                isPressed = true;
+            }
             else
+                isPressed = false;
+
+            if (Input.GetKeyDown(KeyCode.N))
             {
-                // Switch to Options action map to prevent the player from controlling it
-                playerInput.SwitchCurrentActionMap("Options");
-                Time.timeScale = 0;
-                isPaused = true;
+                GameManager.instance.SetGameState(StateType.levelChange);
+                EnemyManager.enemyManager.ClearEnemyList();
             }
-
-            OptionsMenu.SetActive(!OptionsMenu.activeSelf);
-            ButtonPanel.SetActive(!ButtonPanel.activeSelf);
-            isPressed = true;
-        }
-        else
-            isPressed = false;
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            GameManager.instance.SetGameState(StateType.levelChange);
-            EnemyManager.enemyManager.ClearEnemyList();
         }
     }
     IEnumerator Wait()
@@ -200,15 +203,25 @@ public class Options : MonoBehaviour
     }
     public void TriggerReset()
     {
-        if (OptionsMenu.activeSelf)
-        {
-            CheckActivePanel();
-            OptionsMenu.SetActive(false);
-            ButtonPanel.SetActive(false);
-            playerInput.SwitchCurrentActionMap("Gameplay");
-            Time.timeScale = 1;
-        }
+        
+        CheckActivePanel();
+        OptionsMenu.SetActive(false);
+        ButtonPanel.SetActive(!ButtonPanel.activeSelf);
+        playerInput.SwitchCurrentActionMap("Gameplay");
+        Time.timeScale = 1;      
         GameManager.instance.SetGameState(StateType.respawn);
+    }
+    public void TriggerQuit()
+    {
+        CheckActivePanel();
+        OptionsMenu.SetActive(false);
+        ButtonPanel.SetActive(!ButtonPanel.activeSelf);
+        playerInput.SwitchCurrentActionMap("Gameplay");
+        Time.timeScale = 1;
+
+        AudioManager.Instance.PlayBGMLoop("level1bgm", true);
+        LevelManager.instance.SetCurrentLevelIndex(0);
+        GameManager.instance.SetGameState(StateType.end);
     }
     public void ResetAllBindings()
     {

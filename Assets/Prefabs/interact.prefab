@@ -166,6 +166,10 @@ PrefabInstance:
       propertyPath: isOppDoor
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4181863337856160665, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
+      propertyPath: isDoorOpen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7980640485310085714, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_RootOrder
       value: 4

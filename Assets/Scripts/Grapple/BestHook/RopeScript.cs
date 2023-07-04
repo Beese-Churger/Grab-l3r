@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine.InputSystem;
 
 public class RopeScript : MonoBehaviour {
+
+	[SerializeField] private InputActionReference movement;
 
 	public Vector2 destiny;
 
@@ -72,7 +74,9 @@ public class RopeScript : MonoBehaviour {
     void Update()
     {
 
-		verticalInput = Input.GetAxis("Vertical");
+		verticalInput = movement.action.ReadValue<Vector2>().y;
+		//verticalInput = movement.action.ReadValue<Vector2>().y;
+
 		transform.position = Vector2.MoveTowards(transform.position, destiny, speed);
 
 		// get distance travelled from prev pos
@@ -118,7 +122,7 @@ public class RopeScript : MonoBehaviour {
 
 				if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
 				{
-					rbody.AddForce((Nodes[0].transform.position - player.transform.position).normalized * 1.1f, ForceMode2D.Force);
+					//rbody.AddForce((Nodes[0].transform.position - player.transform.position).normalized * 1.1f, ForceMode2D.Force);
 					lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
 				}
 				else

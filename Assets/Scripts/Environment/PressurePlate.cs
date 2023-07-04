@@ -58,14 +58,14 @@ public class PressurePlate : MonoBehaviour
         {
             objectsInTrigger.Add(collision.gameObject);
             animator.SetBool("isPressed", true);
-            if (isDoor)
+            if (isDoor && !isDoorOpen)
             {
                 if (obstacle != null)
                 {
                     obstacle.OpenDoor();
                 } 
             }
-            if(isDoorOpen)
+            else if(isDoorOpen)
             {
                 if (obstacle != null)
                 {
@@ -100,11 +100,11 @@ public class PressurePlate : MonoBehaviour
         if(objectsInTrigger.Count <= 0)
         {
             animator.SetBool("isPressed", false);
-            if (isDoor)
+            if (isDoor && !isDoorOpen)
             {
                 obstacle.CloseDoor();
             }
-            if(isDoorOpen)
+            else if(isDoorOpen)
             {
                 if (obstacle != null)
                 {

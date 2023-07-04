@@ -61,6 +61,10 @@ public class AudioManager : MonoBehaviour
         else
         {
             bgmSource.clip = s.clip;
+
+            if (bgmSource != null)
+                if (!bgmSource.isPlaying)
+                    bgmSource.Play();
             if (stop)
             {
                 bgmSource.loop = false;
@@ -70,11 +74,7 @@ public class AudioManager : MonoBehaviour
             {
                 bgmSource.loop = true;
             }
-            if (bgmSource != null)
-            {
-                if (!bgmSource.isPlaying)
-                    bgmSource.Play();
-            }
+
         }
     }
 
@@ -175,6 +175,10 @@ public class AudioManager : MonoBehaviour
     public void SFXVolume(float volume)
     {
         sfxSource.volume = volume;
+    }
+    public void StopBGM()
+    {
+        bgmSource.Stop();
     }
 
 }

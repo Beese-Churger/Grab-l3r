@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.U2D.IK;
 
 public class Boss : MonoBehaviour
 {
@@ -45,16 +43,21 @@ public class Boss : MonoBehaviour
     private bool abilityUpdated = false;
 
     private GameObject playerGO;
+    private GameObject target;
     private GameObject bossHead;
     private GameObject bossBeam;
-
+    private Collider2D CrushAOE;
     private GameObject[] bossArm;
 
     // Boss animation variables
-    [SerializeField] AnimationClip crushClip;
+    [SerializeField] private AnimationClip crushClip;
+    [SerializeField] private AnimationClip grinderClip;
+    [SerializeField] private LimbSolver2D iKLeftHand;
+    [SerializeField] private LimbSolver2D iKRightHand;
+
     private Animator animator;
     bool isPlaying = false;
-    float crushTimer = 0.0f;
+    float attackTimer = 0.0f;
     bool p_Hit = false;
     // temporary variable
     bool pTriggered = false;
@@ -68,13 +71,13 @@ public class Boss : MonoBehaviour
     private void Start()
     {
         playerGO = GameObject.FindGameObjectWithTag("Player");
+        target = GameObject.Find("playerTracker");
         bossHead = GameObject.Find("Head");
         bossBeam = GameObject.Find("BossBeam");
 
         bossArm = GameObject.FindGameObjectsWithTag("Boss");
-
+        CrushAOE = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
-
         timer = chargeTimer;
         graceTimer = gracePeriod;
     }
@@ -93,6 +96,7 @@ public class Boss : MonoBehaviour
                 break;
             case FSM.SCAN:
                 // Spawn the beams 
+                ChargeUp();
                 break;
             case FSM.ATTACK:
                 /* TO DO: Charge Up duration (3s)?
@@ -104,7 +108,6 @@ public class Boss : MonoBehaviour
                 if (ChargeUp())
                 {
                     // Attack the player with an attack
-                    //Debug.Log("Boss is performing an attack");
                     Attack();
                 }
                 break;
@@ -144,12 +147,13 @@ public class Boss : MonoBehaviour
         if (phase != 0)
         {
             // Generates a random number from 1 to the number of abilities the boss unlocked
-            ATTACK randomNo = (ATTACK)Random.Range(1, usableAbilities);
+            System.Random rand1 = new();
+            ATTACK randomNo = (ATTACK)rand1.Next(0, usableAbilities);
             currentAttack = randomNo;
         }
         else
         {
-            currentAttack = ATTACK.CRUSH;
+            currentAttack = ATTACK.SLAM;
         }
         abilityUpdated = true;
         bossBeam.SetActive(true);
@@ -169,6 +173,7 @@ public class Boss : MonoBehaviour
                     // TO DO: Play the right hand slam animation
                     // Only call on collision check at the frame when the boss is slaming
                     Debug.Log("Attacking Right");
+                    iKRightHand.GetChain(2).target = target.transform;
                     CollisionCheck();
 
                 }
@@ -176,11 +181,14 @@ public class Boss : MonoBehaviour
                 {
                     // Use Left Hand to slam the player
                     // TO DO: Play the left hand slam animation
+                   
                     Debug.Log("Attacking Left");
+                    iKLeftHand.GetChain(2).target = target.transform;
                     CollisionCheck();
                 }
 
                 current = FSM.IDLE;
+                //iKLeftHand.GetChain(2).target = null;
                 abilityUpdated = false;
 
                 break;
@@ -193,10 +201,22 @@ public class Boss : MonoBehaviour
                            translate between 2 points)*/
                 if (!isPlaying)
                 {
-                    animator.SetBool("Grinder", true);
+                    animator.SetBool("Electric", true);
                     isPlaying = true;
                 }
-                abilityUpdated = false;
+                if (attackTimer > grinderClip.averageDuration)
+                {
+                    Debug.Log("Grinder Animation done playing");
+                    abilityUpdated = false;
+                    isPlaying = false;
+                    attackTimer = 0f;
+                    animator.SetBool("Electric", false);
+                    current = FSM.IDLE;
+
+                }
+                else
+                    attackTimer += Time.deltaTime;
+
                 break;
             case ATTACK.CRUSH:
                 // Logic for the crush attack
@@ -217,19 +237,19 @@ public class Boss : MonoBehaviour
                     p_Hit = true;
 
                 }
-                if (crushTimer > crushClip.averageDuration)
+                if (attackTimer > crushClip.averageDuration)
                 {
-                    Debug.Log("Animation done playing");
+                    Debug.Log("Crush Animation done playing");
                     abilityUpdated = false;
                     isPlaying = false;
                     p_Hit = false;
-                    crushTimer = 0f;
+                    attackTimer = 0f;
                     animator.SetBool("Crush", false);
                     current = FSM.IDLE;
                 }
                 else
                 {
-                    crushTimer += Time.deltaTime;
+                    attackTimer += Time.deltaTime;
                     //Debug.Log(crushTimer);
                 }
 
@@ -265,7 +285,7 @@ public class Boss : MonoBehaviour
                     {
                         Instantiate(bodyDrop, new Vector3(x, maxY, 0), Quaternion.identity, bodyDropHolder.transform);
                         check = true;
-                        Debug.Log("Spawned body");
+                        //Debug.Log("Spawned body");
                     }
                 }
                 check = false;
@@ -284,7 +304,6 @@ public class Boss : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
         //Debug.Log(angle);
-        // Add 90 due to the fact that the beam is alr initially rotated by 90 degrees
         // 1 second before the timer runs out the beam will stop following the player
         if (timer > 1f)
             bossBeam.transform.localRotation = rotation;
@@ -299,6 +318,7 @@ public class Boss : MonoBehaviour
         {
             // Remove the beam
             bossBeam.SetActive(false);
+            current = FSM.ATTACK;
             return true;
         }
     }
@@ -306,10 +326,28 @@ public class Boss : MonoBehaviour
     {
         foreach (GameObject bossArmComponent in bossArm)
         {
-            if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) && crushTimer > crushClip.averageDuration * 0.6f && !p_Hit)
+            if (currentAttack == ATTACK.CRUSH)
             {
-                Debug.Log(bossArmComponent.name + " has collided with the player");
-                return true;
+                if ((bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) || 
+                    CrushAOE.OverlapPoint(playerGO.transform.position)) && 
+                    attackTimer > crushClip.averageDuration * 0.6f &&
+                    !p_Hit)
+                {
+                    Debug.Log("Crush hit");
+                    //Debug.Log(bossArmComponent.name + " has collided with the player");
+                    GameManager.instance.RemoveLife();
+                    return true;
+                }
+            }
+            else if (currentAttack == ATTACK.SLAM)
+            {
+                if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) &&
+                    !p_Hit)
+                {
+                    Debug.Log("Slam Hit!");
+                    GameManager.instance.RemoveLife();
+                    return true;
+                }
             }
         }
         return false;
@@ -325,7 +363,7 @@ public class Boss : MonoBehaviour
             Debug.Log("Scan");
             graceTimer = gracePeriod;
             timer = chargeTimer;
-            current = FSM.ATTACK;
+            current = FSM.SCAN;
 
         }
 

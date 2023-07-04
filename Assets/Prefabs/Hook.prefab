@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 241bb770d9285f548a0a4446c917f884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {fileID: -3811443923414726402, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   destiny: {x: 0, y: 0}
   speed: 1
   distance: 0.2
