@@ -10,21 +10,19 @@ public class Obstacle : MonoBehaviour
     {
         spikes,
         electricity,
-        door
+        door,
+        water
     }
     [SerializeField] ObstacleType obstacleType;
 
     public Sprite newSprite;
-    //public Vector2 endPos;
     public Animator animator;
 
-    //private Vector2 startPos;
     private SpriteRenderer spriteRender;
+    private Collider2D myCollider;
     private Sprite mySprite;
     private bool isActive;
-    private Collider2D myCollider;
 
-    // activate obstacles
     private void Awake()
     {
         isActive = true;
@@ -32,33 +30,27 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        //startPos = transform.position;
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
         mySprite = spriteRender.sprite;
         myCollider = gameObject.GetComponent<Collider2D>();
     }
 
-    // check collision if object is active
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isActive)
         {
             if (collision.transform.CompareTag("Player") & obstacleType !=ObstacleType.door)
             {
-                // Damage player
                 GameManager.instance.TakeDamage();
-                Debug.Log("Obstacle collision");
             }
         }
     }
 
-    // call function to disable obstacle on pressure plate press
     public void DisableObstacle()
     {
         isActive = false;
     }
 
-    // reactivate obstacle
     public void ActivateObstacle()
     {
         isActive = true;
@@ -66,34 +58,31 @@ public class Obstacle : MonoBehaviour
 
     public void OpenDoor()
     {
-        
-        //if (myCollider != null)
+        animator.SetBool("isOpen", true);
+        if (myCollider != null)
         {
-            animator.SetBool("isOpen", true);
             myCollider.enabled = false;
-            Debug.Log("Collider.enabled" + myCollider.enabled);
-        }
-        //spriteRender.color = Color.red;
+        }  
     }
 
     public void CloseDoor()
     {
-        //if (myCollider != null)
+        animator.SetBool("isOpen", false);
+        if (myCollider != null)
         {
-            animator.SetBool("isOpen", false);
             myCollider.enabled = true;
-            Debug.Log("Collider.enabled" + myCollider.enabled);
-        }
+        }  
+    }
 
-        //spriteRender.color = Color.white;
+    public ObstacleType GetObstacleType()
+    {
+        return obstacleType;
     }
 
     private void Update()
     {
         if (!isActive)
         {
-            // TODO: add animation or other function to different types 
-            // destroy obstacle?
             switch (obstacleType)
             {
                 case ObstacleType.electricity:

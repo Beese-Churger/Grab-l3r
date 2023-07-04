@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -4774512063997955992}
   - component: {fileID: -4181863337856160665}
   - component: {fileID: 6468801971551790173}
+  - component: {fileID: 7952814532442135481}
   m_Layer: 13
   m_Name: PressurePlate obstacle
   m_TagString: Untagged
@@ -103,16 +104,16 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.02}
   m_SpriteTilingProperty:
-    border: {x: 0.59615386, y: 0, z: 0.13461539, w: 0}
+    border: {x: 0.30769232, y: 0, z: 0.6538462, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.1538461, y: 0.25}
     newSize: {x: 1.1830951, y: 0.25093734}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
-  m_Size: {x: 1.19, y: 0.2}
+  m_Size: {x: 1.13, y: 0.2}
   m_EdgeRadius: 0
 --- !u!61 &-4774512063997955992
 BoxCollider2D:
@@ -129,14 +130,14 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.03}
   m_SpriteTilingProperty:
-    border: {x: 0.59615386, y: 0, z: 0.13461539, w: 0}
+    border: {x: 0.30769232, y: 0, z: 0.6538462, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.1538461, y: 0.25}
     newSize: {x: 1.1830951, y: 0.25093734}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
   m_Size: {x: 0.98, y: 0.21}
   m_EdgeRadius: 0
@@ -179,3 +180,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &7952814532442135481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980640485310085717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a33817b573faac4e88d2cdda26e325a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainType: 0
+  speed: 2
+  endPos: {x: 0, y: 0}
+  triggerPressurePlate: 0
+  newSprite: {fileID: 0}

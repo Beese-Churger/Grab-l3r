@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TestPlayer : MonoBehaviour
 {
-    public static Vector2 checkpointPos;
     public bool isGrabbing = false;
     public float speed = 1f;
 
@@ -15,8 +14,8 @@ public class TestPlayer : MonoBehaviour
     private void Awake()
     {
         // set player position to last checkpoint on respawn
-        checkpointPos = transform.position;
-        GameObject.FindGameObjectWithTag("Player").transform.position = checkpointPos;
+        var point = GameManager.instance.GetCheckPointPos();
+        transform.position = point;
     }
 
     // Start is called before the first frame update

@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class throwhook : MonoBehaviour 
 {
+	[SerializeField] private InputActionReference grappleAction;
+
 	public GameObject hook;
 
 	public InputActionReference pointer;
@@ -26,8 +28,6 @@ public class throwhook : MonoBehaviour
 	public bool pulling = false;
     private Terrain.TerrainType type;
 
-	public bool hookedSE = false;
-
     void Start () 
 	{
 		//oldPos = transform.position;
@@ -46,7 +46,7 @@ public class throwhook : MonoBehaviour
 
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
-		if (Input.GetMouseButtonDown (0) && !Options.isPaused) {
+		if (grappleAction.action.triggered) {
 
 
 			if (ropeActive == false) {
@@ -108,7 +108,6 @@ public class throwhook : MonoBehaviour
 					{
 						attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
 						attachedTo.GetComponent<SmallEnemy>().isHooked = false;
-						hookedSE = false;
 					}
 					else if (enemyType == 1)
 					{
@@ -142,7 +141,6 @@ public class throwhook : MonoBehaviour
 				if (enemyType == 0)
 				{
 					attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.2));
-					hookedSE = true;
 					attachedTo.GetComponent<SmallEnemy>().isHooked = true;
 				}
 				else if (enemyType == 1)

@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-//Temporary until GameManager Works
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
 
@@ -59,10 +57,12 @@ public class Options : MonoBehaviour
 
     private void Start()
     {
-        panelList = new List<GameObject>();
-        panelList.Add(SoundPanel);
-        panelList.Add(VideoPanel);
-        panelList.Add(ControlPanel);
+        panelList = new List<GameObject>
+        {
+            SoundPanel,
+            VideoPanel,
+            ControlPanel
+        };
         // Toggling between fullscreen and windowed
         // Set the default option based on the current screen mode
         fullscreenDropdown.value = Screen.fullScreen ? 0 : 1;
@@ -99,8 +99,12 @@ public class Options : MonoBehaviour
         resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
         //----------------------------------------------------------------------------------------------------------------
         //Audio Sliders for BGM and SFX
-        AudioManager.Instance.SFXvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.SFXVolume);
-        AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SFXvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.SFXVolume);
+            AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
+
+        }
 
     }
 
@@ -196,6 +200,14 @@ public class Options : MonoBehaviour
     }
     public void TriggerReset()
     {
+        if (OptionsMenu.activeSelf)
+        {
+            CheckActivePanel();
+            OptionsMenu.SetActive(false);
+            ButtonPanel.SetActive(false);
+            playerInput.SwitchCurrentActionMap("Gameplay");
+            Time.timeScale = 1;
+        }
         GameManager.instance.SetGameState(StateType.respawn);
     }
     public void ResetAllBindings()
@@ -207,12 +219,16 @@ public class Options : MonoBehaviour
         PlayerPrefs.DeleteKey("rebinds");
     }
     public void CheckActivePanel()
-    {
+    {       
         foreach (GameObject panel in panelList)
         {
             if (panel.activeSelf)
                 panel.SetActive(false);
         }
-        ButtonPanel.SetActive(true);
+        ButtonPanel.SetActive(true);       
+    }
+    public PlayerInput returnPI()
+    {
+        return playerInput;
     }
 }
