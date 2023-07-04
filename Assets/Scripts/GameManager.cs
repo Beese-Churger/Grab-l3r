@@ -13,6 +13,7 @@ public enum StateType
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
+    public Vector2 checkpointPos;
     private float health = 90;
     private int score = 0;
     private bool triggeredGameEnd;
@@ -92,17 +93,12 @@ public class GameManager : MonoBehaviour
             ResetGame();
             SetGameState(StateType.respawn);
         }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            SetGameState(StateType.levelChange);
-        }
     }
 
     public void ResetGame()
     {
         // TODO: reset all variables to initials
-        this.health = 100;
+        this.health = 90;
         this.score = 0;
         //triggeredGameEnd = false;
     }
@@ -126,4 +122,13 @@ public class GameManager : MonoBehaviour
         return LevelManager.instance;
     }
 
+    public void SetCheckPoint(Vector2 point)
+    {
+        checkpointPos = point;
+    }
+
+    public Vector2 GetCheckPointPos()
+    {
+        return checkpointPos;
+    }
 }
