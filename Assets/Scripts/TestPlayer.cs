@@ -13,11 +13,9 @@ public class TestPlayer : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(transform.position);
         // set player position to last checkpoint on respawn
         var point = GameManager.instance.GetCheckPointPos();
         transform.position = point;
-        GameObject.FindGameObjectWithTag("Player").transform.position = point;
     }
 
     // Start is called before the first frame update

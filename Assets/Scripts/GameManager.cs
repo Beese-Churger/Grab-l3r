@@ -125,7 +125,6 @@ public class GameManager : MonoBehaviour
     public void SetCheckPoint(Vector2 point)
     {
         checkpointPos = point;
-        Debug.Log("manager" + checkpointPos);
     }
 
     public Vector2 GetCheckPointPos()
