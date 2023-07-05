@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Terrain : MonoBehaviour
 {
@@ -10,18 +11,17 @@ public class Terrain : MonoBehaviour
     }
     [SerializeField] TerrainType terrainType;
 
-    public float speed = 0.5f;
+    public float speed = 0.2f;
     public Vector2 endPos;
     public Animator animator;
 
-    private bool triggerPressurePlate = false;
+    public bool triggerPressurePlate = false;
     private Vector2 startPos;
-    private GameObject player;
+    private bool isRight;
 
     void Start()
     {
         startPos = transform.position;
-        player = GameObject.Find("Player");
     }
 
     void Update()
@@ -31,11 +31,24 @@ public class Terrain : MonoBehaviour
             case TerrainType.moving:
                 if (triggerPressurePlate)
                 {
-                    transform.position = Vector2.Lerp(startPos, endPos, Mathf.PingPong(Time.time * speed, 1f));
+                    //transform.position = Vector2.Lerp(startPos, endPos, Mathf.PingPong(Time.time * speed, 1f))
+                    transform.position=Vector2.MoveTowards(transform.position, endPos, Time.deltaTime*speed);
                 }
                 break;
         }
     }
+
+    //private void MoveLeft()
+    //{
+    //    var step = speed * Time.deltaTime;
+    //    transform.position=Vector2.MoveTowards(transform.position, startPos, step);
+    //}
+
+    //private void MoveRight()
+    //{
+    //    var step=speed* Time.deltaTime;
+    //    transform.position=Vector2.MoveTowards(transform.position, endPos, step);
+    //}
 
     public void ActivateMovingPlatform()
     {

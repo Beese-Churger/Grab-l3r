@@ -359,6 +359,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3794865544091173743, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
+      propertyPath: endPos.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -3794865544091173743, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
+      propertyPath: endPos.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3794865544091173743, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
+      propertyPath: triggerPressurePlate
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -996206086855799760, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
       propertyPath: m_SpriteTilingProperty.drawMode
       value: 0
@@ -397,11 +409,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3707838281630318839, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.0138
+      value: -13
       objectReference: {fileID: 0}
     - target: {fileID: 3707838281630318839, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.59
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 3707838281630318839, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -514,7 +526,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439304098}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.1, y: -4.6, z: -10}
+  m_LocalPosition: {x: 3.3, y: -4.6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
