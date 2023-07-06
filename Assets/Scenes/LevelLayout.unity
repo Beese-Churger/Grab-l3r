@@ -816,6 +816,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1859106735649130107, guid: 15511f86e50fd14478cf88312299ef54, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5877759036697987121, guid: 15511f86e50fd14478cf88312299ef54, type: 3}
       propertyPath: m_LocalPosition.x
       value: 139.52
@@ -33470,7 +33474,7 @@ MonoBehaviour:
   terrainType: 2
   speed: 0.5
   endPos: {x: 91, y: 4.95}
-  newSprite: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!114 &1934848723 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5598466942564548034, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
@@ -33723,7 +33727,7 @@ MonoBehaviour:
   terrainType: 1
   speed: 2
   endPos: {x: 0, y: 0}
-  newSprite: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!1 &2020700353 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 241963325977381484, guid: feaf541232d344a41a9b259e3f698814, type: 3}

@@ -13,6 +13,7 @@ public enum StateType
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
+    private float bossLives = 3;
     public Vector2 checkpointPos;
     private float health = 90;
     private int score = 0;
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (health <= 0)
+        if (health <= 0 || bossLives <= 0)
         {
             ResetGame();
             SetGameState(StateType.respawn);
@@ -102,6 +103,7 @@ public class GameManager : MonoBehaviour
         // TODO: reset all variables to initials
         this.health = 90;
         this.score = 0;
+        bossLives = 3;
         //triggeredGameEnd = false;
     }
 
@@ -117,6 +119,10 @@ public class GameManager : MonoBehaviour
     public void TakeDamage()
     {
         health -= 90;
+    }
+    public void RemoveLife()
+    {
+        bossLives--;
     }
 
     public LevelManager GetLevelManager()

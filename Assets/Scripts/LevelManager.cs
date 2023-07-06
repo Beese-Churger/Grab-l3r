@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    private string[] levels = { "Level1","Level2","MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    //private string[] levels = { "Level1", "Level2", "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
     public static LevelManager instance = null;
     private int currentLevelIndex = 0;
 
@@ -70,7 +71,7 @@ public class LevelManager : MonoBehaviour
         if (EnemyManager.enemyManager != null)
             EnemyManager.enemyManager.AddEnemies();
 
-        AudioManager.Instance.PlayBGMLoop("level1bgm", false);
+        //AudioManager.Instance.PlayBGMLoop("level1bgm", false);
     }
 
     public string GetCurrentLevel()
@@ -83,5 +84,13 @@ public class LevelManager : MonoBehaviour
             }
         }
         return "";
+    }
+    public void SetCurrentLevelIndex(int idx)
+    {
+        currentLevelIndex = idx;
+    }
+    public int GetCurrentLevelIndex()
+    {
+        return currentLevelIndex;
     }
 }
