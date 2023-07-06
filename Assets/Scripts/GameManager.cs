@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviour
                 break;
             case StateType.levelChange:
                 LevelManager.instance.LoadNextLevel();
+                var player = GameObject.Find("Player");
+                checkpointPos = player.transform.position;
                 break;
             case StateType.respawn:
                 ResetGame();
