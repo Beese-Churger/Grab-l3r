@@ -8,20 +8,33 @@ public class TestPlayer : MonoBehaviour
     public float speed = 1f;
 
     private Rigidbody2D rb;
+    public static Vector2 checkpointPos;
     private Vector2 movementDir;
     private Vector2 playerPos = new Vector2(0, 0);
 
     private void Awake()
     {
         // set player position to last checkpoint on respawn
-        var point = GameManager.instance.GetCheckPointPos();
-        transform.position = point;
+        transform.position = playerPos;
     }
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        //var point = GameManager.instance.GetCheckPointPos();
+        //transform.position = point;
+        transform.position = checkpointPos;
+    }
+
+    public void SetCheckPoint(Vector2 point)
+    {
+        checkpointPos = point;
+    }
+
+    public Vector2 GetCheckPointPos()
+    {
+        return checkpointPos;
     }
 
     // Player movement for testing purpouses
