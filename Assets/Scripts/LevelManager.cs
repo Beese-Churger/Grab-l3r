@@ -42,6 +42,7 @@ public class LevelManager : MonoBehaviour
 
     public void ReLoadLevel()
     {
+        CheckCurrentIndex();
         string level = levels[currentLevelIndex];
         StartCoroutine(LoadLevel(level));
     }
@@ -92,5 +93,17 @@ public class LevelManager : MonoBehaviour
     public int GetCurrentLevelIndex()
     {
         return currentLevelIndex;
+    }
+    private void CheckCurrentIndex()
+    {
+        string currentLevel = GetCurrentLevel();
+        for (int i = 0; i < levels.Length; ++i)
+        {
+            if (currentLevel == levels[i])
+            {
+                currentLevelIndex = i;
+                return;
+            }
+        }
     }
 }
