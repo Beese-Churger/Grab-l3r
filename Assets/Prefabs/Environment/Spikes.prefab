@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -6729207984781686379}
   - component: {fileID: 2708476582084200889}
   - component: {fileID: 2508744810590840746}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,5 +143,5 @@ MonoBehaviour:
   terrainType: 0
   speed: 2
   endPos: {x: 0, y: 0}
+  animator: {fileID: 0}
   triggerPressurePlate: 0
-  newSprite: {fileID: 0}
