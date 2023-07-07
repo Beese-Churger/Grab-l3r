@@ -5,11 +5,18 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
+    public static Timer instance = null;
     public float time;
     [SerializeField] TMP_Text timer;
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        if (instance != null)
+            Destroy(gameObject);
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
     void Awake()
     {
