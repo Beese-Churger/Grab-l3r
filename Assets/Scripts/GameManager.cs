@@ -12,6 +12,8 @@ public enum StateType
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer respawnBG;
+    private Color bgColor = new(0, 0, 0, 0);
     public static GameManager instance = null;
     private float bossLives = 3;
     public Vector2 checkpointPos;
@@ -19,12 +21,13 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private bool triggeredGameEnd;
     public StateType state;
+    private float respawnTimer = 3f, respawnTimerValue = 3f;
 
     public static GameManager GetInstance()
     {
         if (instance == null)
         {
-            instance = new GameManager();
+            instance = new();
             DontDestroyOnLoad(instance);
         }
         return instance;
@@ -93,8 +96,22 @@ public class GameManager : MonoBehaviour
     {
         if (health <= 0 || bossLives <= 0)
         {
-            ResetGame();
-            SetGameState(StateType.respawn);
+            if (bgColor.a < 1)
+            {
+                bgColor.a += Time.deltaTime;
+                respawnBG.color = bgColor;
+            }
+            if (respawnTimer >= 0f)
+            {
+                respawnTimer -= Time.deltaTime;
+                
+            }
+            else
+            {
+                ResetGame();
+                SetGameState(StateType.respawn);
+                respawnTimer = respawnTimerValue;
+            }
         }
     }
 
@@ -138,5 +155,13 @@ public class GameManager : MonoBehaviour
     public Vector2 GetCheckPointPos()
     {
         return checkpointPos;
+    }
+    public void FadeIn()
+    {
+        while (respawnBG.color.a > 0)
+        {
+            bgColor.a -= Time.deltaTime;
+            respawnBG.color = bgColor;
+        }
     }
 }

@@ -203,8 +203,8 @@ public class BigEnemy : EnemyBaseClass
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // TO DO: SET THE PLAYER STATUS TO DEAD
-        //if (collision.gameObject.CompareTag("Player"))
-        //GameManager.instance.TakeDamage();
+        if (collision.gameObject.CompareTag("Player"))
+            GameManager.instance.TakeDamage();
     }
     private void Patrol()
     {

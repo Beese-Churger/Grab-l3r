@@ -74,9 +74,9 @@ public class RopeScript : MonoBehaviour {
     void Update()
     {
 
+		//verticalInput = Input.GetAxis("Vertical");
 		verticalInput = movement.action.ReadValue<Vector2>().y;
-		//verticalInput = movement.action.ReadValue<Vector2>().y;
-
+		//Debug.Log("V_In:" + verticalInput);
 		transform.position = Vector2.MoveTowards(transform.position, destiny, speed);
 
 		// get distance travelled from prev pos
@@ -113,7 +113,7 @@ public class RopeScript : MonoBehaviour {
 
 		if (hooked)
 		{
-			if (verticalInput >= 1f && vertexCount > 2)
+			if (verticalInput > 0f && vertexCount > 2)
 			{
 				for (int i = 0; i < vertexCount; ++i)
 				{

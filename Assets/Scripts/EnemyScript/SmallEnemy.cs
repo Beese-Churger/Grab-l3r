@@ -67,7 +67,7 @@ public class SmallEnemy : EnemyBaseClass
 
     public override void FSMUpdate()
     {
-        if (IsGround())
+        if (IsGround() && !EdgeDetection())
         {
             if (isHooked)
                 current = FSM.IDLE;
@@ -80,7 +80,7 @@ public class SmallEnemy : EnemyBaseClass
                     Stop();
                     break;
                 case FSM.PATROL:
-                    if (!EdgeDetection() && !ObstacleDetection())
+                    if (!ObstacleDetection())
                     {
                         Patrol();
                         //Slow();
@@ -95,11 +95,10 @@ public class SmallEnemy : EnemyBaseClass
                     dir.y = 0;
                     direction = dir.x;
 
-                    if (!EdgeDetection())
-                    {
-                        Vector2 force = speed * Time.deltaTime * dir;
-                        rb.AddForce(force);
-                    }
+
+                    rb.velocity = 5f * dir;
+                    
+
                     if (dir.x >= 0.01f)
                         transform.localScale = new Vector3(spriteScale, spriteScale, 1f);
                     else if (dir.x <= -0.01f)
@@ -192,6 +191,7 @@ public class SmallEnemy : EnemyBaseClass
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            rb.velocity = Vector2.zero;
             current = FSM.IDLE;
             detected = false;
         }
@@ -232,7 +232,10 @@ public class SmallEnemy : EnemyBaseClass
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.down, raycastDistance, platformLayer);
 
         // Check if either of the raycasts hit a platform
-        if (((leftHit.collider == null && direction < 0) || (rightHit.collider == null && direction > 0)) && !onPPlate && !isJumping)
+        if (((leftHit.collider == null && direction < 0) ||
+            (rightHit.collider == null && direction > 0)) &&
+            !onPPlate &&
+            !isJumping)
         {
             // Debug.Log(dir);
             rb.velocity = Vector2.zero;
@@ -296,7 +299,7 @@ public class SmallEnemy : EnemyBaseClass
     }
     private bool IsGround()
     {
-        RaycastHit2D groundHit = Physics2D.Raycast(transform.position + Vector3.down * 1f, Vector2.down, 1f, Layer);
+        RaycastHit2D groundHit = Physics2D.Raycast(transform.position + Vector3.down * 1f, Vector2.down, 0.25f, Layer);
         //RaycastHit2D groundHit2 = Physics2D.Raycast(transform.position + Vector3.down + new Vector3(direction, 0, 0) * 1f, Vector2.down, 1f, Layer);
         //|| groundHit2.collider != null
         if (groundHit.collider != null)
@@ -308,7 +311,7 @@ public class SmallEnemy : EnemyBaseClass
                 return true;
             }
         }
-        Debug.Log(gameObject.name + "In The Air");
+        //Debug.Log(gameObject.name + "In The Air");
         return false;
               
     }

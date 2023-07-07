@@ -31,16 +31,16 @@ public class SimpleController : MonoBehaviour
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
+        //horizontalInput = Input.GetAxis("Horizontal");
 
-       
+        //Debug.Log("H_In:" + horizontalInput);
+
     }
 
     private void FixedUpdate()
     {
         float Accel = groundCheck ? AirAccel : GroundAccel;
 
-
-        Debug.Log(jumpInput);
 
         if (groundCheck)
         {
