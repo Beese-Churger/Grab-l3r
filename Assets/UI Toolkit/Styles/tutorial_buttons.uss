@@ -39,10 +39,10 @@
     border-bottom-color: rgba(0, 0, 0, 0);
     width: 50px;
     height: 50px;
-    margin-left: 1790px;
-    margin-right: 80px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .backbutton:hover {
@@ -86,7 +86,7 @@
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    background-color: rgba(46, 32, 32, 255);
+    background-color: rgb(46, 32, 32);
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
@@ -103,9 +103,21 @@
 .mainstartbutton {
     font-size: 120px;
     -unity-font-style: bold;
-    color: rgba(255, 255, 255, 255);
+    color: rgb(255, 255, 255);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.mainstartbutton:hover {
+    font-size: 130px;
+    -unity-font-style: bold;
+}
+
+.mainstartbutton:active {
+    font-size: 115px;
+    -unity-font-style: bold;
+    color: rgba(255, 255, 255, 255);
 }
