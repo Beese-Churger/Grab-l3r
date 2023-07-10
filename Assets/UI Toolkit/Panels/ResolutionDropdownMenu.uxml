@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Background" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/level_ui_background_1.png?fileID=2800000&amp;guid=f18ca7f9f2a46e24b9bf21cd7073fb2d&amp;type=3#level_ui_background_1&apos;); flex-grow: 1;">
+        <ui:VisualElement name="GameTitle" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/logo_grabbler.png?fileID=2800000&amp;guid=37cd4d797c2cc754abe799482dd17d24&amp;type=3#logo_grabbler&apos;); width: 676px; height: 25%; display: flex; margin-top: 25px; margin-left: 60px; margin-bottom: 25px;" />
+        <ui:VisualElement name="GreyBoxBig" class="greyboxmainmenu" style="width: 938px; background-color: rgb(46, 32, 32); opacity: 0.85; justify-content: space-around; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; display: flex; height: 433px; left: 25%; align-items: stretch;">
+            <ui:Label text="Resolution" display-tooltip-when-elided="true" name="ResolutionLabel" style="-unity-font-style: normal; font-size: 50px; color: rgb(255, 255, 255); margin-right: 0; margin-left: 55px; margin-top: 0; margin-bottom: 0; top: 0;" />
+            <ui:Toggle label="Fullscreen" name="FullScreenToggle" class="button-main-title" style="justify-content: flex-end; align-items: center;" />
+            <ui:DropdownField label="Resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="ResolutionDropDown" class="button-main-title" />
+            <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 850px; top: auto;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

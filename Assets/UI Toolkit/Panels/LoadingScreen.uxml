@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_labels.uss?fileID=7433441132597879392&amp;guid=c4a2fed264642164f8aafdb5a5274972&amp;type=3#tutorial_labels" />
+    <ui:VisualElement name="GreyBoxBig" class="greyboxmainmenu" style="width: auto; background-color: rgb(26, 17, 17); opacity: 0.85; justify-content: center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; display: flex; height: auto; left: auto; align-items: center; flex-grow: 1; top: auto; bottom: auto;">
+        <ui:VisualElement name="Eye" style="width: 1380px; height: 665px; background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/eye_2.png?fileID=2800000&amp;guid=3cad9793ec264ea44963eb2fb53bfb86&amp;type=3#eye_2&apos;); opacity: 0.3;" />
+        <ui:VisualElement name="LoadingCrabby" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/ui_sprite_crabby_loading.png?fileID=2800000&amp;guid=45ebb845251014941964e79c1d0a1caa&amp;type=3#ui_sprite_crabby_loading&apos;); width: 49px; height: 58px; right: -40%; bottom: -11%;" />
+        <ui:Label text="Loading" display-tooltip-when-elided="true" name="LoadingLabel" class="screensecondarytitle" style="right: -33.5%; bottom: -5%;" />
+        <ui:ProgressBar value="22" name="LoadingProgressBar" style="width: 250px; height: auto; right: -35%; bottom: -5%;" />
+    </ui:VisualElement>
+</ui:UXML>
