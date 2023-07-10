@@ -56,7 +56,11 @@ public class SimpleController : MonoBehaviour
             {
                 //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
                 if(isHooked)
-                    rBody.AddForce(new Vector2(Accel * 8, 0), ForceMode2D.Force);
+                {
+                    rBody.AddForce(new Vector2(Accel * 2, 0), ForceMode2D.Force);
+                    //rBody.AddForce(new Vector2(0, -1), ForceMode2D.Force);
+                }
+
                 else
                     rBody.AddForce(new Vector2(Accel, 0), ForceMode2D.Force);
             }
@@ -65,7 +69,11 @@ public class SimpleController : MonoBehaviour
             {
                 //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
                 if (isHooked)
-                    rBody.AddForce(new Vector2(-Accel * 8, 0), ForceMode2D.Force);
+                {
+                    rBody.AddForce(new Vector2(-Accel * 2, 0), ForceMode2D.Force);
+                    //rBody.AddForce(new Vector2(0 , -1), ForceMode2D.Force);
+                }
+
                 else
                     rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
             }
