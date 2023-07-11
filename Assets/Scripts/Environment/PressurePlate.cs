@@ -58,6 +58,13 @@ public class PressurePlate : MonoBehaviour
         {
             objectsInTrigger.Add(collision.gameObject);
             animator.SetBool("isPressed", true);
+            if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+            {
+                Debug.Log("Boss Stepped Blah");
+                Boss.instance.SetPPlate(true);
+                return;
+            }
+
             if (isDoor && !isDoorOpen)
             {
                 if (obstacle != null)
@@ -81,14 +88,7 @@ public class PressurePlate : MonoBehaviour
                 }
                     
             }
-            else
-            {
-                if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
-                {
-                    Debug.Log("Boss Stepped Blah");
-                    Boss.instance.SetPPlate(true);
-                }
-            }
+            
         }
     }
 
@@ -97,28 +97,31 @@ public class PressurePlate : MonoBehaviour
     {
         objectsInTrigger.Remove(collision.gameObject) ;
 
-        if(objectsInTrigger.Count <= 0)
+        if (GameManager.instance.GetLevelManager().GetCurrentLevel() != "LevelLayout Boss")
         {
-            animator.SetBool("isPressed", false);
-            if (isDoor && !isDoorOpen)
+            if (objectsInTrigger.Count <= 0)
             {
-                obstacle.CloseDoor();
-            }
-            else if(isDoorOpen)
-            {
-                if (obstacle != null)
+                animator.SetBool("isPressed", false);
+                if (isDoor && !isDoorOpen)
                 {
-                    obstacle.OpenDoor();
+                    obstacle.CloseDoor();
                 }
-                    
-            }
-            else if (!isObstacle && !isDoor)
-            {
-                terrain.DeactivateMovingPlatform();
-            }
-            else if (isObstacle)
-            {
-                obstacle.ActivateObstacle();
+                else if (isDoorOpen)
+                {
+                    if (obstacle != null)
+                    {
+                        obstacle.OpenDoor();
+                    }
+
+                }
+                else if (!isObstacle && !isDoor)
+                {
+                    terrain.DeactivateMovingPlatform();
+                }
+                else if (isObstacle)
+                {
+                    obstacle.ActivateObstacle();
+                }
             }
         }
     }

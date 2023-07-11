@@ -7,13 +7,23 @@ public class CameraMovement : MonoBehaviour
     private Vector2 playerPosition;
     private Vector3 cameraPosition;
 
+    private Vector3 cameraOffset;
+
     private Camera camera1;
-
-
+    public float smoothSpeed = 0.125f;
+    private const float xOffset = 10f;
+    private const float yOffset = 10f;
+    private float edgeSizeX = Screen.width * 0.3f;
+    private float leftEdgeX = Screen.width * 0.1f;
+    private float topEdgeY = Screen.height * 0.2f;
+    private float edgeSizeY = Screen.height * 0.2f;
     //TEMP VARIABLE
     [SerializeField] private GameObject player;
     [SerializeField] private InputActionReference pointer;
     [SerializeField] private bool boss = false;
+
+    private bool move = false;
+    private bool switchMode = false;
 
 
 
@@ -30,12 +40,20 @@ public class CameraMovement : MonoBehaviour
         // Initialize Player Position
         playerPosition = player.transform.position;
 
-        boss = GameManager.GetInstance().GetGameState() == StateType.boss ? true : false;
+        cameraOffset = transform.position;
+        //transform.position = new Vector3(playerPosition.x, playerPosition.y, -10f);
+        
+        boss = GameManager.GetInstance().GetGameState() == StateType.boss;
        // Debug.Log(GameManager.GetInstance().GetGameState());
 
     }
-
-
+    private void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    switchMode = !switchMode;
+        //}
+    }
     void FixedUpdate()
     {
         if (!boss)
@@ -52,7 +70,32 @@ public class CameraMovement : MonoBehaviour
                 cameraPosition = playerPosition + (mousePosition - playerPosition) * 0.2f;
                 cameraPosition.z = -10.0f;
 
-                transform.position = cameraPosition;
+                if (switchMode)
+                {
+                    // Check if player is near the edge of the screen
+                    if ((Camera.main.WorldToScreenPoint(playerPosition).x > Screen.width - edgeSizeX ||
+                         Camera.main.WorldToScreenPoint(playerPosition).x < leftEdgeX ||
+                         Camera.main.WorldToScreenPoint(playerPosition).y > Screen.height - topEdgeY ||
+                         Camera.main.WorldToScreenPoint(playerPosition).y < edgeSizeY) ||
+                         move)
+                    {
+                        FollowPlayer();
+                    }
+                    else
+                    {
+                        //Vector2 newPPos = playerPosition + new Vector2(0f, 5f);
+                        //if (Mathf.Abs(cameraOffset.y - newPPos.y) > 1)
+                        //{
+                        //    Vector2 dir = ((Vector2)cameraOffset - newPPos).normalized;
+                        //    cameraOffset.y += yOffset * Time.deltaTime * dir.y;
+                        //    transform.position = cameraOffset;
+                        //}
+                    }
+                }
+                else
+                {
+                    transform.position = cameraPosition;
+                }
             }
         }
         else
@@ -61,5 +104,27 @@ public class CameraMovement : MonoBehaviour
             transform.position = new Vector3(0f, 0f, -10f);
         }
        
+    }
+    private void FollowPlayer()
+    {
+        Vector2 direction = ((Vector2)cameraOffset - playerPosition).normalized;
+        Vector2 newPPos = playerPosition + new Vector2(5f, 8f * direction.y);
+        Vector2 dir = (newPPos - (Vector2)cameraOffset).normalized;
+        if (Mathf.Abs(cameraOffset.x - newPPos.x) > 1)
+        {
+            move = true;
+            cameraOffset.x += xOffset * Time.deltaTime * dir.x;
+        }
+        if (Mathf.Abs(cameraOffset.y - newPPos.y) > 1)
+        {
+            move = true;
+            cameraOffset.y += yOffset * Time.deltaTime * dir.y;
+        }
+        else
+            move = false;
+
+        cameraOffset.z = -10f;
+        transform.position = cameraOffset;
+
     }
 }

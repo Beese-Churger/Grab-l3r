@@ -47,6 +47,7 @@ public class Boss : MonoBehaviour
     private GameObject bossBeam;
     private Collider2D CrushAOE;
     private GameObject[] bossArm;
+    private GameObject[] electricPlatforms;
 
     // Boss animation variables
     [SerializeField] private AnimationClip crushClip;
@@ -63,6 +64,7 @@ public class Boss : MonoBehaviour
     float attackTimer = 0.0f;
     bool p_Hit = false;
     bool slamming = false;
+    bool left = true;
     // temporary variable
     bool pTriggered = false;
 
@@ -78,6 +80,7 @@ public class Boss : MonoBehaviour
         bossHead = GameObject.Find("Head");
         bossBeam = GameObject.Find("BossBeam");
         defaultTarget = GameObject.Find("defaultTarget");
+        electricPlatforms = GameObject.FindGameObjectsWithTag("ElectricPlatform");
 
         bossArm = GameObject.FindGameObjectsWithTag("Boss");
         CrushAOE = GetComponent<Collider2D>();
@@ -97,6 +100,14 @@ public class Boss : MonoBehaviour
         {
             case FSM.IDLE:
                 //Debug.Log("In Idle state");
+                if (iKLeftHand.GetChain(0).target != null)
+                {
+                    iKLeftHand.GetChain(0).target = null;
+                }
+
+                if (iKRightHand.GetChain(0).target != null)
+                    iKRightHand.GetChain(0).target = null;
+
                 GracePeriod();
                 break;
             case FSM.SCAN:
@@ -178,49 +189,35 @@ public class Boss : MonoBehaviour
                     // TO DO: Play the right hand slam animation
                     // Only call on collision check at the frame when the boss is slaming
                     // Debug.Log("Attacking Right");
-                    iKRightHand.GetChain(0).target = playerGO.transform;
-
                     if (!isPlaying)
                     {
                         animator.SetBool("SlamR", true);
+                        left = false;
                         isPlaying = true;
-                    }
-                    if (CollisionCheck())
-                    {
-                        p_Hit = true;
-                    }
-                    if (attackTimer > slamRClip.averageDuration)
-                    {
-                        Debug.Log("Slam R Animation done playing");
-                        abilityUpdated = false;
-                        isPlaying = false;
-                        p_Hit = false;
-                        slamming = false;
-                        attackTimer = 0f;
-                        animator.SetBool("SlamR", false);
-                        current = FSM.IDLE;
-                        iKRightHand.GetChain(0).target = null;
-                    }
-                    else
-                    {
-                        attackTimer += Time.deltaTime;
                     }
 
                 }
-                else if (dir.x < 0 && !slamming)
+                else if (dir.x < 0)
                 {
                     // Use Left Hand to slam the player
                     // TO DO: Play the left hand slam animation                
                     //Debug.Log("Attacking Left");
-                    iKLeftHand.GetChain(0).target = playerGO.transform;
-                    slamming = true;
-
-
                     if (!isPlaying)
                     {
                         animator.SetBool("SlamL", true);
+                        left = true;
                         isPlaying = true;
                     }
+
+                }
+                if (left)
+                {
+                    if (!slamming)
+                    {
+                        iKLeftHand.GetChain(0).target = playerGO.transform;
+                        slamming = true;
+                    }
+
                     if (CollisionCheck())
                     {
                         p_Hit = true;
@@ -231,12 +228,46 @@ public class Boss : MonoBehaviour
                         abilityUpdated = false;
                         isPlaying = false;
                         p_Hit = false;
+
                         attackTimer = 0f;
                         animator.SetBool("SlamL", false);
                         current = FSM.IDLE;
-                        iKLeftHand.GetChain(0).target = null;
                         slamming = false;
+                    }
+                    else
+                    {
+                        attackTimer += Time.deltaTime;
+                        //Debug.Log(attackTimer);
+                    }
+                }
+                else
+                {
+                    if (!slamming)
+                    {
+                        iKRightHand.GetChain(0).target = playerGO.transform;
+                        slamming = true;
+                    }
+                    if (CollisionCheck())
+                    {
+                        p_Hit = true;
+                    }
 
+                    // If slam right animation is done playing
+                    /*
+                     * Reset the timer that tracks whether the animation is done playing or not
+                     * No animation is playing
+                     * Update ability again
+                     * */
+                    if (attackTimer > slamRClip.averageDuration)
+                    {
+                        Debug.Log("Slam R Animation done playing");
+                        abilityUpdated = false;
+                        isPlaying = false;
+                        p_Hit = false;
+                        slamming = false;
+                        attackTimer = 0f;
+                        animator.SetBool("SlamR", false);
+                        current = FSM.IDLE;
                     }
                     else
                     {

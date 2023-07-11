@@ -106,8 +106,8 @@ public class throwhook : MonoBehaviour
 							change = true;
 							if (attachedTo.GetComponent<SmallEnemy>())
 							{
-
 								hookContext = HookContext.HOOK_SMALL;
+								attachedTo.GetComponent<SmallEnemy>().isHooked = true;
 							}
 							else
 							{
@@ -134,6 +134,10 @@ public class throwhook : MonoBehaviour
 				Destroy(attachedTo.GetComponent<SpringJoint2D>());
 				Destroy(attachedTo.GetComponent<DistanceJoint2D>());
 				hookContext = HookContext.HOOK_BIG;
+				if (attachedTo.GetComponent<SmallEnemy>())
+				{
+				    attachedTo.GetComponent<SmallEnemy>().isHooked = false;
+				}
 				//if (attachedTo.CompareTag("Enemy"))
 				//{
 				//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
