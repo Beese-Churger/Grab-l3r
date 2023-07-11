@@ -10,12 +10,14 @@ public class TestPlayer : MonoBehaviour
     private Rigidbody2D rb;
     public static Vector2 checkpointPos;
     private Vector2 movementDir;
-    private Vector2 playerPos = new Vector2(0, 0);
+    private Vector2 playerPos;
+    public bool Reset;
 
     private void Awake()
     {
         // set player position to last checkpoint on respawn
-        transform.position = playerPos;
+        //transform.position = playerPos;
+        playerPos = transform.position;
     }
 
     // Start is called before the first frame update
@@ -24,7 +26,14 @@ public class TestPlayer : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //var point = GameManager.instance.GetCheckPointPos();
         //transform.position = point;
-        transform.position = checkpointPos;
+        if (Reset)
+        {
+            transform.position = playerPos;
+        }
+        else
+        {
+            transform.position = checkpointPos;
+        }
     }
 
     public void SetCheckPoint(Vector2 point)
@@ -59,6 +68,11 @@ public class TestPlayer : MonoBehaviour
             isGrabbing = true;
             //Debug.Log("Collision with terrain");
         }
+    }
+
+    public void ResetPlayer()
+    { 
+        Reset = true;
     }
 }
 
