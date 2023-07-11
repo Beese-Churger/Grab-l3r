@@ -12,7 +12,8 @@ public class Checkpoint : MonoBehaviour
             // set players last checkpoint position in player script
             //GameManager.instance.SetCheckPoint(transform.position);
             TestPlayer.checkpointPos = transform.position;
-
+            var sprite = gameObject.GetComponent<SpriteRenderer>();
+            sprite.color = Color.red;
         }
         Destroy(this);
     }
