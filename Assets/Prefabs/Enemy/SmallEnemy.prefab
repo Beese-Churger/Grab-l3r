@@ -252,10 +252,10 @@ MonoBehaviour:
   spriteScale: 1
   platformLayer:
     serializedVersion: 2
-    m_Bits: 11264
+    m_Bits: 11392
   Layer:
     serializedVersion: 2
-    m_Bits: 9216
+    m_Bits: 9344
   detected: 0
   isHooked: 0
 --- !u!114 &8491629283298615638

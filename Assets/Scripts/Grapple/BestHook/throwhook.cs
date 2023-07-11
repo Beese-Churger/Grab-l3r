@@ -28,12 +28,24 @@ public class throwhook : MonoBehaviour
 	public bool pulling = false;
     private Terrain.TerrainType type;
 
-    void Start () 
+	public HookContext hookContext;
+
+	public enum HookContext
+	{
+		HOOK_SMALL,
+		HOOK_BIG,
+	};
+	void Start () 
 	{
 		//oldPos = transform.position;
 	}
 
-	void Update () 
+    private void Awake()
+    {
+		hookContext = HookContext.HOOK_BIG;
+    }
+
+    void Update () 
 	{		
 		Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
 		Vector3 facingDirection = worldMousePosition - transform.position;
@@ -67,22 +79,42 @@ public class throwhook : MonoBehaviour
 							if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
 							{
 								change = true;
+								//if(attachedTo.GetComponent<SmallEnemy>())
+        //                        {
+
+								//	hookContext = HookContext.HOOK_SMALL;
+								//	Debug.Log("real?????????????????????????????????");
+        //                        }
+								//else
+        //                        {
+								//	hookContext = HookContext.HOOK_BIG;
+        //                        }
 							}
 							ropeActive = true;
 						}
 					}
 					else
 					{
+						// for entities
                         attachedTo = hit.transform.gameObject;
                         AudioManager.Instance.PlaySFX("hook_attach");
                         curHook = Instantiate(hook, transform.position, Quaternion.identity);
                         curHook.GetComponent<RopeScript>().destiny = hit.point;
 						curHook.GetComponent<RopeScript>().SetCanHook(true);
 						if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
-                        {
-                            change = true;
-                        }
-                        ropeActive = true;
+						{
+							change = true;
+							if (attachedTo.GetComponent<SmallEnemy>())
+							{
+
+								hookContext = HookContext.HOOK_SMALL;
+							}
+							else
+							{
+								hookContext = HookContext.HOOK_BIG;
+							}
+						}
+						ropeActive = true;
                     }
 				}
 				else
@@ -101,20 +133,21 @@ public class throwhook : MonoBehaviour
 
 				Destroy(attachedTo.GetComponent<SpringJoint2D>());
 				Destroy(attachedTo.GetComponent<DistanceJoint2D>());
-				if (attachedTo.CompareTag("Enemy"))
-				{
-					int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
-					if (enemyType == 0)
-					{
-						attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
-						attachedTo.GetComponent<SmallEnemy>().isHooked = false;
-					}
-					else if (enemyType == 1)
-					{
-						attachedTo.GetComponent<Rigidbody2D>().isKinematic = false;
-					}
+				hookContext = HookContext.HOOK_BIG;
+				//if (attachedTo.CompareTag("Enemy"))
+				//{
+				//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
+				//	if (enemyType == 0)
+				//	{
+				//		attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
+				//		attachedTo.GetComponent<SmallEnemy>().isHooked = false;
+				//	}
+				//	else if (enemyType == 1)
+				//	{
+				//		attachedTo.GetComponent<Rigidbody2D>().isKinematic = false;
+				//	}
 
-				}
+				//}
 				ropeActive = false;
 				change = false;
 				pulling = false;
@@ -135,19 +168,19 @@ public class throwhook : MonoBehaviour
 			SpringJoint2D toPull1 = attachedTo.AddComponent<SpringJoint2D>();
 			toPull1.anchor = Link1.transform.localPosition;
 			toPull1.connectedBody = Link1.GetComponent<Rigidbody2D>();
-			if (attachedTo.CompareTag("Enemy"))
-			{
-				int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
-				if (enemyType == 0)
-				{
-					attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.2));
-					attachedTo.GetComponent<SmallEnemy>().isHooked = true;
-				}
-				else if (enemyType == 1)
-				{
-					attachedTo.GetComponent<Rigidbody2D>().isKinematic = true;
-				}
-			}
+			//if (attachedTo.CompareTag("Enemy"))
+			//{
+			//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
+			//	if (enemyType == 0)
+			//	{
+			//		attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.2));
+			//		attachedTo.GetComponent<SmallEnemy>().isHooked = true;
+			//	}
+			//	else if (enemyType == 1)
+			//	{
+			//		attachedTo.GetComponent<Rigidbody2D>().isKinematic = true;
+			//	}
+			//}
 				
 
 			pulling = true;

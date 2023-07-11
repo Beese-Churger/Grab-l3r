@@ -31,16 +31,16 @@ public class SimpleController : MonoBehaviour
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
+        //horizontalInput = Input.GetAxis("Horizontal");
 
-       
+        //Debug.Log("H_In:" + horizontalInput);
+
     }
 
     private void FixedUpdate()
     {
         float Accel = groundCheck ? AirAccel : GroundAccel;
 
-
-        Debug.Log(jumpInput);
 
         if (groundCheck)
         {
@@ -56,7 +56,11 @@ public class SimpleController : MonoBehaviour
             {
                 //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
                 if(isHooked)
-                    rBody.AddForce(new Vector2(Accel * 8, 0), ForceMode2D.Force);
+                {
+                    rBody.AddForce(new Vector2(Accel * 2, 0), ForceMode2D.Force);
+                    //rBody.AddForce(new Vector2(0, -1), ForceMode2D.Force);
+                }
+
                 else
                     rBody.AddForce(new Vector2(Accel, 0), ForceMode2D.Force);
             }
@@ -65,7 +69,11 @@ public class SimpleController : MonoBehaviour
             {
                 //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
                 if (isHooked)
-                    rBody.AddForce(new Vector2(-Accel * 8, 0), ForceMode2D.Force);
+                {
+                    rBody.AddForce(new Vector2(-Accel * 2, 0), ForceMode2D.Force);
+                    //rBody.AddForce(new Vector2(0 , -1), ForceMode2D.Force);
+                }
+
                 else
                     rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
             }

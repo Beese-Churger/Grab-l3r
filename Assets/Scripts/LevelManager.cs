@@ -4,8 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    private string[] levels = { "Level1", "Level2", "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
-    //private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    //private string[] levels = { "Level1", "Level2", "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    //private string[] levels = { "Level1", "Level2", "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levelsBGM = { "", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
+    
     public static LevelManager instance = null;
     private int currentLevelIndex = 0;
 
@@ -18,6 +21,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             instance = this;
+            CheckCurrentIndex();
             DontDestroyOnLoad(instance);
         }
     }
@@ -44,6 +48,7 @@ public class LevelManager : MonoBehaviour
     {
         string level = levels[currentLevelIndex];
         StartCoroutine(LoadLevel(level));
+        GameManager.instance.FadeIn();
     }
 
     private IEnumerator LoadLevel(int index)
@@ -57,7 +62,7 @@ public class LevelManager : MonoBehaviour
         }
         if (EnemyManager.enemyManager != null)
             EnemyManager.enemyManager.AddEnemies();
-        AudioManager.Instance.PlayBGMLoop("level1bgm", false);
+        PlayLevelBGM();
     }
 
     public IEnumerator LoadLevel(string scene)
@@ -70,8 +75,8 @@ public class LevelManager : MonoBehaviour
         }
         if (EnemyManager.enemyManager != null)
             EnemyManager.enemyManager.AddEnemies();
+        PlayLevelBGM();
 
-        //AudioManager.Instance.PlayBGMLoop("level1bgm", false);
     }
 
     public string GetCurrentLevel()
@@ -92,5 +97,23 @@ public class LevelManager : MonoBehaviour
     public int GetCurrentLevelIndex()
     {
         return currentLevelIndex;
+    }
+    private void CheckCurrentIndex()
+    {
+        string currentLevel = GetCurrentLevel();
+        for (int i = 0; i < levels.Length; ++i)
+        {
+            if (currentLevel == levels[i])
+            {
+                currentLevelIndex = i;
+                return;
+            }
+        }
+    }
+
+    // Check which level the player is in before playing the bgm
+    private void PlayLevelBGM()
+    {
+        AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], false);
     }
 }

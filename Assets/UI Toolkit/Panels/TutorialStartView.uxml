@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="TutorialMainMenu" src="project://database/Assets/UI%20Toolkit/Panels/TutorialMainMenu.uxml?fileID=9197481963319205126&amp;guid=415b41bccf315164db3bbab0ebc0056e&amp;type=3#TutorialMainMenu" />
+    <ui:Template name="TutorialSettingView" src="project://database/Assets/UI%20Toolkit/Panels/TutorialLoadGameView.uxml?fileID=9197481963319205126&amp;guid=d0c078f75d63d3e409199ecb3862ddcb&amp;type=3#TutorialLoadGameView" />
+    <ui:Instance template="TutorialMainMenu" name="TutorialMainMenu" style="flex-grow: 1; display: flex;" />
+    <ui:Instance template="TutorialSettingView" name="TutorialLoadGameView" style="flex-grow: 1; display: none;" />
+</ui:UXML>

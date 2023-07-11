@@ -1,0 +1,12 @@
+.header {
+    color: rgb(56, 56, 56);
+    -unity-text-outline-color: rgb(235, 149, 52);
+}
+
+.unity-button {
+    font-size: 30px;
+    -unity-font-style: normal;
+}
+
+.greymultitextbox {
+}
