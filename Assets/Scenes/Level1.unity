@@ -607,6 +607,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7980640485310085714, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
   m_PrefabInstance: {fileID: 922463168}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &922463170 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7980640485310085717, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
+  m_PrefabInstance: {fileID: 922463168}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &961226178
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,6 +818,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b156df41cb814299232cd1cbb6f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  importantObjects:
+  - {fileID: 1129367937}
+  - {fileID: 922463170}
+  - {fileID: 1608663493}
   checkpointPos: {x: 0, y: 0}
   state: 0
 --- !u!4 &1076696310
@@ -1188,6 +1197,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7980640485310085714, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
   m_PrefabInstance: {fileID: 1608663491}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1608663493 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7980640485310085717, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
+  m_PrefabInstance: {fileID: 1608663491}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1709467457
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1415,6 +1429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrabbing: 0
   speed: 3
+  Reset: 0
 --- !u!61 &1945848093
 BoxCollider2D:
   m_ObjectHideFlags: 0

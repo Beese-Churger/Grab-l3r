@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum StateType
@@ -12,16 +13,19 @@ public enum StateType
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer respawnBG;
-    private Color bgColor = new(0, 0, 0, 0);
     public static GameManager instance = null;
-    private float bossLives = 3;
     public Vector2 checkpointPos;
-    private float health = 90;
-    private int score = 0;
-    private bool triggeredGameEnd;
     public StateType state;
+    public List<GameObject> importantObjects;
+
+    private Color bgColor = new(0, 0, 0, 0);
+    private float bossLives = 3;
+    private float health = 3;
+    private int score = 0;
+    private int ioCount;
+    private bool triggeredGameEnd;
     private float respawnTimer = 3f, respawnTimerValue = 3f;
+    [SerializeField] private SpriteRenderer respawnBG;
 
     public static GameManager GetInstance()
     {
@@ -50,6 +54,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //SetGameState(StateType.open);
+        ioCount = importantObjects.Count;
+        Debug.Log(ioCount);
     }
 
     public void SetGameState(StateType newState)
@@ -115,15 +121,17 @@ public class GameManager : MonoBehaviour
                 respawnTimer = respawnTimerValue;
             }
         }
+
+       
     }
 
     public void ResetGame()
     {
         // TODO: reset all variables to initials
-        this.health = 90;
+        this.health = 3;
         this.score = 0;
         bossLives = 3;
-        //triggeredGameEnd = false;
+        triggeredGameEnd = false;
     }
 
     public void SetScore(int addToScore){
@@ -137,8 +145,9 @@ public class GameManager : MonoBehaviour
 
     public void TakeDamage()
     {
-        health -= 90;
+        health --;
     }
+
     public void RemoveLife()
     {
         bossLives--;
@@ -158,6 +167,7 @@ public class GameManager : MonoBehaviour
     {
         return checkpointPos;
     }
+
     public void FadeIn()
     {
         while (respawnBG.color.a > 0)
