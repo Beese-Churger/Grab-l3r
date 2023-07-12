@@ -33,30 +33,33 @@ public class ElectricPlatform : MonoBehaviour
 
     private void Update()
     {
-        // Calculate the distance to the target position
-        float distanceToTarget = Vector2.Distance(transform.position, currentTarget);
-
-        // Check if the platform has reached the current target position
-        if (distanceToTarget <= slowdownDistance && !slowingDown)
+        if (isActive)
         {
-            slowingDown = true;
-            speed = distanceToTarget / slowdownDistance;
-        }
+            // Calculate the distance to the target position
+            float distanceToTarget = Vector2.Distance(transform.position, currentTarget);
 
-        // Move towards the current target position
-        transform.position = Vector2.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+            // Check if the platform has reached the current target position
+            if (distanceToTarget <= slowdownDistance && !slowingDown)
+            {
+                slowingDown = true;
+                speed = distanceToTarget / slowdownDistance;
+            }
 
-        // Check if the platform has reached the current target position
-        if (Vector2.Distance(transform.position, currentTarget) < 0.1f)
-        {
-            slowingDown = false;
+            // Move towards the current target position
+            transform.position = Vector2.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
 
-            // Switch the target position
-            if (currentTarget == startPoint.position)
-                currentTarget = endPoint.position;
-            else
-                currentTarget = startPoint.position;
-            speed = originalSpeed;
+            // Check if the platform has reached the current target position
+            if (Vector2.Distance(transform.position, currentTarget) < 0.1f)
+            {
+                slowingDown = false;
+
+                // Switch the target position
+                if (currentTarget == startPoint.position)
+                    currentTarget = endPoint.position;
+                else
+                    currentTarget = startPoint.position;
+                speed = originalSpeed;
+            }
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -65,5 +68,9 @@ public class ElectricPlatform : MonoBehaviour
         {
             GameManager.instance.TakeDamage();
         }
+    }
+    public void SetActive()
+    {
+        isActive = !isActive;
     }
 }

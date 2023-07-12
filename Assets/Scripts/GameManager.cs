@@ -14,12 +14,12 @@ public enum StateType
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
+    private float bossLives = 10;
     public Vector2 checkpointPos;
     public StateType state;
     public List<GameObject> importantObjects;
 
     private Color bgColor = new(0, 0, 0, 0);
-    private float bossLives = 3;
     private float health = 3;
     private int score = 0;
     private int ioCount;

@@ -31,9 +31,6 @@ public class Boss : MonoBehaviour
 
     [SerializeField] private GameObject horizontalPlatform;
     [SerializeField] private GameObject verticalPlatform;
-    private int phase = 0;
-    private int prevPhaseNumber = 0;
-    private int usableAbilities = 1;
     [SerializeField] private float chargeTimer = 3f;
     [SerializeField] private float gracePeriod = 3f;
     [SerializeField] private LayerMask platformLayer;
@@ -47,7 +44,13 @@ public class Boss : MonoBehaviour
     private GameObject bossBeam;
     private Collider2D CrushAOE;
     private GameObject[] bossArm;
+
+    // Electric Platforms variable
     private GameObject[] electricPlatforms;
+    private bool electricActive;
+    private float eTimer = 10f;
+    private const float eVal = 10f;
+
 
     // Boss animation variables
     [SerializeField] private AnimationClip crushClip;
@@ -60,14 +63,19 @@ public class Boss : MonoBehaviour
     private GameObject defaultTarget;
 
     private Animator animator;
-    bool isPlaying = false;
-    float attackTimer = 0.0f;
-    bool p_Hit = false;
-    bool slamming = false;
-    bool left = true;
-    // temporary variable
-    bool pTriggered = false;
-
+    private bool isPlaying = false;
+    private float attackTimer = 0.0f;
+    private bool p_Hit = false;
+    private bool slamming = false;
+    private bool left = true;
+    private bool trackPlayer = false;
+    // Boss Phase variable
+    private bool pTriggered = false;
+    private int phase = 0;
+    private int highestHitPhase = 0;
+    private int prevPhaseNumber = 0;
+    private int usableAbilities = 0;
+    private int pressedP = 0;
     private void Awake()
     {
         if (instance == null)
@@ -77,9 +85,9 @@ public class Boss : MonoBehaviour
     private void Start()
     {
         playerGO = GameObject.FindGameObjectWithTag("Player");
+        defaultTarget = GameObject.Find("playerTracker");
         bossHead = GameObject.Find("Head");
         bossBeam = GameObject.Find("BossBeam");
-        defaultTarget = GameObject.Find("defaultTarget");
         electricPlatforms = GameObject.FindGameObjectsWithTag("ElectricPlatform");
 
         bossArm = GameObject.FindGameObjectsWithTag("Boss");
@@ -92,7 +100,6 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(iKLeftHand.GetChain(0).target.name);
         // Updates phase
         PhaseUpdate();
         // FSM UPDATE
@@ -113,22 +120,33 @@ public class Boss : MonoBehaviour
             case FSM.SCAN:
                 // Spawn the beams 
                 ChargeUp();
+                if (!abilityUpdated)
+                    GenerateSkill();
                 break;
             case FSM.ATTACK:
                 /* TO DO: Charge Up duration (3s)?
                  * First select which skill the boss is going to use
                    before the boss initiates the attack*/
-                if (!abilityUpdated)
-                    GenerateSkill();
-
                 if (ChargeUp())
-                {
                     // Attack the player with an attack
                     Attack();
-                }
                 break;
             case FSM.DEAD:
                 break;
+        }
+
+        if (electricActive)
+        {
+            if (eTimer > 0f)
+            {
+                MoveEP();
+                eTimer -= Time.deltaTime;
+            }
+            else
+            {
+                eTimer = eVal;
+                electricActive = false;
+            }
         }
     }
     private void PhaseUpdate()
@@ -136,22 +154,30 @@ public class Boss : MonoBehaviour
         if (pTriggered)
         {
             Debug.Log("Triggered");
-            pTriggered = false;
-            if (phase == prevPhaseNumber)
+            if (phase == prevPhaseNumber || phase < highestHitPhase)
             {
                 // TO DO: If pressure plate is triggered , the boss will move up to the next phase 
                 phase++;
                 usableAbilities++;
+                pressedP++;
                 SpawnBody();
                 Debug.Log("Phase:" + phase);
             }
+            pTriggered = false;
+
 
         }
-
     }
     public void SetPPlate(bool active)
     {
         pTriggered = active;
+        if (!active)
+        {
+            phase--;
+            usableAbilities--;
+            pressedP--;
+            Debug.Log("Phase " + phase);
+        }
     }
     private void GenerateSkill()
     {
@@ -182,7 +208,8 @@ public class Boss : MonoBehaviour
         {
             case ATTACK.SLAM:
                 // Logic for the slam attack
-                Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)transform.position;
+                Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
+
                 if (dir.x > 0)
                 {
                     // Use Right Hand to slam the player
@@ -212,12 +239,18 @@ public class Boss : MonoBehaviour
                 }
                 if (left)
                 {
+                    Vector2 newDir = playerGO.transform.position - iKLeftHand.GetChain(2).effector.position;
+                    Vector3 newPos = newDir * 5f;
                     if (!slamming)
                     {
-                        iKLeftHand.GetChain(0).target = playerGO.transform;
+                        iKLeftHand.GetChain(0).target = defaultTarget.transform;
                         slamming = true;
                     }
-
+                    if (attackTimer < slamLClip.averageDuration * 0.6f)
+                    {
+                        defaultTarget.transform.position = newPos + iKLeftHand.GetChain(2).effector.position;
+                        trackPlayer = true;
+                    }
                     if (CollisionCheck())
                     {
                         p_Hit = true;
@@ -233,6 +266,7 @@ public class Boss : MonoBehaviour
                         animator.SetBool("SlamL", false);
                         current = FSM.IDLE;
                         slamming = false;
+                        trackPlayer = false;
                     }
                     else
                     {
@@ -242,10 +276,17 @@ public class Boss : MonoBehaviour
                 }
                 else
                 {
+                    Vector2 newDir = playerGO.transform.position - iKRightHand.GetChain(2).effector.position;
+                    Vector3 newPos = newDir * 5f;
                     if (!slamming)
                     {
-                        iKRightHand.GetChain(0).target = playerGO.transform;
+                        iKRightHand.GetChain(0).target = defaultTarget.transform;
                         slamming = true;
+                    }
+                    if (attackTimer < slamRClip.averageDuration * 0.6f)
+                    {
+                        defaultTarget.transform.position = newPos + iKRightHand.GetChain(2).effector.position;
+                        trackPlayer = true;
                     }
                     if (CollisionCheck())
                     {
@@ -265,6 +306,7 @@ public class Boss : MonoBehaviour
                         isPlaying = false;
                         p_Hit = false;
                         slamming = false;
+                        trackPlayer = false;
                         attackTimer = 0f;
                         animator.SetBool("SlamR", false);
                         current = FSM.IDLE;
@@ -272,6 +314,7 @@ public class Boss : MonoBehaviour
                     else
                     {
                         attackTimer += Time.deltaTime;
+                        ActivateBeam();
                     }
                 }
 
@@ -288,6 +331,10 @@ public class Boss : MonoBehaviour
                 {
                     animator.SetBool("Electric", true);
                     isPlaying = true;
+                }
+                if (attackTimer > grinderClip.averageDuration * 0.7)
+                {
+                    electricActive = true;
                 }
                 if (attackTimer > grinderClip.averageDuration)
                 {
@@ -347,37 +394,47 @@ public class Boss : MonoBehaviour
            Check if there's a change in the phase number
         
          -------------DONE*/
-        if (phase != prevPhaseNumber)
+        if (phase != prevPhaseNumber && phase > highestHitPhase)
         {
             prevPhaseNumber = phase;
+            highestHitPhase = phase;
 
-            bool check = false;
-            float minX = transform.position.x - horizontalPlatform.transform.localScale.x * m_Scale;
-            float maxX = transform.position.x + horizontalPlatform.transform.localScale.x * m_Scale;
-            float maxY = 0 + verticalPlatform.transform.localScale.x * m_Scale + 2.0f;
-            // Code to spawn the bodies
-            for (int i = 0; i < phase; ++i)
+            if (phase <= 2)
             {
-                while (!check)
+                bool check = false;
+                float minX = transform.position.x - horizontalPlatform.transform.localScale.x * m_Scale;
+                float maxX = transform.position.x + horizontalPlatform.transform.localScale.x * m_Scale;
+                float maxY = 0 + verticalPlatform.transform.localScale.x * m_Scale + 2.0f;
+                // Code to spawn the bodies
+
+                for (int i = 0; i < phase; ++i)
                 {
-                    float x = Random.Range(minX, maxX);
-                    Vector3 leftRayOrigin = new Vector3(x, maxY, 0) + Vector3.left * raycastDistance;
-                    Vector3 rightRayOrigin = new Vector3(x, maxY, 0) + Vector3.right * raycastDistance;
-
-                    RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
-                    RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
-                    if (leftHit.collider == null || rightHit.collider == null)
+                    while (!check)
                     {
-                        Instantiate(bodyDrop, new Vector3(x, maxY, 0), Quaternion.identity, bodyDropHolder.transform);
-                        check = true;
-                        //Debug.Log("Spawned body");
-                    }
-                }
-                check = false;
-                //Debug.Log(minX + "," + maxX);
-                //Debug.Log(maxY);
-            }
+                        float x = Random.Range(minX, maxX);
+                        Vector3 leftRayOrigin = new Vector3(x, maxY, 0) + Vector3.left * raycastDistance;
+                        Vector3 rightRayOrigin = new Vector3(x, maxY, 0) + Vector3.right * raycastDistance;
 
+                        RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
+                        RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
+                        if (leftHit.collider == null || rightHit.collider == null)
+                        {
+                            Instantiate(bodyDrop, new Vector3(x, maxY, 0), Quaternion.identity, bodyDropHolder.transform);
+                            check = true;
+                            //Debug.Log("Spawned body");
+                        }
+                    }
+                    check = false;
+                    //Debug.Log(minX + "," + maxX);
+                    //Debug.Log(maxY);
+                }
+            }
+            return;
+
+        }
+        else
+        {
+            prevPhaseNumber = phase;
         }
 
     }
@@ -385,13 +442,13 @@ public class Boss : MonoBehaviour
     {
         // TO DO: Spawn a beam of light above the player
         // Done
-        Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
+        //Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
+        //float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        //Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
         //Debug.Log(angle);
         // 1 second before the timer runs out the beam will stop following the player
-        if (timer > 1f)
-            bossBeam.transform.localRotation = rotation;
+        //if (timer > 1f)
+        //    bossBeam.transform.localRotation = rotation;
             //bossBeam.transform.rotation = Quaternion.Slerp(bossBeam.transform.rotation, rotation, 10f * Time.deltaTime);
 
         if (timer > 0f)
@@ -402,11 +459,31 @@ public class Boss : MonoBehaviour
         else
         {
             // Remove the beam
-            bossBeam.SetActive(false);
+            //bossBeam.SetActive(false);
             current = FSM.ATTACK;
             return true;
         }
     }
+    private void ActivateBeam()
+    {
+        if (!bossBeam.activeInHierarchy)
+            bossBeam.SetActive(true);
+
+        Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
+        //Debug.Log(angle);
+        // 1 second before the timer runs out the beam will stop following the player
+        if (attackTimer < slamRClip.averageDuration * 0.6f)
+            bossBeam.transform.localRotation = rotation;
+        //bossBeam.transform.rotation = Quaternion.Slerp(bossBeam.transform.rotation, rotation, 10f * Time.deltaTime);
+        else
+        {
+            // Remove the beam
+            bossBeam.SetActive(false);
+        }
+    }
+
     private bool CollisionCheck()
     {
         foreach (GameObject bossArmComponent in bossArm)
@@ -453,6 +530,13 @@ public class Boss : MonoBehaviour
 
         }
 
+    }
+    private void MoveEP()
+    {
+        foreach (GameObject electricPlatform in electricPlatforms)
+        {
+            electricPlatform.GetComponent<ElectricPlatform>().SetActive();
+        }
     }
     private void OnDrawGizmos()
     {

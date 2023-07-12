@@ -268,17 +268,10 @@ public class BigEnemy : EnemyBaseClass
        
         if ((leftHit.collider != null && direction < 0) || (rightHit.collider != null && direction > 0))
         {
-            if (leftHit.collider.IsTouchingLayers(LayerMask.GetMask("PressurePlate")))
-            {
-
-            }
-            else
-            {
-                rb.velocity = Vector2.zero;
-                ChangeDirection();
-                current = FSM.IDLE;
-                //Debug.Log("Big Enemy is near the wall!");  
-            }
+            rb.velocity = Vector2.zero;
+            ChangeDirection();
+            current = FSM.IDLE;
+            //Debug.Log("Big Enemy is near the wall!");      
             return true;
         }
         return false;
