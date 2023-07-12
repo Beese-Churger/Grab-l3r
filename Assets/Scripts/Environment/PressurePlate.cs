@@ -54,9 +54,9 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!stepped)
+        //if (!stepped)
         {
-            stepped = true;
+            //stepped = true;
             if (collision.gameObject.name != "FOV")
             {
                 objectsInTrigger.Add(collision.gameObject);
