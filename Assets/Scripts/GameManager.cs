@@ -74,8 +74,11 @@ public class GameManager : MonoBehaviour
                 break;
             case StateType.levelChange:
                 LevelManager.instance.LoadNextLevel();
-                var player = GameObject.Find("Player").GetComponent<TestPlayer>();
-                player.ResetPlayer();
+                if (LevelManager.instance.GetCurrentLevelIndex() > 1)
+                {
+                    var player = GameObject.Find("Player").GetComponent<TestPlayer>();
+                    player.ResetPlayer();
+                }
                 //checkpointPos = player.transform.position;
                 break;
             case StateType.respawn:
@@ -92,7 +95,7 @@ public class GameManager : MonoBehaviour
 
     public StateType GetGameState()
     {
-        return this.state;
+        return state;
     }
 
     private void DisplayCredits()
@@ -128,8 +131,8 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         // TODO: reset all variables to initials
-        this.health = 3;
-        this.score = 0;
+        health = 3;
+        score = 0;
         bossLives = 3;
         triggeredGameEnd = false;
     }
@@ -140,19 +143,26 @@ public class GameManager : MonoBehaviour
 
     public int GetScore()
     {
-        return this.score;
+        return score;
     }
 
     public void TakeDamage()
     {
         health --;
     }
+    public void InstantDeath()
+    {
+        health = 0;
+    }
 
     public void RemoveLife()
     {
         bossLives--;
     }
-
+    public float GetPlayerHP()
+    {
+        return health;
+    }
     public LevelManager GetLevelManager()
     {
         return LevelManager.instance;

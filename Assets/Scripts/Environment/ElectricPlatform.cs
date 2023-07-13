@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ElectricPlatform : MonoBehaviour
 {
+    [SerializeField] Animator elecAnimator;
     public Transform startPoint;
     public Transform endPoint;
     public float speed = 1f;
@@ -35,6 +36,7 @@ public class ElectricPlatform : MonoBehaviour
     {
         if (isActive)
         {
+            elecAnimator.SetBool("Active", true);
             // Calculate the distance to the target position
             float distanceToTarget = Vector2.Distance(transform.position, currentTarget);
 
@@ -61,6 +63,8 @@ public class ElectricPlatform : MonoBehaviour
                 speed = originalSpeed;
             }
         }
+        else
+            elecAnimator.SetBool("Active", false);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -69,8 +73,8 @@ public class ElectricPlatform : MonoBehaviour
             GameManager.instance.TakeDamage();
         }
     }
-    public void SetActive()
+    public void SetActive(bool active)
     {
-        isActive = !isActive;
+        isActive = active;
     }
 }
