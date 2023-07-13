@@ -136,7 +136,7 @@ public class Options : MonoBehaviour
     public void OnFullscreenChanged(int optionIndex)
     {
         // Toggle between fullscreen and windowed mode based on the selected option
-        bool isFullscreen = optionIndex == 1;
+        bool isFullscreen = optionIndex == 0;
         Screen.fullScreen = isFullscreen;
     }
     public void SetCanvasSize()

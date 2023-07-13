@@ -22,7 +22,7 @@ public class Boss : MonoBehaviour
     };
 
     // FSM variables
-    FSM current = FSM.ATTACK;
+    FSM current = FSM.IDLE;
     ATTACK currentAttack;
 
     // Boss Level variables
@@ -95,6 +95,7 @@ public class Boss : MonoBehaviour
         animator = GetComponent<Animator>();
         timer = chargeTimer;
         graceTimer = gracePeriod;
+        bossBeam.SetActive(false);
     }
 
     // Update is called once per frame
@@ -139,7 +140,6 @@ public class Boss : MonoBehaviour
         {
             if (eTimer > 0f)
             {
-                MoveEP();
                 eTimer -= Time.deltaTime;
             }
             else
@@ -147,7 +147,9 @@ public class Boss : MonoBehaviour
                 eTimer = eVal;
                 electricActive = false;
             }
+            MoveEP(electricActive);
         }
+        
     }
     private void PhaseUpdate()
     {
@@ -198,7 +200,8 @@ public class Boss : MonoBehaviour
             currentAttack = ATTACK.SLAM;
         }
         abilityUpdated = true;
-        bossBeam.SetActive(true);
+        //bossBeam.SetActive(true);
+        Debug.Log("Current Attack:" + currentAttack);
 
     }
     /* The logic of the different attacks */
@@ -438,32 +441,6 @@ public class Boss : MonoBehaviour
         }
 
     }
-    private bool ChargeUp()
-    {
-        // TO DO: Spawn a beam of light above the player
-        // Done
-        //Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
-        //float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        //Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
-        //Debug.Log(angle);
-        // 1 second before the timer runs out the beam will stop following the player
-        //if (timer > 1f)
-        //    bossBeam.transform.localRotation = rotation;
-            //bossBeam.transform.rotation = Quaternion.Slerp(bossBeam.transform.rotation, rotation, 10f * Time.deltaTime);
-
-        if (timer > 0f)
-        {
-            timer -= Time.deltaTime;
-            return false;
-        }
-        else
-        {
-            // Remove the beam
-            //bossBeam.SetActive(false);
-            current = FSM.ATTACK;
-            return true;
-        }
-    }
     private void ActivateBeam()
     {
         if (!bossBeam.activeInHierarchy)
@@ -515,6 +492,32 @@ public class Boss : MonoBehaviour
         }
         return false;
     }
+    private bool ChargeUp()
+    {
+        // TO DO: Spawn a beam of light above the player
+        // Done
+        //Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
+        //float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        //Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
+        //Debug.Log(angle);
+        // 1 second before the timer runs out the beam will stop following the player
+        //if (timer > 1f)
+        //    bossBeam.transform.localRotation = rotation;
+        //bossBeam.transform.rotation = Quaternion.Slerp(bossBeam.transform.rotation, rotation, 10f * Time.deltaTime);
+
+        if (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+            return false;
+        }
+        else
+        {
+            // Remove the beam
+            //bossBeam.SetActive(false);
+            current = FSM.ATTACK;
+            return true;
+        }
+    }
     private void GracePeriod()
     {
         if (graceTimer > 0f)
@@ -531,11 +534,11 @@ public class Boss : MonoBehaviour
         }
 
     }
-    private void MoveEP()
+    private void MoveEP(bool move)
     {
         foreach (GameObject electricPlatform in electricPlatforms)
         {
-            electricPlatform.GetComponent<ElectricPlatform>().SetActive();
+            electricPlatform.GetComponent<ElectricPlatform>().SetActive(move);
         }
     }
     private void OnDrawGizmos()

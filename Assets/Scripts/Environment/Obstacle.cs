@@ -41,7 +41,12 @@ public class Obstacle : MonoBehaviour
         {
             if (collision.transform.CompareTag("Player") & obstacleType !=ObstacleType.door)
             {
-                GameManager.instance.TakeDamage();
+                // For the hole
+                if (obstacleType == ObstacleType.water)
+                    GameManager.instance.InstantDeath();
+                else
+                    GameManager.instance.TakeDamage();
+                //Debug.Log("Ouch!");
             }
         }
     }

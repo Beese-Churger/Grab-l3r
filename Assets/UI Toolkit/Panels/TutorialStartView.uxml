@@ -1,6 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="TutorialMainMenu" src="project://database/Assets/UI%20Toolkit/Panels/TutorialMainMenu.uxml?fileID=9197481963319205126&amp;guid=415b41bccf315164db3bbab0ebc0056e&amp;type=3#TutorialMainMenu" />
     <ui:Template name="TutorialSettingView" src="project://database/Assets/UI%20Toolkit/Panels/TutorialLoadGameView.uxml?fileID=9197481963319205126&amp;guid=d0c078f75d63d3e409199ecb3862ddcb&amp;type=3#TutorialLoadGameView" />
+    <ui:Template name="HighscoreList" src="project://database/Assets/UI%20Toolkit/Panels/HighscoreList.uxml?fileID=9197481963319205126&amp;guid=c605c7872c9685042b6199b3db5655a9&amp;type=3#HighscoreList" />
+    <ui:Template name="CutscenesMenu" src="project://database/Assets/UI%20Toolkit/Panels/CutscenesMenu.uxml?fileID=9197481963319205126&amp;guid=32037bd3a47a53848a334f69fa8e67ad&amp;type=3#CutscenesMenu" />
+    <ui:Template name="MenuCredits" src="project://database/Assets/UI%20Toolkit/Panels/MenuCredits.uxml?fileID=9197481963319205126&amp;guid=46b9b4d081ad6b541bb3ade60d375b81&amp;type=3#MenuCredits" />
+    <ui:Template name="QuitConfirmationMenu" src="project://database/Assets/UI%20Toolkit/Panels/QuitConfirmationMenu.uxml?fileID=9197481963319205126&amp;guid=8482f06307160d84e9e0b3d66e785d7b&amp;type=3#QuitConfirmationMenu" />
+    <ui:Template name="OptionsMenu" src="project://database/Assets/UI%20Toolkit/Panels/OptionsMenu.uxml?fileID=9197481963319205126&amp;guid=94474a0d5258f7e48b7e4f27cc56ae5d&amp;type=3#OptionsMenu" />
+    <ui:Template name="ResolutionDropdownMenu" src="project://database/Assets/UI%20Toolkit/Panels/ResolutionDropdownMenu.uxml?fileID=9197481963319205126&amp;guid=fc2cb6e6a3bb93a4eb8011aa6c11adfa&amp;type=3#ResolutionDropdownMenu" />
+    <ui:Template name="VolumeMenu" src="project://database/Assets/UI%20Toolkit/Panels/VolumeMenu.uxml?fileID=9197481963319205126&amp;guid=f65d4fc95cf6e6f469fdd694500d73d9&amp;type=3#VolumeMenu" />
+    <ui:Template name="ControlsMenu" src="project://database/Assets/UI%20Toolkit/Panels/ControlsMenu.uxml?fileID=9197481963319205126&amp;guid=a559e4b1cfe9c1e4aa87efb4ac1010e8&amp;type=3#ControlsMenu" />
+    <ui:Template name="BrightnessMenu" src="project://database/Assets/UI%20Toolkit/Panels/BrightnessMenu.uxml?fileID=9197481963319205126&amp;guid=6811eba0719d66d439aa6f0a2748b4db&amp;type=3#BrightnessMenu" />
     <ui:Instance template="TutorialMainMenu" name="TutorialMainMenu" style="flex-grow: 1; display: flex;" />
-    <ui:Instance template="TutorialSettingView" name="TutorialLoadGameView" style="flex-grow: 1; display: none;" />
+    <ui:Instance template="TutorialSettingView" name="TutorialLoadGameView" style="flex-grow: 1; display: none; opacity: 1;" />
+    <ui:Instance template="HighscoreList" name="HighscoreList" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="CutscenesMenu" name="CutscenesMenu" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="MenuCredits" name="MenuCredits" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="QuitConfirmationMenu" name="QuitConfirmationMenu" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="OptionsMenu" name="OptionsMenu" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="BrightnessMenu" name="BrightnessMenu" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="ControlsMenu" name="ControlsMenu" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="VolumeMenu" name="VolumeMenu" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="ResolutionDropdownMenu" name="ResolutionDropdownMenu" style="display: none; flex-grow: 1;" />
 </ui:UXML>
