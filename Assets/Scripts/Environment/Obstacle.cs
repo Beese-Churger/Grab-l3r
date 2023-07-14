@@ -43,10 +43,13 @@ public class Obstacle : MonoBehaviour
             {
                 // For the hole
                 if (obstacleType == ObstacleType.water)
+                {
                     GameManager.instance.InstantDeath();
+                }
                 else
+                {
                     GameManager.instance.TakeDamage();
-                //Debug.Log("Ouch!");
+                }
             }
         }
     }
