@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: -49436836895965386}
   - component: {fileID: 7004533698621133976}
   - component: {fileID: -3794865544091173743}
-  - component: {fileID: 7635302932423382563}
-  m_Layer: 0
+  - component: {fileID: 3033261868163587960}
+  m_Layer: 11
   m_Name: MovingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,11 +147,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrainType: 2
-  speed: 0.5
+  speed: 3
   endPos: {x: 0, y: 0}
   animator: {fileID: 7004533698621133976}
   triggerPressurePlate: 0
---- !u!50 &7635302932423382563
+--- !u!50 &3033261868163587960
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -171,4 +171,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 6
