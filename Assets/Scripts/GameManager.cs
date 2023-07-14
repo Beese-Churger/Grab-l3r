@@ -17,14 +17,14 @@ public class GameManager : MonoBehaviour
     private float bossLives = 10;
     public Vector2 checkpointPos;
     public StateType state;
-    public List<GameObject> importantObjects;
 
     private Color bgColor = new(0, 0, 0, 0);
     private float health = 3;
     private int score = 0;
-    private int ioCount;
     private bool triggeredGameEnd;
     private float respawnTimer = 3f, respawnTimerValue = 3f;
+
+    public bool resetPlayer;
     [SerializeField] private SpriteRenderer respawnBG;
 
     public static GameManager GetInstance()
@@ -54,8 +54,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //SetGameState(StateType.open);
-        ioCount = importantObjects.Count;
-        Debug.Log(ioCount);
     }
 
     public void SetGameState(StateType newState)
@@ -66,20 +64,14 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case StateType.end:
-                //DisplayCredits();
                 StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
                 break; ;
             case StateType.open:
                 StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
                 break;
             case StateType.levelChange:
+                resetPlayer = true;
                 LevelManager.instance.LoadNextLevel();
-                if (LevelManager.instance.GetCurrentLevelIndex() > 1)
-                {
-                    var player = GameObject.Find("Player").GetComponent<TestPlayer>();
-                    player.ResetPlayer();
-                }
-                //checkpointPos = player.transform.position;
                 break;
             case StateType.respawn:
                 ResetGame();
@@ -98,11 +90,6 @@ public class GameManager : MonoBehaviour
         return state;
     }
 
-    private void DisplayCredits()
-    {
-       // TODO: credits display
-    }
-
     private void Update()
     {
         if (health <= 0 || bossLives <= 0)
@@ -115,7 +102,6 @@ public class GameManager : MonoBehaviour
             if (respawnTimer >= 0f)
             {
                 respawnTimer -= Time.deltaTime;
-                
             }
             else
             {
@@ -124,8 +110,6 @@ public class GameManager : MonoBehaviour
                 respawnTimer = respawnTimerValue;
             }
         }
-
-       
     }
 
     public void ResetGame()
@@ -166,16 +150,6 @@ public class GameManager : MonoBehaviour
     public LevelManager GetLevelManager()
     {
         return LevelManager.instance;
-    }
-
-    public void SetCheckPoint(Vector2 point)
-    {
-        checkpointPos = point;
-    }
-
-    public Vector2 GetCheckPointPos()
-    {
-        return checkpointPos;
     }
 
     public void FadeIn()

@@ -17,11 +17,28 @@ public class SimpleController : MonoBehaviour
     public bool isJumping = false;
     private RopeScript ropeScript;
     private bool isHooked = false;
+    private Vector2 playerPos;
+    private Vector2 checkpointPos = new Vector2(-14,-7);
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        playerPos = transform.position;
+        Debug.Log(playerPos + "player");
+    }
+
     void Start()
     {
-  
         rBody = GetComponent<Rigidbody2D>();
+        if (GameManager.instance.resetPlayer == true)
+        {
+            transform.position = playerPos;
+            GameManager.instance.resetPlayer = false;
+        }
+        else
+        {
+            transform.position = checkpointPos;
+        }
     }
 
     // Update is called once per frame
@@ -89,6 +106,11 @@ public class SimpleController : MonoBehaviour
 
         if(groundCheck)
             rBody.velocity = new Vector2(rBody.velocity.x * 0.9f, rBody.velocity.y);
+    }
+
+    public void SetCheckPoint(Vector2 point)
+    {
+        checkpointPos = point;
     }
 
     public void SetHook(bool _hook)
