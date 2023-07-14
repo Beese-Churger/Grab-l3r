@@ -11,12 +11,9 @@ public class TestPlayer : MonoBehaviour
     public static Vector2 checkpointPos;
     private Vector2 movementDir;
     private Vector2 playerPos;
-    public bool Reset;
 
     private void Awake()
     {
-        // set player position to last checkpoint on respawn
-        //transform.position = playerPos;
         playerPos = transform.position;
     }
 
@@ -26,9 +23,10 @@ public class TestPlayer : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //var point = GameManager.instance.GetCheckPointPos();
         //transform.position = point;
-        if (Reset)
+        if (GameManager.instance.resetPlayer == true)
         {
             transform.position = playerPos;
+            GameManager.instance.resetPlayer = false;
         }
         else
         {
@@ -49,30 +47,11 @@ public class TestPlayer : MonoBehaviour
     // Player movement for testing purpouses
     void Update()
     {
-        //movementDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        //transform.Translate(speed * movementDir * Time.deltaTime);
-
         GetComponent<Rigidbody2D>().velocity = new Vector2(Input.GetAxis("Horizontal") * 5, GetComponent<Rigidbody2D>().velocity.y);
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * 300f);
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // check collision with terrain
-        if (collision.transform.CompareTag("Terrain"))
-        {
-            // TODO: check terrain surface type
-            isGrabbing = true;
-            //Debug.Log("Collision with terrain");
-        }
-    }
-
-    public void ResetPlayer()
-    { 
-        Reset = true;
     }
 }
 
