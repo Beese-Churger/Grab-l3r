@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 
 public class ExplosionForce : MonoBehaviour {
-	public float force = 50;
-	public float radius = 5;
-	public float upliftModifer = 5;
-	
+    public float force = 50;
+    public float radius = 5;
+    public float upliftModifer = 5;
+
     /// <summary>
     /// create an explosion force
     /// </summary>
     /// <param name="position">location of the explosion</param>
-	public void doExplosion(Vector3 position){
+    public void doExplosion(Vector3 position){
 		transform.localPosition = position;
 		StartCoroutine(waitAndExplode());
 	}
