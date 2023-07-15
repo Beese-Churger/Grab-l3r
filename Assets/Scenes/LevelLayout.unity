@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 138476616}
   - component: {fileID: 138476615}
   - component: {fileID: 138476614}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -932,7 +932,7 @@ GameObject:
   - component: {fileID: 218529881}
   - component: {fileID: 218529886}
   - component: {fileID: 218529887}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1324,7 +1324,7 @@ GameObject:
   - component: {fileID: 400573618}
   - component: {fileID: 400573617}
   - component: {fileID: 400573616}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1464,7 +1464,7 @@ GameObject:
   - component: {fileID: 487830651}
   - component: {fileID: 487830650}
   - component: {fileID: 487830649}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2177,7 +2177,7 @@ GameObject:
   - component: {fileID: 637061811}
   - component: {fileID: 637061810}
   - component: {fileID: 637061809}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2736,6 +2736,53 @@ Material:
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+--- !u!1 &842611076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 842611078}
+  - component: {fileID: 842611077}
+  m_Layer: 0
+  m_Name: ExplosionForce
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &842611077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842611076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b57070c18171a2448bd93ce4df9e8ff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 1000
+  radius: 10
+  upliftModifer: 5
+--- !u!4 &842611078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842611076}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.04, y: 0.06, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &865857735
 GameObject:
   m_ObjectHideFlags: 0
@@ -2848,7 +2895,7 @@ GameObject:
   - component: {fileID: 889636778}
   - component: {fileID: 889636777}
   - component: {fileID: 889636776}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2983,7 +3030,7 @@ GameObject:
   - component: {fileID: 899843857}
   - component: {fileID: 899843856}
   - component: {fileID: 899843855}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3118,7 +3165,7 @@ GameObject:
   - component: {fileID: 973453913}
   - component: {fileID: 973453912}
   - component: {fileID: 973453911}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34699,7 +34746,7 @@ GameObject:
   - component: {fileID: 1075649263}
   - component: {fileID: 1075649262}
   - component: {fileID: 1075649261}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36270,7 +36317,7 @@ GameObject:
   - component: {fileID: 1532338745}
   - component: {fileID: 1532338744}
   - component: {fileID: 1532338743}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36871,7 +36918,7 @@ GameObject:
   - component: {fileID: 1793696418}
   - component: {fileID: 1793696417}
   - component: {fileID: 1793696416}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37326,7 +37373,7 @@ GameObject:
   - component: {fileID: 1868260313}
   - component: {fileID: 1868260312}
   - component: {fileID: 1868260311}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37847,7 +37894,7 @@ GameObject:
   - component: {fileID: 2016315506}
   - component: {fileID: 2016315505}
   - component: {fileID: 2016315504}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37982,7 +38029,7 @@ GameObject:
   - component: {fileID: 2033724139}
   - component: {fileID: 2033724138}
   - component: {fileID: 2033724137}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38449,7 +38496,7 @@ GameObject:
   - component: {fileID: 2120924447}
   - component: {fileID: 2120924446}
   - component: {fileID: 2120924445}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38586,7 +38633,7 @@ GameObject:
   - component: {fileID: 2126938342}
   - component: {fileID: 2126938341}
   - component: {fileID: 2126938340}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerToExplode piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
