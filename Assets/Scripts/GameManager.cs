@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private Color bgColor = new(0, 0, 0, 0);
     private float health = 3;
     private int score = 0;
+    private int collectables;
     private float respawnTimer = 3f;
     private float respawnTimerValue = 3f;
     private bool triggeredGameEnd;
@@ -145,9 +146,20 @@ public class GameManager : MonoBehaviour
         bossLives = 3;
     }
 
+    public void SetCollectables(int add)
+    {
+        collectables += add;
+    }
+
+    public int GetCollectables()
+    {
+        return collectables;
+    }
+
     // set player score
-    public void SetScore(int addToScore){
-        score += addToScore;
+    public void SetScore(int add)
+    {
+        score += add;
     }
 
     // get current score
