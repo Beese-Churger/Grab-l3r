@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelChange : MonoBehaviour
 {
+    // change level once player triggers level end area
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
