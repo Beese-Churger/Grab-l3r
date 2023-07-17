@@ -27,18 +27,7 @@ public class GameManager : MonoBehaviour
     private float respawnTimerValue = 3f;
     private bool triggeredGameEnd;
     
-    [SerializeField] private SpriteRenderer respawnBG;
     [SerializeField] private GameObject ExplodePlayer;
-    
-    public static GameManager GetInstance()
-    {
-        if (instance == null)
-        {
-            instance = new();
-            DontDestroyOnLoad(instance);
-        }
-        return instance;
-    }
 
     // create game manager instance
     private void Awake()
