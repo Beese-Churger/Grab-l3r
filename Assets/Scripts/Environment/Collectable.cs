@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Checkpoint : MonoBehaviour
+public class Collectable : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // check if player has triggered checkpoint
-        if (collision.transform.CompareTag("Player"))
+        if (collision.transform.tag == "Player")
         {
-            var player = GameObject.Find("Player").GetComponent<SimpleController>();
-            player.SetCheckPoint(transform.position);
-
+            GameManager.instance.SetScore(1);
             var sprite = gameObject.GetComponent<SpriteRenderer>();
             sprite.color = Color.red;
         }

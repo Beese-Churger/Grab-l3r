@@ -14,8 +14,8 @@ public class Terrain : MonoBehaviour
     public float speed = 0.2f;
     public Vector2 endPos;
     public Animator animator;
-
     public bool triggerPressurePlate = false;
+
     private Vector2 startPos;
     private bool isRight;
     private float timer;
@@ -44,10 +44,12 @@ public class Terrain : MonoBehaviour
         }
     }
 
+    // move moving platform when activated
     private void Move()
     {
         if (!isRight)
         {
+            // move platform to the right and pause once target position reached
             if (Vector2.Distance(transform.position, endPos) < 0.001f)
             {
                 transform.position = endPos;
@@ -65,6 +67,7 @@ public class Terrain : MonoBehaviour
         }
         else
         {
+            // move platform tothe left and pause once target position reached
             if (Vector2.Distance(transform.position, startPos) < 0.001f)
             {
                 transform.position = startPos;
@@ -82,18 +85,21 @@ public class Terrain : MonoBehaviour
         }
     }
 
+    // activate moving platform
     public void ActivateMovingPlatform()
     {
         triggerPressurePlate = true;
         animator.SetBool("isActivated", true);
     }
 
+    // deactivate moving platform
     public void DeactivateMovingPlatform()
     {
         triggerPressurePlate = false;
         animator.SetBool("isActivated", false);
     }
 
+    // get terrain type
     public TerrainType GetTerrainType()
     {
         return terrainType;

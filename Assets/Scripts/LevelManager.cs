@@ -4,13 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    private string[] levels = { "Level1", "LevelLayout", "Level2", "Level1"};
-    //private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
     private string[] levelsBGM = { "", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
-    
     public static LevelManager instance = null;
+
     private int currentLevelIndex = 0;
 
+    // create an instance of level manager
     private void Awake()
     {
         if (instance != null)
@@ -30,9 +30,11 @@ public class LevelManager : MonoBehaviour
         instance = null;
     }
 
+    // load next level by level index
     public void LoadNextLevel()
     {
         currentLevelIndex++;
+        // check if all the levels are loaded
         if (currentLevelIndex < levels.Length)
         {
             StartCoroutine(LoadLevel(currentLevelIndex));
@@ -43,6 +45,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    // reload level on respawn 
     public void ReLoadLevel()
     {
         string level = levels[currentLevelIndex];
@@ -50,6 +53,7 @@ public class LevelManager : MonoBehaviour
         GameManager.instance.FadeIn();
     }
 
+    // load level by index
     private IEnumerator LoadLevel(int index)
     {
         string scene = levels[index];
@@ -60,10 +64,14 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
         if (EnemyManager.enemyManager != null)
+        {
             EnemyManager.enemyManager.AddEnemies();
+        }
+           
         PlayLevelBGM();
     }
 
+    // load level by name
     public IEnumerator LoadLevel(string scene)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
@@ -73,11 +81,14 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
         if (EnemyManager.enemyManager != null)
+        {
             EnemyManager.enemyManager.AddEnemies();
+        }
+        
         PlayLevelBGM();
-
     }
 
+    // return current level name
     public string GetCurrentLevel()
     {
         foreach (string levelName in levels)
@@ -89,14 +100,20 @@ public class LevelManager : MonoBehaviour
         }
         return "";
     }
+
+    // set level index
     public void SetCurrentLevelIndex(int idx)
     {
         currentLevelIndex = idx;
     }
+
+    // get current level index
     public int GetCurrentLevelIndex()
     {
         return currentLevelIndex;
     }
+
+    // check index
     private void CheckCurrentIndex()
     {
         string currentLevel = GetCurrentLevel();

@@ -12,8 +12,6 @@ public class PressurePlate : MonoBehaviour
     private Obstacle.ObstacleType type;
     private bool isObstacle;
     private bool isDoor;
-    private bool stepped = false;
-
 
     private void Start()
     {
@@ -40,6 +38,7 @@ public class PressurePlate : MonoBehaviour
         }
     }
 
+    // dissable obstacle that is affected by the pressure plate
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (transform.position.y < collision.transform.position.y)
@@ -52,51 +51,45 @@ public class PressurePlate : MonoBehaviour
         }
     }
 
+    // open/close door, activate moving platform
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (!stepped)
+        if (collision.gameObject.name != "FOV")
         {
-            //stepped = true;
-            if (collision.gameObject.name != "FOV")
+            objectsInTrigger.Add(collision.gameObject);
+            animator.SetBool("isPressed", true);
+            if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
             {
-                objectsInTrigger.Add(collision.gameObject);
-                animator.SetBool("isPressed", true);
-                if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
-                {
-                    Boss.instance.SetPPlate(true);
-                    return;
-                }
+                Boss.instance.SetPPlate(true);
+                return;
+            }
 
-                if (isDoor && !isDoorOpen)
+            if (isDoor && !isDoorOpen)
+            {
+                if (obstacle != null)
                 {
-                    if (obstacle != null)
-                    {
-                        obstacle.OpenDoor();
-                    }
+                    obstacle.OpenDoor();
                 }
-                else if (isDoorOpen)
+            }
+            else if (isDoorOpen)
+            {
+                if (obstacle != null)
                 {
-                    if (obstacle != null)
-                    {
-                        obstacle.CloseDoor();
-                    }
-
-                }
-                else if (!isObstacle && !isDoor)
-                {
-                    if (terrain != null)
-                    {
-                        terrain.ActivateMovingPlatform();
-                    }
-
+                    obstacle.CloseDoor();
                 }
 
             }
-            
+            else if (!isObstacle && !isDoor)
+            {
+                if (terrain != null)
+                {
+                    terrain.ActivateMovingPlatform();
+                }
+            }
         }
     }
 
-    // set move plate back up when player exits trigger
+    // activate obstacles, open/close doors, deactivate mnoving platforms
     private void OnTriggerExit2D(Collider2D collision)
     {
         objectsInTrigger.Remove(collision.gameObject);       
@@ -117,7 +110,6 @@ public class PressurePlate : MonoBehaviour
                 {
                     obstacle.OpenDoor();
                 }
-
             }
             else if (!isObstacle && !isDoor)
             {
@@ -128,6 +120,5 @@ public class PressurePlate : MonoBehaviour
                 obstacle.ActivateObstacle();
             }
         }
-        
     }
 }
