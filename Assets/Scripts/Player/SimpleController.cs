@@ -18,13 +18,13 @@ public class SimpleController : MonoBehaviour
     private RopeScript ropeScript;
     private bool isHooked = false;
     private Vector2 playerPos;
-    private Vector2 checkpointPos = new Vector2(-14,-7);
+    private Vector2 checkpointPos;
     // Start is called before the first frame update
 
     private void Awake()
     {
         playerPos = transform.position;
-        Debug.Log(playerPos + "player");
+        checkpointPos = transform.position;
     }
 
     void Start()
