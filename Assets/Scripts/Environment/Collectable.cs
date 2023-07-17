@@ -13,6 +13,6 @@ public class Collectable : MonoBehaviour
             var sprite = gameObject.GetComponent<SpriteRenderer>();
             sprite.color = Color.red;
         }
-        Destroy(this);
+        Destroy(this.gameObject);
     }
 }

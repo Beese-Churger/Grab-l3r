@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetGameState(StateType.open);
+        //SetGameState(StateType.open);
     }
 
     // set game state
