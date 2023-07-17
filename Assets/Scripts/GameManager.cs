@@ -25,10 +25,25 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private float respawnTimer = 3f;
     private float respawnTimerValue = 3f;
+    private bool triggeredGameEnd;
+    
+    [SerializeField] private SpriteRenderer respawnBG;
+    [SerializeField] private GameObject ExplodePlayer;
+    
+    public static GameManager GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = new();
+            DontDestroyOnLoad(instance);
+        }
+        return instance;
+    }
 
     // create game manager instance
     private void Awake()
     {
+        //ExplodePlayer = GameObject.Find("PlayerToExplode");
         if (instance == null)
         {
             instance = this;
@@ -95,14 +110,25 @@ public class GameManager : MonoBehaviour
     {
         if (health <= 0 || bossLives <= 0)
         {
-            if (bgColor.a < 1)
+            if(GameObject.Find("Player"))
             {
-                bgColor.a += Time.deltaTime;
-                respawnBG.color = bgColor;
+                ExplodePlayer.SetActive(true);
+                GameObject.Find("Player").SetActive(false);
+
             }
+            
             if (respawnTimer >= 0f)
             {
                 respawnTimer -= Time.deltaTime;
+
+                if(respawnTimer < 1.5f)
+                {
+                    if (bgColor.a < 1)
+                    {
+                        bgColor.a += Time.deltaTime;
+                        respawnBG.color = bgColor;
+                    }
+                }
             }
             else
             {
