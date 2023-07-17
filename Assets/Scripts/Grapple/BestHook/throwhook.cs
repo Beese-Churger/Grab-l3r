@@ -45,6 +45,37 @@ public class throwhook : MonoBehaviour
 		hookContext = HookContext.HOOK_BIG;
     }
 
+
+	public void destroyHook()
+    {
+		//delete rope
+		Destroy(curHook, 0.1f);
+
+		Destroy(attachedTo.GetComponent<SpringJoint2D>());
+		Destroy(attachedTo.GetComponent<DistanceJoint2D>());
+		hookContext = HookContext.HOOK_BIG;
+		if (attachedTo.GetComponent<SmallEnemy>())
+		{
+			attachedTo.GetComponent<SmallEnemy>().isHooked = false;
+		}
+		//if (attachedTo.CompareTag("Enemy"))
+		//{
+		//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
+		//	if (enemyType == 0)
+		//	{
+		//		attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
+		//		attachedTo.GetComponent<SmallEnemy>().isHooked = false;
+		//	}
+		//	else if (enemyType == 1)
+		//	{
+		//		attachedTo.GetComponent<Rigidbody2D>().isKinematic = false;
+		//	}
+
+		//}
+		ropeActive = false;
+		change = false;
+		pulling = false;
+	}
     void Update () 
 	{		
 		Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
@@ -129,32 +160,7 @@ public class throwhook : MonoBehaviour
 			else
 			{
 				//delete rope
-				Destroy(curHook, 0.1f);
-
-				Destroy(attachedTo.GetComponent<SpringJoint2D>());
-				Destroy(attachedTo.GetComponent<DistanceJoint2D>());
-				hookContext = HookContext.HOOK_BIG;
-				if (attachedTo.GetComponent<SmallEnemy>())
-				{
-				    attachedTo.GetComponent<SmallEnemy>().isHooked = false;
-				}
-				//if (attachedTo.CompareTag("Enemy"))
-				//{
-				//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
-				//	if (enemyType == 0)
-				//	{
-				//		attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
-				//		attachedTo.GetComponent<SmallEnemy>().isHooked = false;
-				//	}
-				//	else if (enemyType == 1)
-				//	{
-				//		attachedTo.GetComponent<Rigidbody2D>().isKinematic = false;
-				//	}
-
-				//}
-				ropeActive = false;
-				change = false;
-				pulling = false;
+				destroyHook();
 			}
 		}
 

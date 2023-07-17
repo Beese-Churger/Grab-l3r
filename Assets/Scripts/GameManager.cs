@@ -26,8 +26,10 @@ public class GameManager : MonoBehaviour
     private float respawnTimer = 3f;
     private float respawnTimerValue = 3f;
     private bool triggeredGameEnd;
-    
+
+    private float lastHitTime, hitDelay = 0.3f;
     [SerializeField] private GameObject ExplodePlayer;
+    private MaterialHolder player;
 
     // create game manager instance
     private void Awake()
@@ -43,6 +45,9 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Application.targetFrameRate = 60;
+        lastHitTime = Time.time;
+
+        player = GameObject.Find("Player").GetComponent<MaterialHolder>();
     }
 
     // get game manager instance
@@ -101,9 +106,8 @@ public class GameManager : MonoBehaviour
         {
             if(GameObject.Find("Player"))
             {
-                ExplodePlayer.SetActive(true);
+                GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode();
                 GameObject.Find("Player").SetActive(false);
-
             }
             
             if (respawnTimer >= 0f)
@@ -125,6 +129,11 @@ public class GameManager : MonoBehaviour
                 SetGameState(StateType.respawn);
                 respawnTimer = respawnTimerValue;
             }
+        }
+        if (lastHitTime + hitDelay < Time.time)
+        {
+            if (player.matState != 0)
+                player.updateMat(0);
         }
     }
 
@@ -150,7 +159,13 @@ public class GameManager : MonoBehaviour
     // update player health when taking damage
     public void TakeDamage()
     {
-        health --;
+        if (lastHitTime + hitDelay < Time.time)
+        {
+            health--;
+            SimpleController.Instance.damageTaken();
+            player.updateMat(1);
+            lastHitTime = Time.time;
+        }
     }
 
     // set player health to 0

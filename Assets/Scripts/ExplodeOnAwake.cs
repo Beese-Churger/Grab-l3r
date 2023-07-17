@@ -6,7 +6,7 @@ public class ExplodeOnAwake : MonoBehaviour
 {
 	private Explodable _explodable;
 
-	void Awake()
+	public void explode()
 	{
 		transform.position = GameObject.Find("Player").transform.position;
 		_explodable = GetComponent<Explodable>();
