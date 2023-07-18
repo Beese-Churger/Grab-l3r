@@ -252,11 +252,11 @@ public class SmallEnemy : EnemyBaseClass
     }
     private bool ObstacleDetection()
     {
-        // Cast two raycasts downward to check for nearby edges
+        // Cast two raycasts to check for obstacles
         Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
-        leftRayOrigin.y -= 0.1f;
+        leftRayOrigin.y -= 0.2f;
         Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
-        rightRayOrigin.y -= 0.1f;
+        rightRayOrigin.y -= 0.2f;
 
         RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
@@ -265,7 +265,6 @@ public class SmallEnemy : EnemyBaseClass
         {
             CheckHit(leftHit, rightHit);
             //Debug.Log(empty.transform.name);
-            Debug.DrawRay(transform.position, (empty.transform.position - transform.position).normalized * 1f, Color.red);
             if (empty.transform.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
             {
                 rb.velocity = Vector2.zero;
@@ -280,7 +279,7 @@ public class SmallEnemy : EnemyBaseClass
             ChangeDirection();
             current = FSM.IDLE;
             isJumping = false;
-            //Debug.Log("Big Enemy is near the wall!");  
+           // Debug.Log("Small Enemy is near the wall!");  
             return true;
         }
         return false;

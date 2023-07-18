@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
+    [SerializeField] private Obstacle[] electricityControlled;
     public Terrain terrain;
     public Obstacle obstacle;
     public bool isDoorOpen;
@@ -12,6 +13,8 @@ public class PressurePlate : MonoBehaviour
     private Obstacle.ObstacleType type;
     private bool isObstacle;
     private bool isDoor;
+    public bool isElectricity = false;
+    private bool elecActive = true;
 
     private bool stepped = false;
 
@@ -27,6 +30,10 @@ public class PressurePlate : MonoBehaviour
                 {
                     obstacle.OpenDoor();
                 }
+            }
+            else if (type == Obstacle.ObstacleType.electricity)
+            {
+                isElectricity = true;
             }
             else
             {
@@ -60,38 +67,50 @@ public class PressurePlate : MonoBehaviour
         {
             objectsInTrigger.Add(collision.gameObject);
             animator.SetBool("isPressed", true);
-            if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+            if (objectsInTrigger.Count < 2)
             {
-                if (!stepped)
+                if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {
-                    Boss.instance.SetPPlate(true);
-                    stepped = true;
-                    return;
-                }
-            }
-
-            if (isDoor && !isDoorOpen)
-            {
-                if (obstacle != null)
-                {
-                    obstacle.OpenDoor();
-                }
-            }
-            else if (isDoorOpen)
-            {
-                if (obstacle != null)
-                {
-                    obstacle.CloseDoor();
+                    if (!stepped)
+                    {
+                        Boss.instance.SetPPlate(true);
+                        stepped = true;
+                        return;
+                    }
                 }
 
-            }
-            else if (!isObstacle && !isDoor)
-            {
-                if (terrain != null)
+                if (isDoor && !isDoorOpen)
                 {
-                    terrain.ActivateMovingPlatform();
+                    if (obstacle != null)
+                    {
+                        obstacle.OpenDoor();
+                    }
+                }
+                else if (isDoorOpen)
+                {
+                    if (obstacle != null)
+                    {
+                        obstacle.CloseDoor();
+                    }
+
+                }
+                else if (!isObstacle && !isDoor)
+                {
+                    if (terrain != null)
+                    {
+                        terrain.ActivateMovingPlatform();
+                    }
+                }
+                if (isElectricity && elecActive)
+                {
+                   foreach (Obstacle obj in electricityControlled)
+                    {
+                        obj.DeactivateElectricity();
+                    }
+                    elecActive = false;
                 }
             }
+            
         }
         
     }
@@ -110,6 +129,14 @@ public class PressurePlate : MonoBehaviour
                     Boss.instance.SetPPlate(false);
                     stepped = false;
                 }
+            }
+            if (isElectricity && !elecActive)
+            {
+                foreach (Obstacle obj in electricityControlled)
+                {
+                    obj.ActivateElectricity();
+                }
+                elecActive = true;
             }
             if (isDoor && !isDoorOpen)
             {
@@ -130,6 +157,8 @@ public class PressurePlate : MonoBehaviour
             {
                 obstacle.ActivateObstacle();
             }
+
+
         }
     }
 }

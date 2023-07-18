@@ -83,7 +83,19 @@ public class Obstacle : MonoBehaviour
         }
         AudioManager.Instance.PlaySFX("door_close");
     }
-
+    public void DeactivateElectricity()
+    {
+        animator.SetBool("Active", false);
+        spriteRender.enabled = false;
+        if (myCollider != null)
+            myCollider.enabled = false;
+    }
+    public void ActivateElectricity()
+    {
+        animator.SetBool("Active", true);
+        spriteRender.enabled = true;
+        myCollider.enabled = true;
+    }
     public ObstacleType GetObstacleType()
     {
         return obstacleType;

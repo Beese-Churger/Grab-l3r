@@ -6,6 +6,8 @@ using UnityEngine.Video;
 
 public class TutorialStartViewPresenter : MonoBehaviour
 {
+    public static TutorialStartViewPresenter instance = null;
+
     public VideoPlayer vp;
     private VisualElement _loadgameView;
     private VisualElement _startView;
@@ -20,7 +22,18 @@ public class TutorialStartViewPresenter : MonoBehaviour
     private VisualElement _resolutionScreen;
     private VisualElement _controlScreen;
 
-
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
     void Start()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
