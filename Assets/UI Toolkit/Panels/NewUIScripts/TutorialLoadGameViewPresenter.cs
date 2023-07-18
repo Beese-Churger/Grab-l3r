@@ -1,49 +1,25 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 public class TutorialLoadGameViewPresenter
 {
-    private List<string> _resolutions = new List<string>()
-    {
-        "1360x768",
-        "1366x768",
-        "1440x900",
-        "1600x900",
-        "1600x1024",
-        "1680x1050",
-        "1920x1080"
-    };
+    public Action LoadLevel1 { set => _level1Button.clicked += value; }
+    public Action LoadLevel2 { set => _level2Button.clicked += value; }
+    public Action LoadLevel3 { set => _level3Button.clicked += value; }
+
     public Action BackAction { set => _backButton.clicked += value; }
 
     private Button _backButton;
-    private Toggle _fullscreenToggle;
-    private DropdownField _resolutionSelection;
+    private Button _level1Button;
+    private Button _level2Button;
+    private Button _level3Button;
 
     public TutorialLoadGameViewPresenter(VisualElement root)
     {
         _backButton = root.Q<Button>("BackButton");
-        _fullscreenToggle = root.Q<Toggle>("FullScreenToggle");
-        _resolutionSelection = root.Q<DropdownField>("ResolutionDropDown");
+        _level1Button = root.Q<Button>("Level1Button");
+        _level2Button = root.Q<Button>("Level2Button");
+        _level3Button = root.Q<Button>("Level3Button");
 
-        _fullscreenToggle.RegisterCallback<MouseUpEvent>((evt) => { SetFullscreen(); }, TrickleDown.TrickleDown);
-        _resolutionSelection.choices = _resolutions;
-        _resolutionSelection.RegisterValueChangedCallback((value) => SetResolution(value.newValue));
-        _resolutionSelection.index = 0;
-    }
-
-    private void SetResolution(string newResolution)
-    {
-        string[] resolutionArray = newResolution.Split("x");
-        int[] valuesIntArray = new int[] { int.Parse(resolutionArray[0]), int.Parse(resolutionArray[1]) };
-
-        Screen.SetResolution(valuesIntArray[0], valuesIntArray[1], _fullscreenToggle.value);
-    }
-
-    private void SetFullscreen()
-    {
-        Screen.fullScreen = !Screen.fullScreen;
     }
 }

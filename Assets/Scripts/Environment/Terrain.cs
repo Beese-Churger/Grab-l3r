@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Terrain : MonoBehaviour
 {
@@ -103,5 +102,9 @@ public class Terrain : MonoBehaviour
     public TerrainType GetTerrainType()
     {
         return terrainType;
+    }
+    public void SetTerrainType(TerrainType tType)
+    {
+        terrainType = tType;
     }
 }

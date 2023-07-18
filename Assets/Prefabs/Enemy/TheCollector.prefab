@@ -895,7 +895,10 @@ MonoBehaviour:
   gracePeriod: 3
   platformLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1233
+  pPlateLayer:
+    serializedVersion: 2
+    m_Bits: 8192
   crushClip: {fileID: 7400000, guid: b60ea19cbda62fa42ac2a3b62684b0d6, type: 2}
   grinderClip: {fileID: 7400000, guid: 39b2bf8df0f0db24bbab91e7c23c74a3, type: 2}
   slamLClip: {fileID: 7400000, guid: 231f0d6a78abca44382aae3269ea2b27, type: 2}

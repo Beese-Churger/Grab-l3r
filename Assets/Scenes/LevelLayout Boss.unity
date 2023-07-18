@@ -507,10 +507,6 @@ PrefabInstance:
       propertyPath: horizontalPlatform
       value: 
       objectReference: {fileID: 547719542}
-    - target: {fileID: 8150797689234064527, guid: 64e3f3edc69ef0f4d8545256a451a741, type: 3}
-      propertyPath: platformLayer.m_Bits
-      value: 2047
-      objectReference: {fileID: 0}
     - target: {fileID: 8466490970888983000, guid: 64e3f3edc69ef0f4d8545256a451a741, type: 3}
       propertyPath: m_Flip
       value: 1

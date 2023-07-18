@@ -13,6 +13,8 @@ public class PressurePlate : MonoBehaviour
     private bool isObstacle;
     private bool isDoor;
 
+    private bool stepped = false;
+
     private void Start()
     {
         if (obstacle != null)
@@ -60,8 +62,12 @@ public class PressurePlate : MonoBehaviour
             animator.SetBool("isPressed", true);
             if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
             {
-                Boss.instance.SetPPlate(true);
-                return;
+                if (!stepped)
+                {
+                    Boss.instance.SetPPlate(true);
+                    stepped = true;
+                    return;
+                }
             }
 
             if (isDoor && !isDoorOpen)
@@ -87,6 +93,7 @@ public class PressurePlate : MonoBehaviour
                 }
             }
         }
+        
     }
 
     // activate obstacles, open/close doors, deactivate mnoving platforms
@@ -98,7 +105,11 @@ public class PressurePlate : MonoBehaviour
             animator.SetBool("isPressed", false);
             if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
             {
-                Boss.instance.SetPPlate(false);
+                if (stepped)
+                {
+                    Boss.instance.SetPPlate(false);
+                    stepped = false;
+                }
             }
             if (isDoor && !isDoorOpen)
             {

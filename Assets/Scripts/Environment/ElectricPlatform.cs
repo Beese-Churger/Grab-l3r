@@ -15,10 +15,12 @@ public class ElectricPlatform : MonoBehaviour
     private float originalSpeed;
     private bool slowingDown;
 
-    private bool isActive = false; 
+    private bool isActive = false;
 
+    private Terrain terrainComponent;
     private void Start()
     {
+        terrainComponent = GetComponent<Terrain>();
         // Set the initial target to the start point
         currentTarget = startPoint.position;
 
@@ -36,6 +38,7 @@ public class ElectricPlatform : MonoBehaviour
     {
         if (isActive)
         {
+            terrainComponent.SetTerrainType(Terrain.TerrainType.concreate);
             elecAnimator.SetBool("Active", true);
             // Calculate the distance to the target position
             float distanceToTarget = Vector2.Distance(transform.position, currentTarget);
@@ -64,15 +67,12 @@ public class ElectricPlatform : MonoBehaviour
             }
         }
         else
-            elecAnimator.SetBool("Active", false);
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
         {
-            GameManager.instance.TakeDamage();
+            terrainComponent.SetTerrainType(Terrain.TerrainType.moving);
+            elecAnimator.SetBool("Active", false);
         }
     }
+
     public void SetActive(bool active)
     {
         isActive = active;

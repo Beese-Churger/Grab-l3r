@@ -33,7 +33,7 @@ public class TutorialMainMenuPresenter
         _CreditsButton = root.Q<Button>("CreditsButton");
         _QuitButton = root.Q<Button>("QuitButton");
 
-        AddLogsToButtons();
+        //AddLogsToButtons();
     }
 
 
@@ -42,7 +42,6 @@ public class TutorialMainMenuPresenter
     {
         _NewGameButton.clicked += () => { 
             Debug.Log("New Game Button clicked");
-            GameManager.instance.SetGameState(StateType.levelChange);
         };
         _LoadGameButton.clicked += () => Debug.Log("Load Game Button clicked");
         _HighscoreButton.clicked += () => Debug.Log("Highscore Button clicked");

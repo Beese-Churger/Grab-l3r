@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Video;
 
 public class TutorialStartViewPresenter : MonoBehaviour
 {
+    public VideoPlayer vp;
     private VisualElement _loadgameView;
     private VisualElement _startView;
     private VisualElement _highScore;
@@ -36,13 +38,18 @@ public class TutorialStartViewPresenter : MonoBehaviour
         _resolutionScreen = root.Q("ResolutionDropdownMenu");
         _controlScreen = root.Q("ControlsMenu");
 
-
+        vp.loopPointReached += CutsceneOver;
 
         SetupTutorialStartMenu();
         SetupTutorialLoadGameMenu();
+        LoadLevel1();
+        LoadLevel2();
+        LoadLevel3();
 
         SetupCutscenesMenu();
         CutscenesToMM();
+        PlayIntroCutscene();
+        PlayEndingCutscene();
 
         SetupQuitConfirm();
         ExitQuitConfirm();
@@ -69,8 +76,20 @@ public class TutorialStartViewPresenter : MonoBehaviour
 
         OpenControlsMenu();
         CloseControlsMenu();
+
+        OpenNewGame();
     }
 
+    // OPEN NEW GAME
+    private void OpenNewGame()
+    {
+        TutorialMainMenuPresenter menuPresenter = new(_startView);
+        menuPresenter.OpenNewGame = () =>
+        {
+            _startView.Display(false);
+            GameManager.instance.SetGameState(StateType.levelChange);
+        };
+    }
 
     // OPENS LOAD GAME MENU
     private void SetupTutorialStartMenu()
@@ -199,6 +218,69 @@ public class TutorialStartViewPresenter : MonoBehaviour
     {
         ControlsMenu controlsMenu = new(_controlScreen);
         controlsMenu.BackAction = () => ToggleControlScreen(false);
+    }
+
+    // LOAD LEVELS
+    private void LoadLevel1()
+    {
+        TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
+        loadgamePresenter.LoadLevel1 = () => {
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout")].Completed())
+                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout"));
+            else
+                Debug.Log("Level 1 not unlocked ");
+        };
+    }
+    private void LoadLevel2()
+    {
+        TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
+        loadgamePresenter.LoadLevel2 = () => {
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout 2")].Completed())
+                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2")); 
+            else
+                Debug.Log("Level 2 not unlocked ");
+
+        };
+    }
+    private void LoadLevel3()
+    {
+        TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
+        loadgamePresenter.LoadLevel3 = () => {
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout Boss")].Completed())
+                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout Boss"));
+            else
+                Debug.Log("Boss Level not unlocked ");
+        };
+    }
+    // Play Cutscenes
+    private void PlayIntroCutscene()
+    {
+        CutscenesMenu cutscenesMenu = new(_cutScenes);
+        cutscenesMenu.PlayIntro = () => {
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level1Cutscene")].Completed())
+            // Play the cutscene when its unlocked
+            {
+                Debug.Log("Play Intro Cutscene");
+                vp.Play();
+                _cutScenes.Display(false);
+            }
+            else
+            {
+                Debug.Log("Intro Cutscene not unlocked");
+            }
+        };
+    }
+    private void PlayEndingCutscene()
+    {
+        CutscenesMenu cutscenesMenu = new(_cutScenes);
+        cutscenesMenu.PlayEnding = () => { 
+            // Play the cutscene when its unlocked
+        };
+
+    }
+    private void CutsceneOver(VideoPlayer vp)
+    {
+        _cutScenes.Display(true);
     }
     /// <summary>
     /// Toggle between Main Menu Screen and other available screens
