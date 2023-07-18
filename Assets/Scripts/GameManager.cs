@@ -20,30 +20,17 @@ public class GameManager : MonoBehaviour
     public bool resetPlayer;
 
     [SerializeField] private SpriteRenderer respawnBG;
+    [SerializeField] private GameObject ExplodePlayer;
     private Color bgColor = new(0, 0, 0, 0);
     private float health = 3;
     private int score = 0;
     private float respawnTimer = 3f;
     private float respawnTimerValue = 3f;
-    private bool triggeredGameEnd;
     
-    [SerializeField] private SpriteRenderer respawnBG;
-    [SerializeField] private GameObject ExplodePlayer;
-    
-    public static GameManager GetInstance()
-    {
-        if (instance == null)
-        {
-            instance = new();
-            DontDestroyOnLoad(instance);
-        }
-        return instance;
-    }
 
     // create game manager instance
     private void Awake()
     {
-        //ExplodePlayer = GameObject.Find("PlayerToExplode");
         if (instance == null)
         {
             instance = this;
@@ -69,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetGameState(StateType.open);
+        //SetGameState(StateType.open);
     }
 
     // set game state
