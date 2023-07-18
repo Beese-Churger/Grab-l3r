@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
+    public static SimpleController Instance;
+
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
     private Rigidbody2D rBody;
@@ -23,6 +25,10 @@ public class SimpleController : MonoBehaviour
 
     private void Awake()
     {
+        if(!Instance)
+        {
+            Instance = this;
+        }
         playerPos = transform.position;
         checkpointPos = transform.position;
     }
@@ -108,6 +114,11 @@ public class SimpleController : MonoBehaviour
             rBody.velocity = new Vector2(rBody.velocity.x * 0.9f, rBody.velocity.y);
     }
 
+    public void damageTaken()
+    {
+        gameObject.GetComponent<throwhook>().destroyHook();
+        rBody.velocity = -rBody.velocity.normalized * 5;
+    }
     public void SetCheckPoint(Vector2 point)
     {
         checkpointPos = point;

@@ -24,10 +24,12 @@ public class GameManager : MonoBehaviour
     private Color bgColor = new(0, 0, 0, 0);
     private float health = 3;
     private int score = 0;
+    private int collectables;
     private float respawnTimer = 3f;
     private float respawnTimerValue = 3f;
+    private float lastHitTime, hitDelay = 0.3f;
+    private MaterialHolder player;
     
-
     // create game manager instance
     private void Awake()
     {
@@ -41,6 +43,9 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Application.targetFrameRate = 60;
+        lastHitTime = Time.time;
+
+
     }
 
     // get game manager instance
@@ -95,14 +100,27 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameObject.FindWithTag("Player")) // handle damage flash
+        {
+            if (lastHitTime + hitDelay < Time.time)
+            {
+                player = GameObject.FindWithTag("Player").GetComponent<MaterialHolder>();
+                if (player.matState != 0)
+                    player.updateMat(0);
+            }
+            if (health <= 0 || bossLives <= 0)
+            {
+                GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode();
+                GameObject.FindWithTag("Player").SetActive(false);
+            }
+        }
         if (health <= 0 || bossLives <= 0)
         {
-            if(GameObject.Find("Player"))
-            {
-                ExplodePlayer.SetActive(true);
-                GameObject.Find("Player").SetActive(false);
-
-            }
+            //if(GameObject.Find("Player"))
+            //{
+            //    GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode();
+            //    GameObject.Find("Player").SetActive(false);
+            //}
             
             if (respawnTimer >= 0f)
             {
@@ -124,6 +142,7 @@ public class GameManager : MonoBehaviour
                 respawnTimer = respawnTimerValue;
             }
         }
+
     }
 
     // reset game on respawn
@@ -134,9 +153,20 @@ public class GameManager : MonoBehaviour
         bossLives = 3;
     }
 
+    public void SetCollectables(int add)
+    {
+        collectables += add;
+    }
+
+    public int GetCollectables()
+    {
+        return collectables;
+    }
+
     // set player score
-    public void SetScore(int addToScore){
-        score += addToScore;
+    public void SetScore(int add)
+    {
+        score += add;
     }
 
     // get current score
@@ -148,7 +178,16 @@ public class GameManager : MonoBehaviour
     // update player health when taking damage
     public void TakeDamage()
     {
-        health --;
+        if (lastHitTime + hitDelay < Time.time)
+        {
+            if(health > 1)
+            {
+                SimpleController.Instance.damageTaken();
+                player.updateMat(1);
+            }
+            health--;
+            lastHitTime = Time.time;
+        }
     }
 
     // set player health to 0

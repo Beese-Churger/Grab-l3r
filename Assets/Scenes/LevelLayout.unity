@@ -931,14 +931,13 @@ GameObject:
   - component: {fileID: 218529882}
   - component: {fileID: 218529881}
   - component: {fileID: 218529886}
-  - component: {fileID: 218529887}
   m_Layer: 6
   m_Name: PlayerToExplode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!60 &218529881
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1090,7 +1089,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218529879}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.59, y: -3.66, z: 0.37544674}
+  m_LocalPosition: {x: -55, y: -22, z: 0.37544674}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1124,21 +1123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e245f98c4adc1348bd748e4cce3e1f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &218529887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 218529879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b57070c18171a2448bd93ce4df9e8ff5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 100
-  radius: 5
-  upliftModifer: 5
 --- !u!114 &232950876 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8765129201532029089, guid: 4f4302e2a76e2ac4c8463d1aa0f792e8, type: 3}
