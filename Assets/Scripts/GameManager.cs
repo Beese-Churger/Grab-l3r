@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SpriteRenderer respawnBG;
     [SerializeField] private GameObject ExplodePlayer;
     private Color bgColor = new(0, 0, 0, 0);
-    private float health = 3;
+    private int MaxHealth = 5;
+    private int health = 3;
     private int score = 0;
     private int collectables;
     private float respawnTimer = 3f;
@@ -115,13 +116,7 @@ public class GameManager : MonoBehaviour
             }
         }
         if (health <= 0 || bossLives <= 0)
-        {
-            //if(GameObject.Find("Player"))
-            //{
-            //    GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode();
-            //    GameObject.Find("Player").SetActive(false);
-            //}
-            
+        {   
             if (respawnTimer >= 0f)
             {
                 respawnTimer -= Time.deltaTime;
@@ -142,7 +137,6 @@ public class GameManager : MonoBehaviour
                 respawnTimer = respawnTimerValue;
             }
         }
-
     }
 
     // reset game on respawn
@@ -202,8 +196,13 @@ public class GameManager : MonoBehaviour
         bossLives--;
     }
 
+    public void GetPlayerHealth(out int MaxHealthRef, out int CurrentHealth)
+    {
+        MaxHealthRef = MaxHealth;
+        CurrentHealth = health;
+    }
     // get players health
-    public float GetPlayerHP()
+    public int GetCurrentPlayerHealth()
     {
         return health;
     }

@@ -13,6 +13,6 @@ public class DisplayHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hpDisplay.text = "HP:" + (int)GameManager.instance.GetPlayerHP();
+        hpDisplay.text = "HP:" + (int)GameManager.instance.GetCurrentPlayerHealth();
     }
 }

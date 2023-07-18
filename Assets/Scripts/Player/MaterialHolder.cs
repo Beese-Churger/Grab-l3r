@@ -32,7 +32,6 @@ public class MaterialHolder : MonoBehaviour
                 if (renderer != null)
                 {
                     renderer.material = ToggleMaterials[0];
-                    Debug.Log("test");
                 }
             }
         }
@@ -43,7 +42,6 @@ public class MaterialHolder : MonoBehaviour
                 if (renderer != null)
                 {
                     renderer.material = ToggleMaterials[1];
-                    Debug.Log("test2");
                 }
             }
         }
