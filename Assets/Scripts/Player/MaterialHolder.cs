@@ -12,10 +12,6 @@ public class MaterialHolder : MonoBehaviour
     void Start()
     {
         renderer = GetComponent<SpriteRenderer>();
-        //add reference
-        //ThermalCamSwap.instance.AddToThermalSwapList(gameObject);
-
-       // updateThermalMat();
     }
 
     // Update is called once per frame
@@ -27,10 +23,6 @@ public class MaterialHolder : MonoBehaviour
     public void updateMat(int state)
     {
         matState = state;
-        //if (ThermalCamSwap.instance)
-        //{
-        //    matState = ThermalCamSwap.instance.GetThermalState();
-        //}
 
         //defualt
         if (matState == 0)
@@ -40,23 +32,8 @@ public class MaterialHolder : MonoBehaviour
                 if (renderer != null)
                 {
                     renderer.material = ToggleMaterials[0];
+                    Debug.Log("test");
                 }
-                //else
-                //{
-                //    Renderer[] rendList = GetComponentsInChildren<Renderer>();
-
-                //    foreach (Renderer rendererRef in rendList)
-                //    {
-                //        if (rendererRef == GetComponentInChildren<ParticleSystem>())
-                //        {
-
-                //        }
-                //        else
-                //        {
-                //            rendererRef.material = ToggleMaterials[0];
-                //        }
-                //    }
-                //}
             }
         }
         else if (matState == 1) //damage taken
@@ -66,37 +43,9 @@ public class MaterialHolder : MonoBehaviour
                 if (renderer != null)
                 {
                     renderer.material = ToggleMaterials[1];
+                    Debug.Log("test2");
                 }
-                //else
-                //{
-                //    Renderer[] rendList = GetComponentsInChildren<Renderer>();
-
-                //    foreach (Renderer rendererRef in rendList)
-                //    {
-                //        rendererRef.material = ToggleMaterials[1];
-                //    }
-                //}
             }
         }
-        //else if (matState == 2) //thermal black
-        //{
-        //    if (ToggleMaterials[2] != null)
-        //    {
-        //        if (renderer != null)
-        //        {
-        //            renderer.material = ToggleMaterials[2];
-        //        }
-        //        else
-        //        {
-        //            Renderer[] rendList = GetComponentsInChildren<Renderer>();
-
-        //            foreach (Renderer rendererRef in rendList)
-        //            {
-        //                rendererRef.material = ToggleMaterials[2];
-        //            }
-        //        }
-        //    }
-        //}
     }
-
 }

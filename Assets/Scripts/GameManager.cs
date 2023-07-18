@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         lastHitTime = Time.time;
 
-        player = GameObject.Find("Player").GetComponent<MaterialHolder>();
+
     }
 
     // get game manager instance
@@ -103,13 +103,27 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (health <= 0 || bossLives <= 0)
+        if (GameObject.FindWithTag("Player")) // handle damage flash
         {
-            if(GameObject.Find("Player"))
+            if (lastHitTime + hitDelay < Time.time)
+            {
+                player = GameObject.FindWithTag("Player").GetComponent<MaterialHolder>();
+                if (player.matState != 0)
+                    player.updateMat(0);
+            }
+            if (health <= 0 || bossLives <= 0)
             {
                 GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode();
-                GameObject.Find("Player").SetActive(false);
+                GameObject.FindWithTag("Player").SetActive(false);
             }
+        }
+        if (health <= 0 || bossLives <= 0)
+        {
+            //if(GameObject.Find("Player"))
+            //{
+            //    GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode();
+            //    GameObject.Find("Player").SetActive(false);
+            //}
             
             if (respawnTimer >= 0f)
             {
@@ -131,11 +145,7 @@ public class GameManager : MonoBehaviour
                 respawnTimer = respawnTimerValue;
             }
         }
-        if (lastHitTime + hitDelay < Time.time)
-        {
-            if (player.matState != 0)
-                player.updateMat(0);
-        }
+
     }
 
     // reset game on respawn
@@ -173,9 +183,12 @@ public class GameManager : MonoBehaviour
     {
         if (lastHitTime + hitDelay < Time.time)
         {
+            if(health > 1)
+            {
+                SimpleController.Instance.damageTaken();
+                player.updateMat(1);
+            }
             health--;
-            SimpleController.Instance.damageTaken();
-            player.updateMat(1);
             lastHitTime = Time.time;
         }
     }
