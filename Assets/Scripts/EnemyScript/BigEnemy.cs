@@ -32,9 +32,10 @@ public class BigEnemy : EnemyBaseClass
     private GameObject playerPrefab;
     private FSM current;
     private bool e_Alive;
-    private PlayerController playerInstance;
 
     [SerializeField] LayerMask platformLayer;
+    [SerializeField] LayerMask obstacleLayer;
+
     private float raycastDistance = 1f;
     public bool detected = false;
     //
@@ -262,8 +263,8 @@ public class BigEnemy : EnemyBaseClass
         Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
         Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
 
-        RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, raycastDistance, platformLayer);
-        RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, raycastDistance, platformLayer);
+        RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, raycastDistance, obstacleLayer);
+        RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, raycastDistance, obstacleLayer);
 
        
         if ((leftHit.collider != null && direction < 0) || (rightHit.collider != null && direction > 0))

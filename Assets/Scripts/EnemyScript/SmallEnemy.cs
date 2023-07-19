@@ -35,6 +35,8 @@ public class SmallEnemy : EnemyBaseClass
 
     [SerializeField] LayerMask platformLayer;
     [SerializeField] LayerMask Layer;
+
+    [SerializeField] GameObject raycastGO;
     private float raycastDistance = 1f;
     public bool detected = false;
     RaycastHit2D empty;
@@ -203,11 +205,13 @@ public class SmallEnemy : EnemyBaseClass
             //Debug.Log(gameObject.name + " is on p plate");
             onPPlate = true;
         }
-        else
-            onPPlate = false;
         // TO DO: SET THE PLAYER STATUS TO DEAD
         //if (collision.gameObject.CompareTag("Player"))
             //GameManager.instance.TakeDamage();
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        onPPlate = false;
     }
     private void Patrol()
     {
@@ -234,14 +238,14 @@ public class SmallEnemy : EnemyBaseClass
         // Check if either of the raycasts hit a platform
         if (((leftHit.collider == null && direction < 0) ||
             (rightHit.collider == null && direction > 0)) &&
-            !onPPlate &&
-            !isJumping)
+            !onPPlate
+            )
         {
             // Debug.Log(dir);
             rb.velocity = Vector2.zero;
             ChangeDirection();
             current = FSM.IDLE;
-            //Debug.Log("Small Enemy is near the edge!");
+            Debug.Log("Small Enemy is near the edge!");
 
 
             return true;
@@ -253,10 +257,8 @@ public class SmallEnemy : EnemyBaseClass
     private bool ObstacleDetection()
     {
         // Cast two raycasts to check for obstacles
-        Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
-        leftRayOrigin.y -= 0.2f;
-        Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
-        rightRayOrigin.y -= 0.2f;
+        Vector3 leftRayOrigin = raycastGO.transform.position + Vector3.left * raycastDistance;
+        Vector3 rightRayOrigin = raycastGO.transform.position + Vector3.right * raycastDistance;
 
         RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
