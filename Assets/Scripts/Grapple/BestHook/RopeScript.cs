@@ -245,7 +245,7 @@ public class RopeScript : MonoBehaviour
 		if (hooked && playerScript.pulling)
 			lr.SetPosition(i, playerScript.attachedTo.transform.position);
 		//else
-		//	lr.SetPosition(i, Nodes[i].transform.position);
+		lr.SetPosition(0, Nodes[1].transform.position);
 
 		for (i = 1; i < Nodes.Count; i++)
 		{
