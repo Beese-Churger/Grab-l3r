@@ -87,10 +87,13 @@ public class RopeScript : MonoBehaviour
 
 		if ((Vector2)transform.position != destiny)
 		{
-			if (Vector2.Distance(player.transform.position, lastNode.transform.position) > distance)
-			{
-				CreateNode(1);
-			}
+			//if (Vector2.Distance(player.transform.position, lastNode.transform.position) > distance)
+			//{
+			//	CreateNode(1);
+			//}
+			lr.positionCount = 2;
+			lr.SetPosition(0, transform.position);
+			lr.SetPosition(1, player.transform.position);
 		}
 		else if (done == false)
 		{
@@ -224,9 +227,8 @@ public class RopeScript : MonoBehaviour
 						RemoveNode(0);
 				}
 			}
+			RenderLine();
 		}
-
-		RenderLine();
 		oldPos = transform.position;
 	}
 
@@ -237,13 +239,13 @@ public class RopeScript : MonoBehaviour
 
     private void RenderLine()
 	{
-		lr.SetVertexCount(vertexCount);
+		lr.positionCount = Nodes.Count;
 
 		int i = 0;
 		if (hooked && playerScript.pulling)
 			lr.SetPosition(i, playerScript.attachedTo.transform.position);
-		else
-			lr.SetPosition(i, Nodes[i].transform.position);
+		//else
+		//	lr.SetPosition(i, Nodes[i].transform.position);
 
 		for (i = 1; i < Nodes.Count; i++)
 		{
@@ -320,35 +322,35 @@ public class RopeScript : MonoBehaviour
 	}
 
 
-	public void TensionNode()
-	{
-		//get distance of player and how many nodes there are
-		//if distance of player is shoerther than the amount of nodes, retract the rope
-		int index = 0;
-		bool todel = false;
-		for (int i = 0; i < Nodes.Count; ++i)
-		{
-			float nodeDistance = Vector2.Distance(player.transform.position, Nodes[i].transform.position);
-			if (nodeDistance < lastNode.GetComponent<SpringJoint2D>().distance)
-			{
-				lastNode = Nodes[i];
-				index = i;
-				todel = true;
-			}
-		}
-		if (Nodes.IndexOf(lastNode) > index)
-		{
-			if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
-			{
-				lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * 10;
-			}
+	//public void TensionNode()
+	//{
+	//	//get distance of player and how many nodes there are
+	//	//if distance of player is shoerther than the amount of nodes, retract the rope
+	//	int index = 0;
+	//	bool todel = false;
+	//	for (int i = 0; i < Nodes.Count; ++i)
+	//	{
+	//		float nodeDistance = Vector2.Distance(player.transform.position, Nodes[i].transform.position);
+	//		if (nodeDistance < lastNode.GetComponent<SpringJoint2D>().distance)
+	//		{
+	//			lastNode = Nodes[i];
+	//			index = i;
+	//			todel = true;
+	//		}
+	//	}
+	//	if (Nodes.IndexOf(lastNode) > index)
+	//	{
+	//		if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
+	//		{
+	//			lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * 10;
+	//		}
 
-			else
-				RemoveNode(0);
-		}
+	//		else
+	//			RemoveNode(0);
+	//	}
 
 
-	}
+	//}
 	public void changeMass()
 	{
 		for (int i = 1; i < Nodes.Count; ++i)

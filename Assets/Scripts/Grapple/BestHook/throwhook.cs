@@ -91,6 +91,7 @@ public class throwhook : MonoBehaviour
 			aimAngle = Mathf.PI * 2 + aimAngle;
 		}
 
+		//gameObject.GetComponent<Rigidbody2D>().mass = 1;
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
 		if (lastInputTime + inputDelay < Time.time)
@@ -162,6 +163,7 @@ public class throwhook : MonoBehaviour
 				}
 				else
 				{
+					//gameObject.GetComponent<Rigidbody2D>().mass = 50;
 					//delete rope
 					destroyHook();
 				}
