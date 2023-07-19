@@ -29,7 +29,6 @@ public class Terrain : MonoBehaviour
     {
         isRight = false;
     }
-
     void Update()
     {
         switch (terrainType)
