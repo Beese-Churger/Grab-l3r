@@ -185,51 +185,7 @@ public class RopeScript : MonoBehaviour
 				down = true;
 			}
 
-			if (!cancelled)
-			{
-				if (Nodes.Count > 2)
-					stopAt = Nodes.Count - 1;
-			}
-
-
-			if (playerScript.hookContext == throwhook.HookContext.HOOK_SMALL)
-			{
-				if (Nodes.Count > stopAt && !down)
-				{
-					//Debug.Log("nodes: "+Nodes.Count+" |stopat: "+stopAt);
-					//if (Nodes[1].GetComponent<Rigidbody2D>().mass != Nodes.Count * 0.3f)
-					//{
-					for (int i = 0; i < vertexCount; ++i)
-					{
-						Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-
-					}
-					if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
-					{
-						Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * playerScript.attachedTo.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
-					}
-					else
-						RemoveNode(1);
-				}
-			}
-			else
-			{
-				if (Nodes.Count > stopAt && !down)
-				{
-					for (int i = 0; i < vertexCount; ++i)
-					{
-						Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-
-					}
-
-					if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
-					{
-						lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
-					}
-					else
-						RemoveNode(0);
-				}
-			}
+			TensionNode();
 			RenderLine();
 		}
 		oldPos = transform.position;
@@ -325,35 +281,49 @@ public class RopeScript : MonoBehaviour
 	}
 
 
-	//public void TensionNode()
-	//{
-	//	//get distance of player and how many nodes there are
-	//	//if distance of player is shoerther than the amount of nodes, retract the rope
-	//	int index = 0;
-	//	bool todel = false;
-	//	for (int i = 0; i < Nodes.Count; ++i)
-	//	{
-	//		float nodeDistance = Vector2.Distance(player.transform.position, Nodes[i].transform.position);
-	//		if (nodeDistance < lastNode.GetComponent<SpringJoint2D>().distance)
-	//		{
-	//			lastNode = Nodes[i];
-	//			index = i;
-	//			todel = true;
-	//		}
-	//	}
-	//	if (Nodes.IndexOf(lastNode) > index)
-	//	{
-	//		if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
-	//		{
-	//			lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * 10;
-	//		}
-
-	//		else
-	//			RemoveNode(0);
-	//	}
+	public void TensionNode()
+	{
+		if (!cancelled)
+		{
+			if (Nodes.Count > 2)
+				stopAt = Nodes.Count - 1;
+		}
 
 
-	//}
+		if (playerScript.hookContext == throwhook.HookContext.HOOK_SMALL)
+		{
+			if (Nodes.Count > stopAt && !down)
+			{
+				for (int i = 0; i < vertexCount; ++i)
+				{
+					Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
+				}
+				if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
+				{
+					Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * playerScript.attachedTo.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
+				}
+				else
+					RemoveNode(1);
+			}
+		}
+		else
+		{
+			if (Nodes.Count > stopAt && !down)
+			{
+				for (int i = 0; i < vertexCount; ++i)
+				{
+					Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
+				}
+
+				if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
+				{
+					lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
+				}
+				else
+					RemoveNode(0);
+			}
+		}
+	}
 	public void changeMass()
 	{
 		for (int i = 1; i < Nodes.Count; ++i)
