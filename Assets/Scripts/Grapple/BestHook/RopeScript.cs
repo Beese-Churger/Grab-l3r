@@ -146,7 +146,7 @@ public class RopeScript : MonoBehaviour
 			{
 				for (int i = 0; i < vertexCount; ++i)
 				{
-					Nodes[i].GetComponent<Rigidbody2D>().mass = Mathf.Lerp(Nodes[i].GetComponent<Rigidbody2D>().mass, 0.1f, Time.deltaTime * 4);
+					Nodes[i].GetComponent<Rigidbody2D>().mass = Mathf.Lerp(Nodes[i].GetComponent<Rigidbody2D>().mass, 0.1f, Time.deltaTime * 5);
 				}
 
 			}
@@ -162,7 +162,10 @@ public class RopeScript : MonoBehaviour
 					lastInputTime = Time.time;
 					cancelled = true;
 					down = true;
-					changeMass();
+					for (int i = 0; i < vertexCount; ++i)
+					{
+						Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
+					}
 				}
 
 				if (playerScript.pulling && gameObject.GetComponent<SpringJoint2D>().connectedBody)
@@ -355,7 +358,7 @@ public class RopeScript : MonoBehaviour
 	{
 		for (int i = 1; i < Nodes.Count; ++i)
 		{
-			Nodes[i].GetComponent<Rigidbody2D>().mass = 0.1f;
+			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.01f;
 		}
 	}
 
