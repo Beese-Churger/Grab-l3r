@@ -86,14 +86,14 @@ public class Obstacle : MonoBehaviour
     public void DeactivateElectricity()
     {
         animator.SetBool("Active", false);
-        spriteRender.enabled = false;
+        //spriteRender.enabled = false;
         if (myCollider != null)
             myCollider.enabled = false;
     }
     public void ActivateElectricity()
     {
         animator.SetBool("Active", true);
-        spriteRender.enabled = true;
+        //spriteRender.enabled = true;
         myCollider.enabled = true;
     }
     public ObstacleType GetObstacleType()

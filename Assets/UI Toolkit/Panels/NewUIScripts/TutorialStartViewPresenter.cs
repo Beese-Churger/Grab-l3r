@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Video;
+using UnityEngine.InputSystem.RebindUI;
+
 
 public class TutorialStartViewPresenter : MonoBehaviour
 {
@@ -22,6 +24,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
     private VisualElement _resolutionScreen;
     private VisualElement _controlScreen;
 
+    [SerializeField] GameObject grappleRebind;
     private void Awake()
     {
         if (instance != null)
@@ -31,7 +34,6 @@ public class TutorialStartViewPresenter : MonoBehaviour
         else
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
     void Start()
@@ -50,6 +52,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         _brightnessScreen = root.Q("BrightnessMenu");
         _resolutionScreen = root.Q("ResolutionDropdownMenu");
         _controlScreen = root.Q("ControlsMenu");
+
 
         vp.loopPointReached += CutsceneOver;
 
@@ -89,8 +92,11 @@ public class TutorialStartViewPresenter : MonoBehaviour
 
         OpenControlsMenu();
         CloseControlsMenu();
+        BindKey();
 
         OpenNewGame();
+
+        GameManager.instance.GetLevelManager().PlayLevelBGM(false);
     }
 
     // OPEN NEW GAME
@@ -233,6 +239,20 @@ public class TutorialStartViewPresenter : MonoBehaviour
         controlsMenu.BackAction = () => ToggleControlScreen(false);
     }
 
+    private void BindKey()
+    {
+        ControlsMenu controlsMenu = new(_controlScreen);
+        controlsMenu.GBind = () => {
+            grappleRebind.GetComponent<Keybind>().StartInteractiveRebind();
+        };
+
+    }
+    public void BindingDone(string newActionName)
+    {
+        ControlsMenu controlsMenu = new(_controlScreen);
+        controlsMenu.gLabel.text = newActionName;
+    }
+
     // LOAD LEVELS
     private void LoadLevel1()
     {
@@ -276,6 +296,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
                 Debug.Log("Play Intro Cutscene");
                 vp.Play();
                 _cutScenes.Display(false);
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+
             }
             else
             {
@@ -293,7 +315,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
     }
     private void CutsceneOver(VideoPlayer vp)
     {
+        vp.Stop();
         _cutScenes.Display(true);
+        GameManager.instance.GetLevelManager().PlayLevelBGM(false);
+
     }
     /// <summary>
     /// Toggle between Main Menu Screen and other available screens

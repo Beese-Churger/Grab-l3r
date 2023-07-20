@@ -9,6 +9,7 @@
             <ui:Label text="Down&#x9;&#x9;&#x9;S" display-tooltip-when-elided="true" name="DownLabel" class="menu-credits" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; top: auto;" />
             <ui:Label text="Left&#x9;&#x9;&#x9;A" display-tooltip-when-elided="true" name="LeftLabel" class="menu-credits" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; top: auto;" />
             <ui:Label text="Right&#x9;&#x9;&#x9;D" display-tooltip-when-elided="true" name="RightLabel" class="menu-credits" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; top: auto;" />
+            <ui:Button text="Grapple" display-tooltip-when-elided="true" name="Grapple" style="opacity: 1; visibility: visible; width: 59px; display: flex; -unity-text-align: middle-center;" />
             <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 850px; top: auto;" />
         </ui:VisualElement>
     </ui:VisualElement>

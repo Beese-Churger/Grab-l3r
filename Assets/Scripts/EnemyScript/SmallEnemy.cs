@@ -245,7 +245,7 @@ public class SmallEnemy : EnemyBaseClass
             rb.velocity = Vector2.zero;
             ChangeDirection();
             current = FSM.IDLE;
-            Debug.Log("Small Enemy is near the edge!");
+            //Debug.Log("Small Enemy is near the edge!");
 
 
             return true;

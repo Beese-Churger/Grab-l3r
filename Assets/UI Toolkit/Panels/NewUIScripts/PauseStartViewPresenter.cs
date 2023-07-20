@@ -34,12 +34,12 @@ public class PauseStartViewPresenter : MonoBehaviour
         PauseMenuViewPresenter pauseMenuViewPresenter = new(_pauseView);
         pauseMenuViewPresenter.QuitGame = () =>
             { 
+                LevelManager.instance.SetCurrentLevelIndex(-1);
                 GameManager.instance.SetGameState(StateType.open);
                 TogglePauseScreen(false);
                 Time.timeScale = 1;
                 NewOptions.instance.SetPlayerInput("Gameplay");
                 LevelManager.instance.PlayLevelBGM(true);
-                LevelManager.instance.SetCurrentLevelIndex(-1);
             };
     }
     private void Update()

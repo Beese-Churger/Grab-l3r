@@ -24,12 +24,12 @@ public class LevelManager : MonoBehaviour
             return isCompleted;
         }
     }
-    private string[] levels = { "Level1Cutscene", "level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
-    private string[] levelsBGM = { "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levelsBGM = { "mainmenubgm", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
     public List<Level> arrLevels;
     public static LevelManager instance = null;
 
-    private int currentLevelIndex = -1;
+    private int currentLevelIndex = 0;
 
     // create an instance of level manager
     private void Awake()
@@ -51,7 +51,8 @@ public class LevelManager : MonoBehaviour
             new(0,false),
             new(1,false),
             new(2,false),
-            new(3,false)
+            new(3,false),
+            new(4,false)
         };
     }
 
@@ -119,7 +120,7 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
 
-        if (currentLevelIndex > 0)
+        if (currentLevelIndex > 1)
         {
             if (EnemyManager.enemyManager != null)
                 EnemyManager.enemyManager.AddEnemies();
@@ -185,6 +186,7 @@ public class LevelManager : MonoBehaviour
     // Check which level the player is in before playing the bgm
     public void PlayLevelBGM(bool loop)
     {
+       CheckCurrentIndex();
        AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
     }
 
