@@ -15,22 +15,23 @@ public class TestPlayer : MonoBehaviour
     private void Awake()
     {
         playerPos = transform.position;
+        Debug.Log("player" + playerPos);
+        Debug.Log("checkpoint" + checkpointPos);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        //var point = GameManager.instance.GetCheckPointPos();
-        //transform.position = point;
+       
         if (GameManager.instance.resetPlayer == true)
         {
-            transform.position = playerPos;
+            transform.position = checkpointPos;
             GameManager.instance.resetPlayer = false;
+            Debug.Log("Trans1" + transform.position);
         }
         else
         {
-            transform.position = checkpointPos;
+            transform.position = playerPos;
+            Debug.Log("Trans2" + transform.position);
         }
     }
 

@@ -78,10 +78,11 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
                 break;
             case StateType.levelChange:
-                resetPlayer = true;
                 LevelManager.instance.LoadNextLevel();
                 break;
             case StateType.respawn:
+                resetPlayer = true;
+                checkpointPos = SimpleController.Instance.GetCheckpoint();
                 ResetGame();
                 LevelManager.instance.ReLoadLevel();
                 break;
@@ -174,7 +175,7 @@ public class GameManager : MonoBehaviour
     {
         if (lastHitTime + hitDelay < Time.time)
         {
-            if(health > 1)
+            if (health > 1)
             {
                 SimpleController.Instance.damageTaken();
                 player.updateMat(1);
@@ -201,6 +202,7 @@ public class GameManager : MonoBehaviour
         MaxHealthRef = MaxHealth;
         CurrentHealth = health;
     }
+
     // get players health
     public int GetCurrentPlayerHealth()
     {
