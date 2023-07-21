@@ -38,13 +38,18 @@ public class SimpleController : MonoBehaviour
         rBody = GetComponent<Rigidbody2D>();
         if (GameManager.instance.resetPlayer == true)
         {
-            transform.position = playerPos;
+            transform.position = GameManager.instance.checkpointPos;
             GameManager.instance.resetPlayer = false;
         }
         else
         {
-            transform.position = checkpointPos;
+            transform.position = playerPos;
         }
+    }
+
+    public Vector2 GetCheckpoint()
+    {
+        return checkpointPos;
     }
 
     // Update is called once per frame
@@ -54,10 +59,7 @@ public class SimpleController : MonoBehaviour
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
-        //horizontalInput = Input.GetAxis("Horizontal");
-
-        //Debug.Log("H_In:" + horizontalInput);
-
+        
     }
 
     private void FixedUpdate()
