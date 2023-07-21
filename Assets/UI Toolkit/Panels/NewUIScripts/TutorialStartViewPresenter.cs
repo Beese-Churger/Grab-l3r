@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Video;
 using UnityEngine.InputSystem.RebindUI;
+using UnityEngine.InputSystem;
 
 
 public class TutorialStartViewPresenter : MonoBehaviour
@@ -24,7 +25,12 @@ public class TutorialStartViewPresenter : MonoBehaviour
     private VisualElement _resolutionScreen;
     private VisualElement _controlScreen;
 
-    [SerializeField] GameObject grappleRebind;
+    private VisualElement _rebindOverlay;
+
+    [SerializeField] GameObject keyRebind;
+    [SerializeField] public InputActionReference grappleRebind;
+    [SerializeField] public InputActionReference movementRebind;
+    [SerializeField] public InputActionReference jumpRebind;
     private void Awake()
     {
         if (instance != null)
@@ -52,6 +58,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
         _brightnessScreen = root.Q("BrightnessMenu");
         _resolutionScreen = root.Q("ResolutionDropdownMenu");
         _controlScreen = root.Q("ControlsMenu");
+
+        _rebindOverlay = root.Q("RebindOverlay");
 
 
         vp.loopPointReached += CutsceneOver;
@@ -92,7 +100,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
 
         OpenControlsMenu();
         CloseControlsMenu();
-        BindKey();
+        
+        //BindKey();
 
         OpenNewGame();
 
@@ -239,18 +248,30 @@ public class TutorialStartViewPresenter : MonoBehaviour
         controlsMenu.BackAction = () => ToggleControlScreen(false);
     }
 
-    private void BindKey()
+    public void BindKey(InputActionReference inputActionReference)
     {
-        ControlsMenu controlsMenu = new(_controlScreen);
-        controlsMenu.GBind = () => {
-            grappleRebind.GetComponent<Keybind>().StartInteractiveRebind();
-        };
+        Keybind temp = keyRebind.GetComponent<Keybind>();
+        temp.actionReference = inputActionReference;
+        temp.bindingId = inputActionReference.action.bindings[0].id.ToString();
+        temp.StartInteractiveRebind();
+        _controlScreen.Display(false);
+        _rebindOverlay.Display(true);
 
     }
     public void BindingDone(string newActionName)
     {
         ControlsMenu controlsMenu = new(_controlScreen);
-        controlsMenu.gLabel.text = newActionName;
+        if (keyRebind.GetComponent<Keybind>().actionReference == grappleRebind)
+            controlsMenu.gLabel.text = keyRebind.GetComponent<Keybind>().actionReference.action.name + "                 " + newActionName;
+        else if (keyRebind.GetComponent<Keybind>().actionReference == movementRebind)
+            controlsMenu.mLabel.text = "Up/Left/Down/Right" + "        " + newActionName;
+        else if (keyRebind.GetComponent<Keybind>().actionReference == jumpRebind)
+            controlsMenu.jLabel.text = keyRebind.GetComponent<Keybind>().actionReference.action.name + "                 " + newActionName;
+
+
+
+        _controlScreen.Display(true);
+        _rebindOverlay.Display(false);
     }
 
     // LOAD LEVELS

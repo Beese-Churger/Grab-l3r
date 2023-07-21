@@ -18,9 +18,12 @@ public class ElectricPlatform : MonoBehaviour
     private bool isActive = false;
 
     private Terrain terrainComponent;
+    private Obstacle obstacleComponent;
     private void Start()
     {
         terrainComponent = GetComponent<Terrain>();
+        obstacleComponent = GetComponent<Obstacle>();
+        obstacleComponent.DisableObstacle();
         // Set the initial target to the start point
         currentTarget = startPoint.position;
 
@@ -39,6 +42,7 @@ public class ElectricPlatform : MonoBehaviour
         if (isActive)
         {
             terrainComponent.SetTerrainType(Terrain.TerrainType.concreate);
+            obstacleComponent.ActivateObstacle();
             elecAnimator.SetBool("Active", true);
             // Calculate the distance to the target position
             float distanceToTarget = Vector2.Distance(transform.position, currentTarget);
@@ -69,6 +73,7 @@ public class ElectricPlatform : MonoBehaviour
         else
         {
             terrainComponent.SetTerrainType(Terrain.TerrainType.moving);
+            obstacleComponent.DisableObstacle();
             elecAnimator.SetBool("Active", false);
         }
     }

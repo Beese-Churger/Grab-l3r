@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour
             return isCompleted;
         }
     }
-    private string[] levels = { "MainMenu", "Level1Cutscene", "level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
     private string[] levelsBGM = { "mainmenubgm", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
     public List<Level> arrLevels;
     public static LevelManager instance = null;

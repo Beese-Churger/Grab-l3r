@@ -19,6 +19,8 @@ public class NewOptions : MonoBehaviour
     [SerializeField] private InputActionReference switchToOptionsControls;
     [SerializeField] private InputActionReference ToggleOptionsScreen;
 
+    [SerializeField] private InputActionReference suicide;
+
     private void Awake()
     {
         if (instance == null)
@@ -69,6 +71,10 @@ public class NewOptions : MonoBehaviour
             {
                 GameManager.instance.SetGameState(StateType.levelChange);
                 EnemyManager.enemyManager.ClearEnemyList();
+            }
+            if (suicide.action.triggered && GameManager.instance.GetCurrentPlayerHealth() > 0)
+            {
+                GameManager.instance.InstantDeath();
             }
         }
     }

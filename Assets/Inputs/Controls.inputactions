@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Suicide",
+                    "type": "Value",
+                    "id": "497ba3ad-5d46-4c3a-9586-8caee8b98809",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -115,9 +124,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
-                    "id": "1455466c-404f-40d2-842b-668b2ebeca41",
-                    "path": "<Keyboard>/s",
+                    "name": "left",
+                    "id": "172f654b-4a32-4428-8726-400090d9fe4e",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard(EN)",
@@ -126,9 +135,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "left",
-                    "id": "172f654b-4a32-4428-8726-400090d9fe4e",
-                    "path": "<Keyboard>/a",
+                    "name": "down",
+                    "id": "1455466c-404f-40d2-842b-668b2ebeca41",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard(EN)",
@@ -188,6 +197,17 @@
                     "processors": "",
                     "groups": "Keyboard(EN)",
                     "action": "ToggleCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5b99131b-a589-4ec4-844c-50a65cf893fd",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard(EN)",
+                    "action": "Suicide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

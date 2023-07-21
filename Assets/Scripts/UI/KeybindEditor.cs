@@ -79,7 +79,7 @@ namespace UnityEngine.InputSystem.RebindUI
             }
         }
 
-        protected void RefreshBindingOptions()
+        public void RefreshBindingOptions()
         {
             var actionReference = (InputActionReference)m_ActionProperty.objectReferenceValue;
             var action = actionReference?.action;
