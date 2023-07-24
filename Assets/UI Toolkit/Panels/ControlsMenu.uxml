@@ -21,7 +21,7 @@
                 <ui:Label text="R" display-tooltip-when-elided="true" name="ResetRLabel" class="menu-credits" style="padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px;" />
                 <ui:Label text="Space" display-tooltip-when-elided="true" name="JumpSpaceLabel" class="menu-credits" style="padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px;" />
             </ui:VisualElement>
-            <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; top: auto; margin-right: 0; margin-top: 0; margin-bottom: 0; left: 85%; bottom: 15%;" />
+            <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; top: auto; margin-right: 0; margin-top: 0; margin-bottom: 0; left: 85%; bottom: 7%;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
