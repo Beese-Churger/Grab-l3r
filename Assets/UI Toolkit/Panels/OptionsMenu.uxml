@@ -1,14 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="Background" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/level_ui_background_1.png?fileID=2800000&amp;guid=f18ca7f9f2a46e24b9bf21cd7073fb2d&amp;type=3#level_ui_background_1&apos;); flex-grow: 1;">
-        <ui:VisualElement name="GameTitle" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/logo_grabbler.png?fileID=2800000&amp;guid=37cd4d797c2cc754abe799482dd17d24&amp;type=3#logo_grabbler&apos;); width: 676px; height: 25%; display: flex; margin-top: 25px; margin-left: 60px; margin-bottom: 25px;" />
-        <ui:VisualElement name="SideBar" class="greyboxmainmenu" style="width: 506px; background-color: rgb(46, 32, 32); opacity: 0.85; justify-content: space-between; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; display: flex; height: 651px; left: 250px; align-items: stretch;">
-            <ui:Label text="Options" display-tooltip-when-elided="true" name="OptionsTitle" class="screentitle" style="top: 0;" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_buttons.uss?fileID=7433441132597879392&amp;guid=b17abf3b89997334d88072f70a3f5d7f&amp;type=3#tutorial_buttons" />
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_labels.uss?fileID=7433441132597879392&amp;guid=c4a2fed264642164f8aafdb5a5274972&amp;type=3#tutorial_labels" />
+    <ui:VisualElement name="Background" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/game_mainMenu_v2.png?fileID=2800000&amp;guid=0d1a950712b478c48b5d97552540e7b2&amp;type=3#game_mainMenu_v2&apos;); flex-grow: 1; align-items: stretch; justify-content: space-around;">
+        <ui:VisualElement name="VerticalBox" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/box_vertical.png?fileID=2800000&amp;guid=f4baf08368aa7c745b98ae46c94923c0&amp;type=3#box_vertical&apos;); width: 30%; height: 70%; left: 25%; align-items: stretch; justify-content: space-around; top: 7%;">
+            <ui:Label text="Options" display-tooltip-when-elided="true" name="OptionsTitle" class="screentitle" style="top: 3%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 15%;" />
             <ui:Button text="Volume" display-tooltip-when-elided="true" name="VolumeButton" class="button-main-title" style="padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;" />
             <ui:Button text="Brightness" display-tooltip-when-elided="true" name="BrightnessButton" class="button-main-title" />
             <ui:Button text="Resolution" display-tooltip-when-elided="true" name="ResolutionButton" class="button-main-title" />
             <ui:Button text="Controls" display-tooltip-when-elided="true" name="ShowControlsButton" class="button-main-title" />
             <ui:Button text="Options" display-tooltip-when-elided="true" name="OptionsButton" class="button-main-title" />
-            <ui:Button display-tooltip-when-elided="true" name="BackButton" text="Back" class="backbutton" style="margin-left: 85%; top: -2.5%;" />
+            <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; top: auto; margin-right: 0; margin-top: 0; margin-bottom: 0; left: 80%; bottom: 4%; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
