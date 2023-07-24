@@ -103,7 +103,7 @@ public class Obstacle : MonoBehaviour
 
     private void Update()
     {
-        if (!isActive)
+        if (isActive)
         {
             switch (obstacleType)
             {

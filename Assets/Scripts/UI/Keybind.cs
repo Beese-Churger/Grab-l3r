@@ -194,7 +194,7 @@ namespace UnityEngine.InputSystem.RebindUI
                 if (bindingIndex != -1)
                 {
                     displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath, displayStringOptions);
-                    if (TutorialStartViewPresenter.instance)
+                    if (TutorialStartViewPresenter.instance && !operation)
                         TutorialStartViewPresenter.instance.BindingDone(displayString);
                 }
             }
@@ -237,6 +237,8 @@ namespace UnityEngine.InputSystem.RebindUI
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;
 
+            operation = true;
+
             // If the binding is a composite, we need to rebind each part in turn.
             if (action.bindings[bindingIndex].isComposite)
             {
@@ -268,6 +270,7 @@ namespace UnityEngine.InputSystem.RebindUI
                     .OnCancel(
                         operation =>
                         {
+                            this.operation = false;
                             m_RebindStopEvent?.Invoke(this, operation);
                             m_RebindOverlay?.SetActive(false);
                             UpdateBindingDisplay();
@@ -278,7 +281,6 @@ namespace UnityEngine.InputSystem.RebindUI
                         {
                             m_RebindOverlay?.SetActive(false);
                             m_RebindStopEvent?.Invoke(this, operation);
-                            UpdateBindingDisplay();
                             CleanUp();
 
                             if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
@@ -294,7 +296,12 @@ namespace UnityEngine.InputSystem.RebindUI
                                 var nextBindingIndex = bindingIndex + 1;
                                 if (nextBindingIndex < action.bindings.Count && action.bindings[nextBindingIndex].isPartOfComposite)
                                     PerformInteractiveRebind(action, nextBindingIndex, true);
+                                else
+                                    this.operation = false;
                             }
+                            else
+                                this.operation = false;
+                            UpdateBindingDisplay();
                         });
             }
             else
@@ -304,6 +311,7 @@ namespace UnityEngine.InputSystem.RebindUI
                    .OnCancel(
                        operation =>
                        {
+                           this.operation = false;
                            m_RebindStopEvent?.Invoke(this, operation);
                            m_RebindOverlay?.SetActive(false);
                            UpdateBindingDisplay();
@@ -314,7 +322,6 @@ namespace UnityEngine.InputSystem.RebindUI
                        {
                            m_RebindOverlay?.SetActive(false);
                            m_RebindStopEvent?.Invoke(this, operation);
-                           UpdateBindingDisplay();
                            CleanUp();
                            if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
                            {
@@ -322,6 +329,8 @@ namespace UnityEngine.InputSystem.RebindUI
                                CleanUp();
                                PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
                            }
+                           this.operation = false;
+                           UpdateBindingDisplay();
                        });
             }
 
@@ -477,6 +486,8 @@ namespace UnityEngine.InputSystem.RebindUI
         private InputActionRebindingExtensions.RebindingOperation m_RebindOperation;
 
         private static List<Keybind> s_RebindActionUIs;
+
+        private bool operation = false;
 
         // We want the label for the action name to update in edit mode, too, so
         // we kick that off from here.

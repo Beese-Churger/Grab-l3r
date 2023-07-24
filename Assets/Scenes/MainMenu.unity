@@ -409,32 +409,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
---- !u!1 &419568831 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3428866447029226535, guid: 9b86efd7dd822914e8448ebf06797b31, type: 3}
-  m_PrefabInstance: {fileID: 1225120668}
-  m_PrefabAsset: {fileID: 0}
---- !u!223 &419568835
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 419568831}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 1
-  m_Camera: {fileID: 1574898754}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 1
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 2
-  m_TargetDisplay: 0
 --- !u!1001 &750546742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -709,6 +683,14 @@ PrefabInstance:
     - target: {fileID: 2689330749809088050, guid: 9b86efd7dd822914e8448ebf06797b31, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3208576210429236793, guid: 9b86efd7dd822914e8448ebf06797b31, type: 3}
+      propertyPath: m_Action
+      value: 
+      objectReference: {fileID: -3811443923414726402, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
+    - target: {fileID: 3208576210429236793, guid: 9b86efd7dd822914e8448ebf06797b31, type: 3}
+      propertyPath: m_BindingId
+      value: 53380e53-dfb8-4299-a17d-71f9f1a3fbac
       objectReference: {fileID: 0}
     - target: {fileID: 3617425836581424535, guid: 9b86efd7dd822914e8448ebf06797b31, type: 3}
       propertyPath: m_IsActive

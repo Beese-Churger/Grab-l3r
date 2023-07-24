@@ -155,7 +155,7 @@ public class Options : MonoBehaviour
                 if (OptionsMenu.activeSelf)
                 {
                     playerInput.SwitchCurrentActionMap("Gameplay");
-                    //CheckActivePanel();
+                    CheckActivePanel();
                     Time.timeScale = 1;
                     isPaused = false;
                 }
