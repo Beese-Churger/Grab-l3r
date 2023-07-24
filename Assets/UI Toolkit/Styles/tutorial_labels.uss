@@ -16,13 +16,34 @@
 }
 
 .screensecondarytitle {
-    color: rgba(255, 255, 255, 255);
+    color: rgb(255, 255, 255);
     font-size: 50px;
 }
 
 .menu-credits {
     font-size: 40px;
-    color: rgba(255, 255, 255, 255);
-    margin-left: 30%;
-    top: -5%;
+    color: rgb(255, 255, 255);
+    margin-left: 0;
+    top: auto;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.column2labels {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    left: 60%;
+    top: -27.5%;
+}
+
+.column1 {
+    left: 10%;
+    top: 15%;
 }
