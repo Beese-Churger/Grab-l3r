@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Background" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/game_mainMenu_v2.png?fileID=2800000&amp;guid=0d1a950712b478c48b5d97552540e7b2&amp;type=3#game_mainMenu_v2&apos;); flex-grow: 1; align-items: stretch; justify-content: center;">
+        <ui:VisualElement name="VerticalBox" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/box_vertical.png?fileID=2800000&amp;guid=f4baf08368aa7c745b98ae46c94923c0&amp;type=3#box_vertical&apos;); width: 30%; height: 70%; left: 25%; align-items: stretch; justify-content: space-around; top: 7%;">
+            <ui:Label text="Difficulty" display-tooltip-when-elided="true" name="DifficultyLabel" class="screentitle" style="top: 3%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 15%;" />
+            <ui:Button text="Easy" display-tooltip-when-elided="true" name="EasyButton" class="button-main-title" style="-unity-text-align: upper-center;" />
+            <ui:Button text="Normal" display-tooltip-when-elided="true" name="NormalButton" class="button-main-title" style="-unity-text-align: upper-center;" />
+            <ui:Button text="Hard" display-tooltip-when-elided="true" name="HardButton" class="button-main-title" style="-unity-text-align: upper-center;" />
+            <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 80%; right: auto; top: -5%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
