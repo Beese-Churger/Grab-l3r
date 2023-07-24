@@ -68,13 +68,14 @@ public class LevelManager : MonoBehaviour
     // load next level by level index
     public void LoadNextLevel()
     {
+        currentLevelIndex++;
         if (currentLevelIndex != -1)
         {
             arrLevels[currentLevelIndex] = new Level(currentLevelIndex, true);
         }
-
+        
         currentLevelIndex++;
-
+        
         // check if all the levels are loaded
         if (currentLevelIndex < levels.Length)
         {
@@ -105,12 +106,14 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
+        
         if (EnemyManager.enemyManager != null)
         {
             EnemyManager.enemyManager.AddEnemies();
         }
-
+        
         PlayLevelBGM(false);
+        CameraMovement.instance.SetCameraState();
     }
 
     // load level by name
@@ -128,6 +131,7 @@ public class LevelManager : MonoBehaviour
             if (EnemyManager.enemyManager != null)
                 EnemyManager.enemyManager.AddEnemies();
             PlayLevelBGM(false);
+            CameraMovement.instance.SetCameraState();
         }
     }
 

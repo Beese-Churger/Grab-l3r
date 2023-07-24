@@ -16,20 +16,25 @@ public class ControlsMenu
     public ControlsMenu(VisualElement root)
     {
         _backButton = root.Q<Button>("BackButton");
-        gLabel = root.Q<Label>("GrappleLabel");
-        mLabel = root.Q<Label>("MovementLabel");
-        jLabel = root.Q<Label>("Jump");
+        gLabel = root.Q("Column2").Q<Label>("GrappleMLabel");
+        mLabel = root.Q("Column2").Q<Label>("MovementLabel");
+        jLabel = root.Q("Column2").Q<Label>("JumpSpaceLabel");
+        sLabel = root.Q("Column2").Q<Label>("ResetRLabel");
 
         gLabel.RegisterCallback<ClickEvent>((evt) => {
             TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.grappleRebind);
             Debug.Log("Triggered grapple rebinding"); });
-        mLabel.RegisterCallback<ClickEvent>((evt) => {
-            TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.movementRebind);
-            Debug.Log("Triggered movement rebinding");
-        });
+        //mLabel.RegisterCallback<ClickEvent>((evt) => {
+        //    TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.movementRebind);
+        //    Debug.Log("Triggered movement rebinding");
+        //});
         jLabel.RegisterCallback<ClickEvent>((evt) => {
             TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.jumpRebind);
             Debug.Log("Triggered jump rebinding");
+        });
+        sLabel.RegisterCallback<ClickEvent>((evt) => {
+            TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.suicideRebind);
+            Debug.Log("Triggered suicide rebinding");
         });
     }
 }
