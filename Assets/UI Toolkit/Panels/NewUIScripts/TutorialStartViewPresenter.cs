@@ -31,6 +31,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
     [SerializeField] public InputActionReference grappleRebind;
     [SerializeField] public InputActionReference movementRebind;
     [SerializeField] public InputActionReference jumpRebind;
+    [SerializeField] public InputActionReference suicideRebind;
+
     private void Awake()
     {
         if (instance != null)
@@ -250,6 +252,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
 
     public void BindKey(InputActionReference inputActionReference)
     {
+        NewOptions.instance.SetPlayerInput("Options");
+
         Keybind temp = keyRebind.GetComponent<Keybind>();
         temp.actionReference = inputActionReference;
         temp.bindingId = inputActionReference.action.bindings[0].id.ToString();
@@ -262,13 +266,13 @@ public class TutorialStartViewPresenter : MonoBehaviour
     {
         ControlsMenu controlsMenu = new(_controlScreen);
         if (keyRebind.GetComponent<Keybind>().actionReference == grappleRebind)
-            controlsMenu.gLabel.text = keyRebind.GetComponent<Keybind>().actionReference.action.name + "                 " + newActionName;
+            controlsMenu.gLabel.text = newActionName;
         else if (keyRebind.GetComponent<Keybind>().actionReference == movementRebind)
             controlsMenu.mLabel.text = "Up/Left/Down/Right" + "        " + newActionName;
         else if (keyRebind.GetComponent<Keybind>().actionReference == jumpRebind)
-            controlsMenu.jLabel.text = keyRebind.GetComponent<Keybind>().actionReference.action.name + "                 " + newActionName;
-
-
+            controlsMenu.jLabel.text = newActionName;
+        else if (keyRebind.GetComponent<Keybind>().actionReference == suicideRebind)
+            controlsMenu.sLabel.text = newActionName;
 
         _controlScreen.Display(true);
         _rebindOverlay.Display(false);
@@ -279,7 +283,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
     {
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.LoadLevel1 = () => {
-            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout")].Completed())
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("level_forestTutorial")].Completed())
                 StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout"));
             else
                 Debug.Log("Level 1 not unlocked ");
@@ -329,17 +333,28 @@ public class TutorialStartViewPresenter : MonoBehaviour
     private void PlayEndingCutscene()
     {
         CutscenesMenu cutscenesMenu = new(_cutScenes);
-        cutscenesMenu.PlayEnding = () => { 
+        cutscenesMenu.PlayEnding = () => {
             // Play the cutscene when its unlocked
-        };
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("EndingCutscene")].Completed())
+            // Play the cutscene when its unlocked
+            {
+                Debug.Log("Play Ending Cutscene");
+                vp.Play();
+                _cutScenes.Display(false);
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
 
+            }
+            else
+            {
+                Debug.Log("Intro Cutscene not unlocked");
+            }
+        };
     }
     private void CutsceneOver(VideoPlayer vp)
-    {
+    {      
         vp.Stop();
         _cutScenes.Display(true);
         GameManager.instance.GetLevelManager().PlayLevelBGM(false);
-
     }
     /// <summary>
     /// Toggle between Main Menu Screen and other available screens
@@ -399,7 +414,13 @@ public class TutorialStartViewPresenter : MonoBehaviour
         _controlScreen.Display(enable);
     }
 
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CutsceneOver(vp);
+        }
+    }
 
 
 

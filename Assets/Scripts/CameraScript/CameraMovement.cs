@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CameraMovement : MonoBehaviour
 {
+    public static CameraMovement instance = null;
     private Vector2 mousePosition;
     private Vector2 playerPosition;
     private Vector3 cameraPosition;
@@ -20,13 +21,24 @@ public class CameraMovement : MonoBehaviour
     //TEMP VARIABLE
     [SerializeField] private GameObject player;
     [SerializeField] private InputActionReference pointer;
-    [SerializeField] private bool boss = false;
+    private bool boss = false;
 
     private bool move = false;
     private bool switchMode = false;
 
 
-
+    private void Awake()
+    {
+        if (instance)
+        {
+            Destroy(instance);
+        }
+        else
+        {
+            instance = this;
+           // DontDestroyOnLoad(instance);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +55,7 @@ public class CameraMovement : MonoBehaviour
         cameraOffset = transform.position;
         //transform.position = new Vector3(playerPosition.x, playerPosition.y, -10f);
         
-        boss = GameManager.GetInstance().GetGameState() == StateType.boss;
+        boss = GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss";
        // Debug.Log(GameManager.GetInstance().GetGameState());
 
     }
@@ -101,7 +113,7 @@ public class CameraMovement : MonoBehaviour
         else
         {
             camera1.orthographicSize = 12f;
-            transform.position = new Vector3(0f, 0f, -10f);
+            //transform.position = new Vector3(0f, 0f, -10f);
         }
        
     }
@@ -126,5 +138,14 @@ public class CameraMovement : MonoBehaviour
         cameraOffset.z = -10f;
         transform.position = cameraOffset;
 
+    }
+    public void SetCameraState()
+    {
+        if (GameManager.GetInstance().GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+        {
+            boss = true;
+        }
+        else
+            boss = false;
     }
 }

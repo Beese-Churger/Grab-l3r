@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour
             return isCompleted;
         }
     }
-    private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
     private string[] levelsBGM = { "mainmenubgm", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
     public List<Level> arrLevels;
     public static LevelManager instance = null;
@@ -64,13 +64,13 @@ public class LevelManager : MonoBehaviour
     // load next level by level index
     public void LoadNextLevel()
     {
+        currentLevelIndex++;
         if (currentLevelIndex != -1)
         {
            // Debug.Log(currentLevelIndex);
             arrLevels[currentLevelIndex] = new Level(currentLevelIndex, true);
            // Debug.Log(arrLevels.Count);
         }
-        currentLevelIndex++;
         // check if all the levels are loaded
         if (currentLevelIndex < levels.Length)
         {
@@ -105,9 +105,10 @@ public class LevelManager : MonoBehaviour
         {
             EnemyManager.enemyManager.AddEnemies();
         }
-
         PlayLevelBGM(false);
-        
+        CameraMovement.instance.SetCameraState();
+
+
     }
 
     // load level by name
@@ -125,6 +126,7 @@ public class LevelManager : MonoBehaviour
             if (EnemyManager.enemyManager != null)
                 EnemyManager.enemyManager.AddEnemies();
             PlayLevelBGM(false);
+            CameraMovement.instance.SetCameraState();
         }
 
     }

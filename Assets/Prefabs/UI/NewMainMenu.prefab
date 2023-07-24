@@ -363,6 +363,7 @@ MonoBehaviour:
   grappleRebind: {fileID: 679559859759175287, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   movementRebind: {fileID: -3811443923414726402, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   jumpRebind: {fileID: 8123854640031384583, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
+  suicideRebind: {fileID: 2500707734422059167, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
 --- !u!1 &2676765644814384151
 GameObject:
   m_ObjectHideFlags: 0
