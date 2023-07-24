@@ -268,7 +268,9 @@ public class TutorialStartViewPresenter : MonoBehaviour
         if (keyRebind.GetComponent<Keybind>().actionReference == grappleRebind)
             controlsMenu.gLabel.text = newActionName;
         else if (keyRebind.GetComponent<Keybind>().actionReference == movementRebind)
-            controlsMenu.mLabel.text = "Up/Left/Down/Right" + "        " + newActionName;
+        {
+            controlsMenu.mLabel.text = newActionName;
+        }
         else if (keyRebind.GetComponent<Keybind>().actionReference == jumpRebind)
             controlsMenu.jLabel.text = newActionName;
         else if (keyRebind.GetComponent<Keybind>().actionReference == suicideRebind)
@@ -416,7 +418,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && vp.isPlaying)
         {
             CutsceneOver(vp);
         }

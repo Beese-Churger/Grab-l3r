@@ -68,7 +68,7 @@ public class CameraMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (!boss)
+        //if (!boss)
         {
             if (camera1.enabled)
             {
@@ -106,15 +106,28 @@ public class CameraMovement : MonoBehaviour
                 }
                 else
                 {
+                    //Vector3 temp = transform.position;
+                    //temp.z = -10f;
+                    //Vector2 dir = (cameraPosition - transform.position).normalized;
+                    //if (Mathf.Abs(cameraPosition.x - transform.position.x) > 1)
+                    //{
+                    //    temp.x += dir.x * Time.deltaTime * xOffset;
+                    //}
+                    //if (Mathf.Abs(cameraPosition.y - transform.position.y) > 1)
+                    //{
+                    //    temp.y += dir.y * Time.deltaTime * yOffset;
+                    //}
+
+                    //transform.position = temp;
                     transform.position = cameraPosition;
                 }
             }
         }
-        else
-        {
-            camera1.orthographicSize = 12f;
-            //transform.position = new Vector3(0f, 0f, -10f);
-        }
+        //else
+        //{
+        //    camera1.orthographicSize = 15f;
+        //    //transform.position = new Vector3(0f, 0f, -10f);
+        //}
        
     }
     private void FollowPlayer()

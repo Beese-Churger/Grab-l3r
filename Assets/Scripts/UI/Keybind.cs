@@ -236,7 +236,6 @@ namespace UnityEngine.InputSystem.RebindUI
         {
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;
-
             operation = true;
 
             // If the binding is a composite, we need to rebind each part in turn.
@@ -281,11 +280,16 @@ namespace UnityEngine.InputSystem.RebindUI
                         {
                             m_RebindOverlay?.SetActive(false);
                             m_RebindStopEvent?.Invoke(this, operation);
+                            this.operation = false;
                             CleanUp();
 
                             if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
                             {
-                                action.RemoveBindingOverride(bindingIndex);
+                                this.operation = true;
+                                if (previousBinding != null)
+                                    action.ApplyBindingOverride(bindingIndex, previousBinding);
+                                else
+                                    action.RemoveBindingOverride(bindingIndex);
                                 CleanUp();
                                 PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
                             }
@@ -299,8 +303,7 @@ namespace UnityEngine.InputSystem.RebindUI
                                 else
                                     this.operation = false;
                             }
-                            else
-                                this.operation = false;
+                            previousBinding = action.bindings[bindingIndex];
                             UpdateBindingDisplay();
                         });
             }
@@ -325,11 +328,17 @@ namespace UnityEngine.InputSystem.RebindUI
                            CleanUp();
                            if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
                            {
-                               action.RemoveBindingOverride(bindingIndex);
+                               this.operation = true;
+                               if (previousBinding != null)
+                                   action.ApplyBindingOverride(bindingIndex, previousBinding);
+                               else
+                                   action.RemoveBindingOverride(bindingIndex);
+
                                CleanUp();
                                PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
                            }
                            this.operation = false;
+                           previousBinding = action.bindings[bindingIndex];
                            UpdateBindingDisplay();
                        });
             }
@@ -489,6 +498,8 @@ namespace UnityEngine.InputSystem.RebindUI
 
         private bool operation = false;
 
+        private InputBinding previousBinding;
+
         // We want the label for the action name to update in edit mode, too, so
         // we kick that off from here.
 #if UNITY_EDITOR
@@ -517,6 +528,15 @@ namespace UnityEngine.InputSystem.RebindUI
         [Serializable]
         public class InteractiveRebindEvent : UnityEvent<Keybind, InputActionRebindingExtensions.RebindingOperation>
         {
+        }
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                m_RebindOperation?.Cancel();
+                operation = false;
+                UpdateBindingDisplay();
+            }
         }
     }
 }
