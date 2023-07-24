@@ -15,6 +15,6 @@ public class Checkpoint : MonoBehaviour
 
             animator.SetBool("Activated", true);
         }
-        Destroy(this);
+        //Destroy(this);
     }
 }
