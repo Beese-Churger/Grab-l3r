@@ -14,7 +14,6 @@ public enum StateType
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-    private float bossLives = 10;
     public Vector2 checkpointPos;
     public StateType state;
     public bool resetPlayer;
@@ -25,6 +24,7 @@ public class GameManager : MonoBehaviour
     private int MaxHealth = 5;
     private int health = 3;
     private int score = 0;
+    private float bossLives = 10;
     private int collectables;
     private float respawnTimer = 3f;
     private float respawnTimerValue = 3f;
@@ -45,8 +45,6 @@ public class GameManager : MonoBehaviour
         }
         Application.targetFrameRate = 60;
         lastHitTime = Time.time;
-
-
     }
 
     // get game manager instance
@@ -116,6 +114,7 @@ public class GameManager : MonoBehaviour
                 GameObject.FindWithTag("Player").SetActive(false);
             }
         }
+
         if (health <= 0 || bossLives <= 0)
         {   
             if (respawnTimer >= 0f)

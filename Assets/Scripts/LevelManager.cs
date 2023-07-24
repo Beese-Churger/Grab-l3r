@@ -5,31 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public struct Level
-    {
-        private int level;
-        private bool isCompleted;
-
-        public Level(int levelno, bool completed)
-        {
-            level = levelno;
-            isCompleted = completed;
-        }
-        public int GetIndex()
-        {
-            return level;
-        }
-        public bool Completed()
-        {
-            return isCompleted;
-        }
-    }
-    private string[] levels = { "MainMenu", "Level1Cutscene", "level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
     private string[] levelsBGM = { "mainmenubgm", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
     public List<Level> arrLevels;
     public static LevelManager instance = null;
 
     private int currentLevelIndex = 0;
+
+    public struct Level
+    {
+        private int level;
+        private bool isCompleted;
+
+        public Level(int levelNo, bool completed)
+        {
+            level = levelNo;
+            isCompleted = completed;
+        }
+
+        public int GetIndex()
+        {
+            return level;
+        }
+
+        public bool Completed()
+        {
+            return isCompleted;
+        }
+    }
 
     // create an instance of level manager
     private void Awake()
@@ -45,6 +48,7 @@ public class LevelManager : MonoBehaviour
             DontDestroyOnLoad(instance);
         }
     }
+
     private void Start()
     {
         arrLevels = new List<Level> {
@@ -67,10 +71,11 @@ public class LevelManager : MonoBehaviour
         currentLevelIndex++;
         if (currentLevelIndex != -1)
         {
-           // Debug.Log(currentLevelIndex);
             arrLevels[currentLevelIndex] = new Level(currentLevelIndex, true);
-           // Debug.Log(arrLevels.Count);
         }
+        
+        currentLevelIndex++;
+        
         // check if all the levels are loaded
         if (currentLevelIndex < levels.Length)
         {
@@ -101,14 +106,14 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
+        
         if (EnemyManager.enemyManager != null)
         {
             EnemyManager.enemyManager.AddEnemies();
         }
+        
         PlayLevelBGM(false);
         CameraMovement.instance.SetCameraState();
-
-
     }
 
     // load level by name
@@ -128,7 +133,6 @@ public class LevelManager : MonoBehaviour
             PlayLevelBGM(false);
             CameraMovement.instance.SetCameraState();
         }
-
     }
 
     // return current level name
@@ -153,7 +157,6 @@ public class LevelManager : MonoBehaviour
     // get current level index
     public int GetCurrentLevelIndex()
     {
-        //CheckCurrentIndex();
         return currentLevelIndex;
     }
 
@@ -164,7 +167,6 @@ public class LevelManager : MonoBehaviour
         {
             if (name == levels[i])
             {
-                //Debug.Log(i);
                 return i;
             }
         }
@@ -191,5 +193,4 @@ public class LevelManager : MonoBehaviour
        CheckCurrentIndex();
        AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
     }
-
 }
