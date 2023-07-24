@@ -177,8 +177,12 @@ MonoBehaviour:
   SFXvolumeSlider: {fileID: 0}
   BGMvolumeSlider: {fileID: 0}
   bgmSounds:
+  - name: mainmenubgm
+    clip: {fileID: 8300000, guid: 6c51047b4bf31314994e2f9380f33157, type: 3}
   - name: level1bgm
     clip: {fileID: 8300000, guid: 4043a281fceeaa54291ff525ceba8ae7, type: 3}
+  - name: level2bgm
+    clip: {fileID: 8300000, guid: 3ca8edf0f7e0da14d99e9fb5e3d8d253, type: 3}
   sfxSounds:
   - name: hook_attach
     clip: {fileID: 8300000, guid: db662ce049d3d944c8f706ea21c8baf6, type: 3}

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2622625409446464143}
   - component: {fileID: 8729169929183113787}
   - component: {fileID: 5845766609781398469}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Electricity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4.25, y: 1.4423077}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleType: 1
   newSprite: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 4257412214519879989}
 --- !u!61 &8729169929183113787
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -141,7 +141,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.25, y: 1.4423077}
-    newSize: {x: 1, y: 1}
+    newSize: {x: 4.25, y: 1.4423077}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

@@ -30,6 +30,9 @@ public class throwhook : MonoBehaviour
 
 	public HookContext hookContext;
 
+	private float lastInputTime;
+	private float inputDelay = 0.1f;
+
 	public enum HookContext
 	{
 		HOOK_SMALL,
@@ -43,8 +46,40 @@ public class throwhook : MonoBehaviour
     private void Awake()
     {
 		hookContext = HookContext.HOOK_BIG;
+		lastInputTime = Time.time;
     }
 
+
+	public void destroyHook()
+    {
+		//delete rope
+		Destroy(curHook, 0.1f);
+
+		Destroy(attachedTo.GetComponent<SpringJoint2D>());
+		Destroy(attachedTo.GetComponent<DistanceJoint2D>());
+		hookContext = HookContext.HOOK_BIG;
+		if (attachedTo.GetComponent<SmallEnemy>())
+		{
+			attachedTo.GetComponent<SmallEnemy>().isHooked = false;
+		}
+		//if (attachedTo.CompareTag("Enemy"))
+		//{
+		//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
+		//	if (enemyType == 0)
+		//	{
+		//		attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
+		//		attachedTo.GetComponent<SmallEnemy>().isHooked = false;
+		//	}
+		//	else if (enemyType == 1)
+		//	{
+		//		attachedTo.GetComponent<Rigidbody2D>().isKinematic = false;
+		//	}
+
+		//}
+		ropeActive = false;
+		change = false;
+		pulling = false;
+	}
     void Update () 
 	{		
 		Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
@@ -56,21 +91,48 @@ public class throwhook : MonoBehaviour
 			aimAngle = Mathf.PI * 2 + aimAngle;
 		}
 
+		//gameObject.GetComponent<Rigidbody2D>().mass = 1;
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
-		if (grappleAction.action.triggered) {
-
-
-			if (ropeActive == false) {
-
-				RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxDistance, ropeLayerMask);
-				if (hit.collider != null)
+		if (lastInputTime + inputDelay < Time.time)
+		{
+			if (grappleAction.action.triggered)
+			{
+				if (ropeActive == false)
 				{
-					if (hit.transform.TryGetComponent<Terrain>(out var terrain))
+					RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxDistance, ropeLayerMask);
+					if (hit.collider != null)
 					{
-						type = terrain.GetTerrainType();
-						if (type != Terrain.TerrainType.concreate)
+						if (hit.transform.TryGetComponent<Terrain>(out var terrain))
 						{
+							type = terrain.GetTerrainType();
+							if (type != Terrain.TerrainType.concreate)
+							{
+								attachedTo = hit.transform.gameObject;
+								AudioManager.Instance.PlaySFX("hook_attach");
+								curHook = Instantiate(hook, transform.position, Quaternion.identity);
+								curHook.GetComponent<RopeScript>().destiny = hit.point;
+								curHook.GetComponent<RopeScript>().SetCanHook(true);
+								if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
+								{
+									change = true;
+									//if(attachedTo.GetComponent<SmallEnemy>())
+									//                        {
+
+									//	hookContext = HookContext.HOOK_SMALL;
+									//	Debug.Log("real?????????????????????????????????");
+									//                        }
+									//else
+									//                        {
+									//	hookContext = HookContext.HOOK_BIG;
+									//                        }
+								}
+								ropeActive = true;
+							}
+						}
+						else
+						{
+							// for entities
 							attachedTo = hit.transform.gameObject;
 							AudioManager.Instance.PlaySFX("hook_attach");
 							curHook = Instantiate(hook, transform.position, Quaternion.identity);
@@ -79,82 +141,33 @@ public class throwhook : MonoBehaviour
 							if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
 							{
 								change = true;
-								//if(attachedTo.GetComponent<SmallEnemy>())
-        //                        {
-
-								//	hookContext = HookContext.HOOK_SMALL;
-								//	Debug.Log("real?????????????????????????????????");
-        //                        }
-								//else
-        //                        {
-								//	hookContext = HookContext.HOOK_BIG;
-        //                        }
+								if (attachedTo.GetComponent<SmallEnemy>())
+								{
+									hookContext = HookContext.HOOK_SMALL;
+									attachedTo.GetComponent<SmallEnemy>().isHooked = true;
+								}
+								else
+								{
+									hookContext = HookContext.HOOK_BIG;
+								}
 							}
 							ropeActive = true;
 						}
 					}
 					else
 					{
-						// for entities
-                        attachedTo = hit.transform.gameObject;
-                        AudioManager.Instance.PlaySFX("hook_attach");
-                        curHook = Instantiate(hook, transform.position, Quaternion.identity);
-                        curHook.GetComponent<RopeScript>().destiny = hit.point;
-						curHook.GetComponent<RopeScript>().SetCanHook(true);
-						if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
-						{
-							change = true;
-							if (attachedTo.GetComponent<SmallEnemy>())
-							{
-								hookContext = HookContext.HOOK_SMALL;
-								attachedTo.GetComponent<SmallEnemy>().isHooked = true;
-							}
-							else
-							{
-								hookContext = HookContext.HOOK_BIG;
-							}
-						}
-						ropeActive = true;
-                    }
+						curHook = Instantiate(hook, transform.position, Quaternion.identity);
+						curHook.GetComponent<RopeScript>().SetCanHook(false);
+						curHook.GetComponent<RopeScript>().destiny = transform.position + (aimDirection * maxDistance);
+					}
 				}
 				else
-                {
-					curHook = Instantiate(hook, transform.position, Quaternion.identity);
-					curHook.GetComponent<RopeScript>().SetCanHook(false);
-					curHook.GetComponent<RopeScript>().destiny = transform.position + (aimDirection * maxDistance);
-
-				}
-				
-			}
-			else
-			{
-				//delete rope
-				Destroy(curHook, 0.1f);
-
-				Destroy(attachedTo.GetComponent<SpringJoint2D>());
-				Destroy(attachedTo.GetComponent<DistanceJoint2D>());
-				hookContext = HookContext.HOOK_BIG;
-				if (attachedTo.GetComponent<SmallEnemy>())
 				{
-				    attachedTo.GetComponent<SmallEnemy>().isHooked = false;
+					//gameObject.GetComponent<Rigidbody2D>().mass = 50;
+					//delete rope
+					destroyHook();
 				}
-				//if (attachedTo.CompareTag("Enemy"))
-				//{
-				//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
-				//	if (enemyType == 0)
-				//	{
-				//		attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
-				//		attachedTo.GetComponent<SmallEnemy>().isHooked = false;
-				//	}
-				//	else if (enemyType == 1)
-				//	{
-				//		attachedTo.GetComponent<Rigidbody2D>().isKinematic = false;
-				//	}
-
-				//}
-				ropeActive = false;
-				change = false;
-				pulling = false;
+				lastInputTime = Time.time;
 			}
 		}
 

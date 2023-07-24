@@ -15,7 +15,6 @@ public class Timer : MonoBehaviour
         else
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
     void Awake()

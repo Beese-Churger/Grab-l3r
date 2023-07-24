@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
+    [SerializeField] private Obstacle[] electricityControlled;
     public Terrain terrain;
     public Obstacle obstacle;
     public bool isDoorOpen;
@@ -12,8 +13,10 @@ public class PressurePlate : MonoBehaviour
     private Obstacle.ObstacleType type;
     private bool isObstacle;
     private bool isDoor;
-    private bool stepped = false;
+    public bool isElectricity = false;
+    private bool elecActive = true;
 
+    private bool stepped = false;
 
     private void Start()
     {
@@ -28,6 +31,10 @@ public class PressurePlate : MonoBehaviour
                     obstacle.OpenDoor();
                 }
             }
+            else if (type == Obstacle.ObstacleType.electricity)
+            {
+                isElectricity = true;
+            }
             else
             {
                 isDoor = false;
@@ -40,6 +47,7 @@ public class PressurePlate : MonoBehaviour
         }
     }
 
+    // dissable obstacle that is affected by the pressure plate
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (transform.position.y < collision.transform.position.y)
@@ -52,19 +60,23 @@ public class PressurePlate : MonoBehaviour
         }
     }
 
+    // open/close door, activate moving platform
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (!stepped)
+        if (collision.gameObject.name != "FOV")
         {
-            //stepped = true;
-            if (collision.gameObject.name != "FOV")
+            objectsInTrigger.Add(collision.gameObject);
+            animator.SetBool("isPressed", true);
+            if (objectsInTrigger.Count < 2)
             {
-                objectsInTrigger.Add(collision.gameObject);
-                animator.SetBool("isPressed", true);
                 if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {
-                    Boss.instance.SetPPlate(true);
-                    return;
+                    if (!stepped)
+                    {
+                        Boss.instance.SetPPlate(true);
+                        stepped = true;
+                        return;
+                    }
                 }
 
                 if (isDoor && !isDoorOpen)
@@ -88,15 +100,22 @@ public class PressurePlate : MonoBehaviour
                     {
                         terrain.ActivateMovingPlatform();
                     }
-
                 }
-
+                if (isElectricity && elecActive)
+                {
+                   foreach (Obstacle obj in electricityControlled)
+                    {
+                        obj.DeactivateElectricity();
+                    }
+                    elecActive = false;
+                }
             }
             
         }
+        
     }
 
-    // set move plate back up when player exits trigger
+    // activate obstacles, open/close doors, deactivate mnoving platforms
     private void OnTriggerExit2D(Collider2D collision)
     {
         objectsInTrigger.Remove(collision.gameObject);       
@@ -105,7 +124,19 @@ public class PressurePlate : MonoBehaviour
             animator.SetBool("isPressed", false);
             if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
             {
-                Boss.instance.SetPPlate(false);
+                if (stepped)
+                {
+                    Boss.instance.SetPPlate(false);
+                    stepped = false;
+                }
+            }
+            if (isElectricity && !elecActive)
+            {
+                foreach (Obstacle obj in electricityControlled)
+                {
+                    obj.ActivateElectricity();
+                }
+                elecActive = true;
             }
             if (isDoor && !isDoorOpen)
             {
@@ -117,7 +148,6 @@ public class PressurePlate : MonoBehaviour
                 {
                     obstacle.OpenDoor();
                 }
-
             }
             else if (!isObstacle && !isDoor)
             {
@@ -127,7 +157,8 @@ public class PressurePlate : MonoBehaviour
             {
                 obstacle.ActivateObstacle();
             }
+
+
         }
-        
     }
 }

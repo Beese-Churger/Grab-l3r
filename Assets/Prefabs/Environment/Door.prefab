@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -7769615715179018584}
   - component: {fileID: 977150709497192757}
   - component: {fileID: 1425970999228401593}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,11 +100,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a33817b573faac4e88d2cdda26e325a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainType: 0
+  terrainType: 1
   speed: 2
   endPos: {x: 0, y: 0}
+  animator: {fileID: 0}
   triggerPressurePlate: 0
-  newSprite: {fileID: 0}
 --- !u!114 &-7769615715179018584
 MonoBehaviour:
   m_ObjectHideFlags: 0

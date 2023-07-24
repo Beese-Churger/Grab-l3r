@@ -10,8 +10,6 @@
             <ui:Button text="Level 1" display-tooltip-when-elided="true" name="Level1Button" class="button-main-title" />
             <ui:Button text="Level 2" display-tooltip-when-elided="true" name="Level2Button" class="button-main-title" />
             <ui:Button text="Level 3" display-tooltip-when-elided="true" name="Level3Button" class="button-main-title" />
-            <ui:Toggle label="Fullscreen" name="FullScreenToggle" class="button-main-title" />
-            <ui:DropdownField label="Resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="ResolutionDropDown" class="button-main-title" />
             <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 85%;" />
         </ui:VisualElement>
     </ui:VisualElement>

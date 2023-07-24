@@ -148,7 +148,7 @@ public class Options : MonoBehaviour
 
     private void Update()
     {
-        //if (LevelManager.instance.GetCurrentLevelIndex() > 1)
+        if (LevelManager.instance.GetCurrentLevelIndex() > 0)
         {
             if ((switchToOptionsControls.action.triggered || ToggleOptionsScreen.action.triggered) && !isPressed)
             {
@@ -240,8 +240,8 @@ public class Options : MonoBehaviour
         }
         ButtonPanel.SetActive(true);       
     }
-    public PlayerInput returnPI()
+    public bool GetPauseState()
     {
-        return playerInput;
+        return isPaused;
     }
 }

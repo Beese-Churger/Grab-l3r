@@ -28,7 +28,7 @@ public class ResolutionMenu
         _fullscreenToggle = root.Q<Toggle>("FullScreenToggle");
         _resolutionSelection = root.Q<DropdownField>("ResolutionDropDown");
 
-        _fullscreenToggle.RegisterCallback<MouseUpEvent>((evt) => { SetFullscreen(); }, TrickleDown.TrickleDown);
+        _fullscreenToggle.RegisterCallback<MouseUpEvent>((evt) => { SetFullscreen(_fullscreenToggle.value); });
         _resolutionSelection.choices = _resolutions;
         _resolutionSelection.RegisterValueChangedCallback((value) => SetResolution(value.newValue));
         _resolutionSelection.index = 0;
@@ -42,8 +42,8 @@ public class ResolutionMenu
         Screen.SetResolution(valuesIntArray[0], valuesIntArray[1], _fullscreenToggle.value);
     }
 
-    private void SetFullscreen()
+    private void SetFullscreen(bool val)
     {
-        Screen.fullScreen = !Screen.fullScreen;
+        Screen.fullScreen = val;
     }
 }
