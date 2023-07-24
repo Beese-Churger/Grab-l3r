@@ -95,30 +95,30 @@ public class Obstacle : MonoBehaviour
         return obstacleType;
     }
 
-    private void Update()
-    {
-        if (isActive)
-        {
-            switch (obstacleType)
-            {
-                case ObstacleType.electricity:
-                    animator.SetBool("Active", true);
-                    myCollider.enabled = true;
-                    break;
-            }
-        }
-        else
-        {
-            switch (obstacleType)
-            {
-                case ObstacleType.electricity:
-                    animator.SetBool("Active", false);
-                    if (myCollider != null)
-                    {
-                        myCollider.enabled = false;
-                    }
-                    break;
-            }
-        }
-    }
+    //private void Update()
+    //{
+    //    if (isActive)
+    //    {
+    //        switch (obstacleType)
+    //        {
+    //            case ObstacleType.electricity:
+    //                animator.SetBool("Active", true);
+    //                myCollider.enabled = true;
+    //                break;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        switch (obstacleType)
+    //        {
+    //            case ObstacleType.electricity:
+    //                animator.SetBool("Active", false);
+    //                if (myCollider != null)
+    //                {
+    //                    myCollider.enabled = false;
+    //                }
+    //                break;
+    //        }
+    //    }
+    //}
 }

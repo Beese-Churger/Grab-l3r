@@ -26,19 +26,6 @@ public class CameraMovement : MonoBehaviour
     private bool move = false;
     private bool switchMode = false;
 
-
-    private void Awake()
-    {
-        if (instance)
-        {
-            Destroy(instance);
-        }
-        else
-        {
-            instance = this;
-           // DontDestroyOnLoad(instance);
-        }
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -68,7 +55,7 @@ public class CameraMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        //if (!boss)
+        if (!boss)
         {
             if (camera1.enabled)
             {

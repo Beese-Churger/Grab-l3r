@@ -15,7 +15,6 @@ public class PressurePlate : MonoBehaviour
     private bool isObstacle;
     private bool isDoor;
     private bool elecActive = true;
-    private bool stepped = false;
 
     private void Start()
     {
@@ -70,12 +69,7 @@ public class PressurePlate : MonoBehaviour
             {
                 if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {
-                    if (!stepped)
-                    {
-                        Boss.instance.SetPPlate(true);
-                        stepped = true;
-                        return;
-                    }
+                    Boss.instance.SetPPlate(true);              
                 }
 
                 if (isDoor && !isDoorOpen)
@@ -107,7 +101,11 @@ public class PressurePlate : MonoBehaviour
                    {
                         obj.DeactivateElectricity();
                    }
-                   elecActive = false;
+                    if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+                    {
+                        Boss.instance.SetElectric(false);
+                    }
+                    elecActive = false;
                 }
             }
         } 
@@ -122,11 +120,7 @@ public class PressurePlate : MonoBehaviour
             animator.SetBool("isPressed", false);
             if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
             {
-                if (stepped)
-                {
-                    Boss.instance.SetPPlate(false);
-                    stepped = false;
-                }
+                Boss.instance.SetPPlate(false);              
             }
 
             if (isElectricity && !elecActive)
@@ -134,6 +128,10 @@ public class PressurePlate : MonoBehaviour
                 foreach (Obstacle obj in electricityControlled)
                 {
                     obj.ActivateElectricity();
+                }
+                if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+                {
+                    Boss.instance.SetElectric(true);
                 }
                 elecActive = true;
             }

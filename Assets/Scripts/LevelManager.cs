@@ -113,7 +113,6 @@ public class LevelManager : MonoBehaviour
         }
         
         PlayLevelBGM(false);
-        CameraMovement.instance.SetCameraState();
     }
 
     // load level by name
@@ -131,7 +130,6 @@ public class LevelManager : MonoBehaviour
             if (EnemyManager.enemyManager != null)
                 EnemyManager.enemyManager.AddEnemies();
             PlayLevelBGM(false);
-            CameraMovement.instance.SetCameraState();
         }
     }
 

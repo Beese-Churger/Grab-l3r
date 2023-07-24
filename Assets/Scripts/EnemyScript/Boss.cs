@@ -69,7 +69,7 @@ public class Boss : MonoBehaviour
     private bool p_Hit = false;
     private bool slamming = false;
     private bool left = true;
-    private bool trackPlayer = false;
+    private bool elecActivated = false;
     // Boss Phase variable
     private bool pTriggered = false;
     private int phase = 0;
@@ -147,10 +147,16 @@ public class Boss : MonoBehaviour
             {
                 eTimer = eVal;
                 electricActive = false;
+                elecActivated = false;
             }
-            MoveEP(electricActive);
         }
-        
+        MoveEP(electricActive);
+
+    }
+    public void SetElectric(bool val)
+    {
+        if (currentAttack == ATTACK.GRINDER && elecActivated)
+            electricActive = val;
     }
     private void PhaseUpdate()
     {
@@ -200,7 +206,7 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            currentAttack = ATTACK.SLAM;
+            currentAttack = ATTACK.GRINDER;
         }
         abilityUpdated = true;
         //bossBeam.SetActive(true);
@@ -346,6 +352,7 @@ public class Boss : MonoBehaviour
                 if (attackTimer > grinderClip.averageDuration * 0.7)
                 {
                     electricActive = true;
+                    elecActivated = true;
                 }
                 if (attackTimer > grinderClip.averageDuration)
                 {
