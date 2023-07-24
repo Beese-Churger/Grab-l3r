@@ -116,18 +116,14 @@ public class throwhook : MonoBehaviour
 								if (attachedTo.transform.GetComponent<Rigidbody2D>() != null)
 								{
 									change = true;
-									//if(attachedTo.GetComponent<SmallEnemy>())
-									//                        {
-
-									//	hookContext = HookContext.HOOK_SMALL;
-									//	Debug.Log("real?????????????????????????????????");
-									//                        }
-									//else
-									//                        {
-									//	hookContext = HookContext.HOOK_BIG;
-									//                        }
 								}
 								ropeActive = true;
+							}
+							else
+							{
+								curHook = Instantiate(hook, transform.position, Quaternion.identity);
+								curHook.GetComponent<RopeScript>().SetCanHook(false);
+								curHook.GetComponent<RopeScript>().destiny = hit.point;
 							}
 						}
 						else
