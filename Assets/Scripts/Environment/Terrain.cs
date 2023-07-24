@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class Terrain : MonoBehaviour
 {
     public enum TerrainType
@@ -29,6 +28,7 @@ public class Terrain : MonoBehaviour
     {
         isRight = false;
     }
+
     void Update()
     {
         switch (terrainType)

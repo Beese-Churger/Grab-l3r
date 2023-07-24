@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Terrain;
 
 public class Obstacle : MonoBehaviour
 {
@@ -14,13 +10,9 @@ public class Obstacle : MonoBehaviour
         water
     }
     [SerializeField] ObstacleType obstacleType;
-
-    public Sprite newSprite;
     public Animator animator;
 
-    private SpriteRenderer spriteRender;
     private Collider2D myCollider;
-    private Sprite mySprite;
     private bool isActive;
 
     private void Awake()
@@ -30,18 +22,17 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        spriteRender = gameObject.GetComponent<SpriteRenderer>();
-        mySprite = spriteRender.sprite;
         myCollider = gameObject.GetComponent<Collider2D>();
     }
 
+    // cause damage to player on collision with obstacles
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isActive)
         {
-            if (collision.transform.CompareTag("Player") & obstacleType !=ObstacleType.door)
+            if (collision.gameObject.name == "Player" & obstacleType != ObstacleType.door)
             {
-                // For the hole
+                // water objects are instant death to player
                 if (obstacleType == ObstacleType.water)
                 {
                     GameManager.instance.InstantDeath();
@@ -83,19 +74,22 @@ public class Obstacle : MonoBehaviour
         }
         AudioManager.Instance.PlaySFX("door_close");
     }
+
     public void DeactivateElectricity()
     {
         animator.SetBool("Active", false);
-        //spriteRender.enabled = false;
         if (myCollider != null)
+        {
             myCollider.enabled = false;
+        }
     }
+
     public void ActivateElectricity()
     {
         animator.SetBool("Active", true);
-        //spriteRender.enabled = true;
         myCollider.enabled = true;
     }
+
     public ObstacleType GetObstacleType()
     {
         return obstacleType;
@@ -108,7 +102,8 @@ public class Obstacle : MonoBehaviour
             switch (obstacleType)
             {
                 case ObstacleType.electricity:
-                    spriteRender.sprite = newSprite;
+                    animator.SetBool("Active", true);
+                    myCollider.enabled = true;
                     break;
             }
         }
@@ -117,7 +112,11 @@ public class Obstacle : MonoBehaviour
             switch (obstacleType)
             {
                 case ObstacleType.electricity:
-                    spriteRender.sprite = mySprite;
+                    animator.SetBool("Active", false);
+                    if (myCollider != null)
+                    {
+                        myCollider.enabled = false;
+                    }
                     break;
             }
         }

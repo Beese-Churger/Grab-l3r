@@ -5,12 +5,8 @@ using UnityEngine;
 public class Objects : MonoBehaviour
 {
     public List<GameObject> objects = new();
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
-    // Update is called once per frame
+    // check that all important objects still exists
     void Update()
     {
         for(int i = 0; i < objects.Count; i++)

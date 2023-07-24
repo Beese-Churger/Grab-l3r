@@ -4,18 +4,17 @@ using UnityEngine;
 public class PressurePlate : MonoBehaviour
 {
     [SerializeField] private Obstacle[] electricityControlled;
+    public List<GameObject> objectsInTrigger;
     public Terrain terrain;
     public Obstacle obstacle;
     public bool isDoorOpen;
+    public bool isElectricity;
     public Animator animator;
-    public List<GameObject> objectsInTrigger;
 
     private Obstacle.ObstacleType type;
     private bool isObstacle;
     private bool isDoor;
-    public bool isElectricity = false;
     private bool elecActive = true;
-
     private bool stepped = false;
 
     private void Start()
@@ -101,18 +100,17 @@ public class PressurePlate : MonoBehaviour
                         terrain.ActivateMovingPlatform();
                     }
                 }
+
                 if (isElectricity && elecActive)
                 {
                    foreach (Obstacle obj in electricityControlled)
-                    {
+                   {
                         obj.DeactivateElectricity();
-                    }
-                    elecActive = false;
+                   }
+                   elecActive = false;
                 }
             }
-            
-        }
-        
+        } 
     }
 
     // activate obstacles, open/close doors, deactivate mnoving platforms
@@ -130,6 +128,7 @@ public class PressurePlate : MonoBehaviour
                     stepped = false;
                 }
             }
+
             if (isElectricity && !elecActive)
             {
                 foreach (Obstacle obj in electricityControlled)
@@ -138,6 +137,7 @@ public class PressurePlate : MonoBehaviour
                 }
                 elecActive = true;
             }
+
             if (isDoor && !isDoorOpen)
             {
                 obstacle.CloseDoor();
@@ -157,8 +157,6 @@ public class PressurePlate : MonoBehaviour
             {
                 obstacle.ActivateObstacle();
             }
-
-
         }
     }
 }
