@@ -34,6 +34,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private float chargeTimer = 3f;
     [SerializeField] private float gracePeriod = 3f;
     [SerializeField] private LayerMask platformLayer;
+    [SerializeField] private LayerMask pPlateLayer;
     private float m_Scale = 0.35f;
     private float raycastDistance = 20f;
     private float timer, graceTimer;
@@ -163,7 +164,7 @@ public class Boss : MonoBehaviour
                 usableAbilities++;
                 pressedP++;
                 SpawnBody();
-                Debug.Log("Phase:" + phase);
+                Debug.Log("Phase Increase:" + phase);
             }
             pTriggered = false;
 
@@ -173,12 +174,14 @@ public class Boss : MonoBehaviour
     public void SetPPlate(bool active)
     {
         pTriggered = active;
+        //Debug.Log("Phase " + phase);
+
         if (!active)
         {
             phase--;
             usableAbilities--;
             pressedP--;
-            Debug.Log("Phase " + phase);
+            Debug.Log("Phase Decrease" + phase);
         }
     }
     private void GenerateSkill()
@@ -201,7 +204,7 @@ public class Boss : MonoBehaviour
         }
         abilityUpdated = true;
         //bossBeam.SetActive(true);
-        Debug.Log("Current Attack:" + currentAttack);
+        //Debug.Log("Current Attack:" + currentAttack);
 
     }
     /* The logic of the different attacks */
@@ -242,17 +245,20 @@ public class Boss : MonoBehaviour
                 }
                 if (left)
                 {
-                    Vector2 newDir = playerGO.transform.position - iKLeftHand.GetChain(2).effector.position;
-                    Vector3 newPos = newDir * 5f;
+                    Vector2 newDir = (playerGO.transform.position - iKLeftHand.GetChain(2).effector.position).normalized;
+                    Vector3 newPos = newDir * 20f;
                     if (!slamming)
                     {
-                        iKLeftHand.GetChain(0).target = defaultTarget.transform;
+                        iKLeftHand.GetChain(0).target = playerGO.transform;
                         slamming = true;
                     }
                     if (attackTimer < slamLClip.averageDuration * 0.6f)
                     {
                         defaultTarget.transform.position = newPos + iKLeftHand.GetChain(2).effector.position;
-                        trackPlayer = true;
+                    }
+                    else
+                    {
+                        iKLeftHand.GetChain(0).target = defaultTarget.transform;
                     }
                     if (CollisionCheck())
                     {
@@ -260,7 +266,7 @@ public class Boss : MonoBehaviour
                     }
                     if (attackTimer > slamLClip.averageDuration)
                     {
-                        Debug.Log("Slam L Animation done playing");
+                        //Debug.Log("Slam L Animation done playing");
                         abilityUpdated = false;
                         isPlaying = false;
                         p_Hit = false;
@@ -269,27 +275,30 @@ public class Boss : MonoBehaviour
                         animator.SetBool("SlamL", false);
                         current = FSM.IDLE;
                         slamming = false;
-                        trackPlayer = false;
                     }
                     else
                     {
                         attackTimer += Time.deltaTime;
+                        ActivateBeam();
                         //Debug.Log(attackTimer);
                     }
                 }
                 else
                 {
-                    Vector2 newDir = playerGO.transform.position - iKRightHand.GetChain(2).effector.position;
-                    Vector3 newPos = newDir * 5f;
+                    Vector2 newDir = (playerGO.transform.position - iKRightHand.GetChain(2).effector.position).normalized;
+                    Vector3 newPos = newDir * 20f;
                     if (!slamming)
                     {
-                        iKRightHand.GetChain(0).target = defaultTarget.transform;
+                        iKRightHand.GetChain(0).target = playerGO.transform;
                         slamming = true;
                     }
                     if (attackTimer < slamRClip.averageDuration * 0.6f)
                     {
                         defaultTarget.transform.position = newPos + iKRightHand.GetChain(2).effector.position;
-                        trackPlayer = true;
+                    }
+                    else
+                    {
+                        iKRightHand.GetChain(0).target = defaultTarget.transform;
                     }
                     if (CollisionCheck())
                     {
@@ -304,12 +313,11 @@ public class Boss : MonoBehaviour
                      * */
                     if (attackTimer > slamRClip.averageDuration)
                     {
-                        Debug.Log("Slam R Animation done playing");
+                        //Debug.Log("Slam R Animation done playing");
                         abilityUpdated = false;
                         isPlaying = false;
                         p_Hit = false;
                         slamming = false;
-                        trackPlayer = false;
                         attackTimer = 0f;
                         animator.SetBool("SlamR", false);
                         current = FSM.IDLE;
@@ -420,7 +428,10 @@ public class Boss : MonoBehaviour
 
                         RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
                         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
-                        if (leftHit.collider == null || rightHit.collider == null)
+
+                        RaycastHit2D downHit = Physics2D.Raycast(new Vector3(x, maxY, 0), Vector2.down, 3f, pPlateLayer);
+
+                        if (leftHit.collider == null && rightHit.collider == null && !downHit)
                         {
                             Instantiate(bodyDrop, new Vector3(x, maxY, 0), Quaternion.identity, bodyDropHolder.transform);
                             check = true;
@@ -526,7 +537,7 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            Debug.Log("Scan");
+            //Debug.Log("Scan");
             graceTimer = gracePeriod;
             timer = chargeTimer;
             current = FSM.SCAN;

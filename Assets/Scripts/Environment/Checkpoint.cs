@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
+    public Animator animator;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // check if player has triggered checkpoint
-        if (collision.transform.tag == "Player")
+        if (collision.transform.CompareTag("Player"))
         {
             var player = GameObject.Find("Player").GetComponent<SimpleController>();
             player.SetCheckPoint(transform.position);
 
-            var sprite = gameObject.GetComponent<SpriteRenderer>();
-            sprite.color = Color.red;
+            animator.SetBool("Activated", true);
         }
-        Destroy(this);
+        //Destroy(this);
     }
 }

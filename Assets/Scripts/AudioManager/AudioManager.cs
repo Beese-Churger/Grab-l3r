@@ -170,6 +170,7 @@ public class AudioManager : MonoBehaviour
     public void BGMVolume(float volume)
     {
         bgmSource.volume = volume;
+        //Debug.Log(volume);
     }
 
     public void SFXVolume(float volume)

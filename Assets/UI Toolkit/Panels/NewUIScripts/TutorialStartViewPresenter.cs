@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Video;
+using UnityEngine.InputSystem.RebindUI;
+using UnityEngine.InputSystem;
+
 
 public class TutorialStartViewPresenter : MonoBehaviour
 {
+    public static TutorialStartViewPresenter instance = null;
+
+    public VideoPlayer vp;
     private VisualElement _loadgameView;
     private VisualElement _startView;
     private VisualElement _highScore;
@@ -18,7 +25,23 @@ public class TutorialStartViewPresenter : MonoBehaviour
     private VisualElement _resolutionScreen;
     private VisualElement _controlScreen;
 
+    private VisualElement _rebindOverlay;
 
+    [SerializeField] GameObject keyRebind;
+    [SerializeField] public InputActionReference grappleRebind;
+    [SerializeField] public InputActionReference movementRebind;
+    [SerializeField] public InputActionReference jumpRebind;
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
@@ -36,13 +59,21 @@ public class TutorialStartViewPresenter : MonoBehaviour
         _resolutionScreen = root.Q("ResolutionDropdownMenu");
         _controlScreen = root.Q("ControlsMenu");
 
+        _rebindOverlay = root.Q("RebindOverlay");
 
+
+        vp.loopPointReached += CutsceneOver;
 
         SetupTutorialStartMenu();
         SetupTutorialLoadGameMenu();
+        LoadLevel1();
+        LoadLevel2();
+        LoadLevel3();
 
         SetupCutscenesMenu();
         CutscenesToMM();
+        PlayIntroCutscene();
+        PlayEndingCutscene();
 
         SetupQuitConfirm();
         ExitQuitConfirm();
@@ -69,8 +100,24 @@ public class TutorialStartViewPresenter : MonoBehaviour
 
         OpenControlsMenu();
         CloseControlsMenu();
+        
+        //BindKey();
+
+        OpenNewGame();
+
+        GameManager.instance.GetLevelManager().PlayLevelBGM(false);
     }
 
+    // OPEN NEW GAME
+    private void OpenNewGame()
+    {
+        TutorialMainMenuPresenter menuPresenter = new(_startView);
+        menuPresenter.OpenNewGame = () =>
+        {
+            _startView.Display(false);
+            GameManager.instance.SetGameState(StateType.levelChange);
+        };
+    }
 
     // OPENS LOAD GAME MENU
     private void SetupTutorialStartMenu()
@@ -199,6 +246,100 @@ public class TutorialStartViewPresenter : MonoBehaviour
     {
         ControlsMenu controlsMenu = new(_controlScreen);
         controlsMenu.BackAction = () => ToggleControlScreen(false);
+    }
+
+    public void BindKey(InputActionReference inputActionReference)
+    {
+        Keybind temp = keyRebind.GetComponent<Keybind>();
+        temp.actionReference = inputActionReference;
+        temp.bindingId = inputActionReference.action.bindings[0].id.ToString();
+        temp.StartInteractiveRebind();
+        _controlScreen.Display(false);
+        _rebindOverlay.Display(true);
+
+    }
+    public void BindingDone(string newActionName)
+    {
+        ControlsMenu controlsMenu = new(_controlScreen);
+        if (keyRebind.GetComponent<Keybind>().actionReference == grappleRebind)
+            controlsMenu.gLabel.text = keyRebind.GetComponent<Keybind>().actionReference.action.name + "                 " + newActionName;
+        else if (keyRebind.GetComponent<Keybind>().actionReference == movementRebind)
+            controlsMenu.mLabel.text = "Up/Left/Down/Right" + "        " + newActionName;
+        else if (keyRebind.GetComponent<Keybind>().actionReference == jumpRebind)
+            controlsMenu.jLabel.text = keyRebind.GetComponent<Keybind>().actionReference.action.name + "                 " + newActionName;
+
+
+
+        _controlScreen.Display(true);
+        _rebindOverlay.Display(false);
+    }
+
+    // LOAD LEVELS
+    private void LoadLevel1()
+    {
+        TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
+        loadgamePresenter.LoadLevel1 = () => {
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout")].Completed())
+                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout"));
+            else
+                Debug.Log("Level 1 not unlocked ");
+        };
+    }
+    private void LoadLevel2()
+    {
+        TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
+        loadgamePresenter.LoadLevel2 = () => {
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout 2")].Completed())
+                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2")); 
+            else
+                Debug.Log("Level 2 not unlocked ");
+
+        };
+    }
+    private void LoadLevel3()
+    {
+        TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
+        loadgamePresenter.LoadLevel3 = () => {
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout Boss")].Completed())
+                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout Boss"));
+            else
+                Debug.Log("Boss Level not unlocked ");
+        };
+    }
+    // Play Cutscenes
+    private void PlayIntroCutscene()
+    {
+        CutscenesMenu cutscenesMenu = new(_cutScenes);
+        cutscenesMenu.PlayIntro = () => {
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level1Cutscene")].Completed())
+            // Play the cutscene when its unlocked
+            {
+                Debug.Log("Play Intro Cutscene");
+                vp.Play();
+                _cutScenes.Display(false);
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+
+            }
+            else
+            {
+                Debug.Log("Intro Cutscene not unlocked");
+            }
+        };
+    }
+    private void PlayEndingCutscene()
+    {
+        CutscenesMenu cutscenesMenu = new(_cutScenes);
+        cutscenesMenu.PlayEnding = () => { 
+            // Play the cutscene when its unlocked
+        };
+
+    }
+    private void CutsceneOver(VideoPlayer vp)
+    {
+        vp.Stop();
+        _cutScenes.Display(true);
+        GameManager.instance.GetLevelManager().PlayLevelBGM(false);
+
     }
     /// <summary>
     /// Toggle between Main Menu Screen and other available screens

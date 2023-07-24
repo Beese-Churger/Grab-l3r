@@ -224,6 +224,9 @@ MonoBehaviour:
   platformLayer:
     serializedVersion: 2
     m_Bits: 1152
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 3200
   detected: 0
 --- !u!114 &355041958252986465
 MonoBehaviour:

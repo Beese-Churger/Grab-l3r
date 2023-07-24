@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
+    public static SimpleController Instance;
+
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
     private Rigidbody2D rBody;
@@ -18,13 +20,17 @@ public class SimpleController : MonoBehaviour
     private RopeScript ropeScript;
     private bool isHooked = false;
     private Vector2 playerPos;
-    private Vector2 checkpointPos = new Vector2(-14,-7);
+    private Vector2 checkpointPos;
     // Start is called before the first frame update
 
     private void Awake()
     {
+        if(!Instance)
+        {
+            Instance = this;
+        }
         playerPos = transform.position;
-        Debug.Log(playerPos + "player");
+        checkpointPos = transform.position;
     }
 
     void Start()
@@ -32,13 +38,18 @@ public class SimpleController : MonoBehaviour
         rBody = GetComponent<Rigidbody2D>();
         if (GameManager.instance.resetPlayer == true)
         {
-            transform.position = playerPos;
+            transform.position = GameManager.instance.checkpointPos;
             GameManager.instance.resetPlayer = false;
         }
         else
         {
-            transform.position = checkpointPos;
+            transform.position = playerPos;
         }
+    }
+
+    public Vector2 GetCheckpoint()
+    {
+        return checkpointPos;
     }
 
     // Update is called once per frame
@@ -48,10 +59,7 @@ public class SimpleController : MonoBehaviour
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
-        //horizontalInput = Input.GetAxis("Horizontal");
-
-        //Debug.Log("H_In:" + horizontalInput);
-
+        
     }
 
     private void FixedUpdate()
@@ -108,6 +116,11 @@ public class SimpleController : MonoBehaviour
             rBody.velocity = new Vector2(rBody.velocity.x * 0.9f, rBody.velocity.y);
     }
 
+    public void damageTaken()
+    {
+        gameObject.GetComponent<throwhook>().destroyHook();
+        rBody.velocity = -rBody.velocity.normalized * 5;
+    }
     public void SetCheckPoint(Vector2 point)
     {
         checkpointPos = point;

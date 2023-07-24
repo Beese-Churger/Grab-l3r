@@ -8,8 +8,8 @@
             <ui:Button text="Brightness" display-tooltip-when-elided="true" name="BrightnessButton" class="button-main-title" />
             <ui:Button text="Resolution" display-tooltip-when-elided="true" name="ResolutionButton" class="button-main-title" />
             <ui:Button text="Controls" display-tooltip-when-elided="true" name="ShowControlsButton" class="button-main-title" />
-            <ui:Button text="Options" display-tooltip-when-elided="true" name="OptionsButton" class="button-main-title" />
-            <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; top: auto; margin-right: 0; margin-top: 0; margin-bottom: 0; left: 80%; bottom: 4%; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;" />
+            <ui:Button text="Back" display-tooltip-when-elided="true" name="BackButton" class="button-main-title" />
+
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -4,9 +4,9 @@ using UnityEngine;
 public enum StateType
 {
     open,           // game opened, load main menu
-    end,            // move to main menu
+    end,            // load main menu
     levelChange,    // load next level
-    respawn,        // load level again when player dies
+    respawn,        // re-load level again when player dies
     boss,           // activate and deactivate boss
     credits         // show credits
 }
@@ -17,29 +17,23 @@ public class GameManager : MonoBehaviour
     private float bossLives = 10;
     public Vector2 checkpointPos;
     public StateType state;
-
-    private Color bgColor = new(0, 0, 0, 0);
-    private float health = 3;
-    private int score = 0;
-    private bool triggeredGameEnd;
-    private float respawnTimer = 3f, respawnTimerValue = 3f;
-
     public bool resetPlayer;
+
     [SerializeField] private SpriteRenderer respawnBG;
     [SerializeField] private GameObject ExplodePlayer;
-    public static GameManager GetInstance()
-    {
-        if (instance == null)
-        {
-            instance = new();
-            DontDestroyOnLoad(instance);
-        }
-        return instance;
-    }
-
+    private Color bgColor = new(0, 0, 0, 0);
+    private int MaxHealth = 5;
+    private int health = 3;
+    private int score = 0;
+    private int collectables;
+    private float respawnTimer = 3f;
+    private float respawnTimerValue = 3f;
+    private float lastHitTime, hitDelay = 0.3f;
+    private MaterialHolder player;
+    
+    // create game manager instance
     private void Awake()
     {
-        //ExplodePlayer = GameObject.Find("PlayerToExplode");
         if (instance == null)
         {
             instance = this;
@@ -50,6 +44,20 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Application.targetFrameRate = 60;
+        lastHitTime = Time.time;
+
+
+    }
+
+    // get game manager instance
+    public static GameManager GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = new();
+            DontDestroyOnLoad(instance);
+        }
+        return instance;
     }
 
     private void Start()
@@ -57,11 +65,10 @@ public class GameManager : MonoBehaviour
         //SetGameState(StateType.open);
     }
 
+    // set game state
     public void SetGameState(StateType newState)
     {
         state = newState;
-        //OnStateChange();
-
         switch (newState)
         {
             case StateType.end:
@@ -71,10 +78,11 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
                 break;
             case StateType.levelChange:
-                resetPlayer = true;
                 LevelManager.instance.LoadNextLevel();
                 break;
             case StateType.respawn:
+                resetPlayer = true;
+                checkpointPos = SimpleController.Instance.GetCheckpoint();
                 ResetGame();
                 LevelManager.instance.ReLoadLevel();
                 break;
@@ -86,6 +94,7 @@ public class GameManager : MonoBehaviour
         instance = null;
     }
 
+    // get current game state
     public StateType GetGameState()
     {
         return state;
@@ -93,15 +102,22 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (health <= 0 || bossLives <= 0)
+        if (GameObject.FindWithTag("Player")) // handle damage flash
         {
-            if(GameObject.Find("Player"))
+            if (lastHitTime + hitDelay < Time.time)
             {
-                ExplodePlayer.SetActive(true);
-                GameObject.Find("Player").SetActive(false);
-
+                player = GameObject.FindWithTag("Player").GetComponent<MaterialHolder>();
+                if (player.matState != 0)
+                    player.updateMat(0);
             }
-            
+            if (health <= 0 || bossLives <= 0)
+            {
+                GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode();
+                GameObject.FindWithTag("Player").SetActive(false);
+            }
+        }
+        if (health <= 0 || bossLives <= 0)
+        {   
             if (respawnTimer >= 0f)
             {
                 respawnTimer -= Time.deltaTime;
@@ -124,41 +140,76 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // reset game on respawn
     public void ResetGame()
     {
-        // TODO: reset all variables to initials
         health = 3;
         score = 0;
         bossLives = 3;
-        triggeredGameEnd = false;
     }
 
-    public void SetScore(int addToScore){
-        score += addToScore;
+    public void SetCollectables(int add)
+    {
+        collectables += add;
     }
 
+    public int GetCollectables()
+    {
+        return collectables;
+    }
+
+    // set player score
+    public void SetScore(int add)
+    {
+        score += add;
+    }
+
+    // get current score
     public int GetScore()
     {
         return score;
     }
 
+    // update player health when taking damage
     public void TakeDamage()
     {
-        health --;
+        if (lastHitTime + hitDelay < Time.time)
+        {
+            if (health > 1)
+            {
+                SimpleController.Instance.damageTaken();
+                player.updateMat(1);
+            }
+            health--;
+            lastHitTime = Time.time;
+        }
     }
+
+    // set player health to 0
     public void InstantDeath()
     {
         health = 0;
     }
 
+    // upddate boss health
     public void RemoveLife()
     {
         bossLives--;
     }
-    public float GetPlayerHP()
+
+    public void GetPlayerHealth(out int MaxHealthRef, out int CurrentHealth)
+    {
+        MaxHealthRef = MaxHealth;
+        CurrentHealth = health;
+    }
+
+    // get players health
+    public int GetCurrentPlayerHealth()
     {
         return health;
     }
+
+    // get level managers instance
     public LevelManager GetLevelManager()
     {
         return LevelManager.instance;
