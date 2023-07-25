@@ -138,8 +138,8 @@ public class RopeScript : MonoBehaviour
 					//ChangeMassToLaunch();
 					cancelled = true;
 					down = true;
-					lastNode.GetComponent<DistanceJoint2D>().connectedBody = null;
-					lastNode.GetComponent<SpringJoint2D>().connectedBody = null;
+					//lastNode.GetComponent<DistanceJoint2D>().connectedBody = null;
+					//lastNode.GetComponent<SpringJoint2D>().connectedBody = null;
 				}
 			}
 
