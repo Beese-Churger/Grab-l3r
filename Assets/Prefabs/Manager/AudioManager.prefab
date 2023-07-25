@@ -186,6 +186,9 @@ MonoBehaviour:
   - name: level2bgm
     clip: {fileID: 8300000, guid: 3ca8edf0f7e0da14d99e9fb5e3d8d253, type: 3}
     volume: 0
+  - name: bossbgm
+    clip: {fileID: 8300000, guid: ab17eb3c3d7792a418942f43c1fcaec7, type: 3}
+    volume: 0
   sfxSounds:
   - name: hook_attach
     clip: {fileID: 8300000, guid: db662ce049d3d944c8f706ea21c8baf6, type: 3}
