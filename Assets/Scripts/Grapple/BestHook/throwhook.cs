@@ -78,7 +78,6 @@ public class throwhook : MonoBehaviour
 			aimAngle = Mathf.PI * 2 + aimAngle;
 		}
 
-		//gameObject.GetComponent<Rigidbody2D>().mass = 1;
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
 		if (lastInputTime + inputDelay < Time.time)
@@ -167,21 +166,7 @@ public class throwhook : MonoBehaviour
 
 			SpringJoint2D toPull1 = attachedTo.AddComponent<SpringJoint2D>();
 			toPull1.anchor = Link1.transform.localPosition;
-			toPull1.connectedBody = Link1.GetComponent<Rigidbody2D>();
-			//if (attachedTo.CompareTag("Enemy"))
-			//{
-			//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
-			//	if (enemyType == 0)
-			//	{
-			//		attachedTo.GetComponent<SmallEnemy>().SetWeight((int)(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 0.2));
-			//		attachedTo.GetComponent<SmallEnemy>().isHooked = true;
-			//	}
-			//	else if (enemyType == 1)
-			//	{
-			//		attachedTo.GetComponent<Rigidbody2D>().isKinematic = true;
-			//	}
-			//}
-				
+			toPull1.connectedBody = Link1.GetComponent<Rigidbody2D>();				
 
 			pulling = true;
 			change = false;
