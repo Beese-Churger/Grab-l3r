@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
     public static SimpleController Instance;
-    public ParticleSystem dust;
 
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
@@ -51,11 +50,6 @@ public class SimpleController : MonoBehaviour
         return checkpointPos;
     }
 
-    void PlayDust()
-    {
-        dust.Play();
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -73,7 +67,6 @@ public class SimpleController : MonoBehaviour
 
         if (groundCheck)
         {
-            PlayDust();
             isJumping = jumpInput > 0f;
             if (isJumping)
             {
