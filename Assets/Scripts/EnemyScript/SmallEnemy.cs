@@ -225,7 +225,7 @@ public class SmallEnemy : EnemyBaseClass
             //Debug.Log(empty.transform.name);
             if (empty.transform.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
             {
-                rb.velocity = new Vector2(0, rb.velocity.y);
+                rb.velocity = Vector2.zero;
                 rb.AddForce(new Vector2(0, 1) * 5f, ForceMode2D.Impulse);
                 rb.AddForce(new Vector2(direction, 0) * 3f, ForceMode2D.Impulse);
                 //Debug.Log("Direction after jumping" + direction);
