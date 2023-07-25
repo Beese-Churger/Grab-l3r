@@ -121,6 +121,7 @@ public class throwhook : MonoBehaviour
 							}
 							else
 							{
+								AudioManager.Instance.PlaySFX("hook_shoot1", transform.position);
 								curHook = Instantiate(hook, transform.position, Quaternion.identity);
 								curHook.GetComponent<RopeScript>().SetCanHook(false);
 								curHook.GetComponent<RopeScript>().destiny = hit.point;

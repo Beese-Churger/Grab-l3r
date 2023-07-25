@@ -74,23 +74,17 @@ public class RopeScript : MonoBehaviour
 	}
 	void Update()
 	{
-
 		verticalInput = movement.action.ReadValue<Vector2>().y;
-		//verticalInput = movement.action.ReadValue<Vector2>().y;
 
 		transform.position = Vector2.MoveTowards(transform.position, destiny, speed);
 
 		// get distance travelled from prev pos
-		Vector3 distanceVector = player.transform.position - oldPos;
-		distanceThisFrame = distanceVector.magnitude;
-		totalDistance += distanceThisFrame;
+		//Vector3 distanceVector = player.transform.position - oldPos;
+		//distanceThisFrame = distanceVector.magnitude;
+		//totalDistance += distanceThisFrame;
 
 		if ((Vector2)transform.position != destiny)
 		{
-			//if (Vector2.Distance(player.transform.position, lastNode.transform.position) > distance)
-			//{
-			//	CreateNode(1);
-			//}
 			lr.positionCount = 2;
 			lr.SetPosition(0, transform.position);
 			lr.SetPosition(1, player.transform.position);
@@ -108,7 +102,6 @@ public class RopeScript : MonoBehaviour
 		}
 		else
 		{
-			//Debug.Log(canHook);
 			if (!canHook)
             {
 				AudioManager.Instance.PlaySFX("hook_no_attach", transform.position);
@@ -131,31 +124,11 @@ public class RopeScript : MonoBehaviour
 
 				if (playerScript.hookContext == throwhook.HookContext.HOOK_SMALL)
 				{
-					if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
-					{
-						Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
-					}
-					else
-						RemoveNode(1);
-
+					PullTowardsPlayer();
 				}
 				else
 				{
-					// I have no idea y having these 2 together makes going up the rops smoother but it works so im not complaining
-					if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
-					{
-						lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
-					}
-					else
-						RemoveNode(0);
-
-
-					if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
-					{
-						lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
-					}
-					else
-						RemoveNode(0);
+					PullPlayerTowards();
 				}
 			}
 			else
@@ -164,34 +137,12 @@ public class RopeScript : MonoBehaviour
 				{
 					Nodes[i].GetComponent<Rigidbody2D>().mass = Mathf.Lerp(Nodes[i].GetComponent<Rigidbody2D>().mass, 0.1f, Time.deltaTime * 5);
 				}
-
 			}
 
 
 			if (lastInputTime + inputDelay < Time.time)
 			{
-				if (verticalInput < 0f && vertexCount < 50)
-				{
-					CreateNode(1);
-					lastNode.GetComponent<SpringJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
-					lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
-					lastInputTime = Time.time;
-					cancelled = true;
-					down = true;
-					for (int i = 0; i < vertexCount; ++i)
-					{
-						Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-					}
-				}
-
-				if (playerScript.pulling && gameObject.GetComponent<SpringJoint2D>().connectedBody)
-				{
-					gameObject.GetComponent<SpringJoint2D>().connectedBody = null;
-					gameObject.GetComponent<DistanceJoint2D>().connectedBody = null;
-					gameObject.GetComponent<SpriteRenderer>().enabled = false;
-					//gameObject.GetComponent<Collider2D>().enabled = false;
-
-				}
+				ExtendRope();
 			}
 
 			if (Input.GetMouseButtonDown(0))
@@ -207,11 +158,6 @@ public class RopeScript : MonoBehaviour
 		oldPos = transform.position;
 	}
 
-    private void FixedUpdate()
-    {
-		
-	}
-
     private void RenderLine()
 	{
 		lr.positionCount = Nodes.Count;
@@ -219,7 +165,7 @@ public class RopeScript : MonoBehaviour
 		int i = 0;
 		if (hooked && playerScript.pulling)
 			lr.SetPosition(i, playerScript.attachedTo.transform.position);
-		//else
+
 		lr.SetPosition(0, Nodes[1].transform.position);
 
 		for (i = 1; i < Nodes.Count; i++)
@@ -228,7 +174,6 @@ public class RopeScript : MonoBehaviour
 			lr.SetPosition(i, Nodes[i].transform.position);
 
 		}
-		//lr.SetPosition (i, player.transform.position);
 	}
 
 
@@ -286,13 +231,7 @@ public class RopeScript : MonoBehaviour
 				playerScript.attachedTo.GetComponent<DistanceJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
 				playerScript.attachedTo.GetComponent<SpringJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
 			}
-			else
-			{
-				playerScript.attachedTo.GetComponent<DistanceJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
-				playerScript.attachedTo.GetComponent<SpringJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
-			}
 		}
-
 		vertexCount--;
 	}
 
@@ -313,24 +252,7 @@ public class RopeScript : MonoBehaviour
 
 			if (Nodes.Count > stopAt && !down)
 			{
-				for (int i = 0; i < vertexCount; ++i)
-				{
-					Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-				}
-
-				if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
-				{
-					Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
-				}
-				else
-					RemoveNode(1);
-
-				if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
-				{
-					Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * playerScript.attachedTo.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
-				}
-				else
-					RemoveNode(1);
+				PullTowardsPlayer();
 			}
 		}
 		else
@@ -340,28 +262,81 @@ public class RopeScript : MonoBehaviour
 
 			if (Nodes.Count > stopAt && !down)
 			{
-				for (int i = 0; i < vertexCount; ++i)
-				{
-					Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-				}
-
-                if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
-                {
-                    lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
-                }
-                else
-                    RemoveNode(0);
-
-                if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
-				{
-					lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
-				}
-				else
-					RemoveNode(0);
+				PullPlayerTowards();
 			}
 		}
 	}
-	public void changeMass()
+
+	void PullTowardsPlayer()
+	{
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
+		}
+
+		if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
+		{
+			Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
+		}
+		else
+			RemoveNode(1);
+
+		if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
+		{
+			Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * playerScript.attachedTo.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
+		}
+		else
+			RemoveNode(1);
+	}
+
+	void PullPlayerTowards()
+    {
+		// I have no idea y having these 2 together makes going up the rops smoother but it works so im not complaining
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
+		}
+
+		if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
+		{
+			lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
+		}
+		else
+			RemoveNode(0);
+
+		if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
+		{
+			lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
+		}
+		else
+			RemoveNode(0);
+	}
+
+	void ExtendRope()
+    {
+		if (verticalInput < 0f && vertexCount < 50)
+		{
+			CreateNode(1);
+			lastNode.GetComponent<SpringJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+			lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+			lastInputTime = Time.time;
+			cancelled = true;
+			down = true;
+			for (int i = 0; i < vertexCount; ++i)
+			{
+				Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
+			}
+		}
+
+		if (playerScript.pulling && gameObject.GetComponent<SpringJoint2D>().connectedBody)
+		{
+			gameObject.GetComponent<SpringJoint2D>().connectedBody = null;
+			gameObject.GetComponent<DistanceJoint2D>().connectedBody = null;
+			gameObject.GetComponent<SpriteRenderer>().enabled = false;
+			//gameObject.GetComponent<Collider2D>().enabled = false;
+		}
+	}
+    public void changeMass()
 	{
 		for (int i = 1; i < Nodes.Count; ++i)
 		{
