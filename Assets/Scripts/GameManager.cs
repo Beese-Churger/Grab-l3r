@@ -111,6 +111,7 @@ public class GameManager : MonoBehaviour
             if (health <= 0)
             {
                 GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode("Player");
+                AudioManager.Instance.PlaySFX("player_death" + Random.Range(1, 5), GameObject.FindWithTag("Player").transform.position);
                 GameObject.FindWithTag("Player").SetActive(false);
             }
         }

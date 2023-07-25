@@ -208,6 +208,30 @@ MonoBehaviour:
   - name: rope
     clip: {fileID: 8300000, guid: 7a53a2fc0c6da4045a44fe08394e4390, type: 3}
     volume: 10
+  - name: player_damaged1
+    clip: {fileID: 8300000, guid: ff083120ad1f2c1439ae8914ddc63413, type: 3}
+    volume: 10
+  - name: player_damaged2
+    clip: {fileID: 8300000, guid: 9328cdf22630e2841b894cbbe9a06642, type: 3}
+    volume: 10
+  - name: player_damaged3
+    clip: {fileID: 8300000, guid: fd551909f6d509e4a9efb03de144ed66, type: 3}
+    volume: 10
+  - name: player_damaged4
+    clip: {fileID: 8300000, guid: 79b60689374bda046aaa3150b0fbd9ee, type: 3}
+    volume: 10
+  - name: player_death1
+    clip: {fileID: 8300000, guid: eb3c03e111cf6664bb65a42984200698, type: 3}
+    volume: 10
+  - name: player_death2
+    clip: {fileID: 8300000, guid: 655b5807bdf259e44a15160f8ece99f2, type: 3}
+    volume: 10
+  - name: player_death3
+    clip: {fileID: 8300000, guid: ac8c5edc136d1154fa102beb2c2c3bc0, type: 3}
+    volume: 10
+  - name: player_death4
+    clip: {fileID: 8300000, guid: c7e46f21d64102842b55d4ea594ce6ad, type: 3}
+    volume: 10
   bgSounds: []
   bgmSource: {fileID: 4832879944973751681}
   sfxSource: {fileID: 4832879943951424154}
@@ -257,7 +281,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -7773494409826167545, guid: 508ff5d306f79e64c9202348f6e58378, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0

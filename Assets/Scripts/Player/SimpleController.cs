@@ -119,6 +119,8 @@ public class SimpleController : MonoBehaviour
         if (gameObject.GetComponent<throwhook>().ropeActive)
             gameObject.GetComponent<throwhook>().destroyHook();
         rBody.velocity = -rBody.velocity.normalized * 5;
+
+        AudioManager.Instance.PlaySFX("player_damaged" + Random.Range(1, 5), transform.position);
     }
 
     public void SetCheckPoint(Vector2 point)
