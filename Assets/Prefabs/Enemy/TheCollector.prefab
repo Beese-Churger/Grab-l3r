@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 3260191799917551574}
   m_Layer: 11
   m_Name: Forearm R
-  m_TagString: Boss
+  m_TagString: BossRightArm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 8365099764896558360}
   m_Layer: 11
   m_Name: Hand R
-  m_TagString: Boss
+  m_TagString: BossRightArm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 6927707425645499789}
   m_Layer: 11
   m_Name: Arm R
-  m_TagString: Boss
+  m_TagString: BossRightArm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 9210469587675305541}
   m_Layer: 11
   m_Name: Forearm L
-  m_TagString: Boss
+  m_TagString: BossLeftArm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 6026226479628732875}
   m_Layer: 11
   m_Name: Hand L
-  m_TagString: Boss
+  m_TagString: BossLeftArm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -825,7 +825,7 @@ GameObject:
   - component: {fileID: 6850512415702544297}
   - component: {fileID: 8150797689234064527}
   - component: {fileID: 6226697311789800357}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: TheCollector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1731,7 +1731,7 @@ GameObject:
   - component: {fileID: 8352612660896551081}
   m_Layer: 11
   m_Name: Arm L
-  m_TagString: Boss
+  m_TagString: BossLeftArm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
