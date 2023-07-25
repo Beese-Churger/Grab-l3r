@@ -43,7 +43,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3695428503797578161, guid: 508ff5d306f79e64c9202348f6e58378, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -179,21 +179,40 @@ MonoBehaviour:
   bgmSounds:
   - name: mainmenubgm
     clip: {fileID: 8300000, guid: 6c51047b4bf31314994e2f9380f33157, type: 3}
+    volume: 0
   - name: level1bgm
     clip: {fileID: 8300000, guid: 4043a281fceeaa54291ff525ceba8ae7, type: 3}
+    volume: 0
   - name: level2bgm
     clip: {fileID: 8300000, guid: 3ca8edf0f7e0da14d99e9fb5e3d8d253, type: 3}
+    volume: 0
   sfxSounds:
   - name: hook_attach
     clip: {fileID: 8300000, guid: db662ce049d3d944c8f706ea21c8baf6, type: 3}
+    volume: 100
   - name: door_open
     clip: {fileID: 8300000, guid: 8e59cd552f100374b9b244994f46af76, type: 3}
+    volume: 50
   - name: door_close
     clip: {fileID: 8300000, guid: 22b11da282d105845a3942493076bf56, type: 3}
+    volume: 50
+  - name: hook_no_attach
+    clip: {fileID: 8300000, guid: 46b79e64e2cacad49aae5885b548f8b2, type: 3}
+    volume: 20
+  - name: hook_shoot1
+    clip: {fileID: 8300000, guid: 2a1fa5b96ca4f194fbe5d13c2d611439, type: 3}
+    volume: 50
+  - name: hook_shoot2
+    clip: {fileID: 8300000, guid: 7fff232271439f94bb9c2018c82cccc2, type: 3}
+    volume: 50
+  - name: rope
+    clip: {fileID: 8300000, guid: 7a53a2fc0c6da4045a44fe08394e4390, type: 3}
+    volume: 10
   bgSounds: []
   bgmSource: {fileID: 4832879944973751681}
   sfxSource: {fileID: 4832879943951424154}
   bgSource: {fileID: 0}
+  sfx: {fileID: 568959264927134634, guid: 32ec032919eafa54485d8e892294ef84, type: 3}
 --- !u!1 &4832879944973751682
 GameObject:
   m_ObjectHideFlags: 0

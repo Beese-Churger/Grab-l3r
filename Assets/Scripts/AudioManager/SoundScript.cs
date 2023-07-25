@@ -7,4 +7,5 @@ public class SoundScript
 {
     public string name;
     public AudioClip clip;
+    public int volume;
 }

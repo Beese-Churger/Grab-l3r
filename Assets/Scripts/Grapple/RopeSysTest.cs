@@ -136,7 +136,7 @@ public class RopeSysTest : MonoBehaviour
                     type = terrain.GetTerrainType();
                     if(type != Terrain.TerrainType.concreate)
                     {
-                        AudioManager.Instance.PlaySFX("hook_attach");
+                        //AudioManager.Instance.PlaySFX("hook_attach");
                         ropeAttached = true;
                         //ropeHingeAnchor.transform.parent = hit.transform;
                         if (!ropePositions.Contains(hit.point))
@@ -156,7 +156,7 @@ public class RopeSysTest : MonoBehaviour
                 }
                 else
                 {
-                    AudioManager.Instance.PlaySFX("hook_attach");
+                    //AudioManager.Instance.PlaySFX("hook_attach");
                     ropeAttached = true;
                     //ropeHingeAnchor.transform.parent = hit.transform;
                     if (!ropePositions.Contains(hit.point))

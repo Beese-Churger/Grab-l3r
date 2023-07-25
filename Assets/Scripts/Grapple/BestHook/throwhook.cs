@@ -109,7 +109,7 @@ public class throwhook : MonoBehaviour
 							if (type != Terrain.TerrainType.concreate)
 							{
 								attachedTo = hit.transform.gameObject;
-								AudioManager.Instance.PlaySFX("hook_attach");
+								AudioManager.Instance.PlaySFX("hook_shoot2", transform.position);
 								curHook = Instantiate(hook, transform.position, Quaternion.identity);
 								curHook.GetComponent<RopeScript>().destiny = hit.point;
 								curHook.GetComponent<RopeScript>().SetCanHook(true);
@@ -130,7 +130,7 @@ public class throwhook : MonoBehaviour
 						{
 							// for entities
 							attachedTo = hit.transform.gameObject;
-							AudioManager.Instance.PlaySFX("hook_attach");
+							AudioManager.Instance.PlaySFX("hook_shoot2", transform.position);
 							curHook = Instantiate(hook, transform.position, Quaternion.identity);
 							curHook.GetComponent<RopeScript>().destiny = hit.point;
 							curHook.GetComponent<RopeScript>().SetCanHook(true);
