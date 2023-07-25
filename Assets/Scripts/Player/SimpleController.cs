@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
     public static SimpleController Instance;
+    public ParticleSystem dust;
 
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
@@ -17,11 +18,9 @@ public class SimpleController : MonoBehaviour
     public bool groundCheck;
     public float jumpSpeed = 3f;
     public bool isJumping = false;
-    private RopeScript ropeScript;
     private bool isHooked = false;
     private Vector2 playerPos;
     private Vector2 checkpointPos;
-    // Start is called before the first frame update
 
     private void Awake()
     {
@@ -52,6 +51,11 @@ public class SimpleController : MonoBehaviour
         return checkpointPos;
     }
 
+    void PlayDust()
+    {
+        dust.Play();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -69,6 +73,7 @@ public class SimpleController : MonoBehaviour
 
         if (groundCheck)
         {
+            PlayDust();
             isJumping = jumpInput > 0f;
             if (isJumping)
             {
@@ -121,6 +126,7 @@ public class SimpleController : MonoBehaviour
         gameObject.GetComponent<throwhook>().destroyHook();
         rBody.velocity = -rBody.velocity.normalized * 5;
     }
+
     public void SetCheckPoint(Vector2 point)
     {
         checkpointPos = point;
@@ -130,6 +136,7 @@ public class SimpleController : MonoBehaviour
     {
         isHooked = _hook;
     }
+
     private float SaturatedAdd(float Min, float Max, float Current, float Modifier)
     {
         if (Modifier < 0)
