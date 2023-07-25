@@ -44,7 +44,6 @@ public class LevelManager : MonoBehaviour
         else
         {
             instance = this;
-            CheckCurrentIndex();
             DontDestroyOnLoad(instance);
         }
     }
@@ -58,6 +57,7 @@ public class LevelManager : MonoBehaviour
             new(3,false),
             new(4,false)
         };
+        CheckCurrentIndex();
     }
 
     public void OnApplicationQuit()
@@ -137,7 +137,7 @@ public class LevelManager : MonoBehaviour
     {
         foreach (string levelName in levels)
         {
-            if (SceneManager.GetActiveScene().name == levelName)
+            if (SceneManager.GetActiveScene().name.ToUpper() == levelName.ToUpper())
             {
                 return levelName;
             }

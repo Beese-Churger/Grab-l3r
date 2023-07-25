@@ -6,12 +6,12 @@ public class ExplodeOnAwake : MonoBehaviour
 {
 	private Explodable _explodable;
 
-	public void explode()
+	public void explode(string target)
 	{
-		transform.position = GameObject.Find("Player").transform.position;
+		transform.position = GameObject.Find(target).transform.position;
 		_explodable = GetComponent<Explodable>();
 		_explodable.explode();
-		ExplosionForce ef = GameObject.FindObjectOfType<ExplosionForce>();
+		ExplosionForce ef = FindObjectOfType<ExplosionForce>();
 		ef.doExplosion(transform.position);
 	}
 }

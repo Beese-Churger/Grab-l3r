@@ -301,9 +301,9 @@ public class SmallEnemy : EnemyBaseClass
     private bool IsGround()
     {
         RaycastHit2D groundHit = Physics2D.Raycast(transform.position + Vector3.down * 1f, Vector2.down, 0.25f, Layer);
-        //RaycastHit2D groundHit2 = Physics2D.Raycast(transform.position + Vector3.down + new Vector3(direction, 0, 0) * 1f, Vector2.down, 1f, Layer);
-        //|| groundHit2.collider != null
-        if (groundHit.collider != null)
+        RaycastHit2D groundHit2 = Physics2D.Raycast(transform.position + Vector3.down + new Vector3(direction, 0, 0) * 1f, Vector2.down, 1f, Layer);
+        
+        if (groundHit.collider != null || groundHit2.collider != null)
         {
             //Debug.Log(groundHit.collider.name);
             if (groundHit.distance <= 0.02f)

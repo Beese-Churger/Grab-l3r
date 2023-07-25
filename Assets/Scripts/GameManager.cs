@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
             }
             if (health <= 0)
             {
-                GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode();
+                GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode("Player");
                 GameObject.FindWithTag("Player").SetActive(false);
             }
         }

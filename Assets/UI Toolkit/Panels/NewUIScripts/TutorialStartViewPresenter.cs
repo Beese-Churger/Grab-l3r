@@ -292,7 +292,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
         loadgamePresenter.LoadLevel1 = () => {
             Debug.Log(LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial"));
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial")].Completed())
+            {
                 StartCoroutine(LevelManager.instance.LoadLevel("Level_forestTutorial"));
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+            }
             else
                 Debug.Log("Level 1 not unlocked ");
         };
@@ -302,7 +305,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.LoadLevel2 = () => {
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout 2")].Completed())
-                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2")); 
+            {
+                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2"));
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+            }
             else
                 Debug.Log("Level 2 not unlocked ");
 
@@ -313,7 +319,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.LoadLevel3 = () => {
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout Boss")].Completed())
+            {
                 StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout Boss"));
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+            }
             else
                 Debug.Log("Boss Level not unlocked ");
         };

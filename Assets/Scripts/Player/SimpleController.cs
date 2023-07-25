@@ -118,7 +118,8 @@ public class SimpleController : MonoBehaviour
 
     public void damageTaken()
     {
-        gameObject.GetComponent<throwhook>().destroyHook();
+        if (gameObject.GetComponent<throwhook>().ropeActive)
+            gameObject.GetComponent<throwhook>().destroyHook();
         rBody.velocity = -rBody.velocity.normalized * 5;
     }
     public void SetCheckPoint(Vector2 point)

@@ -206,7 +206,7 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            currentAttack = ATTACK.GRINDER;
+            currentAttack = ATTACK.SLAM;
         }
         abilityUpdated = true;
         //bossBeam.SetActive(true);
@@ -492,7 +492,7 @@ public class Boss : MonoBehaviour
                 {
                     Debug.Log("Crush hit");
                     //Debug.Log(bossArmComponent.name + " has collided with the player");
-                    GameManager.instance.RemoveLife();
+                    GameManager.instance.TakeDamage();
                     return true;
                 }
             }
@@ -503,7 +503,7 @@ public class Boss : MonoBehaviour
                     !p_Hit)
                 {
                     Debug.Log("Slam Hit!");
-                    GameManager.instance.RemoveLife();
+                    GameManager.instance.TakeDamage();
                     return true;
                 }
             }

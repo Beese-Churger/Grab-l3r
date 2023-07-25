@@ -9,6 +9,7 @@ public class PressurePlate : MonoBehaviour
     public Obstacle obstacle;
     public bool isDoorOpen;
     public bool isElectricity;
+    public bool destroyBoss;
     public Animator animator;
 
     private Obstacle.ObstacleType type;
@@ -107,6 +108,11 @@ public class PressurePlate : MonoBehaviour
                     }
                     elecActive = false;
                 }
+                if (destroyBoss && Boss.instance.gameObject.activeInHierarchy)
+                {
+                    GameObject.Find("BossToExplode").GetComponent<ExplodeOnAwake>().explode("TheCollector");
+                    Boss.instance.gameObject.SetActive(false);
+                }
             }
         } 
     }
@@ -114,46 +120,49 @@ public class PressurePlate : MonoBehaviour
     // activate obstacles, open/close doors, deactivate mnoving platforms
     private void OnTriggerExit2D(Collider2D collision)
     {
-        objectsInTrigger.Remove(collision.gameObject);       
-        if (objectsInTrigger.Count <= 0)
+        if (collision.gameObject.name != "FOV")
         {
-            animator.SetBool("isPressed", false);
-            if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+            objectsInTrigger.Remove(collision.gameObject);
+            if (objectsInTrigger.Count <= 0)
             {
-                Boss.instance.SetPPlate(false);              
-            }
-
-            if (isElectricity && !elecActive)
-            {
-                foreach (Obstacle obj in electricityControlled)
-                {
-                    obj.ActivateElectricity();
-                }
+                animator.SetBool("isPressed", false);
                 if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {
-                    Boss.instance.SetElectric(true);
+                    Boss.instance.SetPPlate(false);
                 }
-                elecActive = true;
-            }
 
-            if (isDoor && !isDoorOpen)
-            {
-                obstacle.CloseDoor();
-            }
-            else if (isDoorOpen)
-            {
-                if (obstacle != null)
+                if (isElectricity && !elecActive)
                 {
-                    obstacle.OpenDoor();
+                    foreach (Obstacle obj in electricityControlled)
+                    {
+                        obj.ActivateElectricity();
+                    }
+                    if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+                    {
+                        Boss.instance.SetElectric(true);
+                    }
+                    elecActive = true;
                 }
-            }
-            else if (!isObstacle && !isDoor)
-            {
-                terrain.DeactivateMovingPlatform();
-            }
-            else if (isObstacle)
-            {
-                obstacle.ActivateObstacle();
+
+                if (isDoor && !isDoorOpen)
+                {
+                    obstacle.CloseDoor();
+                }
+                else if (isDoorOpen)
+                {
+                    if (obstacle != null)
+                    {
+                        obstacle.OpenDoor();
+                    }
+                }
+                else if (!isObstacle && !isDoor)
+                {
+                    terrain.DeactivateMovingPlatform();
+                }
+                else if (isObstacle)
+                {
+                    obstacle.ActivateObstacle();
+                }
             }
         }
     }
