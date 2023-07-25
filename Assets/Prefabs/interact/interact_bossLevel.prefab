@@ -45,6 +45,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2997412936112271197}
     m_Modifications:
+    - target: {fileID: -996206086855799760, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
+      propertyPath: m_EdgeRadius
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -49436836895965386, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 917011697883238374, guid: 630b36f97439e874c9f0efb08bd0a9b8, type: 3}
       propertyPath: m_Name
       value: MovingPlatform
@@ -107,6 +115,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2997412936112271197}
     m_Modifications:
+    - target: {fileID: 3889049734097135473, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033441049822863384, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
+      propertyPath: endPos.x
+      value: -9.405403
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033441049822863384, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
+      propertyPath: endPos.y
+      value: 9.421109
+      objectReference: {fileID: 0}
     - target: {fileID: 5631999314614071049, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
       propertyPath: m_Name
       value: ElectricPlatform
@@ -121,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8651679689252091018, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.61094636
+      value: 2.36
       objectReference: {fileID: 0}
     - target: {fileID: 8651679689252091018, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -171,11 +191,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -4774512063997955992, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 1.5947719
+      value: 2.0049145
       objectReference: {fileID: 0}
     - target: {fileID: -4663943313632136070, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_Size.x
-      value: 1.5947719
+      value: 2.0049145
       objectReference: {fileID: 0}
     - target: {fileID: -4663943313632136070, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_SortingOrder
@@ -187,11 +207,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7980640485310085714, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.757597
+      value: -17.74
       objectReference: {fileID: 0}
     - target: {fileID: 7980640485310085714, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.882188
+      value: -9.76
       objectReference: {fileID: 0}
     - target: {fileID: 7980640485310085714, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_LocalPosition.z
@@ -231,7 +251,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8553378220286055079, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 1.5947719
+      value: 2.0049145
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
@@ -403,6 +423,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2997412936112271197}
     m_Modifications:
+    - target: {fileID: 3889049734097135473, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033441049822863384, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
+      propertyPath: endPos.x
+      value: 5.524596
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033441049822863384, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
+      propertyPath: endPos.y
+      value: 9.421109
+      objectReference: {fileID: 0}
     - target: {fileID: 5631999314614071049, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
       propertyPath: m_Name
       value: ElectricPlatform (1)
@@ -417,7 +449,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8651679689252091018, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.61094636
+      value: 2.36
       objectReference: {fileID: 0}
     - target: {fileID: 8651679689252091018, guid: 5c74f10ca41e6024db1a1a6a2c6155c5, type: 3}
       propertyPath: m_LocalPosition.z
