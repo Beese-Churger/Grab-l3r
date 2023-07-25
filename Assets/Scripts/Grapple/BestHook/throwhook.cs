@@ -32,7 +32,9 @@ public class throwhook : MonoBehaviour
 
 	private float lastInputTime;
 	private float inputDelay = 0.19f;
+	Vector3 playerVel;
 
+	Vector3 oldPos;
 	public enum HookContext
 	{
 		HOOK_SMALL,
@@ -47,6 +49,7 @@ public class throwhook : MonoBehaviour
     {
 		hookContext = HookContext.HOOK_BIG;
 		lastInputTime = Time.time;
+		oldPos = transform.position;
     }
 
 
@@ -148,6 +151,7 @@ public class throwhook : MonoBehaviour
 				{
 					//delete rope
 					destroyHook();
+					launch();
 				}
 				lastInputTime = Time.time;
 			}
@@ -173,6 +177,12 @@ public class throwhook : MonoBehaviour
 		}
 
 		gameObject.GetComponent<SimpleController>().SetHook(ropeActive);
+		oldPos = transform.position;
 	}
+
+	public void launch()
+    {
+		gameObject.GetComponent<Rigidbody2D>().velocity = (transform.position - oldPos )/ Time.deltaTime;
+    }
 }
 

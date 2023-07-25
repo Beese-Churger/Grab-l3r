@@ -34,15 +34,9 @@ public class RopeScript : MonoBehaviour
 	private bool hooked = false;
 	private Rigidbody2D rbody;
 	[SerializeField] private int climbspeed = 500;
-	private float distancePlayer;
-	private float prevDistance;
 
 	private bool cancelled = false;
 
-	private Vector3 oldPos;
-	private float totalDistance;
-	private float distanceThisFrame = 0f;
-	private bool toDelete = false;
 	private float stopAt;
 	private bool down = false;
 	private bool canHook;
@@ -52,7 +46,7 @@ public class RopeScript : MonoBehaviour
 	{
 
 		cancelled = false;
-		toDelete = false;
+
 		lr = GetComponent<LineRenderer>();
 
 		player = GameObject.FindGameObjectWithTag("Player");
@@ -66,9 +60,6 @@ public class RopeScript : MonoBehaviour
 
 		lastInputTime = Time.time;
 
-		prevDistance = 0;
-
-		oldPos = transform.position;
 		stopAt = 0;
 
 	}
@@ -77,11 +68,6 @@ public class RopeScript : MonoBehaviour
 		verticalInput = movement.action.ReadValue<Vector2>().y;
 
 		transform.position = Vector2.MoveTowards(transform.position, destiny, speed);
-
-		// get distance travelled from prev pos
-		//Vector3 distanceVector = player.transform.position - oldPos;
-		//distanceThisFrame = distanceVector.magnitude;
-		//totalDistance += distanceThisFrame;
 
 		if ((Vector2)transform.position != destiny)
 		{
@@ -149,16 +135,17 @@ public class RopeScript : MonoBehaviour
 			{
 				if(playerScript.ropeActive)
                 {
-					ChangeMassToLaunch();
+					//ChangeMassToLaunch();
 					cancelled = true;
 					down = true;
+					lastNode.GetComponent<DistanceJoint2D>().connectedBody = null;
+					lastNode.GetComponent<SpringJoint2D>().connectedBody = null;
 				}
 			}
 
 			TensionNode();
 			RenderLine();
 		}
-		oldPos = transform.position;
 	}
 
     private void RenderLine()
@@ -230,11 +217,9 @@ public class RopeScript : MonoBehaviour
 
 
 			GameObject firstNode = Nodes[1];
-			if (Nodes.Count > 3)
-			{
-				playerScript.attachedTo.GetComponent<DistanceJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
-				playerScript.attachedTo.GetComponent<SpringJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
-			}
+
+			playerScript.attachedTo.GetComponent<DistanceJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
+			playerScript.attachedTo.GetComponent<SpringJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
 		}
 		vertexCount--;
 	}

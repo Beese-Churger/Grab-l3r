@@ -100,15 +100,15 @@ public class SimpleController : MonoBehaviour
                 else
                     rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
             }
-            else
-            {
-                rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
-            }
+            //else
+            //{
+            //    rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
+            //}
         }
 
         // clamp the velocity to something sane
-        if (rBody.velocity.magnitude > 50)
-            rBody.velocity = rBody.velocity.normalized * 50;
+        if (rBody.velocity.magnitude > 100)
+            rBody.velocity = rBody.velocity.normalized * 100;
 
         if(groundCheck)
             rBody.velocity = new Vector2(rBody.velocity.x * 0.9f, rBody.velocity.y);
