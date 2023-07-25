@@ -131,7 +131,7 @@ MonoBehaviour:
   maxDistance: 10
   ropeLayerMask:
     serializedVersion: 2
-    m_Bits: 1089
+    m_Bits: 3137
   attachedTo: {fileID: 0}
   ropeScript: {fileID: 6317663561343164960, guid: fd71233abbbbf1d448c5f86a2f5926f0, type: 3}
   pulling: 0

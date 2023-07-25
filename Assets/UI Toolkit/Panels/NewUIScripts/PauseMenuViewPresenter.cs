@@ -5,13 +5,18 @@ public class PauseMenuViewPresenter
 {
     private Button _continue;
     private Button _quit;
+    private Button _options;
+
 
     public Action ContinueGame { set => _continue.clicked += value; }
     public Action QuitGame { set => _quit.clicked += value; }
+    public Action OpenOptions { set => _options.clicked += value; }
+
     public PauseMenuViewPresenter(VisualElement root)
     {
         _continue = root.Q<Button>("ContinueButton");
         _quit = root.Q<Button>("PauseQuitButton");
+        _options = root.Q<Button>("OptionsButton");
     }
 
 }

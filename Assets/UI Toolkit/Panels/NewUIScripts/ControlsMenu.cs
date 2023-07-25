@@ -22,18 +22,18 @@ public class ControlsMenu
         sLabel = root.Q("Column2").Q<Label>("ResetRLabel");
 
         gLabel.RegisterCallback<ClickEvent>((evt) => {
-            TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.grappleRebind);
+            NewOptions.instance.BindKey(NewOptions.instance.grappleRebind);
             Debug.Log("Triggered grapple rebinding"); });
         //mLabel.RegisterCallback<ClickEvent>((evt) => {
         //    TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.movementRebind);
         //    Debug.Log("Triggered movement rebinding");
         //});
         jLabel.RegisterCallback<ClickEvent>((evt) => {
-            TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.jumpRebind);
+            NewOptions.instance.BindKey(NewOptions.instance.jumpRebind);
             Debug.Log("Triggered jump rebinding");
         });
         sLabel.RegisterCallback<ClickEvent>((evt) => {
-            TutorialStartViewPresenter.instance.BindKey(TutorialStartViewPresenter.instance.suicideRebind);
+            NewOptions.instance.BindKey(NewOptions.instance.suicideRebind);
             Debug.Log("Triggered suicide rebinding");
         });
     }

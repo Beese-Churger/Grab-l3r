@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem.RebindUI;
 using UnityEngine.InputSystem;
 
 public class NewOptions : MonoBehaviour
@@ -19,7 +20,13 @@ public class NewOptions : MonoBehaviour
     [SerializeField] private InputActionReference switchToOptionsControls;
     [SerializeField] private InputActionReference ToggleOptionsScreen;
 
-    [SerializeField] private InputActionReference suicide;
+    [SerializeField] GameObject keyRebind;
+    [SerializeField] public InputActionReference grappleRebind;
+    [SerializeField] public InputActionReference movementRebind;
+    [SerializeField] public InputActionReference jumpRebind;
+    [SerializeField] public InputActionReference suicideRebind;
+
+    public bool isBinding = false;
 
     private void Awake()
     {
@@ -44,7 +51,7 @@ public class NewOptions : MonoBehaviour
     {
         if (LevelManager.instance.GetCurrentLevelIndex() > 1)
         {
-            if ((switchToOptionsControls.action.triggered || ToggleOptionsScreen.action.triggered) && !isPressed || change)
+            if ((switchToOptionsControls.action.triggered || ToggleOptionsScreen.action.triggered) && !isPressed)
             {
                 if (isPaused)
                 {
@@ -62,7 +69,6 @@ public class NewOptions : MonoBehaviour
                 }
 
                 isPressed = true;
-                change = false;
             }
             else
                 isPressed = false;
@@ -72,7 +78,7 @@ public class NewOptions : MonoBehaviour
                 GameManager.instance.SetGameState(StateType.levelChange);
                 EnemyManager.enemyManager.ClearEnemyList();
             }
-            if (suicide.action.triggered && GameManager.instance.GetCurrentPlayerHealth() > 0)
+            if (suicideRebind.action.triggered && GameManager.instance.GetCurrentPlayerHealth() > 0)
             {
                 GameManager.instance.InstantDeath();
             }
@@ -84,12 +90,30 @@ public class NewOptions : MonoBehaviour
     }
     public void SetPauseState(bool state)
     {
-        change = !state;
+        isPaused = state;
+        isPressed = state;
+        Debug.Log(isPaused);
     }
     public void SetPlayerInput(string actionMapName)
     {
         playerInput.SwitchCurrentActionMap(actionMapName);
     }
+    public void BindKey(InputActionReference inputActionReference)
+    {
+        SetPlayerInput("Options");
+        isBinding = true;
 
+        Keybind temp = keyRebind.GetComponent<Keybind>();
+        temp.actionReference = inputActionReference;
+        temp.bindingId = inputActionReference.action.bindings[0].id.ToString();
+        temp.StartInteractiveRebind();
+
+    }
+    public void BindingDone(string newActionName)
+    {
+
+        isBinding = false;
+
+    }
 
 }

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Video;
-using UnityEngine.InputSystem.RebindUI;
-using UnityEngine.InputSystem;
+
 
 
 public class TutorialStartViewPresenter : MonoBehaviour
@@ -27,13 +26,6 @@ public class TutorialStartViewPresenter : MonoBehaviour
 
     private VisualElement _rebindOverlay;
 
-    [SerializeField] GameObject keyRebind;
-    [SerializeField] public InputActionReference grappleRebind;
-    [SerializeField] public InputActionReference movementRebind;
-    [SerializeField] public InputActionReference jumpRebind;
-    [SerializeField] public InputActionReference suicideRebind;
-
-    public bool isBinding = false;
 
     private void Awake()
     {
@@ -250,39 +242,6 @@ public class TutorialStartViewPresenter : MonoBehaviour
     {
         ControlsMenu controlsMenu = new(_controlScreen);
         controlsMenu.BackAction = () => ToggleControlScreen(false);
-    }
-
-    public void BindKey(InputActionReference inputActionReference)
-    {
-        NewOptions.instance.SetPlayerInput("Options");
-        isBinding = true;
-
-        Keybind temp = keyRebind.GetComponent<Keybind>();
-        temp.actionReference = inputActionReference;
-        temp.bindingId = inputActionReference.action.bindings[0].id.ToString();
-        temp.StartInteractiveRebind();
-        _controlScreen.Display(false);
-        _rebindOverlay.Display(true);
-
-    }
-    public void BindingDone(string newActionName)
-    {
-        ControlsMenu controlsMenu = new(_controlScreen);
-        if (keyRebind.GetComponent<Keybind>().actionReference == grappleRebind)
-            controlsMenu.gLabel.text = newActionName;
-        //else if (keyRebind.GetComponent<Keybind>().actionReference == movementRebind)
-        //{
-        //    controlsMenu.mLabel.text = newActionName;
-        //}
-        else if (keyRebind.GetComponent<Keybind>().actionReference == jumpRebind)
-            controlsMenu.jLabel.text = newActionName;
-        else if (keyRebind.GetComponent<Keybind>().actionReference == suicideRebind)
-            controlsMenu.sLabel.text = newActionName;
-
-        isBinding = false;
-
-        _controlScreen.Display(true);
-        _rebindOverlay.Display(false);
     }
 
     // LOAD LEVELS
