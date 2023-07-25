@@ -31,7 +31,7 @@ public class throwhook : MonoBehaviour
 	public HookContext hookContext;
 
 	private float lastInputTime;
-	private float inputDelay = 0.1f;
+	private float inputDelay = 0.19f;
 
 	public enum HookContext
 	{
@@ -52,9 +52,6 @@ public class throwhook : MonoBehaviour
 
 	public void destroyHook()
     {
-		//delete rope
-		Destroy(curHook, 0.1f);
-
 		Destroy(attachedTo.GetComponent<SpringJoint2D>());
 		Destroy(attachedTo.GetComponent<DistanceJoint2D>());
 		hookContext = HookContext.HOOK_BIG;
@@ -62,23 +59,13 @@ public class throwhook : MonoBehaviour
 		{
 			attachedTo.GetComponent<SmallEnemy>().isHooked = false;
 		}
-		//if (attachedTo.CompareTag("Enemy"))
-		//{
-		//	int enemyType = EnemyManager.enemyManager.GetEnemyType(attachedTo);
-		//	if (enemyType == 0)
-		//	{
-		//		attachedTo.GetComponent<SmallEnemy>().SetWeight(attachedTo.GetComponent<SmallEnemy>().GetWeight() * 5);
-		//		attachedTo.GetComponent<SmallEnemy>().isHooked = false;
-		//	}
-		//	else if (enemyType == 1)
-		//	{
-		//		attachedTo.GetComponent<Rigidbody2D>().isKinematic = false;
-		//	}
 
-		//}
 		ropeActive = false;
 		change = false;
 		pulling = false;
+
+		//delete rope
+		Destroy(curHook, 0.1f);
 	}
     void Update () 
 	{		
@@ -98,7 +85,7 @@ public class throwhook : MonoBehaviour
 		{
 			if (grappleAction.action.triggered)
 			{
-				if (ropeActive == false)
+				if (!ropeActive)
 				{
 					RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, maxDistance, ropeLayerMask);
 					if (hit.collider != null)
@@ -121,6 +108,7 @@ public class throwhook : MonoBehaviour
 							}
 							else
 							{
+								AudioManager.Instance.PlaySFX("hook_shoot1", transform.position);
 								curHook = Instantiate(hook, transform.position, Quaternion.identity);
 								curHook.GetComponent<RopeScript>().SetCanHook(false);
 								curHook.GetComponent<RopeScript>().destiny = hit.point;
@@ -159,7 +147,6 @@ public class throwhook : MonoBehaviour
 				}
 				else
 				{
-					//gameObject.GetComponent<Rigidbody2D>().mass = 50;
 					//delete rope
 					destroyHook();
 				}
