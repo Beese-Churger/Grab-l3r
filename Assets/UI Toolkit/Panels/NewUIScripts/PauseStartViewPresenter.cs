@@ -39,7 +39,6 @@ public class PauseStartViewPresenter : MonoBehaviour
                 TogglePauseScreen(false);
                 Time.timeScale = 1;
                 NewOptions.instance.SetPlayerInput("Gameplay");
-                LevelManager.instance.PlayLevelBGM(true);
             };
     }
     private void Update()

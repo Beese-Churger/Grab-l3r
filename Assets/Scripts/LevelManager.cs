@@ -69,13 +69,12 @@ public class LevelManager : MonoBehaviour
     public void LoadNextLevel()
     {
         currentLevelIndex++;
+
+        // If player has reached the level then it will be unlocked for them in the load game menu
         if (currentLevelIndex != -1)
         {
             arrLevels[currentLevelIndex] = new Level(currentLevelIndex, true);
-        }
-        
-        currentLevelIndex++;
-        
+        }        
         // check if all the levels are loaded
         if (currentLevelIndex < levels.Length)
         {

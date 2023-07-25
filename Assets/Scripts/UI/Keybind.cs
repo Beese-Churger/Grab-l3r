@@ -531,7 +531,7 @@ namespace UnityEngine.InputSystem.RebindUI
         }
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && TutorialStartViewPresenter.instance.isBinding)
             {
                 m_RebindOperation?.Cancel();
                 operation = false;

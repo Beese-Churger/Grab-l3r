@@ -33,6 +33,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
     [SerializeField] public InputActionReference jumpRebind;
     [SerializeField] public InputActionReference suicideRebind;
 
+    public bool isBinding = false;
+
     private void Awake()
     {
         if (instance != null)
@@ -253,6 +255,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
     public void BindKey(InputActionReference inputActionReference)
     {
         NewOptions.instance.SetPlayerInput("Options");
+        isBinding = true;
 
         Keybind temp = keyRebind.GetComponent<Keybind>();
         temp.actionReference = inputActionReference;
@@ -267,14 +270,16 @@ public class TutorialStartViewPresenter : MonoBehaviour
         ControlsMenu controlsMenu = new(_controlScreen);
         if (keyRebind.GetComponent<Keybind>().actionReference == grappleRebind)
             controlsMenu.gLabel.text = newActionName;
-        else if (keyRebind.GetComponent<Keybind>().actionReference == movementRebind)
-        {
-            controlsMenu.mLabel.text = newActionName;
-        }
+        //else if (keyRebind.GetComponent<Keybind>().actionReference == movementRebind)
+        //{
+        //    controlsMenu.mLabel.text = newActionName;
+        //}
         else if (keyRebind.GetComponent<Keybind>().actionReference == jumpRebind)
             controlsMenu.jLabel.text = newActionName;
         else if (keyRebind.GetComponent<Keybind>().actionReference == suicideRebind)
             controlsMenu.sLabel.text = newActionName;
+
+        isBinding = false;
 
         _controlScreen.Display(true);
         _rebindOverlay.Display(false);
@@ -285,8 +290,9 @@ public class TutorialStartViewPresenter : MonoBehaviour
     {
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.LoadLevel1 = () => {
-            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("level_forestTutorial")].Completed())
-                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout"));
+            Debug.Log(LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial"));
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial")].Completed())
+                StartCoroutine(LevelManager.instance.LoadLevel("Level_forestTutorial"));
             else
                 Debug.Log("Level 1 not unlocked ");
         };
