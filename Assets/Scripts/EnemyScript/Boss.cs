@@ -44,7 +44,9 @@ public class Boss : MonoBehaviour
     private GameObject bossHead;
     private GameObject bossBeam;
     private Collider2D CrushAOE;
-    private GameObject[] bossArm;
+    private GameObject[] bossLeftArm;
+    private GameObject[] bossRightArm;
+
 
     // Electric Platforms variable
     private GameObject[] electricPlatforms;
@@ -91,7 +93,9 @@ public class Boss : MonoBehaviour
         bossBeam = GameObject.Find("BossBeam");
         electricPlatforms = GameObject.FindGameObjectsWithTag("ElectricPlatform");
 
-        bossArm = GameObject.FindGameObjectsWithTag("Boss");
+        bossLeftArm = GameObject.FindGameObjectsWithTag("BossLeftArm");
+        bossRightArm = GameObject.FindGameObjectsWithTag("BossRightArm");
+
         CrushAOE = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         timer = chargeTimer;
@@ -266,8 +270,9 @@ public class Boss : MonoBehaviour
                     {
                         iKLeftHand.GetChain(0).target = defaultTarget.transform;
                     }
-                    if (CollisionCheck())
+                    if (SlamCollisionCheck(bossLeftArm))
                     {
+                        Debug.Log("Left Hand Hit");
                         p_Hit = true;
                     }
                     if (attackTimer > slamLClip.averageDuration)
@@ -306,8 +311,9 @@ public class Boss : MonoBehaviour
                     {
                         iKRightHand.GetChain(0).target = defaultTarget.transform;
                     }
-                    if (CollisionCheck())
+                    if (SlamCollisionCheck(bossRightArm))
                     {
+                        Debug.Log("Right Hand Hit");
                         p_Hit = true;
                     }
 
@@ -480,27 +486,30 @@ public class Boss : MonoBehaviour
     }
 
     private bool CollisionCheck()
-    {
-        foreach (GameObject bossArmComponent in bossArm)
+    { 
+        if (currentAttack == ATTACK.CRUSH)
         {
-            if (currentAttack == ATTACK.CRUSH)
+            if (CrushAOE.OverlapPoint(playerGO.transform.position) && 
+                attackTimer > crushClip.averageDuration * 0.6f &&
+                !p_Hit)
             {
-                if ((bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) || 
-                    CrushAOE.OverlapPoint(playerGO.transform.position)) && 
-                    attackTimer > crushClip.averageDuration * 0.6f &&
-                    !p_Hit)
-                {
-                    Debug.Log("Crush hit");
-                    //Debug.Log(bossArmComponent.name + " has collided with the player");
-                    GameManager.instance.TakeDamage();
-                    return true;
-                }
+                Debug.Log("Crush hit");
+                //Debug.Log(bossArmComponent.name + " has collided with the player");
+                GameManager.instance.TakeDamage();
+                return true;
             }
-            else if (currentAttack == ATTACK.SLAM)
+        }        
+        return false;
+    }
+    private bool SlamCollisionCheck(GameObject[] side)
+    {
+        if (currentAttack == ATTACK.SLAM)
+        {
+            foreach (GameObject bossArmComponent in side)
             {
                 if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) &&
-                    attackTimer > slamLClip.averageDuration * 0.8f &&
-                    !p_Hit)
+                attackTimer > slamLClip.averageDuration * 0.8f &&
+                !p_Hit)
                 {
                     Debug.Log("Slam Hit!");
                     GameManager.instance.TakeDamage();

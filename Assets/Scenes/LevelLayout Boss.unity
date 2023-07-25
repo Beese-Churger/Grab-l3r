@@ -8422,6 +8422,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1435330029596916814, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
+      propertyPath: endPoint
+      value: 
+      objectReference: {fileID: 2016482528}
+    - target: {fileID: 1435330029596916814, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
+      propertyPath: startPoint
+      value: 
+      objectReference: {fileID: 1036388748}
     - target: {fileID: 2997412936112271197, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -8466,6 +8474,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5185695910854172574, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
+      propertyPath: endPos.x
+      value: 5.3045964
+      objectReference: {fileID: 0}
+    - target: {fileID: 5185695910854172574, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
+      propertyPath: endPos.y
+      value: -0.84083694
+      objectReference: {fileID: 0}
+    - target: {fileID: 6817372467930340738, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
+      propertyPath: endPoint
+      value: 
+      objectReference: {fileID: 689950755}
+    - target: {fileID: 6817372467930340738, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
+      propertyPath: startPoint
+      value: 
+      objectReference: {fileID: 2073969835}
     - target: {fileID: 8251928664833219613, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
       propertyPath: m_Name
       value: interact_bossLevel

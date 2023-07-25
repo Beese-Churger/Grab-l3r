@@ -8,6 +8,8 @@ TagManager:
   - Terrain
   - Boss
   - ElectricPlatform
+  - BossRightArm
+  - BossLeftArm
   layers:
   - Default
   - TransparentFX
