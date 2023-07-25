@@ -54,6 +54,7 @@ public class SimpleController : MonoBehaviour
     void PlayDust()
     {
         dust.Play();
+        Debug.Log("dust played");
     }
 
     // Update is called once per frame
@@ -63,7 +64,7 @@ public class SimpleController : MonoBehaviour
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
-        
+        PlayDust();
     }
 
     private void FixedUpdate()
@@ -77,6 +78,7 @@ public class SimpleController : MonoBehaviour
             isJumping = jumpInput > 0f;
             if (isJumping)
             {
+                //PlayDust();
                 rBody.velocity = new Vector2(rBody.velocity.x, jumpSpeed);
             }
         }
