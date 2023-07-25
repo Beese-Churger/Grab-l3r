@@ -117,25 +117,25 @@ public class RopeScript : MonoBehaviour
 		{
 			if (verticalInput > 0f && vertexCount > 2 && cancelled) // dont allow to go up while rope is auto tensioning
 			{
-				for (int i = 0; i < vertexCount; ++i)
-				{
-					Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-				}
-
+				ChangeMass();
+		
 				if (playerScript.hookContext == throwhook.HookContext.HOOK_SMALL)
 				{
-					PullTowardsPlayer();
+					if (Vector2.Distance(Nodes[1].transform.position, playerScript.attachedTo.transform.position) > 0.5f)
+						PullTowardsPlayer();
 				}
 				else
 				{
-					PullPlayerTowards();
+					if (Vector2.Distance(lastNode.transform.position, player.transform.position) < 0.25f)
+						PullPlayerTowards();
 				}
+				
 			}
 			else
 			{
 				for (int i = 0; i < vertexCount; ++i)
 				{
-					Nodes[i].GetComponent<Rigidbody2D>().mass = Mathf.Lerp(Nodes[i].GetComponent<Rigidbody2D>().mass, 0.1f, Time.deltaTime * 5);
+					Nodes[i].GetComponent<Rigidbody2D>().mass = Mathf.Lerp(Nodes[i].GetComponent<Rigidbody2D>().mass, 0.1f, Time.deltaTime * 5); // slowly set back to 0.1 to prevent rope from springing
 				}
 			}
 
@@ -147,9 +147,12 @@ public class RopeScript : MonoBehaviour
 
 			if (Input.GetMouseButtonDown(0))
 			{
-				changeMass();
-				cancelled = true;
-				down = true;
+				if(playerScript.ropeActive)
+                {
+					ChangeMassToLaunch();
+					cancelled = true;
+					down = true;
+				}
 			}
 
 			TensionNode();
@@ -160,19 +163,20 @@ public class RopeScript : MonoBehaviour
 
     private void RenderLine()
 	{
+		if (!playerScript.ropeActive)
+			return;
+
 		lr.positionCount = Nodes.Count;
 
 		int i = 0;
-		if (hooked && playerScript.pulling)
+		if (hooked && playerScript.pulling && playerScript.attachedTo != null)
 			lr.SetPosition(i, playerScript.attachedTo.transform.position);
 
 		lr.SetPosition(0, Nodes[1].transform.position);
 
 		for (i = 1; i < Nodes.Count; i++)
 		{
-
 			lr.SetPosition(i, Nodes[i].transform.position);
-
 		}
 	}
 
@@ -269,10 +273,7 @@ public class RopeScript : MonoBehaviour
 
 	void PullTowardsPlayer()
 	{
-		for (int i = 0; i < vertexCount; ++i)
-		{
-			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-		}
+		ChangeMass();
 
 		if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
 		{
@@ -292,10 +293,7 @@ public class RopeScript : MonoBehaviour
 	void PullPlayerTowards()
     {
 		// I have no idea y having these 2 together makes going up the rops smoother but it works so im not complaining
-		for (int i = 0; i < vertexCount; ++i)
-		{
-			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-		}
+		ChangeMass();
 
 		if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
 		{
@@ -322,10 +320,7 @@ public class RopeScript : MonoBehaviour
 			lastInputTime = Time.time;
 			cancelled = true;
 			down = true;
-			for (int i = 0; i < vertexCount; ++i)
-			{
-				Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-			}
+			ChangeMass();
 		}
 
 		if (playerScript.pulling && gameObject.GetComponent<SpringJoint2D>().connectedBody)
@@ -336,11 +331,20 @@ public class RopeScript : MonoBehaviour
 			//gameObject.GetComponent<Collider2D>().enabled = false;
 		}
 	}
-    public void changeMass()
+    public void ChangeMassToLaunch()
 	{
 		for (int i = 1; i < Nodes.Count; ++i)
 		{
+			//switching to light mass will laugh the player due to the difference in inertia
 			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.01f;
+		}
+	}
+
+	public void ChangeMass()
+	{
+		for (int i = 0; i < Nodes.Count; ++i)
+		{
+			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
 		}
 	}
 
