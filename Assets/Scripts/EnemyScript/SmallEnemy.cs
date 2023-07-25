@@ -43,8 +43,6 @@ public class SmallEnemy : EnemyBaseClass
     //
     private int type = 0;
     float direction = 1;
-    bool onPPlate = false;
-    bool isJumping = false;
     public bool isHooked = false;
 
     private void Awake()
@@ -114,32 +112,6 @@ public class SmallEnemy : EnemyBaseClass
             
         }
     }
-    public override void SetWeight(int newWeight)
-    {
-        if (newWeight <= 15)
-        {
-            weight = newWeight;
-            rb.mass = weight * 0.10131712f;
-        }
-
-    }
-    public override int GetWeight()
-    {
-        return weight;
-    }
-
-    public override void SetStatus(bool b_Status)
-    {
-        e_Alive = b_Status;
-    }
-    public override bool GetStatus()
-    {
-        return e_Alive;
-    }
-    public override int GetEnemyType()
-    {
-        return type;
-    }
     /* Make the big enemy stationary for 1 second before allowing it to move to
        the next waypoint
      */
@@ -193,25 +165,10 @@ public class SmallEnemy : EnemyBaseClass
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             current = FSM.IDLE;
             detected = false;
         }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
-        {
-            //Debug.Log(gameObject.name + " is on p plate");
-            onPPlate = true;
-        }
-        // TO DO: SET THE PLAYER STATUS TO DEAD
-        //if (collision.gameObject.CompareTag("Player"))
-            //GameManager.instance.TakeDamage();
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        onPPlate = false;
     }
     private void Patrol()
     {
@@ -237,12 +194,11 @@ public class SmallEnemy : EnemyBaseClass
 
         // Check if either of the raycasts hit a platform
         if (((leftHit.collider == null && direction < 0) ||
-            (rightHit.collider == null && direction > 0)) &&
-            !onPPlate
+            (rightHit.collider == null && direction > 0))
             )
         {
             // Debug.Log(dir);
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             ChangeDirection();
             current = FSM.IDLE;
             //Debug.Log("Small Enemy is near the edge!");
@@ -269,18 +225,16 @@ public class SmallEnemy : EnemyBaseClass
             //Debug.Log(empty.transform.name);
             if (empty.transform.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
             {
-                rb.velocity = Vector2.zero;
+                rb.velocity = new Vector2(0, rb.velocity.y);
                 rb.AddForce(new Vector2(0, 1) * 5f, ForceMode2D.Impulse);
                 rb.AddForce(new Vector2(direction, 0) * 3f, ForceMode2D.Impulse);
-                isJumping = true;
                 //Debug.Log("Direction after jumping" + direction);
                 return false;
             }
             
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             ChangeDirection();
             current = FSM.IDLE;
-            isJumping = false;
            // Debug.Log("Small Enemy is near the wall!");  
             return true;
         }
@@ -303,7 +257,7 @@ public class SmallEnemy : EnemyBaseClass
         RaycastHit2D groundHit = Physics2D.Raycast(transform.position + Vector3.down * 1f, Vector2.down, 0.25f, Layer);
         RaycastHit2D groundHit2 = Physics2D.Raycast(transform.position + Vector3.down + new Vector3(direction, 0, 0) * 1f, Vector2.down, 1f, Layer);
         
-        if (groundHit.collider != null || groundHit2.collider != null)
+        if (groundHit.collider != null|| groundHit2.collider != null)
         {
             //Debug.Log(groundHit.collider.name);
             if (groundHit.distance <= 0.02f)
@@ -316,36 +270,30 @@ public class SmallEnemy : EnemyBaseClass
         return false;
               
     }
+    public override void SetWeight(int newWeight)
+    {
+        if (newWeight <= 15)
+        {
+            weight = newWeight;
+            rb.mass = weight * 0.10131712f;
+        }
 
-    // Slows big enemy movement down as it approaches the waypoint,
-    // Not using at the moment
-    //private void Slow()
-    //{
-    //    Vector3 leftRayOrigin = transform.position + Vector3.left * raycastDistance;
-    //    Vector3 rightRayOrigin = transform.position + Vector3.right * raycastDistance;
+    }
+    public override int GetWeight()
+    {
+        return weight;
+    }
 
-    //    RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 20f, platformLayer);
-    //    RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 20f, platformLayer);
-
-    //    float distanceFromDestination = 0f;
-    //    if (leftHit.collider != null && direction < 0)
-    //    {
-    //        distanceFromDestination = leftHit.distance;
-    //    }
-    //    else if (rightHit.collider != null && direction > 0)
-    //    {
-    //        distanceFromDestination = rightHit.distance;
-    //    }
-
-    //    if (distanceFromDestination < stoppingDistance)
-    //    {
-    //        speed *= 0.7f;
-    //    }
-    //    else
-    //    {
-    //        speed = originalSpeed;
-    //    }
-
-    //}
-
+    public override void SetStatus(bool b_Status)
+    {
+        e_Alive = b_Status;
+    }
+    public override bool GetStatus()
+    {
+        return e_Alive;
+    }
+    public override int GetEnemyType()
+    {
+        return type;
+    }
 }
