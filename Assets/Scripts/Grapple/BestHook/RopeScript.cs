@@ -264,16 +264,16 @@ public class RopeScript : MonoBehaviour
 
 	void PullTowardsPlayer()
 	{
-		if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
+		if (Nodes[1].GetComponent<DistanceJoint2D>().distance > 0.005f)
 		{
-			Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
+			Nodes[1].GetComponent<DistanceJoint2D>().distance -= Time.deltaTime * climbspeed;
 		}
 		else
 			RemoveNode(1);
 
-		if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
+		if (Nodes[1].GetComponent<DistanceJoint2D>().distance > 0.005f)
 		{
-			Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * playerScript.attachedTo.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
+			Nodes[1].GetComponent<DistanceJoint2D>().distance -= Time.deltaTime * climbspeed * playerScript.attachedTo.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
 		}
 		else
 			RemoveNode(1);
