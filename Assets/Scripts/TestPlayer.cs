@@ -11,6 +11,7 @@ public class TestPlayer : MonoBehaviour
     public static Vector2 checkpointPos;
     private Vector2 movementDir;
     private Vector2 playerPos;
+    public ParticleSystem dust;
 
     private void Awake()
     {
@@ -52,6 +53,10 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * 300f);
+            if (!dust.isPlaying)
+            {
+                dust.Play();
+            }
         }
     }
 }
