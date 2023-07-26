@@ -493,7 +493,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7980640485310085714, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.9604445
+      value: -6.78
       objectReference: {fileID: 0}
     - target: {fileID: 7980640485310085714, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1405,6 +1405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrabbing: 0
   speed: 3
+  dust: {fileID: 0}
 --- !u!61 &1945848093
 BoxCollider2D:
   m_ObjectHideFlags: 0
