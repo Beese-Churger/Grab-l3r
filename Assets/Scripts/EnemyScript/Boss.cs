@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.IK;
 
@@ -31,10 +32,11 @@ public class Boss : MonoBehaviour
 
     [SerializeField] private GameObject horizontalPlatform;
     [SerializeField] private GameObject verticalPlatform;
-    [SerializeField] private float chargeTimer = 3f;
     [SerializeField] private float gracePeriod = 3f;
     [SerializeField] private LayerMask platformLayer;
     [SerializeField] private LayerMask pPlateLayer;
+    private float chargeTimer = 3f;
+
 
     // Body Spawning Variables
     private float m_Scale = 0.35f;
@@ -49,6 +51,9 @@ public class Boss : MonoBehaviour
     private GameObject[] bossLeftArm;
     private GameObject[] bossRightArm;
     private SafeZone safeZone;
+
+    // Flag that controls the beam tracking the player
+    private bool beenTracked = false;
 
 
     // Electric Platforms variable
@@ -84,17 +89,21 @@ public class Boss : MonoBehaviour
     private int highestHitPhase = 0;
     private int prevPhaseNumber = 0;
     private int usableAbilities = 0;
-    private int pressedP = 0;
 
 
     [Tooltip("Developer Mode.")]
     public bool invicibility = true;
+    [Tooltip("First Possible Attack Interval.")]
+    [SerializeField] private float firstPos;
+    [Tooltip("Second Possible Attack Interval.")]
+    [SerializeField] private float secondPos;
+    private List<float> intervalArray;  
+
 
     private void Awake()
     {
         if (instance == null)
             instance = this;
-   
     }
     private void Start()
     {
@@ -116,6 +125,14 @@ public class Boss : MonoBehaviour
         timer = chargeTimer;
         graceTimer = gracePeriod;
         bossBeam.SetActive(false);
+
+        intervalArray = new()
+        {
+            firstPos,
+            secondPos
+        };
+
+ 
     }
 
     // Update is called once per frame
@@ -192,7 +209,6 @@ public class Boss : MonoBehaviour
                 // TO DO: If pressure plate is triggered , the boss will move up to the next phase 
                 phase++;
                 usableAbilities++;
-                pressedP++;
                 SpawnBody();
                 Debug.Log("Phase Increase:" + phase);
             }
@@ -210,8 +226,7 @@ public class Boss : MonoBehaviour
         {
             phase--;
             usableAbilities--;
-            pressedP--;
-            Debug.Log("Phase Decrease" + phase);
+            Debug.Log("Phase Decrease:" + phase);
         }
     }
     private void GenerateSkill()
@@ -245,12 +260,13 @@ public class Boss : MonoBehaviour
             case ATTACK.SLAM:
                 // Logic for the slam attack
                 Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
-
+                // Check if one side animation is playing already,
+                // If the left arm animation is playing, only track left side even though the player
+                // has left the right zone etc.)
+                //////////////////////////////////////////////////////////////////////////////////////////////
                 if (dir.x > 0)
                 {
                     // Use Right Hand to slam the player
-                    // TO DO: Play the right hand slam animation
-                    // Only call on collision check at the frame when the boss is slaming
                     // Debug.Log("Attacking Right");
                     if (!isPlaying)
                     {
@@ -262,8 +278,7 @@ public class Boss : MonoBehaviour
                 }
                 else if (dir.x < 0)
                 {
-                    // Use Left Hand to slam the player
-                    // TO DO: Play the left hand slam animation                
+                    // Use Left Hand to slam the player             
                     //Debug.Log("Attacking Left");
                     if (!isPlaying)
                     {
@@ -273,34 +288,42 @@ public class Boss : MonoBehaviour
                     }
 
                 }
+                /////////////////////////////////////////////////////////////////////////////////////////////////
                 if (left)
                 {
                     Vector2 newDir = (playerGO.transform.position - iKLeftHand.GetChain(2).effector.position).normalized;
                     Vector3 newPos = newDir * 20f;
+                    // If the player is initially in the safe zone, dont track anything because it will make the animation
+                    // look weird
                     if (!slamming)
                     {
                         if (!safeZone.playerSafe)
+                        {
                             iKLeftHand.GetChain(0).target = playerGO.transform;
+                            beenTracked = true;
+                        }
                         else
-                            iKLeftHand.GetChain(0).target = defaultLeft.transform;
+                        {
+                            aimTarget.transform.position = defaultLeft.transform.position;
+                            beenTracked = false;
+                        }
                         slamming = true;
                     }
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (attackTimer < slamLClip.averageDuration * 0.6f)
                     {
                         if (!safeZone.playerSafe)
+                        {
                             aimTarget.transform.position = newPos + iKLeftHand.GetChain(2).effector.position;
+                            beenTracked = true;
+                        }
                         else
                             iKLeftHand.GetChain(0).target = aimTarget.transform;
                     }
                     else
                     {
                         iKLeftHand.GetChain(0).target = aimTarget.transform;
-                    }
-                    if (SlamCollisionCheck(bossLeftArm))
-                    {
-                        Debug.Log("Left Hand Hit");
-                        p_Hit = true;
+                        SlamCollisionCheck(bossLeftArm);
                     }
                     if (attackTimer > slamLClip.averageDuration)
                     {
@@ -320,6 +343,7 @@ public class Boss : MonoBehaviour
                         ActivateBeam();
                         //Debug.Log(attackTimer);
                     }
+
                 }
                 else
                 {
@@ -328,9 +352,17 @@ public class Boss : MonoBehaviour
                     if (!slamming)
                     {
                         if (!safeZone.playerSafe)
+                        {
                             iKRightHand.GetChain(0).target = playerGO.transform;
+                            beenTracked = true;
+                        }
                         else
-                            iKRightHand.GetChain(0).target = defaultRight.transform;
+                        {
+                            aimTarget.transform.position = defaultRight.transform.position;
+                            beenTracked = false;
+
+                        }
+
                         slamming = true;
                     }
                     if (attackTimer < slamRClip.averageDuration * 0.6f)
@@ -343,13 +375,8 @@ public class Boss : MonoBehaviour
                     else
                     {
                         iKRightHand.GetChain(0).target = aimTarget.transform;
+                        SlamCollisionCheck(bossRightArm);
                     }
-                    if (SlamCollisionCheck(bossRightArm))
-                    {
-                        Debug.Log("Right Hand Hit");
-                        p_Hit = true;
-                    }
-
                     // If slam right animation is done playing
                     /*
                      * Reset the timer that tracks whether the animation is done playing or not
@@ -372,6 +399,7 @@ public class Boss : MonoBehaviour
                         attackTimer += Time.deltaTime;
                         ActivateBeam();
                     }
+
                 }
 
 
@@ -388,6 +416,7 @@ public class Boss : MonoBehaviour
                     animator.SetBool("Electric", true);
                     isPlaying = true;
                 }
+                // During this specific frame of the attack activate the electric platforms
                 if (attackTimer > grinderClip.averageDuration * 0.7)
                 {
                     electricActive = true;
@@ -420,12 +449,6 @@ public class Boss : MonoBehaviour
                     isPlaying = true;
                 }
 
-                if (CollisionCheck())
-                {
-                    // Remove one life from the player
-                    p_Hit = true;
-
-                }
                 if (attackTimer > crushClip.averageDuration)
                 {
                     Debug.Log("Crush Animation done playing");
@@ -441,6 +464,7 @@ public class Boss : MonoBehaviour
                     attackTimer += Time.deltaTime;
                     //Debug.Log(crushTimer);
                 }
+                CrushCollisionCheck();
 
                 break;
         }
@@ -503,13 +527,19 @@ public class Boss : MonoBehaviour
         if (!bossBeam.activeInHierarchy)
             bossBeam.SetActive(true);
 
-        if (!safeZone.playerSafe)
+        if (!safeZone.playerSafe && attackTimer < slamRClip.averageDuration * 0.6f)
         {
             Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
-
+            bossBeam.transform.localRotation = rotation;
             //Debug.Log(angle);
+        }
+        else if (!beenTracked)
+        {
+            Vector2 dir = (Vector2)aimTarget.transform.position - (Vector2)bossHead.transform.position;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
             bossBeam.transform.localRotation = rotation;
         }
         if (attackTimer > slamRClip.averageDuration)
@@ -518,7 +548,7 @@ public class Boss : MonoBehaviour
 
     }
 
-    private bool CollisionCheck()
+    private void CrushCollisionCheck()
     { 
         if (currentAttack == ATTACK.CRUSH)
         {
@@ -528,14 +558,13 @@ public class Boss : MonoBehaviour
                 !invicibility)
             {
                 Debug.Log("Crush hit");
-                //Debug.Log(bossArmComponent.name + " has collided with the player");
                 GameManager.instance.TakeDamage();
-                return true;
+                p_Hit = true;
+                return;
             }
         }        
-        return false;
     }
-    private bool SlamCollisionCheck(GameObject[] side)
+    private void SlamCollisionCheck(GameObject[] side)
     {
         if (currentAttack == ATTACK.SLAM)
         {
@@ -549,25 +578,14 @@ public class Boss : MonoBehaviour
                 {
                     Debug.Log("Slam Hit!");
                     GameManager.instance.TakeDamage();
-                    return true;
+                    p_Hit = true;
+                    return;
                 }
             }
         }
-        return false;
     }
     private bool ChargeUp()
     {
-        // TO DO: Spawn a beam of light above the player
-        // Done
-        //Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
-        //float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        //Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
-        //Debug.Log(angle);
-        // 1 second before the timer runs out the beam will stop following the player
-        //if (timer > 1f)
-        //    bossBeam.transform.localRotation = rotation;
-        //bossBeam.transform.rotation = Quaternion.Slerp(bossBeam.transform.rotation, rotation, 10f * Time.deltaTime);
-
         if (timer > 0f)
         {
             timer -= Time.deltaTime;
@@ -575,8 +593,6 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            // Remove the beam
-            //bossBeam.SetActive(false);
             current = FSM.ATTACK;
             return true;
         }
@@ -591,7 +607,7 @@ public class Boss : MonoBehaviour
         {
             //Debug.Log("Scan");
             graceTimer = gracePeriod;
-            timer = chargeTimer;
+            RandInterval();
             current = FSM.SCAN;
 
         }
@@ -611,6 +627,41 @@ public class Boss : MonoBehaviour
             Gizmos.DrawLine(bossHead.transform.position, playerGO.transform.position);
 
     }
-
+    private void RandInterval()
+    {
+        System.Random rand1 = new();
+        Shuffle(rand1, intervalArray);
+        chargeTimer = intervalArray[0];
+        timer = chargeTimer;
+        Debug.Log(chargeTimer);
+    }
+    public void Shuffle(System.Random rng, List<float> array)
+    {
+        int n = array.Count;
+        while (n > 1)
+        {
+            int k = rng.Next(n--);
+            float temp = array[n];
+            array[n] = array[k];
+            array[k] = temp;
+        }
+    }
 
 }
+
+
+// UNUSED CODE
+
+// TO DO: Spawn a beam of light above the player
+// Done
+//Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
+//float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+//Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
+//Debug.Log(angle);
+// 1 second before the timer runs out the beam will stop following the player
+//if (timer > 1f)
+//    bossBeam.transform.localRotation = rotation;
+//bossBeam.transform.rotation = Quaternion.Slerp(bossBeam.transform.rotation, rotation, 10f * Time.deltaTime);
+
+// Remove the beam
+//bossBeam.SetActive(false);
