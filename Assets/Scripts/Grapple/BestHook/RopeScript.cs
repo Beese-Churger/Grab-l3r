@@ -40,6 +40,7 @@ public class RopeScript : MonoBehaviour
 	private float stopAt;
 	private bool down = false;
 	private bool canHook;
+	private bool render = true;
 
 
 	void Start()
@@ -103,44 +104,37 @@ public class RopeScript : MonoBehaviour
 		{
 			if (verticalInput > 0f && vertexCount > 2 && cancelled) // dont allow to go up while rope is auto tensioning
 			{
-				ChangeMass();
-		
 				if (playerScript.hookContext == throwhook.HookContext.HOOK_SMALL)
 				{
-					if (Vector2.Distance(Nodes[1].transform.position, playerScript.attachedTo.transform.position) > 0.5f)
+					Vector2 pos2Create = (playerScript.attachedTo.transform.position - Nodes[1].transform.position);
+					pos2Create.Normalize();
+					pos2Create *= Nodes[1].GetComponent<DistanceJoint2D>().distance;
+					pos2Create += (Vector2)Nodes[1].transform.position;
+
+					if (Vector2.Distance(playerScript.attachedTo.transform.position, pos2Create) < 0.45f)
+                    {
 						PullTowardsPlayer();
+						playerScript.attachedTo.transform.position = Vector2.MoveTowards(playerScript.attachedTo.transform.position, pos2Create, Time.deltaTime * 10);
+					}
 				}
 				else
 				{
-					if (Vector2.Distance(lastNode.transform.position, player.transform.position) < 0.25f)
+					Vector2 pos2Create = -(player.transform.position - lastNode.transform.position);
+					pos2Create.Normalize();
+					pos2Create *= lastNode.GetComponent<DistanceJoint2D>().distance;
+					pos2Create += (Vector2)lastNode.transform.position;
+
+					if (Vector2.Distance(player.transform.position, pos2Create) <= 0.45f)
+                    {
 						PullPlayerTowards();
-				}
-				
-			}
-			else
-			{
-				for (int i = 0; i < vertexCount; ++i)
-				{
-					Nodes[i].GetComponent<Rigidbody2D>().mass = Mathf.Lerp(Nodes[i].GetComponent<Rigidbody2D>().mass, 0.1f, Time.deltaTime * 5); // slowly set back to 0.1 to prevent rope from springing
+						player.transform.position = Vector2.MoveTowards(player.transform.position, pos2Create, Time.deltaTime * 10);
+					}
 				}
 			}
-
-
+			
 			if (lastInputTime + inputDelay < Time.time)
 			{
 				ExtendRope();
-			}
-
-			if (Input.GetMouseButtonDown(0))
-			{
-				if(playerScript.ropeActive)
-                {
-					//ChangeMassToLaunch();
-					cancelled = true;
-					down = true;
-					//lastNode.GetComponent<DistanceJoint2D>().connectedBody = null;
-					//lastNode.GetComponent<SpringJoint2D>().connectedBody = null;
-				}
 			}
 
 			TensionNode();
@@ -150,27 +144,28 @@ public class RopeScript : MonoBehaviour
 
     private void RenderLine()
 	{
-		if (!playerScript.ropeActive)
+		if (!render)
 			return;
 
-		lr.positionCount = Nodes.Count;
+		lr.positionCount = Nodes.Count + 1;
 
 		int i = 0;
 		if (hooked && playerScript.pulling && playerScript.attachedTo != null)
-			lr.SetPosition(i, playerScript.attachedTo.transform.position);
-
-		lr.SetPosition(0, Nodes[1].transform.position);
+			lr.SetPosition(0, playerScript.attachedTo.transform.position);
+		else
+			lr.SetPosition(0, Nodes[1].transform.position);
 
 		for (i = 1; i < Nodes.Count; i++)
 		{
 			lr.SetPosition(i, Nodes[i].transform.position);
 		}
+
+		lr.SetPosition(lr.positionCount - 1, player.transform.position);
 	}
 
 
 	private void CreateNode(int modifier)
 	{
-
 		Vector2 pos2Create = player.transform.position - lastNode.transform.position;
 		pos2Create.Normalize();
 		pos2Create *= distance * modifier;
@@ -217,7 +212,6 @@ public class RopeScript : MonoBehaviour
 
 
 			GameObject firstNode = Nodes[1];
-
 			playerScript.attachedTo.GetComponent<DistanceJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
 			playerScript.attachedTo.GetComponent<SpringJoint2D>().connectedBody = firstNode.GetComponent<Rigidbody2D>();
 		}
@@ -227,7 +221,7 @@ public class RopeScript : MonoBehaviour
 
 	public void TensionNode()
 	{
-		if (!cancelled)
+		if (!cancelled || !playerScript.ropeActive)
 		{
 			if (Nodes.Count > 2)
 				stopAt = Nodes.Count - 1;
@@ -236,30 +230,40 @@ public class RopeScript : MonoBehaviour
 
 		if (playerScript.hookContext == throwhook.HookContext.HOOK_SMALL)
 		{
-			if (Vector2.Distance(Nodes[1].transform.position, playerScript.attachedTo.transform.position) > 0.5f)
+			Vector2 pos2Create = (playerScript.attachedTo.transform.position - Nodes[1].transform.position);
+			pos2Create.Normalize();
+			pos2Create *= Nodes[1].GetComponent<DistanceJoint2D>().distance;
+			pos2Create += (Vector2)Nodes[1].transform.position;
+
+			if (Vector2.Distance(playerScript.attachedTo.transform.position, pos2Create) >= 0.45f)
 				return;
 
 			if (Nodes.Count > stopAt && !down)
 			{
 				PullTowardsPlayer();
+				playerScript.attachedTo.transform.position = Vector2.MoveTowards(playerScript.attachedTo.transform.position, pos2Create, Time.deltaTime * 10);
 			}
 		}
 		else
 		{
-			if (Vector2.Distance(lastNode.transform.position, player.transform.position) > 0.25f)
+			Vector2 pos2Create = -(player.transform.position - lastNode.transform.position);
+			pos2Create.Normalize();
+			pos2Create *= lastNode.GetComponent<DistanceJoint2D>().distance;
+			pos2Create += (Vector2)lastNode.transform.position;
+
+			if (Vector2.Distance(player.transform.position, pos2Create) >= 0.45f)
 				return;
 
 			if (Nodes.Count > stopAt && !down)
 			{
 				PullPlayerTowards();
+				player.transform.position = Vector2.MoveTowards(player.transform.position, pos2Create, Time.deltaTime * 10);
 			}
 		}
 	}
 
 	void PullTowardsPlayer()
 	{
-		ChangeMass();
-
 		if (Nodes[1].GetComponent<SpringJoint2D>().distance > 0.005f)
 		{
 			Nodes[1].GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
@@ -278,21 +282,21 @@ public class RopeScript : MonoBehaviour
 	void PullPlayerTowards()
     {
 		// I have no idea y having these 2 together makes going up the rops smoother but it works so im not complaining
-		ChangeMass();
 
-		if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
+		if (lastNode.GetComponent<DistanceJoint2D>().distance > 0.005f)
 		{
-			lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed;
+			lastNode.GetComponent<DistanceJoint2D>().distance -= Time.deltaTime * climbspeed;
 		}
 		else
 			RemoveNode(0);
 
-		if (lastNode.GetComponent<SpringJoint2D>().distance > 0.005f)
+		if (lastNode.GetComponent<DistanceJoint2D>().distance > 0.005f)
 		{
-			lastNode.GetComponent<SpringJoint2D>().distance -= Time.deltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
+			lastNode.GetComponent<DistanceJoint2D>().distance -= Time.deltaTime * climbspeed * player.GetComponent<Rigidbody2D>().velocity.magnitude * vertexCount * 20;
 		}
 		else
 			RemoveNode(0);
+
 	}
 
 	void ExtendRope()
@@ -305,7 +309,6 @@ public class RopeScript : MonoBehaviour
 			lastInputTime = Time.time;
 			cancelled = true;
 			down = true;
-			ChangeMass();
 		}
 
 		if (playerScript.pulling && gameObject.GetComponent<SpringJoint2D>().connectedBody)
@@ -316,30 +319,8 @@ public class RopeScript : MonoBehaviour
 			//gameObject.GetComponent<Collider2D>().enabled = false;
 		}
 	}
-    public void ChangeMassToLaunch()
-	{
-		for (int i = 1; i < Nodes.Count; ++i)
-		{
-			//switching to light mass will laugh the player due to the difference in inertia
-			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.01f;
-		}
-	}
-
-	public void ChangeMass()
-	{
-		for (int i = 0; i < Nodes.Count; ++i)
-		{
-			Nodes[i].GetComponent<Rigidbody2D>().mass = Nodes.Count * 0.1f;
-		}
-	}
-
 	public void SetCanHook(bool _hook)
 	{
 		canHook = _hook;
-	}
-
-	public bool isHooked()
-	{
-		return hooked;
 	}
 }
