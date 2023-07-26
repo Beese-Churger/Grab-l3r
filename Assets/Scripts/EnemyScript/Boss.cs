@@ -85,6 +85,11 @@ public class Boss : MonoBehaviour
     private int prevPhaseNumber = 0;
     private int usableAbilities = 0;
     private int pressedP = 0;
+
+
+    [Tooltip("Developer Mode.")]
+    public bool invicibility = true;
+
     private void Awake()
     {
         if (instance == null)
@@ -519,7 +524,8 @@ public class Boss : MonoBehaviour
         {
             if (CrushAOE.OverlapPoint(playerGO.transform.position) && 
                 attackTimer > crushClip.averageDuration * 0.6f &&
-                !p_Hit)
+                !p_Hit && 
+                !invicibility)
             {
                 Debug.Log("Crush hit");
                 //Debug.Log(bossArmComponent.name + " has collided with the player");
@@ -537,7 +543,9 @@ public class Boss : MonoBehaviour
             {
                 if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) &&
                 attackTimer > slamLClip.averageDuration * 0.8f &&
-                !p_Hit && !safeZone.playerSafe)
+                !p_Hit && 
+                !safeZone.playerSafe &&
+                !invicibility)
                 {
                     Debug.Log("Slam Hit!");
                     GameManager.instance.TakeDamage();
