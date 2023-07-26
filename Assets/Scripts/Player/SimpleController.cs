@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
     public static SimpleController Instance;
+    public ParticleSystem dust;
 
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
