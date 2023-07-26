@@ -8745,7 +8745,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4529657237132792065, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
-      propertyPath: isElectricity
+      propertyPath: bossDeactivatedElectricity
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4529657237132792065, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
@@ -12495,7 +12495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7119362734864464100, guid: 1829ad210dff8eb4b9229e9b1f8607ba, type: 3}
       propertyPath: m_Name
-      value: Bg2
+      value: BossBg
       objectReference: {fileID: 0}
     - target: {fileID: 7119362734864464103, guid: 1829ad210dff8eb4b9229e9b1f8607ba, type: 3}
       propertyPath: m_RootOrder

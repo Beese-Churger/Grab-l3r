@@ -191,7 +191,7 @@ public class Boss : MonoBehaviour
     }
     public void SetElectric(bool val)
     {
-        if (currentAttack == ATTACK.GRINDER && elecActivated)
+        if (elecActivated)
             electricActive = val;
     }
     private void PhaseUpdate()
@@ -220,7 +220,6 @@ public class Boss : MonoBehaviour
     public void SetPPlate(bool active)
     {
         pTriggered = active;
-        //Debug.Log("Phase " + phase);
         // If pressure plate has been released the Phase Number decreases
         if (!active)
         {
@@ -245,10 +244,9 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            currentAttack = ATTACK.SLAM;
+            currentAttack = ATTACK.GRINDER;
         }
         abilityUpdated = true;
-        //bossBeam.SetActive(true);
         //Debug.Log("Current Attack:" + currentAttack);
 
     }
