@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
     public static SimpleController Instance;
-    public ParticleSystem dust;
 
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
@@ -82,7 +81,6 @@ public class SimpleController : MonoBehaviour
             isJumping = jumpInput > 0f;
             if (isJumping)
             {
-                //PlayDust();
                 rBody.velocity = new Vector2(rBody.velocity.x, jumpSpeed);
             }
         }
@@ -114,15 +112,15 @@ public class SimpleController : MonoBehaviour
                 else
                     rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
             }
-            else
-            {
-                rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
-            }
+            //else
+            //{
+            //    rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
+            //}
         }
 
         // clamp the velocity to something sane
-        if (rBody.velocity.magnitude > 50)
-            rBody.velocity = rBody.velocity.normalized * 50;
+        if (rBody.velocity.magnitude > 100)
+            rBody.velocity = rBody.velocity.normalized * 100;
 
         if(groundCheck)
             rBody.velocity = new Vector2(rBody.velocity.x * 0.9f, rBody.velocity.y);
@@ -130,8 +128,11 @@ public class SimpleController : MonoBehaviour
 
     public void damageTaken()
     {
-        gameObject.GetComponent<throwhook>().destroyHook();
+        if (gameObject.GetComponent<throwhook>().ropeActive)
+            gameObject.GetComponent<throwhook>().destroyHook();
         rBody.velocity = -rBody.velocity.normalized * 5;
+
+        AudioManager.Instance.PlaySFX("player_damaged" + Random.Range(1, 5), transform.position);
     }
 
     public void SetCheckPoint(Vector2 point)

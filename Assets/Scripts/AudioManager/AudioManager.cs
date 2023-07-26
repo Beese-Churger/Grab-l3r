@@ -14,6 +14,8 @@ public class AudioManager : MonoBehaviour
     public SoundScript[] bgmSounds, sfxSounds, bgSounds;
     public AudioSource bgmSource, sfxSource, bgSource;
 
+    public GameObject sfx;
+
     private void Awake()
     {
         if (Instance == null)
@@ -78,7 +80,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySFX(string name)
+    public void PlaySFX(string name, Vector3 position)
     {
         SoundScript s = Array.Find(sfxSounds, x => x.name == name);
 
@@ -88,8 +90,11 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            sfxSource.clip = s.clip;
-            sfxSource.PlayOneShot(s.clip);
+            GameObject go = Instantiate(sfx, position, Quaternion.identity);
+            AudioSource tempSource = go.GetComponent<AudioSource>();
+            tempSource.clip = s.clip;
+            tempSource.volume = (s.volume * 0.01f) * sfxSource.volume;
+            go.GetComponent<PlayOnAwake>().Play();
         }
     }
 

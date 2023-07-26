@@ -194,8 +194,8 @@ namespace UnityEngine.InputSystem.RebindUI
                 if (bindingIndex != -1)
                 {
                     displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath, displayStringOptions);
-                    if (TutorialStartViewPresenter.instance && !operation)
-                        TutorialStartViewPresenter.instance.BindingDone(displayString);
+                    if (NewOptions.instance && !operation)
+                        NewOptions.instance.BindingDone(displayString);
                 }
             }
 
@@ -531,7 +531,7 @@ namespace UnityEngine.InputSystem.RebindUI
         }
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && NewOptions.instance.isBinding)
             {
                 m_RebindOperation?.Cancel();
                 operation = false;

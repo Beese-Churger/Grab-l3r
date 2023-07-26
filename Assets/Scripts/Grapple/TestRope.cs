@@ -144,7 +144,7 @@ public class TestRope : MonoBehaviour
             {
                 //pivot.SetActive(true);
                 attachedTo = hit.transform.gameObject;
-                AudioManager.Instance.PlaySFX("hook_attach");
+                //AudioManager.Instance.PlaySFX("hook_attach");
                 ropeAttached = true;
                 hook.transform.position = hit.point;
                 hook.transform.SetParent(attachedTo.transform);

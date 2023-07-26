@@ -44,7 +44,6 @@ public class LevelManager : MonoBehaviour
         else
         {
             instance = this;
-            CheckCurrentIndex();
             DontDestroyOnLoad(instance);
         }
     }
@@ -58,6 +57,7 @@ public class LevelManager : MonoBehaviour
             new(3,false),
             new(4,false)
         };
+        CheckCurrentIndex();
     }
 
     public void OnApplicationQuit()
@@ -69,13 +69,12 @@ public class LevelManager : MonoBehaviour
     public void LoadNextLevel()
     {
         currentLevelIndex++;
+
+        // If player has reached the level then it will be unlocked for them in the load game menu
         if (currentLevelIndex != -1)
         {
             arrLevels[currentLevelIndex] = new Level(currentLevelIndex, true);
-        }
-        
-        currentLevelIndex++;
-        
+        }        
         // check if all the levels are loaded
         if (currentLevelIndex < levels.Length)
         {
@@ -138,7 +137,7 @@ public class LevelManager : MonoBehaviour
     {
         foreach (string levelName in levels)
         {
-            if (SceneManager.GetActiveScene().name == levelName)
+            if (SceneManager.GetActiveScene().name.ToUpper() == levelName.ToUpper())
             {
                 return levelName;
             }
