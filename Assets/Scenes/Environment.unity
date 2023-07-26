@@ -401,6 +401,11 @@ MonoBehaviour:
   resetPlayer: 0
   respawnBG: {fileID: 0}
   ExplodePlayer: {fileID: 0}
+--- !u!198 &514440636 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4443847579455265814, guid: 1700fc336ff32714c8974d70c7b125a6, type: 3}
+  m_PrefabInstance: {fileID: 4443847578685542137}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &589358787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1157,11 +1162,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 103479909339257939, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.900475
+      value: -5.72
       objectReference: {fileID: 0}
     - target: {fileID: 103479909339257939, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.04
+      value: -8.78
       objectReference: {fileID: 0}
     - target: {fileID: 103479909339257939, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1199,6 +1204,10 @@ PrefabInstance:
       propertyPath: ropeLayerMask.m_Bits
       value: 3137
       objectReference: {fileID: 0}
+    - target: {fileID: 103479909339257945, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
+      propertyPath: dust
+      value: 
+      objectReference: {fileID: 514440636}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
 --- !u!1 &1331079364 stripped

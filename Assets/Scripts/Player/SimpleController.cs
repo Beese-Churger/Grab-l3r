@@ -21,6 +21,7 @@ public class SimpleController : MonoBehaviour
     private bool isHooked = false;
     private Vector2 playerPos;
     private Vector2 checkpointPos;
+    private bool airBorn = false;
 
     private void Awake()
     {
@@ -51,12 +52,6 @@ public class SimpleController : MonoBehaviour
         return checkpointPos;
     }
 
-    void PlayDust()
-    {
-        dust.Play();
-        Debug.Log("dust played");
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -64,17 +59,26 @@ public class SimpleController : MonoBehaviour
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
-        PlayDust();
     }
 
     private void FixedUpdate()
     {
         float Accel = groundCheck ? AirAccel : GroundAccel;
 
-
         if (groundCheck)
         {
-            PlayDust();
+            if (airBorn)
+            {
+                if (!dust.isPlaying)
+                {
+                    var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
+                    var newPos = new Vector3(transform.position.x, transform.position.y - halfHeight - 0.04f, transform.position.z);
+                    dust.transform.position = newPos;
+                    dust.Play();
+                }
+                airBorn = false;
+            }
+
             isJumping = jumpInput > 0f;
             if (isJumping)
             {
@@ -84,6 +88,7 @@ public class SimpleController : MonoBehaviour
         }
         else
         {
+            airBorn = true;
             if (horizontalInput > 0f)
             {
                 //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
