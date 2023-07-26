@@ -3333,7 +3333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 103479909339257939, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.9
+      value: -4.75
       objectReference: {fileID: 0}
     - target: {fileID: 103479909339257939, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3371,11 +3371,20 @@ PrefabInstance:
       propertyPath: ropeLayerMask.m_Bits
       value: 3137
       objectReference: {fileID: 0}
+    - target: {fileID: 103479909339257945, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
+      propertyPath: dust
+      value: 
+      objectReference: {fileID: 4443847579455265814, guid: 1700fc336ff32714c8974d70c7b125a6, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
 --- !u!1 &977972812 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 103479909339257938, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
+  m_PrefabInstance: {fileID: 977972811}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &977972821 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 103479909339257939, guid: 6989cb0969892cc41b70764d4f0821e7, type: 3}
   m_PrefabInstance: {fileID: 977972811}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &989733438
