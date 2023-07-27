@@ -17,6 +17,8 @@ public class PressurePlate : MonoBehaviour
     private bool isDoor;
     private bool elecActive = true;
 
+    public bool bossDeactivatedElectricity;
+
     private void Start()
     {
         if (obstacle != null)
@@ -68,11 +70,12 @@ public class PressurePlate : MonoBehaviour
             animator.SetBool("isPressed", true);
             if (objectsInTrigger.Count < 2)
             {
+                // Increase Boss Phase
                 if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {
                     Boss.instance.SetPPlate(true);              
                 }
-
+                //  Opens Door
                 if (isDoor && !isDoorOpen)
                 {
                     if (obstacle != null)
@@ -80,6 +83,7 @@ public class PressurePlate : MonoBehaviour
                         obstacle.OpenDoor();
                     }
                 }
+                // Closes Door
                 else if (isDoorOpen)
                 {
                     if (obstacle != null)
@@ -88,6 +92,7 @@ public class PressurePlate : MonoBehaviour
                     }
 
                 }
+                // Activate Moving Platforms
                 else if (!isObstacle && !isDoor)
                 {
                     if (terrain != null)
@@ -95,19 +100,22 @@ public class PressurePlate : MonoBehaviour
                         terrain.ActivateMovingPlatform();
                     }
                 }
-
+                // Deactivates electricity
                 if (isElectricity && elecActive)
                 {
                    foreach (Obstacle obj in electricityControlled)
                    {
                         obj.DeactivateElectricity();
                    }
-                    if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
-                    {
-                        Boss.instance.SetElectric(false);
-                    }
                     elecActive = false;
                 }
+                // Deactivates Boss Grinder Attack
+                if (bossDeactivatedElectricity)
+                {
+                    Boss.instance.SetElectric(false);
+                }
+
+                // Destroy the boss
                 if (destroyBoss && Boss.instance.gameObject.activeInHierarchy)
                 {
                     GameObject.Find("BossToExplode").GetComponent<ExplodeOnAwake>().explode("TheCollector");
@@ -126,28 +134,31 @@ public class PressurePlate : MonoBehaviour
             if (objectsInTrigger.Count <= 0)
             {
                 animator.SetBool("isPressed", false);
+                // Decreases Boss Phase
                 if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {
                     Boss.instance.SetPPlate(false);
                 }
-
+                // Activates all electricity in control
                 if (isElectricity && !elecActive)
                 {
                     foreach (Obstacle obj in electricityControlled)
                     {
                         obj.ActivateElectricity();
                     }
-                    if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
-                    {
-                        Boss.instance.SetElectric(true);
-                    }
                     elecActive = true;
                 }
-
+                // Activate all controlled electricity
+                if (bossDeactivatedElectricity)
+                {
+                    Boss.instance.SetElectric(true);
+                }
+                // Close the door
                 if (isDoor && !isDoorOpen)
                 {
                     obstacle.CloseDoor();
                 }
+                // Open the door
                 else if (isDoorOpen)
                 {
                     if (obstacle != null)
@@ -155,10 +166,12 @@ public class PressurePlate : MonoBehaviour
                         obstacle.OpenDoor();
                     }
                 }
+                // Deactivate Moving Platform
                 else if (!isObstacle && !isDoor)
                 {
                     terrain.DeactivateMovingPlatform();
                 }
+                // Disable obstacle
                 else if (isObstacle)
                 {
                     obstacle.ActivateObstacle();

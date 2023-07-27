@@ -48,6 +48,14 @@ public class PauseStartViewPresenter : MonoBehaviour
     public void TogglePauseScreen(bool enable)
     {
         _pauseView.Display(enable);
+        if (enable == false)
+        {
+            _optionsView.Display(enable);
+            _volumeScreen.Display(enable);
+            _brightnessScreen.Display(enable);
+            _resolutionScreen.Display(enable);
+            _controlScreen.Display(enable);
+        }
         //Debug.Log("Paused");
     }
 
