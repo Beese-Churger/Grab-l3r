@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6468801971551790173}
   - component: {fileID: 7952814532442135481}
   m_Layer: 13
-  m_Name: PressurePlate obstacle
+  m_Name: DoorPlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
