@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e66bdfae336ec7143a5e6b627cbbb851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dust: {fileID: 0}
   movement: {fileID: -3811443923414726402, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   jump: {fileID: 8123854640031384583, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   MAXSPEED: 20
@@ -156,6 +157,10 @@ MonoBehaviour:
   groundCheck: 0
   jumpSpeed: 3
   isJumping: 0
+  DustPrefab: {fileID: 4443847579455265812, guid: 1700fc336ff32714c8974d70c7b125a6, type: 3}
+  ropeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!231 &103479909339257946
 SpringJoint2D:
   m_ObjectHideFlags: 0
