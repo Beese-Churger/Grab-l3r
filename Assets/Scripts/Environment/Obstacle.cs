@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Terrain;
 
 public class Obstacle : MonoBehaviour
 {
@@ -14,13 +10,9 @@ public class Obstacle : MonoBehaviour
         water
     }
     [SerializeField] ObstacleType obstacleType;
-
-    public Sprite newSprite;
     public Animator animator;
 
-    private SpriteRenderer spriteRender;
     private Collider2D myCollider;
-    private Sprite mySprite;
     private bool isActive;
 
     private void Awake()
@@ -30,18 +22,17 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        spriteRender = gameObject.GetComponent<SpriteRenderer>();
-        mySprite = spriteRender.sprite;
         myCollider = gameObject.GetComponent<Collider2D>();
     }
 
+    // cause damage to player on collision with obstacles
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isActive)
         {
-            if (collision.transform.CompareTag("Player") & obstacleType !=ObstacleType.door)
+            if (collision.gameObject.name == "Player" & obstacleType != ObstacleType.door)
             {
-                // For the hole
+                // water objects are instant death to player
                 if (obstacleType == ObstacleType.water)
                 {
                     GameManager.instance.InstantDeath();
@@ -71,7 +62,8 @@ public class Obstacle : MonoBehaviour
         {
             myCollider.enabled = false;
         }
-        AudioManager.Instance.PlaySFX("door_open");
+        Debug.Log("Open Door");
+        AudioManager.Instance.PlaySFX("door_open", transform.position);
     }
 
     public void CloseDoor()
@@ -81,45 +73,54 @@ public class Obstacle : MonoBehaviour
         {
             myCollider.enabled = true;
         }
-        AudioManager.Instance.PlaySFX("door_close");
+        AudioManager.Instance.PlaySFX("door_close", transform.position);
+        Debug.Log("Close Door");
     }
+
     public void DeactivateElectricity()
     {
         animator.SetBool("Active", false);
-        //spriteRender.enabled = false;
         if (myCollider != null)
+        {
             myCollider.enabled = false;
+        }
     }
+
     public void ActivateElectricity()
     {
         animator.SetBool("Active", true);
-        //spriteRender.enabled = true;
         myCollider.enabled = true;
     }
+
     public ObstacleType GetObstacleType()
     {
         return obstacleType;
     }
 
-    private void Update()
-    {
-        if (isActive)
-        {
-            switch (obstacleType)
-            {
-                case ObstacleType.electricity:
-                    spriteRender.sprite = newSprite;
-                    break;
-            }
-        }
-        else
-        {
-            switch (obstacleType)
-            {
-                case ObstacleType.electricity:
-                    spriteRender.sprite = mySprite;
-                    break;
-            }
-        }
-    }
+    //private void Update()
+    //{
+    //    if (isActive)
+    //    {
+    //        switch (obstacleType)
+    //        {
+    //            case ObstacleType.electricity:
+    //                animator.SetBool("Active", true);
+    //                myCollider.enabled = true;
+    //                break;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        switch (obstacleType)
+    //        {
+    //            case ObstacleType.electricity:
+    //                animator.SetBool("Active", false);
+    //                if (myCollider != null)
+    //                {
+    //                    myCollider.enabled = false;
+    //                }
+    //                break;
+    //        }
+    //    }
+    //}
 }

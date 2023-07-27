@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Video;
-using UnityEngine.InputSystem.RebindUI;
-using UnityEngine.InputSystem;
+
 
 
 public class TutorialStartViewPresenter : MonoBehaviour
@@ -27,10 +26,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
 
     private VisualElement _rebindOverlay;
 
-    [SerializeField] GameObject keyRebind;
-    [SerializeField] public InputActionReference grappleRebind;
-    [SerializeField] public InputActionReference movementRebind;
-    [SerializeField] public InputActionReference jumpRebind;
+
     private void Awake()
     {
         if (instance != null)
@@ -248,39 +244,17 @@ public class TutorialStartViewPresenter : MonoBehaviour
         controlsMenu.BackAction = () => ToggleControlScreen(false);
     }
 
-    public void BindKey(InputActionReference inputActionReference)
-    {
-        Keybind temp = keyRebind.GetComponent<Keybind>();
-        temp.actionReference = inputActionReference;
-        temp.bindingId = inputActionReference.action.bindings[0].id.ToString();
-        temp.StartInteractiveRebind();
-        _controlScreen.Display(false);
-        _rebindOverlay.Display(true);
-
-    }
-    public void BindingDone(string newActionName)
-    {
-        ControlsMenu controlsMenu = new(_controlScreen);
-        if (keyRebind.GetComponent<Keybind>().actionReference == grappleRebind)
-            controlsMenu.gLabel.text = keyRebind.GetComponent<Keybind>().actionReference.action.name + "                 " + newActionName;
-        else if (keyRebind.GetComponent<Keybind>().actionReference == movementRebind)
-            controlsMenu.mLabel.text = "Up/Left/Down/Right" + "        " + newActionName;
-        else if (keyRebind.GetComponent<Keybind>().actionReference == jumpRebind)
-            controlsMenu.jLabel.text = keyRebind.GetComponent<Keybind>().actionReference.action.name + "                 " + newActionName;
-
-
-
-        _controlScreen.Display(true);
-        _rebindOverlay.Display(false);
-    }
-
     // LOAD LEVELS
     private void LoadLevel1()
     {
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.LoadLevel1 = () => {
-            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout")].Completed())
-                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout"));
+            Debug.Log(LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial"));
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial")].Completed())
+            {
+                StartCoroutine(LevelManager.instance.LoadLevel("Level_forestTutorial"));
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+            }
             else
                 Debug.Log("Level 1 not unlocked ");
         };
@@ -290,7 +264,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.LoadLevel2 = () => {
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout 2")].Completed())
-                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2")); 
+            {
+                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2"));
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+            }
             else
                 Debug.Log("Level 2 not unlocked ");
 
@@ -301,7 +278,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.LoadLevel3 = () => {
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout Boss")].Completed())
+            {
                 StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout Boss"));
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+            }
             else
                 Debug.Log("Boss Level not unlocked ");
         };
@@ -329,17 +309,28 @@ public class TutorialStartViewPresenter : MonoBehaviour
     private void PlayEndingCutscene()
     {
         CutscenesMenu cutscenesMenu = new(_cutScenes);
-        cutscenesMenu.PlayEnding = () => { 
+        cutscenesMenu.PlayEnding = () => {
             // Play the cutscene when its unlocked
-        };
+            if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("EndingCutscene")].Completed())
+            // Play the cutscene when its unlocked
+            {
+                Debug.Log("Play Ending Cutscene");
+                vp.Play();
+                _cutScenes.Display(false);
+                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
 
+            }
+            else
+            {
+                Debug.Log("Intro Cutscene not unlocked");
+            }
+        };
     }
     private void CutsceneOver(VideoPlayer vp)
-    {
+    {      
         vp.Stop();
         _cutScenes.Display(true);
         GameManager.instance.GetLevelManager().PlayLevelBGM(false);
-
     }
     /// <summary>
     /// Toggle between Main Menu Screen and other available screens
@@ -399,7 +390,13 @@ public class TutorialStartViewPresenter : MonoBehaviour
         _controlScreen.Display(enable);
     }
 
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && vp.isPlaying)
+        {
+            CutsceneOver(vp);
+        }
+    }
 
 
 

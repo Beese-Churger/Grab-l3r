@@ -5,31 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public struct Level
-    {
-        private int level;
-        private bool isCompleted;
-
-        public Level(int levelno, bool completed)
-        {
-            level = levelno;
-            isCompleted = completed;
-        }
-        public int GetIndex()
-        {
-            return level;
-        }
-        public bool Completed()
-        {
-            return isCompleted;
-        }
-    }
-    private string[] levels = { "MainMenu", "Level1Cutscene", "LevelLayout", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
     private string[] levelsBGM = { "mainmenubgm", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
     public List<Level> arrLevels;
     public static LevelManager instance = null;
 
     private int currentLevelIndex = 0;
+
+    public struct Level
+    {
+        private int level;
+        private bool isCompleted;
+
+        public Level(int levelNo, bool completed)
+        {
+            level = levelNo;
+            isCompleted = completed;
+        }
+
+        public int GetIndex()
+        {
+            return level;
+        }
+
+        public bool Completed()
+        {
+            return isCompleted;
+        }
+    }
 
     // create an instance of level manager
     private void Awake()
@@ -41,10 +44,10 @@ public class LevelManager : MonoBehaviour
         else
         {
             instance = this;
-            CheckCurrentIndex();
             DontDestroyOnLoad(instance);
         }
     }
+
     private void Start()
     {
         arrLevels = new List<Level> {
@@ -54,6 +57,7 @@ public class LevelManager : MonoBehaviour
             new(3,false),
             new(4,false)
         };
+        CheckCurrentIndex();
     }
 
     public void OnApplicationQuit()
@@ -64,13 +68,13 @@ public class LevelManager : MonoBehaviour
     // load next level by level index
     public void LoadNextLevel()
     {
+        currentLevelIndex++;
+
+        // If player has reached the level then it will be unlocked for them in the load game menu
         if (currentLevelIndex != -1)
         {
-           // Debug.Log(currentLevelIndex);
             arrLevels[currentLevelIndex] = new Level(currentLevelIndex, true);
-           // Debug.Log(arrLevels.Count);
-        }
-        currentLevelIndex++;
+        }        
         // check if all the levels are loaded
         if (currentLevelIndex < levels.Length)
         {
@@ -101,13 +105,13 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
+        
         if (EnemyManager.enemyManager != null)
         {
             EnemyManager.enemyManager.AddEnemies();
         }
-
-        PlayLevelBGM(false);
         
+        PlayLevelBGM(false);
     }
 
     // load level by name
@@ -126,7 +130,6 @@ public class LevelManager : MonoBehaviour
                 EnemyManager.enemyManager.AddEnemies();
             PlayLevelBGM(false);
         }
-
     }
 
     // return current level name
@@ -134,7 +137,7 @@ public class LevelManager : MonoBehaviour
     {
         foreach (string levelName in levels)
         {
-            if (SceneManager.GetActiveScene().name == levelName)
+            if (SceneManager.GetActiveScene().name.ToUpper() == levelName.ToUpper())
             {
                 return levelName;
             }
@@ -151,7 +154,6 @@ public class LevelManager : MonoBehaviour
     // get current level index
     public int GetCurrentLevelIndex()
     {
-        //CheckCurrentIndex();
         return currentLevelIndex;
     }
 
@@ -162,7 +164,6 @@ public class LevelManager : MonoBehaviour
         {
             if (name == levels[i])
             {
-                //Debug.Log(i);
                 return i;
             }
         }
@@ -189,5 +190,4 @@ public class LevelManager : MonoBehaviour
        CheckCurrentIndex();
        AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
     }
-
 }

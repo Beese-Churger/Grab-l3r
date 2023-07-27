@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CameraMovement : MonoBehaviour
 {
+    public static CameraMovement instance = null;
     private Vector2 mousePosition;
     private Vector2 playerPosition;
     private Vector3 cameraPosition;
@@ -20,12 +21,10 @@ public class CameraMovement : MonoBehaviour
     //TEMP VARIABLE
     [SerializeField] private GameObject player;
     [SerializeField] private InputActionReference pointer;
-    [SerializeField] private bool boss = false;
+    private bool boss = false;
 
     private bool move = false;
     private bool switchMode = false;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +42,7 @@ public class CameraMovement : MonoBehaviour
         cameraOffset = transform.position;
         //transform.position = new Vector3(playerPosition.x, playerPosition.y, -10f);
         
-        boss = GameManager.GetInstance().GetGameState() == StateType.boss;
+        boss = GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss";
        // Debug.Log(GameManager.GetInstance().GetGameState());
 
     }
@@ -94,15 +93,28 @@ public class CameraMovement : MonoBehaviour
                 }
                 else
                 {
+                    //Vector3 temp = transform.position;
+                    //temp.z = -10f;
+                    //Vector2 dir = (cameraPosition - transform.position).normalized;
+                    //if (Mathf.Abs(cameraPosition.x - transform.position.x) > 1)
+                    //{
+                    //    temp.x += dir.x * Time.deltaTime * xOffset;
+                    //}
+                    //if (Mathf.Abs(cameraPosition.y - transform.position.y) > 1)
+                    //{
+                    //    temp.y += dir.y * Time.deltaTime * yOffset;
+                    //}
+
+                    //transform.position = temp;
                     transform.position = cameraPosition;
                 }
             }
         }
-        else
-        {
-            camera1.orthographicSize = 12f;
-            transform.position = new Vector3(0f, 0f, -10f);
-        }
+        //else
+        //{
+        //    camera1.orthographicSize = 15f;
+        //    //transform.position = new Vector3(0f, 0f, -10f);
+        //}
        
     }
     private void FollowPlayer()
@@ -126,5 +138,14 @@ public class CameraMovement : MonoBehaviour
         cameraOffset.z = -10f;
         transform.position = cameraOffset;
 
+    }
+    public void SetCameraState()
+    {
+        if (GameManager.GetInstance().GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+        {
+            boss = true;
+        }
+        else
+            boss = false;
     }
 }

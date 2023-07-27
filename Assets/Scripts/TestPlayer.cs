@@ -6,6 +6,7 @@ public class TestPlayer : MonoBehaviour
 {
     public bool isGrabbing = false;
     public float speed = 1f;
+    public ParticleSystem dust;
 
     private Rigidbody2D rb;
     public static Vector2 checkpointPos;
@@ -52,6 +53,10 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * 300f);
+            if (!dust.isPlaying)
+            {
+                dust.Play();
+            }
         }
     }
 }

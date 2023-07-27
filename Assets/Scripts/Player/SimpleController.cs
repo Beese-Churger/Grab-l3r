@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
     public static SimpleController Instance;
+    public ParticleSystem dust;
 
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
@@ -17,11 +18,10 @@ public class SimpleController : MonoBehaviour
     public bool groundCheck;
     public float jumpSpeed = 3f;
     public bool isJumping = false;
-    private RopeScript ropeScript;
     private bool isHooked = false;
     private Vector2 playerPos;
     private Vector2 checkpointPos;
-    // Start is called before the first frame update
+    private bool airBorn = false;
 
     private void Awake()
     {
@@ -59,16 +59,26 @@ public class SimpleController : MonoBehaviour
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
-        
     }
 
     private void FixedUpdate()
     {
         float Accel = groundCheck ? AirAccel : GroundAccel;
 
-
         if (groundCheck)
         {
+            if (airBorn)
+            {
+                if (!dust.isPlaying)
+                {
+                    var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
+                    var newPos = new Vector3(transform.position.x, transform.position.y - halfHeight - 0.04f, transform.position.z);
+                    dust.transform.position = newPos;
+                    dust.Play();
+                }
+                airBorn = false;
+            }
+
             isJumping = jumpInput > 0f;
             if (isJumping)
             {
@@ -77,6 +87,7 @@ public class SimpleController : MonoBehaviour
         }
         else
         {
+            airBorn = true;
             if (horizontalInput > 0f)
             {
                 //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
@@ -102,15 +113,15 @@ public class SimpleController : MonoBehaviour
                 else
                     rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
             }
-            else
-            {
-                rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
-            }
+            //else
+            //{
+            //    rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
+            //}
         }
 
         // clamp the velocity to something sane
-        if (rBody.velocity.magnitude > 50)
-            rBody.velocity = rBody.velocity.normalized * 50;
+        if (rBody.velocity.magnitude > 100)
+            rBody.velocity = rBody.velocity.normalized * 100;
 
         if(groundCheck)
             rBody.velocity = new Vector2(rBody.velocity.x * 0.9f, rBody.velocity.y);
@@ -118,9 +129,13 @@ public class SimpleController : MonoBehaviour
 
     public void damageTaken()
     {
-        gameObject.GetComponent<throwhook>().destroyHook();
+        if (gameObject.GetComponent<throwhook>().ropeActive)
+            gameObject.GetComponent<throwhook>().destroyHook();
         rBody.velocity = -rBody.velocity.normalized * 5;
+
+        AudioManager.Instance.PlaySFX("player_damaged" + Random.Range(1, 5), transform.position);
     }
+
     public void SetCheckPoint(Vector2 point)
     {
         checkpointPos = point;
@@ -130,6 +145,7 @@ public class SimpleController : MonoBehaviour
     {
         isHooked = _hook;
     }
+
     private float SaturatedAdd(float Min, float Max, float Current, float Modifier)
     {
         if (Modifier < 0)

@@ -30,8 +30,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7980640485310085717}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.061, y: -0.1988, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalPosition: {x: 3.3017, y: -0.0116, z: 0}
+  m_LocalScale: {x: 1.6173449, y: 1.5190475, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,12 +78,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 347ec28a043fc8945b345b62666cace7, type: 3}
+  m_Sprite: {fileID: -1392271122, guid: 1330c6a815a3feb4ea3cbedbcf748977, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 2
-  m_Size: {x: 1.1830951, y: 0.25093734}
+  m_DrawMode: 0
+  m_Size: {x: 1.5014404, y: 0.25093734}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -102,14 +102,14 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.02}
+  m_Offset: {x: 0, y: -0.18}
   m_SpriteTilingProperty:
-    border: {x: 0.30769232, y: 0, z: 0.6538462, w: 0}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.1538461, y: 0.25}
-    newSize: {x: 1.1830951, y: 0.25093734}
+    oldSize: {x: 1.7307693, y: 0.5769231}
+    newSize: {x: 1.5014404, y: 0.25093734}
     adaptiveTilingThreshold: 0.5
-    drawMode: 2
+    drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 1
   serializedVersion: 2
@@ -128,14 +128,14 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.03}
+  m_Offset: {x: 0, y: -0.1}
   m_SpriteTilingProperty:
-    border: {x: 0.30769232, y: 0, z: 0.6538462, w: 0}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.1538461, y: 0.25}
-    newSize: {x: 1.1830951, y: 0.25093734}
+    oldSize: {x: 1.7307693, y: 0.5769231}
+    newSize: {x: 1.5014404, y: 0.25093734}
     adaptiveTilingThreshold: 0.5
-    drawMode: 2
+    drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 1
   serializedVersion: 2
@@ -153,13 +153,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e579333d7e322548aae6698c15a3806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  electricityControlled: []
+  objectsInTrigger: []
   terrain: {fileID: 0}
   obstacle: {fileID: 0}
-  isObstacle: 0
-  isDoor: 0
-  isOppDoor: 0
+  isDoorOpen: 0
+  isElectricity: 0
+  destroyBoss: 0
   animator: {fileID: 6468801971551790173}
-  objectsInTrigger: []
 --- !u!95 &6468801971551790173
 Animator:
   serializedVersion: 5
@@ -195,5 +196,5 @@ MonoBehaviour:
   terrainType: 0
   speed: 2
   endPos: {x: 0, y: 0}
+  animator: {fileID: 0}
   triggerPressurePlate: 0
-  newSprite: {fileID: 0}

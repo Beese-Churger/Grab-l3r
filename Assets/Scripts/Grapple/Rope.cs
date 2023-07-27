@@ -73,7 +73,7 @@ public class Rope : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, 20, ropeLayerMask);
             if (hit.collider != null)
             {
-                AudioManager.Instance.PlaySFX("hook_attach");
+                //AudioManager.Instance.PlaySFX("hook_attach");
                 ropeAttached = true;
                 EndPoint.position = hit.point;
                 

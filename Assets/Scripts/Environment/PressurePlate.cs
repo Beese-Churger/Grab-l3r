@@ -4,19 +4,20 @@ using UnityEngine;
 public class PressurePlate : MonoBehaviour
 {
     [SerializeField] private Obstacle[] electricityControlled;
+    public List<GameObject> objectsInTrigger;
     public Terrain terrain;
     public Obstacle obstacle;
     public bool isDoorOpen;
+    public bool isElectricity;
+    public bool destroyBoss;
     public Animator animator;
-    public List<GameObject> objectsInTrigger;
 
     private Obstacle.ObstacleType type;
     private bool isObstacle;
     private bool isDoor;
-    public bool isElectricity = false;
     private bool elecActive = true;
 
-    private bool stepped = false;
+    public bool bossDeactivatedElectricity;
 
     private void Start()
     {
@@ -69,16 +70,12 @@ public class PressurePlate : MonoBehaviour
             animator.SetBool("isPressed", true);
             if (objectsInTrigger.Count < 2)
             {
+                // Increase Boss Phase
                 if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {
-                    if (!stepped)
-                    {
-                        Boss.instance.SetPPlate(true);
-                        stepped = true;
-                        return;
-                    }
+                    Boss.instance.SetPPlate(true);              
                 }
-
+                //  Opens Door
                 if (isDoor && !isDoorOpen)
                 {
                     if (obstacle != null)
@@ -86,6 +83,7 @@ public class PressurePlate : MonoBehaviour
                         obstacle.OpenDoor();
                     }
                 }
+                // Closes Door
                 else if (isDoorOpen)
                 {
                     if (obstacle != null)
@@ -94,6 +92,7 @@ public class PressurePlate : MonoBehaviour
                     }
 
                 }
+                // Activate Moving Platforms
                 else if (!isObstacle && !isDoor)
                 {
                     if (terrain != null)
@@ -101,64 +100,83 @@ public class PressurePlate : MonoBehaviour
                         terrain.ActivateMovingPlatform();
                     }
                 }
+                // Deactivates electricity
                 if (isElectricity && elecActive)
                 {
                    foreach (Obstacle obj in electricityControlled)
-                    {
+                   {
                         obj.DeactivateElectricity();
-                    }
+                   }
                     elecActive = false;
                 }
+                // Deactivates Boss Grinder Attack
+                if (bossDeactivatedElectricity)
+                {
+                    Boss.instance.SetElectric(false);
+                }
+
+                // Destroy the boss
+                if (destroyBoss && Boss.instance.gameObject.activeInHierarchy)
+                {
+                    GameObject.Find("BossToExplode").GetComponent<ExplodeOnAwake>().explode("TheCollector");
+                    Boss.instance.gameObject.SetActive(false);
+                }
             }
-            
-        }
-        
+        } 
     }
 
     // activate obstacles, open/close doors, deactivate mnoving platforms
     private void OnTriggerExit2D(Collider2D collision)
     {
-        objectsInTrigger.Remove(collision.gameObject);       
-        if (objectsInTrigger.Count <= 0)
+        if (collision.gameObject.name != "FOV")
         {
-            animator.SetBool("isPressed", false);
-            if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
+            objectsInTrigger.Remove(collision.gameObject);
+            if (objectsInTrigger.Count <= 0)
             {
-                if (stepped)
+                animator.SetBool("isPressed", false);
+                // Decreases Boss Phase
+                if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {
                     Boss.instance.SetPPlate(false);
-                    stepped = false;
                 }
-            }
-            if (isElectricity && !elecActive)
-            {
-                foreach (Obstacle obj in electricityControlled)
+                // Activates all electricity in control
+                if (isElectricity && !elecActive)
                 {
-                    obj.ActivateElectricity();
+                    foreach (Obstacle obj in electricityControlled)
+                    {
+                        obj.ActivateElectricity();
+                    }
+                    elecActive = true;
                 }
-                elecActive = true;
-            }
-            if (isDoor && !isDoorOpen)
-            {
-                obstacle.CloseDoor();
-            }
-            else if (isDoorOpen)
-            {
-                if (obstacle != null)
+                // Activate all controlled electricity
+                if (bossDeactivatedElectricity)
                 {
-                    obstacle.OpenDoor();
+                    Boss.instance.SetElectric(true);
+                }
+                // Close the door
+                if (isDoor && !isDoorOpen)
+                {
+                    obstacle.CloseDoor();
+                }
+                // Open the door
+                else if (isDoorOpen)
+                {
+                    if (obstacle != null)
+                    {
+                        obstacle.OpenDoor();
+                    }
+                }
+                // Deactivate Moving Platform
+                else if (!isObstacle && !isDoor)
+                {
+                    terrain.DeactivateMovingPlatform();
+                }
+                // Disable obstacle
+                else if (isObstacle)
+                {
+                    obstacle.ActivateObstacle();
                 }
             }
-            else if (!isObstacle && !isDoor)
-            {
-                terrain.DeactivateMovingPlatform();
-            }
-            else if (isObstacle)
-            {
-                obstacle.ActivateObstacle();
-            }
-
-
         }
     }
 }
