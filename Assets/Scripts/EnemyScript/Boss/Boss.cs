@@ -6,7 +6,7 @@ public class Boss : MonoBehaviour
 {
     public static Boss instance = null;
     // Start is called before the first frame update
-    enum ATTACK
+    public enum ATTACK
     {
         SLAM,
         GRINDER,
@@ -55,13 +55,14 @@ public class Boss : MonoBehaviour
     private Collider2D CrushAOE;
     private GameObject[] bossLeftArm;
     private GameObject[] bossRightArm;
-    private SafeZone safeZone;
+    private List<object> attackArray;
 
     // Flag that controls the beam tracking the player
     private bool beenTracked = false;
 
 
     // Electric Platforms variable
+    [SerializeField] ElectricPlatform controlledPlatform;
     private GameObject[] electricPlatforms;
     private bool electricActive; // Activates the electric platforms
     private bool elecActivated = false; // Check whether pressure plate had activated/deactivated the electricity the grinder attack occurs / not
@@ -93,7 +94,7 @@ public class Boss : MonoBehaviour
     private int phase = 0;
     private int highestHitPhase = 0;
     private int prevPhaseNumber = 0;
-    private int usableAbilities = 0;
+    private ATTACK prevAttack;
 
 
     [Tooltip("Developer Mode.")]
@@ -109,8 +110,8 @@ public class Boss : MonoBehaviour
     [Tooltip("Second Possible Attack Interval.")]
     [SerializeField] private float secondPos;
 
-    private List<object> intervalArray;  
-
+    private List<object> intervalArray;
+    private bool safe;
 
     private void Awake()
     {
@@ -130,8 +131,6 @@ public class Boss : MonoBehaviour
         bossLeftArm = GameObject.FindGameObjectsWithTag("BossLeftArm");
         bossRightArm = GameObject.FindGameObjectsWithTag("BossRightArm");
 
-        safeZone = GameObject.Find("SafeZone").GetComponent<SafeZone>();
-
         CrushAOE = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         timer = chargeTimer;
@@ -149,10 +148,13 @@ public class Boss : MonoBehaviour
             bodySpawnpoint1,
             bodySpawnpoint2
         };
+        attackArray = new()
+        {
+            ATTACK.SLAM
+        };
 
  
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -219,14 +221,13 @@ public class Boss : MonoBehaviour
     }
     public void SetElectric(bool val)
     {
-        if (elecActivated)
-            electricActive = val;
+        controlledPlatform.activate = val;      
     }
     private void PhaseUpdate()
     {
         if (pTriggered)
         {
-            Debug.Log("Triggered");
+            //Debug.Log("Triggered");
             /*
              * Check if it reaches a new phase
              * Condition 2 checks whether or not the phase has been reached before
@@ -236,7 +237,6 @@ public class Boss : MonoBehaviour
             {
                 // TO DO: If pressure plate is triggered , the boss will move up to the next phase 
                 phase++;
-                usableAbilities++;
                 SpawnBody();
                 Debug.Log("Phase Increase:" + phase);
             }
@@ -252,7 +252,6 @@ public class Boss : MonoBehaviour
         if (!active)
         {
             phase--;
-            usableAbilities--;
             Debug.Log("Phase Decrease:" + phase);
         }
     }
@@ -266,21 +265,28 @@ public class Boss : MonoBehaviour
         if (phase != 0)
         {
             // Generates a random number from 1 to the number of abilities the boss unlocked
-            System.Random rand1 = new();
-            ATTACK randomNo = (ATTACK)rand1.Next(0, usableAbilities);
-            currentAttack = randomNo;
+            while (prevAttack == currentAttack)
+            {
+                System.Random rand1 = new();
+                Shuffle(rand1, attackArray);
+                currentAttack = (ATTACK)attackArray[0];
+            }
+            Debug.Log(currentAttack);
         }
         else
         {
             currentAttack = ATTACK.SLAM;
         }
         abilityUpdated = true;
+        prevAttack = currentAttack;
+
         //Debug.Log("Current Attack:" + currentAttack);
 
     }
     /* The logic of the different attacks */
     private void Attack()
     {
+        safe = SafeZoneManager.instance.CheckSafeZone();
         switch (currentAttack)
         {
             case ATTACK.SLAM:
@@ -323,7 +329,7 @@ public class Boss : MonoBehaviour
                     // look weird
                     if (!slamming)
                     {
-                        if (!safeZone.playerSafe)
+                        if (!safe)
                         {
                             iKLeftHand.GetChain(0).target = playerGO.transform;
                             beenTracked = true;
@@ -338,7 +344,7 @@ public class Boss : MonoBehaviour
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (attackTimer < slamLClip.averageDuration * 0.6f)
                     {
-                        if (!safeZone.playerSafe)
+                        if (!safe)
                         {
                             aimTarget.transform.position = newPos + iKLeftHand.GetChain(2).effector.position;
                             beenTracked = true;
@@ -366,7 +372,7 @@ public class Boss : MonoBehaviour
                     else
                     {
                         attackTimer += Time.deltaTime;
-                        ActivateBeam();
+                        ActivateBeam(ATTACK.SLAM);
                         //Debug.Log(attackTimer);
                     }
 
@@ -377,7 +383,7 @@ public class Boss : MonoBehaviour
                     Vector3 newPos = newDir * 20f;
                     if (!slamming)
                     {
-                        if (!safeZone.playerSafe)
+                        if (!safe)
                         {
                             iKRightHand.GetChain(0).target = playerGO.transform;
                             beenTracked = true;
@@ -393,7 +399,7 @@ public class Boss : MonoBehaviour
                     }
                     if (attackTimer < slamRClip.averageDuration * 0.6f)
                     {
-                        if (!safeZone.playerSafe)
+                        if (!safe)
                             aimTarget.transform.position = newPos + iKRightHand.GetChain(2).effector.position;
                         else
                             iKRightHand.GetChain(0).target = aimTarget.transform;
@@ -423,7 +429,7 @@ public class Boss : MonoBehaviour
                     else
                     {
                         attackTimer += Time.deltaTime;
-                        ActivateBeam();
+                        ActivateBeam(ATTACK.SLAM);
                     }
 
                 }
@@ -488,10 +494,10 @@ public class Boss : MonoBehaviour
                 else
                 {
                     attackTimer += Time.deltaTime;
+                    ActivateBeam(ATTACK.CRUSH);
                     //Debug.Log(crushTimer);
                 }
                 CrushCollisionCheck();
-
                 break;
         }
     }
@@ -540,7 +546,7 @@ public class Boss : MonoBehaviour
             RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
             RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
 
-            RaycastHit2D downHit = Physics2D.Raycast(new Vector3(x, maxY, 0), Vector2.down, 3f, pPlateLayer);
+            RaycastHit2D downHit = Physics2D.Raycast(new Vector3(x, maxY, 0), Vector2.down, 20f, pPlateLayer);
 
             if (leftHit.collider == null && rightHit.collider == null && !downHit)
             {
@@ -553,28 +559,38 @@ public class Boss : MonoBehaviour
             //Debug.Log(maxY);
     }
 
-    private void ActivateBeam()
+    private void ActivateBeam(ATTACK cur)
     {
         if (!bossBeam.activeInHierarchy)
             bossBeam.SetActive(true);
 
-        if (!safeZone.playerSafe && attackTimer < slamRClip.averageDuration * 0.6f)
+        if (cur == ATTACK.SLAM)
         {
-            Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
-            bossBeam.transform.localRotation = rotation;
-            //Debug.Log(angle);
+            if (!safe && attackTimer < slamRClip.averageDuration * 0.6f)
+            {
+                Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
+                bossBeam.transform.localRotation = rotation;
+                //Debug.Log(angle);
+            }
+            else if (!beenTracked)
+            {
+                Vector2 dir = (Vector2)aimTarget.transform.position - (Vector2)bossHead.transform.position;
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
+                bossBeam.transform.localRotation = rotation;
+            }
+            if (attackTimer > slamRClip.averageDuration)
+                bossBeam.SetActive(false);
         }
-        else if (!beenTracked)
+        else if (cur == ATTACK.CRUSH)
         {
-            Vector2 dir = (Vector2)aimTarget.transform.position - (Vector2)bossHead.transform.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
+            Quaternion rotation = Quaternion.AngleAxis(90f, Vector3.forward);
             bossBeam.transform.localRotation = rotation;
+            if (attackTimer > crushClip.averageDuration)
+                bossBeam.SetActive(false);
         }
-        if (attackTimer > slamRClip.averageDuration)
-            bossBeam.SetActive(false);
 
 
     }
@@ -604,7 +620,7 @@ public class Boss : MonoBehaviour
                 if (bossArmComponent.GetComponent<Collider2D>().OverlapPoint(playerGO.transform.position) &&
                 attackTimer > slamLClip.averageDuration * 0.8f &&
                 !p_Hit && 
-                !safeZone.playerSafe &&
+                !safe &&
                 !invicibility)
                 {
                     Debug.Log("Slam Hit!");
@@ -649,7 +665,7 @@ public class Boss : MonoBehaviour
         foreach (GameObject electricPlatform in electricPlatforms)
         {
             electricPlatform.GetComponent<ElectricPlatform>().SetActive(move);
-        }
+        } 
     }
     private void OnDrawGizmos()
     {
@@ -676,6 +692,16 @@ public class Boss : MonoBehaviour
             array[n] = array[k];
             array[k] = temp;
         }
+    }
+    public void AddAttack(ATTACK newAttack)
+    {
+        if (!attackArray.Contains(newAttack))
+            attackArray.Add(newAttack);
+    }
+    public void RemoveAttack(ATTACK name)
+    {
+        if (attackArray.Contains(name))
+            attackArray.Remove(name);
     }
 
 }

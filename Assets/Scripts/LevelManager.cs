@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LevelManager : MonoBehaviour
 {
+    private static Action onLoaderCallback;
     private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
     private string[] levelsBGM = { "mainmenubgm", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
     public List<Level> arrLevels;
@@ -78,7 +80,8 @@ public class LevelManager : MonoBehaviour
         // check if all the levels are loaded
         if (currentLevelIndex < levels.Length)
         {
-            StartCoroutine(LoadLevel(currentLevelIndex));
+            onLoaderCallback = () => StartCoroutine(LoadLevel(currentLevelIndex));
+            SceneManager.LoadScene("LoadingScene");
         }
         else
         {
@@ -123,7 +126,6 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
-
         if (currentLevelIndex > 1)
         {
             if (EnemyManager.enemyManager != null)
@@ -189,5 +191,13 @@ public class LevelManager : MonoBehaviour
     {
        CheckCurrentIndex();
        AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
+    }
+    public static void LoaderCallback()
+    {
+        if (onLoaderCallback != null)
+        {
+            onLoaderCallback();
+            onLoaderCallback = null;
+        }
     }
 }

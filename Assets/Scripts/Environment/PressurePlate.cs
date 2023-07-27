@@ -18,6 +18,7 @@ public class PressurePlate : MonoBehaviour
     private bool elecActive = true;
 
     public bool bossDeactivatedElectricity;
+    public bool unlockGrinder;
 
     private void Start()
     {
@@ -113,6 +114,11 @@ public class PressurePlate : MonoBehaviour
                 if (bossDeactivatedElectricity)
                 {
                     Boss.instance.SetElectric(false);
+                    Boss.instance.AddAttack(Boss.ATTACK.CRUSH);
+                }
+                if (unlockGrinder)
+                {
+                    Boss.instance.AddAttack(Boss.ATTACK.GRINDER);
                 }
 
                 // Destroy the boss
@@ -152,6 +158,11 @@ public class PressurePlate : MonoBehaviour
                 if (bossDeactivatedElectricity)
                 {
                     Boss.instance.SetElectric(true);
+                    Boss.instance.RemoveAttack(Boss.ATTACK.CRUSH);
+                }
+                if (unlockGrinder)
+                {
+                    Boss.instance.RemoveAttack(Boss.ATTACK.GRINDER);
                 }
                 // Close the door
                 if (isDoor && !isDoorOpen)

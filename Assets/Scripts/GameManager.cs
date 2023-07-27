@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     private int MaxHealth = 5;
     private int health = 3;
     private int score = 0;
-    private int bossLives = 3;
+    private int bossLives = 5;
     private int collectables;
     private float respawnTimer = 3f;
     private float respawnTimerValue = 3f;

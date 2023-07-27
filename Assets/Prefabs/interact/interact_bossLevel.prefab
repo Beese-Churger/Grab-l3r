@@ -458,6 +458,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: -4181863337856160665, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
+      propertyPath: obstacle
+      value: 
+      objectReference: {fileID: 6443461474326874123}
+    - target: {fileID: -4181863337856160665, guid: d0c0c0af01a762345b0fc2a6b0574c01, type: 3}
       propertyPath: isDoorOpen
       value: 0
       objectReference: {fileID: 0}
@@ -610,6 +614,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 71502336022370401, guid: 3a7e5849b7494df49a8cc31e26cb922a, type: 3}
   m_PrefabInstance: {fileID: 5568421381875256995}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6443461474326874123 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -7769615715179018584, guid: 3a7e5849b7494df49a8cc31e26cb922a, type: 3}
+  m_PrefabInstance: {fileID: 5568421381875256995}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 997d7086f00037342b8d6a62ea46a53f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5778183518694819329
 PrefabInstance:
   m_ObjectHideFlags: 0
