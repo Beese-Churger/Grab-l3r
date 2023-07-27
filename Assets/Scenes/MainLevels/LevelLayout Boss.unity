@@ -8826,7 +8826,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4529657237132792065, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
       propertyPath: electricityControlled.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4529657237132792065, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
       propertyPath: electricityControlled.Array.data[0]
@@ -8852,6 +8852,10 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 2073969835}
+    - target: {fileID: 7358577331357194086, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
+      propertyPath: unlockGrinder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7614142630531949465, guid: 18fb8ecc3a76f274fa84eeb7e80716c2, type: 3}
       propertyPath: destroyBoss
       value: 1
