@@ -1739,7 +1739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8150797689234064527, guid: 64e3f3edc69ef0f4d8545256a451a741, type: 3}
       propertyPath: invicibility
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8150797689234064527, guid: 64e3f3edc69ef0f4d8545256a451a741, type: 3}
       propertyPath: bodyDropHolder
