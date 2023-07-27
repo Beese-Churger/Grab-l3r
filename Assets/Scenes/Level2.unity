@@ -241,6 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrabbing: 0
   speed: 3
+  dust: {fileID: 0}
 --- !u!61 &310013448
 BoxCollider2D:
   m_ObjectHideFlags: 0
