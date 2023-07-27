@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public Vector2 checkpointPos;
     public StateType state;
     public bool resetPlayer;
+    public int highscore;
 
     [SerializeField] private SpriteRenderer respawnBG;
     [SerializeField] private GameObject ExplodePlayer;
@@ -60,7 +61,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //SetGameState(StateType.open);
+        score = 0;
+        highscore = PlayerPrefs.GetInt("highscore", highscore);
+        SetGameState(StateType.open);
     }
 
     // set game state
@@ -137,6 +140,13 @@ public class GameManager : MonoBehaviour
                 SetGameState(StateType.respawn);
                 respawnTimer = respawnTimerValue;
             }
+        }
+
+        if(score>highscore)
+        {
+            highscore = score;
+            PlayerPrefs.SetInt("highscore", highscore);
+            PlayerPrefs.Save();
         }
     }
 
