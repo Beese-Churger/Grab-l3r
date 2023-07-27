@@ -21,9 +21,9 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            SFXvolumeSlider.value = sfxSource.volume;
-            BGMvolumeSlider.value = bgmSource.volume;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); 
+            //SFXvolumeSlider.value = sfxSource.volume;
+            //BGMvolumeSlider.value = bgmSource.volume;
         }
         else
         {

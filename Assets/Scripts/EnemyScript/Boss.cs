@@ -30,6 +30,11 @@ public class Boss : MonoBehaviour
     [SerializeField] private GameObject bodyDrop;
     [SerializeField] private GameObject bodyDropHolder;
 
+    // Fixed spawnpoints for the body
+    [SerializeField] private Transform bodySpawnpoint1;
+    [SerializeField] private Transform bodySpawnpoint2;
+    private List<object> spawnpointArray;
+
     [SerializeField] private GameObject horizontalPlatform;
     [SerializeField] private GameObject verticalPlatform;
     [SerializeField] private float gracePeriod = 3f;
@@ -93,11 +98,18 @@ public class Boss : MonoBehaviour
 
     [Tooltip("Developer Mode.")]
     public bool invicibility = true;
+
+    [Tooltip("Random Body Spawn Timer.")]
+    [SerializeField] private float bodySpawnTimer;
+    private float storeSpawnTimer;
+
     [Tooltip("First Possible Attack Interval.")]
     [SerializeField] private float firstPos;
+
     [Tooltip("Second Possible Attack Interval.")]
     [SerializeField] private float secondPos;
-    private List<float> intervalArray;  
+
+    private List<object> intervalArray;  
 
 
     private void Awake()
@@ -124,12 +136,18 @@ public class Boss : MonoBehaviour
         animator = GetComponent<Animator>();
         timer = chargeTimer;
         graceTimer = gracePeriod;
+        storeSpawnTimer = bodySpawnTimer;
         bossBeam.SetActive(false);
 
         intervalArray = new()
         {
             firstPos,
             secondPos
+        };
+        spawnpointArray = new()
+        {
+            bodySpawnpoint1,
+            bodySpawnpoint2
         };
 
  
@@ -188,6 +206,16 @@ public class Boss : MonoBehaviour
         }
         MoveEP(electricActive);
 
+        if (bodySpawnTimer > 0)
+        {
+            bodySpawnTimer -= Time.deltaTime;
+        }
+        else
+        {
+            SpawnBodyRandom();
+            bodySpawnTimer = storeSpawnTimer;
+        }
+
     }
     public void SetElectric(bool val)
     {
@@ -244,7 +272,7 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            currentAttack = ATTACK.GRINDER;
+            currentAttack = ATTACK.SLAM;
         }
         abilityUpdated = true;
         //Debug.Log("Current Attack:" + currentAttack);
@@ -470,8 +498,7 @@ public class Boss : MonoBehaviour
     private void SpawnBody()
     {
         /* Spawns a body every time the boss enters a new phase
-           Check if there's a change in the phase number
-        
+           Check if there's a change in the phase number        
          -------------DONE*/
         if (phase != prevPhaseNumber && phase > highestHitPhase)
         {
@@ -480,35 +507,12 @@ public class Boss : MonoBehaviour
 
             if (phase <= 2)
             {
-                bool check = false;
-                float minX = transform.position.x - horizontalPlatform.transform.localScale.x * m_Scale;
-                float maxX = transform.position.x + horizontalPlatform.transform.localScale.x * m_Scale;
-                float maxY = 0 + verticalPlatform.transform.localScale.x * m_Scale + 2.0f;
-                // Code to spawn the bodies
-
                 for (int i = 0; i < phase; ++i)
                 {
-                    while (!check)
-                    {
-                        float x = Random.Range(minX, maxX);
-                        Vector3 leftRayOrigin = new Vector3(x, maxY, 0) + Vector3.left * raycastDistance;
-                        Vector3 rightRayOrigin = new Vector3(x, maxY, 0) + Vector3.right * raycastDistance;
-
-                        RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
-                        RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
-
-                        RaycastHit2D downHit = Physics2D.Raycast(new Vector3(x, maxY, 0), Vector2.down, 3f, pPlateLayer);
-
-                        if (leftHit.collider == null && rightHit.collider == null && !downHit)
-                        {
-                            Instantiate(bodyDrop, new Vector3(x, maxY, 0), Quaternion.identity, bodyDropHolder.transform);
-                            check = true;
-                            //Debug.Log("Spawned body");
-                        }
-                    }
-                    check = false;
-                    //Debug.Log(minX + "," + maxX);
-                    //Debug.Log(maxY);
+                    System.Random rand1 = new();
+                    Shuffle(rand1, spawnpointArray);
+                    Transform temp = (Transform)spawnpointArray[0];
+                    Instantiate(bodyDrop, new Vector3(temp.position.x, temp.position.y, 0), Quaternion.identity, bodyDropHolder.transform);
                 }
             }
             return;
@@ -520,6 +524,35 @@ public class Boss : MonoBehaviour
         }
 
     }
+    private void SpawnBodyRandom()
+    {
+        bool check = false;
+        float minX = transform.position.x - horizontalPlatform.transform.localScale.x * m_Scale;
+        float maxX = transform.position.x + horizontalPlatform.transform.localScale.x * m_Scale;
+        float maxY = 0 + verticalPlatform.transform.localScale.x * m_Scale + 2.0f;
+        // Code to spawn the bodies
+        while (!check)
+        {
+            float x = Random.Range(minX, maxX);
+            Vector3 leftRayOrigin = new Vector3(x, maxY, 0) + Vector3.left * raycastDistance;
+            Vector3 rightRayOrigin = new Vector3(x, maxY, 0) + Vector3.right * raycastDistance;
+
+            RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
+            RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
+
+            RaycastHit2D downHit = Physics2D.Raycast(new Vector3(x, maxY, 0), Vector2.down, 3f, pPlateLayer);
+
+            if (leftHit.collider == null && rightHit.collider == null && !downHit)
+            {
+                Instantiate(bodyDrop, new Vector3(x, maxY, 0), Quaternion.identity, bodyDropHolder.transform);
+                check = true;
+                //Debug.Log("Spawned body");
+            }
+        }
+            //Debug.Log(minX + "," + maxX);
+            //Debug.Log(maxY);
+    }
+
     private void ActivateBeam()
     {
         if (!bossBeam.activeInHierarchy)
@@ -629,17 +662,17 @@ public class Boss : MonoBehaviour
     {
         System.Random rand1 = new();
         Shuffle(rand1, intervalArray);
-        chargeTimer = intervalArray[0];
+        chargeTimer = (float)intervalArray[0];
         timer = chargeTimer;
         Debug.Log(chargeTimer);
     }
-    public void Shuffle(System.Random rng, List<float> array)
+    public void Shuffle(System.Random rng, List<object> array)
     {
         int n = array.Count;
         while (n > 1)
         {
             int k = rng.Next(n--);
-            float temp = array[n];
+            object temp = array[n];
             array[n] = array[k];
             array[k] = temp;
         }

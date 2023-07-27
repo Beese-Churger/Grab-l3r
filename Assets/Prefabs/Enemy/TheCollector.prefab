@@ -889,6 +889,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyDrop: {fileID: 4876807040678775496, guid: db7fede96980b3d4c93051a122cd6109, type: 3}
   bodyDropHolder: {fileID: 0}
+  bodySpawnpoint1: {fileID: 0}
+  bodySpawnpoint2: {fileID: 0}
   horizontalPlatform: {fileID: 0}
   verticalPlatform: {fileID: 0}
   gracePeriod: 0
@@ -905,6 +907,7 @@ MonoBehaviour:
   iKLeftHand: {fileID: 8466490970888983000}
   iKRightHand: {fileID: 6880697408549591724}
   invicibility: 1
+  bodySpawnTimer: 15
   firstPos: 5
   secondPos: 10
 --- !u!95 &6226697311789800357
