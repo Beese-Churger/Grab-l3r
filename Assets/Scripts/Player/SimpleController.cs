@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
     public static SimpleController Instance;
-    private ParticleSystem dust;
 
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
@@ -73,7 +72,8 @@ public class SimpleController : MonoBehaviour
             if (airBorn)
             {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, ropeLayerMask);
-                Instantiate(DustPrefab,hit.point,Quaternion.identity).GetComponent<ParticleSystem>();
+                GameObject dust = Instantiate(DustPrefab,hit.point,Quaternion.identity);
+                Destroy(dust, dust.GetComponent<ParticleSystem>().main.duration);
                 
                 airBorn = false;
             }
