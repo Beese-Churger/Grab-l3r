@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         highscore = PlayerPrefs.GetInt("highscore", highscore);
-        SetGameState(StateType.open);
+        //SetGameState(StateType.open);
     }
 
     // set game state
