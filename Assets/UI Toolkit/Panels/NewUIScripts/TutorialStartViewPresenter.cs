@@ -121,6 +121,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialMainMenuPresenter menuPresenter = new(_startView);
         menuPresenter.OpenLoadGame = () => {
             ToggleLoadGameMenu(true);
+            CheckLock();
             Debug.Log("Inside Load Game Menu");
         };
     }
@@ -249,7 +250,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
     {
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.LoadLevel1 = () => {
-            Debug.Log(LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial"));
+            //Debug.Log(LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial"));
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial")].Completed())
             {
                 StartCoroutine(LevelManager.instance.LoadLevel("Level_forestTutorial"));
@@ -285,6 +286,16 @@ public class TutorialStartViewPresenter : MonoBehaviour
             else
                 Debug.Log("Boss Level not unlocked ");
         };
+    }
+    private void CheckLock()
+    {
+        TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
+        if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial")].Completed())
+            loadgamePresenter.lock1.style.opacity = 0f;
+        if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout 2")].Completed())
+            loadgamePresenter.lock2.style.opacity = 0f;
+        if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout Boss")].Completed())
+            loadgamePresenter.lock3.style.opacity = 0f;
     }
     // Play Cutscenes
     private void PlayIntroCutscene()

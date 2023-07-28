@@ -14,12 +14,23 @@ public class TutorialLoadGameViewPresenter
     private Button _level2Button;
     private Button _level3Button;
 
+    public VisualElement lock1;
+    public VisualElement lock2;
+    public VisualElement lock3;
+
+
+
     public TutorialLoadGameViewPresenter(VisualElement root)
     {
         _backButton = root.Q<Button>("BackButton");
         _level1Button = root.Q<Button>("Level1Button");
         _level2Button = root.Q<Button>("Level2Button");
         _level3Button = root.Q<Button>("Level3Button");
+
+        lock1 = root.Q("LockElement1");
+        lock2 = root.Q("LockElement2");
+        lock3 = root.Q("LockElement3");
+
 
     }
 }

@@ -31,9 +31,6 @@ public class HighscoreListViewPresenter
         var hs = PlayerPrefs.GetInt("highscore");
 
         highScores.Add(new HighScoreData { playerName = "Player 1", score = hs });
-        highScores.Add(new HighScoreData { playerName = "Player 2", score = 800 });
-        highScores.Add(new HighScoreData { playerName = "Player 3", score = 600 });
-
         PopulateListView(highScores);
     }
 
