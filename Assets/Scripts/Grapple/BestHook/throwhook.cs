@@ -8,6 +8,10 @@ public class throwhook : MonoBehaviour
 	[SerializeField] private InputActionReference grappleAction;
 
 	public GameObject hook;
+	[SerializeField] private GameObject pivot;
+	[SerializeField] private Transform crosshair;
+	[SerializeField] private SpriteRenderer crosshairSprite;
+	[SerializeField] private GameObject hookSprite;
 
 	public InputActionReference pointer;
 
@@ -82,6 +86,14 @@ public class throwhook : MonoBehaviour
 			aimAngle = Mathf.PI * 2 + aimAngle;
 		}
 
+		SetCrosshairPosition(aimAngle);
+
+		Vector3 diff = Camera.main.ScreenToWorldPoint(pointer.action.ReadValue<Vector2>()) - pivot.transform.position;
+		diff.Normalize();
+
+		float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+		pivot.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
 		if (lastInputTime + inputDelay < Time.time)
@@ -108,6 +120,7 @@ public class throwhook : MonoBehaviour
 									change = true;
 								}
 								ropeActive = true;
+
 							}
 							else
 							{
@@ -140,12 +153,15 @@ public class throwhook : MonoBehaviour
 							}
 							ropeActive = true;
 						}
+						hookSprite.GetComponent<SpriteRenderer>().enabled = false;
 					}
 					else
 					{
 						curHook = Instantiate(hook, transform.position, Quaternion.identity);
 						curHook.GetComponent<RopeScript>().SetCanHook(false);
 						curHook.GetComponent<RopeScript>().destiny = transform.position + (aimDirection * maxDistance);
+						hookSprite.GetComponent<SpriteRenderer>().enabled = false;
+						ropeActive = true;
 					}
 				}
 				else
@@ -158,12 +174,16 @@ public class throwhook : MonoBehaviour
 						if(attachedTo.GetComponent<SmallEnemy>())
 							launchAttached();
 					}
+					hookSprite.GetComponent<SpriteRenderer>().enabled = true;
 				}
 				lastInputTime = Time.time;
 			}
 		}
 
-		if(ropeActive && change && GameObject.Find("Link1"))
+		if(!ropeActive)
+			hookSprite.GetComponent<SpriteRenderer>().enabled = true;
+
+		if (ropeActive && change && GameObject.Find("Link1"))
         {
 			GameObject Link1 = GameObject.Find("Link1");
 
@@ -188,6 +208,20 @@ public class throwhook : MonoBehaviour
 			oldAttachedPos = attachedTo.transform.position;
 	}
 
+	// Move the aiming crosshair based on aim angle
+	private void SetCrosshairPosition(float aimAngle)
+	{
+		if (!crosshairSprite.enabled)
+		{
+			crosshairSprite.enabled = true;
+		}
+
+		float x = transform.position.x + 1f * Mathf.Cos(aimAngle);
+		float y = transform.position.y + 1f * Mathf.Sin(aimAngle);
+
+		Vector3 crossHairPosition = new Vector3(x, y, 0);
+		crosshair.transform.position = crossHairPosition;
+	}
 	public void launch()
     {
 		gameObject.GetComponent<Rigidbody2D>().velocity = (transform.position - oldPos )/ Time.deltaTime;

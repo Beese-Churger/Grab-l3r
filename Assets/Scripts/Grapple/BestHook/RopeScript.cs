@@ -92,6 +92,7 @@ public class RopeScript : MonoBehaviour
 			if (!canHook)
             {
 				AudioManager.Instance.PlaySFX("hook_no_attach", transform.position);
+				playerScript.ropeActive = false;
 				Destroy(gameObject);
 				return;
 			}
