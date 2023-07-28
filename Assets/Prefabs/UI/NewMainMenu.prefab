@@ -278,6 +278,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vp: {fileID: 0}
+  startCutscene: {fileID: 32900000, guid: 154b23184743ef343a69f4ffdb37d34f, type: 3}
+  endCutscene: {fileID: 32900000, guid: 154b23184743ef343a69f4ffdb37d34f, type: 3}
 --- !u!1 &3428866447029226535
 GameObject:
   m_ObjectHideFlags: 0

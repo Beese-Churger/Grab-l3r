@@ -11,6 +11,9 @@ public class TutorialStartViewPresenter : MonoBehaviour
     public static TutorialStartViewPresenter instance = null;
 
     public VideoPlayer vp;
+    [SerializeField] private VideoClip startCutscene;
+    [SerializeField] private VideoClip endCutscene;
+
     private VisualElement _loadgameView;
     private VisualElement _startView;
     private VisualElement _highScore;
@@ -306,6 +309,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
             // Play the cutscene when its unlocked
             {
                 Debug.Log("Play Intro Cutscene");
+                vp.clip = startCutscene;
                 vp.Play();
                 _cutScenes.Display(false);
                 GameManager.instance.GetLevelManager().PlayLevelBGM(true);
@@ -326,6 +330,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
             // Play the cutscene when its unlocked
             {
                 Debug.Log("Play Ending Cutscene");
+                vp.clip = endCutscene;
                 vp.Play();
                 _cutScenes.Display(false);
                 GameManager.instance.GetLevelManager().PlayLevelBGM(true);
