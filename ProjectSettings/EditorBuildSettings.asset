@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/MainLevels/MainMenu.unity
     guid: 7549ee2e2cd339744a865ea4d71c53b3
@@ -45,6 +45,9 @@ EditorBuildSettings:
     path: Assets/Scenes/TEST/Jontest.unity
     guid: 11af90cb2011bbf4c8c41c0e73acb1f8
   - enabled: 1
-    path: Assets/Scenes/MainLevels/level_forestTutorial.unity
-    guid: f880b8933c193354da884bf9f813e292
+    path: Assets/Scenes/MainLevels/LoadingScene.unity
+    guid: 4d22d33555ee0344fa445b52a189d2e2
+  - enabled: 1
+    path: Assets/Scenes/level_forestTutorial.unity
+    guid: 4f65434bd938a04488df4ea18a787e73
   m_configObjects: {}
