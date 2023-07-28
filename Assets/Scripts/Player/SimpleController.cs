@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class SimpleController : MonoBehaviour
 {
     public static SimpleController Instance;
-    public ParticleSystem dust;
 
     [SerializeField] private InputActionReference movement;
     [SerializeField] private InputActionReference jump;
@@ -22,6 +21,9 @@ public class SimpleController : MonoBehaviour
     private Vector2 playerPos;
     private Vector2 checkpointPos;
     private bool airBorn = false;
+
+    [SerializeField] private GameObject DustPrefab;
+    public LayerMask ropeLayerMask;
 
     private void Awake()
     {
@@ -57,7 +59,7 @@ public class SimpleController : MonoBehaviour
     {
         jumpInput = jump.action.ReadValue<float>();
         var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
-        groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
+        groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f, ropeLayerMask);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
     }
 
@@ -69,13 +71,10 @@ public class SimpleController : MonoBehaviour
         {
             if (airBorn)
             {
-                if (!dust.isPlaying)
-                {
-                    var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
-                    var newPos = new Vector3(transform.position.x, transform.position.y - halfHeight - 0.04f, transform.position.z);
-                    dust.transform.position = newPos;
-                    dust.Play();
-                }
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, ropeLayerMask);
+                GameObject dust = Instantiate(DustPrefab,hit.point,Quaternion.identity);
+                Destroy(dust, dust.GetComponent<ParticleSystem>().main.duration);
+                
                 airBorn = false;
             }
 

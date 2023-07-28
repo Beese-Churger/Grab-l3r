@@ -16,6 +16,8 @@ public class ElectricPlatform : MonoBehaviour
     private bool slowingDown;
 
     private bool isActive = false;
+    // temp fix
+    public bool activate = true;
 
     private Terrain terrainComponent;
     private Obstacle obstacleComponent;
@@ -39,7 +41,7 @@ public class ElectricPlatform : MonoBehaviour
 
     private void Update()
     {
-        if (isActive)
+        if (isActive && activate)
         {
             terrainComponent.SetTerrainType(Terrain.TerrainType.concreate);
             obstacleComponent.ActivateObstacle();
