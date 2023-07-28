@@ -124,6 +124,7 @@ public class PressurePlate : MonoBehaviour
                 // Destroy the boss
                 if (destroyBoss && Boss.instance.gameObject.activeInHierarchy)
                 {
+                    AudioManager.Instance.PlaySFX("boss_death" + Random.Range(1, 2), Boss.instance.transform.position);
                     GameObject.Find("BossToExplode").GetComponent<ExplodeOnAwake>().explode("TheCollector");
                     Boss.instance.gameObject.SetActive(false);
                 }

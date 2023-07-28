@@ -1,5 +1,5 @@
 using UnityEngine;
-
+// NOT IN USE
 public class SafeZone : MonoBehaviour
 {
     public bool playerSafe = false;

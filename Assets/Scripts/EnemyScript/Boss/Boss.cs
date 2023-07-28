@@ -52,6 +52,8 @@ public class Boss : MonoBehaviour
     private GameObject playerGO;
     private GameObject bossHead;
     private GameObject bossBeam;
+    private Color beam;
+    private SpriteRenderer bossBeamColor;
     private Collider2D CrushAOE;
     private GameObject[] bossLeftArm;
     private GameObject[] bossRightArm;
@@ -96,6 +98,8 @@ public class Boss : MonoBehaviour
     private int prevPhaseNumber = 0;
     private ATTACK prevAttack;
 
+    private bool attacking = false;
+
 
     [Tooltip("Developer Mode.")]
     public bool invicibility = true;
@@ -126,6 +130,8 @@ public class Boss : MonoBehaviour
         defaultRight = GameObject.Find("rightSideMarker");
         bossHead = GameObject.Find("Head");
         bossBeam = GameObject.Find("BossBeam");
+        bossBeamColor = bossBeam.GetComponentInChildren<SpriteRenderer>();
+        beam = bossBeamColor.color;
         electricPlatforms = GameObject.FindGameObjectsWithTag("ElectricPlatform");
 
         bossLeftArm = GameObject.FindGameObjectsWithTag("BossLeftArm");
@@ -173,6 +179,9 @@ public class Boss : MonoBehaviour
                 if (iKRightHand.GetChain(0).target != null)
                     iKRightHand.GetChain(0).target = null;
 
+
+                SafeZoneManager.instance.FlashZones(false);
+                attacking = false;
                 GracePeriod();
                 break;
             case FSM.SCAN:
@@ -185,7 +194,7 @@ public class Boss : MonoBehaviour
                 /* TO DO: Charge Up duration (3s)?
                  * First select which skill the boss is going to use
                    before the boss initiates the attack*/
-                if (ChargeUp())
+                if (attacking)
                     // Attack the player with an attack
                     Attack();
                 break;
@@ -290,6 +299,7 @@ public class Boss : MonoBehaviour
         switch (currentAttack)
         {
             case ATTACK.SLAM:
+                SafeZoneManager.instance.FlashZones(true);
                 // Logic for the slam attack
                 Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
                 // Check if one side animation is playing already,
@@ -303,6 +313,7 @@ public class Boss : MonoBehaviour
                     if (!isPlaying)
                     {
                         animator.SetBool("SlamR", true);
+                        AudioManager.Instance.PlaySFX("boss_slam" + Random.Range(1, 2), transform.position);
                         left = false;
                         isPlaying = true;
                     }
@@ -315,6 +326,7 @@ public class Boss : MonoBehaviour
                     if (!isPlaying)
                     {
                         animator.SetBool("SlamL", true);
+                        AudioManager.Instance.PlaySFX("boss_slam" + Random.Range(1, 2), transform.position);
                         left = true;
                         isPlaying = true;
                     }
@@ -344,6 +356,8 @@ public class Boss : MonoBehaviour
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if (attackTimer < slamLClip.averageDuration * 0.6f)
                     {
+                        Flash(true);
+
                         if (!safe)
                         {
                             aimTarget.transform.position = newPos + iKLeftHand.GetChain(2).effector.position;
@@ -355,6 +369,7 @@ public class Boss : MonoBehaviour
                     else
                     {
                         iKLeftHand.GetChain(0).target = aimTarget.transform;
+                        Flash(false);
                         SlamCollisionCheck(bossLeftArm);
                     }
                     if (attackTimer > slamLClip.averageDuration)
@@ -399,6 +414,8 @@ public class Boss : MonoBehaviour
                     }
                     if (attackTimer < slamRClip.averageDuration * 0.6f)
                     {
+                        Flash(true);
+
                         if (!safe)
                             aimTarget.transform.position = newPos + iKRightHand.GetChain(2).effector.position;
                         else
@@ -407,6 +424,7 @@ public class Boss : MonoBehaviour
                     else
                     {
                         iKRightHand.GetChain(0).target = aimTarget.transform;
+                        Flash(false);
                         SlamCollisionCheck(bossRightArm);
                     }
                     // If slam right animation is done playing
@@ -446,6 +464,7 @@ public class Boss : MonoBehaviour
                 if (!isPlaying)
                 {
                     animator.SetBool("Electric", true);
+                    AudioManager.Instance.PlaySFX("boss_grinder" + Random.Range(1, 2), transform.position);
                     isPlaying = true;
                 }
                 // During this specific frame of the attack activate the electric platforms
@@ -478,6 +497,7 @@ public class Boss : MonoBehaviour
                 if (!isPlaying)
                 {
                     animator.SetBool("Crush", true);
+                    AudioManager.Instance.PlaySFX("boss_crush" + Random.Range(1, 2), transform.position);
                     isPlaying = true;
                 }
 
@@ -497,6 +517,11 @@ public class Boss : MonoBehaviour
                     ActivateBeam(ATTACK.CRUSH);
                     //Debug.Log(crushTimer);
                 }
+                if (attackTimer > crushClip.averageDuration * 0.6f)
+                    Flash(true);
+                else
+                    Flash(false);
+
                 CrushCollisionCheck();
                 break;
         }
@@ -641,6 +666,7 @@ public class Boss : MonoBehaviour
         else
         {
             current = FSM.ATTACK;
+            attacking = true;
             return true;
         }
     }
@@ -692,6 +718,25 @@ public class Boss : MonoBehaviour
             array[n] = array[k];
             array[k] = temp;
         }
+    }
+    bool dir = true;
+    private void Flash(bool isFlash)
+    {
+        if (isFlash)
+        {
+            if (bossBeamColor.color.a <= 0.5f && dir)
+                beam.a += Time.deltaTime * 0.8f;
+            else if (bossBeamColor.color.a >= 0.5f)
+                dir = false;
+            if (bossBeamColor.color.a >= 0.1f && !dir)
+                beam.a -= Time.deltaTime * 0.8f;
+            else if (bossBeamColor.color.a <= 0.1f)
+                dir = true;
+        }
+        else
+            beam.a = 0.5f;
+
+        bossBeamColor.color = beam;
     }
     public void AddAttack(ATTACK newAttack)
     {
