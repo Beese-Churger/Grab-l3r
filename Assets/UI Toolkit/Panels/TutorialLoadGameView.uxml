@@ -4,12 +4,15 @@
     <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_toggles.uss?fileID=7433441132597879392&amp;guid=db0b980bb5b82b04ca4d8853e4df9ae8&amp;type=3#tutorial_toggles" />
     <Style src="project://database/Assets/UI%20Toolkit/Styles/tutorial_dropdowns.uss?fileID=7433441132597879392&amp;guid=d4b48ae837a8db243847286f3926a0d7&amp;type=3#tutorial_dropdowns" />
     <ui:VisualElement name="Background" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/game_mainMenu_v2.png?fileID=2800000&amp;guid=0d1a950712b478c48b5d97552540e7b2&amp;type=3#game_mainMenu_v2&apos;); flex-grow: 1; align-items: stretch; justify-content: center;">
-        <ui:VisualElement name="VerticalBox" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/box_vertical.png?fileID=2800000&amp;guid=f4baf08368aa7c745b98ae46c94923c0&amp;type=3#box_vertical&apos;); width: 30%; height: 70%; left: 25%; align-items: stretch; justify-content: space-around; top: 7%;">
-            <ui:Label text="Load Game" display-tooltip-when-elided="true" name="LoadGameTitle" class="screentitle" style="top: 3%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 15%;" />
-            <ui:Button text="Level 1" display-tooltip-when-elided="true" name="Level1Button" class="button-main-title" />
-            <ui:Button text="Level 2" display-tooltip-when-elided="true" name="Level2Button" class="button-main-title" />
-            <ui:Button text="Level 3" display-tooltip-when-elided="true" name="Level3Button" class="button-main-title" />
-            <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 85%;" />
+        <ui:VisualElement name="VerticalBox" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/box_vertical.png?fileID=2800000&amp;guid=f4baf08368aa7c745b98ae46c94923c0&amp;type=3#box_vertical&apos;); width: 30%; height: 70%; left: 25%; align-items: stretch; justify-content: space-between; top: 7%;">
+            <ui:Label text="Load Game" display-tooltip-when-elided="true" name="LoadGameTitle" class="screentitle" style="top: 7.5%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 15%;" />
+            <ui:Button text="Level 1" display-tooltip-when-elided="true" name="Level1Button" class="button-main-title" style="background-image: none; top: 10%; width: 60%;" />
+            <ui:Button text="Level 2" display-tooltip-when-elided="true" name="Level2Button" class="button-main-title" style="top: 15%; width: 60%;" />
+            <ui:Button text="Level 3" display-tooltip-when-elided="true" name="Level3Button" class="button-main-title" style="top: 20%; width: 60%;" />
+            <ui:VisualElement name="LockElement1" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/cutsc_final_locked.png?fileID=2800000&amp;guid=358a7961a967df444a64d762c8a1c2fd&amp;type=3#cutsc_final_locked&apos;); width: 49px; height: 50px; left: 80%; top: -33.5%;" />
+            <ui:VisualElement name="LockElement2" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/cutsc_final_locked.png?fileID=2800000&amp;guid=358a7961a967df444a64d762c8a1c2fd&amp;type=3#cutsc_final_locked&apos;); width: 49px; height: 50px; left: 80%; top: -25%;" />
+            <ui:VisualElement name="LockElement3" style="background-image: url(&apos;project://database/Assets/UI%20Toolkit/UIBackground/cutsc_final_locked.png?fileID=2800000&amp;guid=358a7961a967df444a64d762c8a1c2fd&amp;type=3#cutsc_final_locked&apos;); width: 49px; height: 50px; left: 80%; top: -16%;" />
+            <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 80%; top: -10%;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
