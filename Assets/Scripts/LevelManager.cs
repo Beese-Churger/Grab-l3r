@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
 {
     private static Action onLoaderCallback;
     private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
-    private string[] levelsBGM = { "mainmenubgm", "level1bgm", "level1bgm", "level2bgm", "bossbgm" };
+    private string[] levelsBGM = { "mainmenubgm", "introbgm", "level1bgm", "level2bgm", "bossbgm", "endbgm" };
     public List<Level> arrLevels;
     public static LevelManager instance = null;
 

@@ -17,6 +17,9 @@ public class Checkpoint : MonoBehaviour
 
             // activate checkpoint animation
             animator.SetBool("Activated", true);
+
+            // play sound
+            AudioManager.Instance.PlaySFX("checkpoint-activation" + Random.Range(1, 2), transform.position);
         }
     }
 }

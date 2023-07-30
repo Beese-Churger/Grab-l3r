@@ -359,6 +359,122 @@ PrefabInstance:
       propertyPath: SFXvolumeSlider
       value: 
       objectReference: {fileID: 8765129202490363876}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: sfxSounds.Array.size
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 79e7d69aeeb7b421abb29d390d0d9f3a, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[0].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 98aa03aef0b5140e192a76f73aafe827, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[1].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: d70b47abb73b14d7c9d15450d27a2207, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[2].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 017a1650abc8c407f8b8281982a24790, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[3].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[4].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: ac079d7d4432b4bb2bc381d2b72b0e27, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[4].name
+      value: mainmenuintro
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[5].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 026fc02a1b4d04eef9f96d9430b8fcbc, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[5].name
+      value: level1intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[6].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: eb963488c441d4c02a6cdbfedff144c5, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[6].name
+      value: level2intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[7].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 67390ec6e506f4f5089c1953a4cb413e, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[7].name
+      value: bossintro
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[8].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4ad449b6fb3944b14991e241a8457f9a, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[8].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[8].name
+      value: introbgm
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[9].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4089b94277e3241569772c74de28a2b2, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[9].name
+      value: endbgm
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[10].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4089b94277e3241569772c74de28a2b2, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[10].name
+      value: endbgm
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: sfxSounds.Array.data[34].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 286cfc4f3fdc94859a7777014dcafaa8, type: 3}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: sfxSounds.Array.data[34].name
+      value: menu-confirn
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: bgmSounds.Array.data[1].volume
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
+      propertyPath: sfxSounds.Array.data[34].volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4832879944231429587, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -4783,7 +4899,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "V\xE4li"
+  m_Text: Space
 --- !u!114 &6485183804689646689
 MonoBehaviour:
   m_ObjectHideFlags: 0
