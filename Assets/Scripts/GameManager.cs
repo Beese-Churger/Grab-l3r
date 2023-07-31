@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private SpriteRenderer respawnBG;
     [SerializeField] private GameObject ExplodePlayer;
+    [SerializeField] private GameObject ExplodePrefab;
     private Color bgColor = new(0, 0, 0, 0);
     private int MaxHealth = 5;
     private int health = 3;
@@ -113,9 +114,12 @@ public class GameManager : MonoBehaviour
             }
             if (health <= 0)
             {
+                GameObject player = GameObject.FindWithTag("Player");
                 GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode("Player");
-                AudioManager.Instance.PlaySFX("player_death" + Random.Range(1, 5), GameObject.FindWithTag("Player").transform.position);
-                GameObject.FindWithTag("Player").SetActive(false);
+                AudioManager.Instance.PlaySFX("player_death" + Random.Range(1, 5), player.transform.position);
+                player.SetActive(false);
+                GameObject explosion = Instantiate(ExplodePrefab, player.transform.position, Quaternion.identity);
+                Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.duration);
             }
         }
 
