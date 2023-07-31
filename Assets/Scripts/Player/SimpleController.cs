@@ -24,7 +24,7 @@ public class SimpleController : MonoBehaviour
 
     [SerializeField] private GameObject DustPrefab;
     public LayerMask ropeLayerMask;
-
+    float halfHeight;
     private void Awake()
     {
         if(!Instance)
@@ -33,6 +33,7 @@ public class SimpleController : MonoBehaviour
         }
         playerPos = transform.position;
         checkpointPos = transform.position;
+        halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
     }
 
     void Start()
@@ -58,7 +59,6 @@ public class SimpleController : MonoBehaviour
     void Update()
     {
         jumpInput = jump.action.ReadValue<float>();
-        var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f, ropeLayerMask);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
     }
@@ -71,10 +71,19 @@ public class SimpleController : MonoBehaviour
         {
             if (airBorn)
             {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, ropeLayerMask);
+                RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f, ropeLayerMask);
                 GameObject dust = Instantiate(DustPrefab,hit.point,Quaternion.identity);
                 Destroy(dust, dust.GetComponent<ParticleSystem>().main.duration);
-                
+
+                // if land on metal else...
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Pivot")) 
+                {
+                    AudioManager.Instance.PlaySFX("player_land_metal" + Random.Range(1, 3), transform.position);
+                }
+                else
+                {
+                    AudioManager.Instance.PlaySFX("player_land_sand" + Random.Range(1, 5), transform.position);
+                }
                 airBorn = false;
             }
 

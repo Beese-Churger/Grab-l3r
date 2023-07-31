@@ -94,6 +94,7 @@ public class AudioManager : MonoBehaviour
             AudioSource tempSource = go.GetComponent<AudioSource>();
             tempSource.clip = s.clip;
             tempSource.volume = (s.volume * 0.01f) * sfxSource.volume;
+            go.name = name + "_AudioClip";
             go.GetComponent<PlayOnAwake>().Play();
         }
     }

@@ -15,11 +15,12 @@ public class Checkpoint : MonoBehaviour
             var player = GameObject.Find("Player").GetComponent<SimpleController>();
             player.SetCheckPoint(transform.position);
 
+            // play sound
+            if (animator.GetBool("Activated") == false)
+                AudioManager.Instance.PlaySFX("checkpoint_activation", transform.position);
+
             // activate checkpoint animation
             animator.SetBool("Activated", true);
-
-            // play sound
-            AudioManager.Instance.PlaySFX("checkpoint-activation" + Random.Range(1, 2), transform.position);
         }
     }
 }

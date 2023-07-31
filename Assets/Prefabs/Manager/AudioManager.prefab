@@ -368,6 +368,58 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 43d9c98ebacc64c2eaaf1553faf709a6, type: 3}
     volume: 1
     loop: 0
+  - name: checkpoint_activated
+    clip: {fileID: 8300000, guid: 74b0f88cf5a064e7491e4620296c2ba7, type: 3}
+    volume: 10
+    loop: 0
+  - name: pressureplate_on
+    clip: {fileID: 8300000, guid: 8b20b45bda3e047539724a0ff14eee9d, type: 3}
+    volume: 10
+    loop: 0
+  - name: pressureplate_off
+    clip: {fileID: 8300000, guid: 2eb9071495d874636ae8bf9296b3c276, type: 3}
+    volume: 10
+    loop: 0
+  - name: movingplatform_on
+    clip: {fileID: 8300000, guid: 815a5af2b64574d2580159133be6b522, type: 3}
+    volume: 10
+    loop: 0
+  - name: movingplatform_off
+    clip: {fileID: 8300000, guid: 835e0a84be9b545ecb3f5d225d0fde95, type: 3}
+    volume: 10
+    loop: 0
+  - name: movingplatform
+    clip: {fileID: 8300000, guid: 7003e57a6869543cabcab74f16afd4dd, type: 3}
+    volume: 10
+    loop: 0
+  - name: player_idle
+    clip: {fileID: 8300000, guid: b997cdc94d00c094bac9817feb59cb06, type: 3}
+    volume: 10
+    loop: 0
+  - name: player_land_metal1
+    clip: {fileID: 8300000, guid: 56184a2f3d50cfa408a1d62d4cd1c8eb, type: 3}
+    volume: 10
+    loop: 0
+  - name: player_land_metal2
+    clip: {fileID: 8300000, guid: ea6fc01e70d36d245ae62293889c0179, type: 3}
+    volume: 10
+    loop: 0
+  - name: player_land_sand1
+    clip: {fileID: 8300000, guid: 1890601c4ca5b85459d720c9c193d9af, type: 3}
+    volume: 10
+    loop: 0
+  - name: player_land_sand2
+    clip: {fileID: 8300000, guid: 8bb201294db99954abcf878120b33b78, type: 3}
+    volume: 10
+    loop: 0
+  - name: player_land_sand3
+    clip: {fileID: 8300000, guid: d1e2f11964a94c44b8801e88ac8e1069, type: 3}
+    volume: 10
+    loop: 0
+  - name: player_land_sand4
+    clip: {fileID: 8300000, guid: 28f1d53b0e93b75468040698d0b58c64, type: 3}
+    volume: 10
+    loop: 0
   bgSounds: []
   bgmSource: {fileID: 4832879944973751681}
   sfxSource: {fileID: 4832879943951424154}
