@@ -148,7 +148,7 @@ public class Options : MonoBehaviour
 
     private void Update()
     {
-        if (LevelManager.instance.GetCurrentLevelIndex() > 0)
+        if (LevelManager.instance.GetCurrentLevelIndex() > 1)
         {
             if ((switchToOptionsControls.action.triggered || ToggleOptionsScreen.action.triggered) && !isPressed)
             {

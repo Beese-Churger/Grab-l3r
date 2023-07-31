@@ -178,120 +178,186 @@ MonoBehaviour:
   BGMvolumeSlider: {fileID: 0}
   bgmSounds:
   - name: mainmenubgm
-    clip: {fileID: 8300000, guid: 6c51047b4bf31314994e2f9380f33157, type: 3}
+    clip: {fileID: 8300000, guid: 79e7d69aeeb7b421abb29d390d0d9f3a, type: 3}
     volume: 0
+    loop: 1
   - name: level1bgm
-    clip: {fileID: 8300000, guid: 4043a281fceeaa54291ff525ceba8ae7, type: 3}
+    clip: {fileID: 8300000, guid: 98aa03aef0b5140e192a76f73aafe827, type: 3}
     volume: 0
+    loop: 1
   - name: level2bgm
-    clip: {fileID: 8300000, guid: 3ca8edf0f7e0da14d99e9fb5e3d8d253, type: 3}
+    clip: {fileID: 8300000, guid: d70b47abb73b14d7c9d15450d27a2207, type: 3}
     volume: 0
+    loop: 1
   - name: bossbgm
-    clip: {fileID: 8300000, guid: ab17eb3c3d7792a418942f43c1fcaec7, type: 3}
+    clip: {fileID: 8300000, guid: 017a1650abc8c407f8b8281982a24790, type: 3}
     volume: 0
+    loop: 1
+  - name: mainmenuintro
+    clip: {fileID: 8300000, guid: ac079d7d4432b4bb2bc381d2b72b0e27, type: 3}
+    volume: 0
+    loop: 0
+  - name: level1intro
+    clip: {fileID: 8300000, guid: 026fc02a1b4d04eef9f96d9430b8fcbc, type: 3}
+    volume: 0
+    loop: 0
+  - name: level2intro
+    clip: {fileID: 8300000, guid: eb963488c441d4c02a6cdbfedff144c5, type: 3}
+    volume: 0
+    loop: 0
+  - name: bossintro
+    clip: {fileID: 8300000, guid: 67390ec6e506f4f5089c1953a4cb413e, type: 3}
+    volume: 0
+    loop: 0
+  - name: introbgm
+    clip: {fileID: 8300000, guid: 4ad449b6fb3944b14991e241a8457f9a, type: 3}
+    volume: 0
+    loop: 1
+  - name: endbgm
+    clip: {fileID: 8300000, guid: 4089b94277e3241569772c74de28a2b2, type: 3}
+    volume: 0
+    loop: 0
   sfxSounds:
   - name: hook_attach
     clip: {fileID: 8300000, guid: db662ce049d3d944c8f706ea21c8baf6, type: 3}
     volume: 100
+    loop: 0
   - name: door_open
     clip: {fileID: 8300000, guid: 8e59cd552f100374b9b244994f46af76, type: 3}
     volume: 50
+    loop: 0
   - name: door_close
     clip: {fileID: 8300000, guid: 22b11da282d105845a3942493076bf56, type: 3}
     volume: 50
+    loop: 0
   - name: hook_no_attach
     clip: {fileID: 8300000, guid: 46b79e64e2cacad49aae5885b548f8b2, type: 3}
     volume: 20
+    loop: 0
   - name: hook_shoot1
     clip: {fileID: 8300000, guid: 2a1fa5b96ca4f194fbe5d13c2d611439, type: 3}
     volume: 50
+    loop: 0
   - name: hook_shoot2
     clip: {fileID: 8300000, guid: 7fff232271439f94bb9c2018c82cccc2, type: 3}
     volume: 50
+    loop: 0
   - name: rope
     clip: {fileID: 8300000, guid: 7a53a2fc0c6da4045a44fe08394e4390, type: 3}
     volume: 10
+    loop: 0
   - name: player_damaged1
     clip: {fileID: 8300000, guid: ff083120ad1f2c1439ae8914ddc63413, type: 3}
     volume: 10
+    loop: 0
   - name: player_damaged2
     clip: {fileID: 8300000, guid: 9328cdf22630e2841b894cbbe9a06642, type: 3}
     volume: 10
+    loop: 0
   - name: player_damaged3
     clip: {fileID: 8300000, guid: fd551909f6d509e4a9efb03de144ed66, type: 3}
     volume: 10
+    loop: 0
   - name: player_damaged4
     clip: {fileID: 8300000, guid: 79b60689374bda046aaa3150b0fbd9ee, type: 3}
     volume: 10
+    loop: 0
   - name: player_death1
     clip: {fileID: 8300000, guid: eb3c03e111cf6664bb65a42984200698, type: 3}
     volume: 10
+    loop: 0
   - name: player_death2
     clip: {fileID: 8300000, guid: 655b5807bdf259e44a15160f8ece99f2, type: 3}
     volume: 10
+    loop: 0
   - name: player_death3
     clip: {fileID: 8300000, guid: ac8c5edc136d1154fa102beb2c2c3bc0, type: 3}
     volume: 10
+    loop: 0
   - name: player_death4
     clip: {fileID: 8300000, guid: c7e46f21d64102842b55d4ea594ce6ad, type: 3}
     volume: 10
+    loop: 0
   - name: enemy_death
     clip: {fileID: 8300000, guid: 9981015807035e9478ec0c30c7b0ff2a, type: 3}
     volume: 10
+    loop: 0
   - name: enemy_death2
     clip: {fileID: 8300000, guid: c395989a232b64c469ced09b6c9d1325, type: 3}
     volume: 10
+    loop: 0
   - name: enemy_death3
     clip: {fileID: 8300000, guid: cbd3ac3f3894c7440a705ca96a8daec4, type: 3}
     volume: 10
+    loop: 0
   - name: enemy_movement
     clip: {fileID: 8300000, guid: afc9f49b2b60dec42904d011bc86f5b0, type: 3}
     volume: 10
+    loop: 0
   - name: boss_crush1
     clip: {fileID: 8300000, guid: 42e605d3f0a2ffe4cbc2e93c214a0e11, type: 3}
     volume: 10
+    loop: 0
   - name: boss_crush2
     clip: {fileID: 8300000, guid: 1c3c6b385b570834483810a2fa0ce58b, type: 3}
     volume: 10
+    loop: 0
   - name: boss_grinder1
     clip: {fileID: 8300000, guid: cf9503f8eacd9434eb4bbf3aa2f73c92, type: 3}
     volume: 10
+    loop: 0
   - name: boss_grinder2
     clip: {fileID: 8300000, guid: 60f36b0c5d16e4345aafc2d13dea6fb2, type: 3}
     volume: 10
+    loop: 0
   - name: boss_slam1
     clip: {fileID: 8300000, guid: 028421359fba7f246a085c05c423753a, type: 3}
     volume: 10
+    loop: 0
   - name: boss_slam2
     clip: {fileID: 8300000, guid: 2e6eaeb326b90b042a8983a211f236df, type: 3}
     volume: 10
+    loop: 0
   - name: boss_attack1
     clip: {fileID: 8300000, guid: 6a1cb8dfa65da2b498257a0faa7f71b8, type: 3}
     volume: 10
+    loop: 0
   - name: boss_attack2
     clip: {fileID: 8300000, guid: 35e0c91659dbe0f4d9ee757c4e73f294, type: 3}
     volume: 10
+    loop: 0
   - name: boss_attack3
     clip: {fileID: 8300000, guid: 5ffbd19e3c9a5e140a5a4a1da92ebdda, type: 3}
     volume: 10
+    loop: 0
   - name: boss_attack4
     clip: {fileID: 8300000, guid: 5c6180aa01c07b34ea4ff97222b4560a, type: 3}
     volume: 10
+    loop: 0
   - name: boss_death1
     clip: {fileID: 8300000, guid: b7e8b1a5bb2933c4cb53acacffe9764b, type: 3}
     volume: 10
+    loop: 0
   - name: boss_death2
     clip: {fileID: 8300000, guid: 7d20c8a77797f3c4b998ecbc658a7f40, type: 3}
     volume: 10
+    loop: 0
   - name: boss_roar
     clip: {fileID: 8300000, guid: f929e184f4bbf0142937ff4b69bb473f, type: 3}
     volume: 10
+    loop: 0
   - name: boss_roar2
     clip: {fileID: 8300000, guid: 35537b0502bd9ac4cb59efdacd82a634, type: 3}
     volume: 10
+    loop: 0
   - name: boss_swipe
     clip: {fileID: 8300000, guid: 9f50dba1023fbb9449ef5556e6b216d0, type: 3}
     volume: 10
+    loop: 0
+  - name: menu-confirn
+    clip: {fileID: 8300000, guid: 286cfc4f3fdc94859a7777014dcafaa8, type: 3}
+    volume: 1
+    loop: 0
   bgSounds: []
   bgmSource: {fileID: 4832879944973751681}
   sfxSource: {fileID: 4832879943951424154}
