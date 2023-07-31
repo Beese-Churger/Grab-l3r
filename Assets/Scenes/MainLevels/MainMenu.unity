@@ -352,14 +352,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
-      propertyPath: BGMvolumeSlider
-      value: 
-      objectReference: {fileID: 8765129201932086744}
-    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
-      propertyPath: SFXvolumeSlider
-      value: 
-      objectReference: {fileID: 8765129202490363876}
-    - target: {fileID: 4832879944231429586, guid: 39541b24192fb7e409a370f74bb3c8f3, type: 3}
       propertyPath: bgmSounds.Array.data[10].clip
       value: 
       objectReference: {fileID: 8300000, guid: 4089b94277e3241569772c74de28a2b2, type: 3}

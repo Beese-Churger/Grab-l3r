@@ -7,7 +7,7 @@ using System;
 public class LevelManager : MonoBehaviour
 {
     private static Action onLoaderCallback;
-    private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss", "EndingCutscene" };
     private string[] levelsBGM = { "mainmenubgm", "introbgm", "level1bgm", "level2bgm", "bossbgm", "endbgm" };
     public List<Level> arrLevels;
     public static LevelManager instance = null;
@@ -120,18 +120,17 @@ public class LevelManager : MonoBehaviour
     // load level by name
     public IEnumerator LoadLevel(string scene)
     {
+        CheckTargetedLevel(scene);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
 
         while (!asyncLoad.isDone)
         {
             yield return null;
         }
-        if (currentLevelIndex > 1)
-        {
-            if (EnemyManager.enemyManager != null)
-                EnemyManager.enemyManager.AddEnemies();
-            PlayLevelBGM(false);
-        }
+
+        if (EnemyManager.enemyManager != null)
+            EnemyManager.enemyManager.AddEnemies();
+        //PlayLevelBGM(false);
     }
 
     // return current level name
@@ -181,15 +180,26 @@ public class LevelManager : MonoBehaviour
             if (currentLevel == levels[i])
             {
                 currentLevelIndex = i;
+                Debug.Log(currentLevelIndex);
                 return;
             }
         }
     }
-
+    private void CheckTargetedLevel(string target)
+    {
+        for (int i = 0; i < levels.Length; ++i)
+        {
+            if (target == levels[i])
+            {
+                currentLevelIndex = i;
+                Debug.Log(currentLevelIndex);
+                return;
+            }
+        }
+    }
     // Check which level the player is in before playing the bgm
     public void PlayLevelBGM(bool loop)
     {
-       CheckCurrentIndex();
        AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
     }
     public static void LoaderCallback()

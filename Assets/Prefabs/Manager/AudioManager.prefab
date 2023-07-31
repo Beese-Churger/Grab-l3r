@@ -174,8 +174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2401c878caaa74eabdb27091de3c22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SFXvolumeSlider: {fileID: 0}
-  BGMvolumeSlider: {fileID: 0}
   bgmSounds:
   - name: mainmenubgm
     clip: {fileID: 8300000, guid: 79e7d69aeeb7b421abb29d390d0d9f3a, type: 3}
@@ -354,8 +352,20 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 9f50dba1023fbb9449ef5556e6b216d0, type: 3}
     volume: 10
     loop: 0
-  - name: menu-confirn
+  - name: menu_confirm1
     clip: {fileID: 8300000, guid: 286cfc4f3fdc94859a7777014dcafaa8, type: 3}
+    volume: 1
+    loop: 0
+  - name: menu_confirm2
+    clip: {fileID: 8300000, guid: 8331fea585254468994589dfb7d5baf4, type: 3}
+    volume: 1
+    loop: 0
+  - name: menu_decline
+    clip: {fileID: 8300000, guid: aa194fdd459bf455aae001a28a4d35d9, type: 3}
+    volume: 1
+    loop: 0
+  - name: menu_highlight
+    clip: {fileID: 8300000, guid: 43d9c98ebacc64c2eaaf1553faf709a6, type: 3}
     volume: 1
     loop: 0
   bgSounds: []

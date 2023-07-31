@@ -99,12 +99,12 @@ public class Options : MonoBehaviour
         resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
         //----------------------------------------------------------------------------------------------------------------
         //Audio Sliders for BGM and SFX
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.SFXvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.SFXVolume);
-            AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
+        //if (AudioManager.Instance != null)
+        //{
+        //    AudioManager.Instance.SFXvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.SFXVolume);
+        //    AudioManager.Instance.BGMvolumeSlider.onValueChanged.AddListener(AudioManager.Instance.BGMVolume);
 
-        }
+        //}
 
     }
 
