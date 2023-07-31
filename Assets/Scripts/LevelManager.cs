@@ -3,38 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.IO;
+using Newtonsoft.Json;
 
 public class LevelManager : MonoBehaviour
 {
-    private static Action onLoaderCallback;
-    private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss", "EndingCutscene" };
-    private string[] levelsBGM = { "mainmenubgm", "introbgm", "level1bgm", "level2bgm", "bossbgm", "endbgm" };
-    public List<Level> arrLevels;
+    public static Action onLoaderCallback;
+    private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss", "EndingCutscene", "WinMenu" };
+    private string[] levelsBGM = { "mainmenubgm", "introbgm", "level1bgm", "level2bgm", "bossbgm", "endbgm" , "endbgm" };
+    public List<Level> arrLevels = new List<Level> {
+            new(0,false),
+            new(1,false),
+            new(2,false),
+            new(3,false),
+            new(4,false),
+            new(5,false)
+        };
     public static LevelManager instance = null;
 
     private int currentLevelIndex = 0;
 
-    public struct Level
-    {
-        private int level;
-        private bool isCompleted;
 
-        public Level(int levelNo, bool completed)
-        {
-            level = levelNo;
-            isCompleted = completed;
-        }
-
-        public int GetIndex()
-        {
-            return level;
-        }
-
-        public bool Completed()
-        {
-            return isCompleted;
-        }
-    }
 
     // create an instance of level manager
     private void Awake()
@@ -52,13 +41,6 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        arrLevels = new List<Level> {
-            new(0,false),
-            new(1,false),
-            new(2,false),
-            new(3,false),
-            new(4,false)
-        };
         CheckCurrentIndex();
     }
 
@@ -73,7 +55,7 @@ public class LevelManager : MonoBehaviour
         currentLevelIndex++;
 
         // If player has reached the level then it will be unlocked for them in the load game menu
-        if (currentLevelIndex != -1)
+        if (currentLevelIndex != -1 && currentLevelIndex <= arrLevels.Count)
         {
             arrLevels[currentLevelIndex] = new Level(currentLevelIndex, true);
         }        
@@ -83,10 +65,7 @@ public class LevelManager : MonoBehaviour
             onLoaderCallback = () => StartCoroutine(LoadLevel(currentLevelIndex));
             SceneManager.LoadScene("LoadingScene");
         }
-        else
-        {
-            GameManager.instance.SetGameState(StateType.end);
-        }
+
     }
 
     // reload level on respawn 
@@ -95,6 +74,7 @@ public class LevelManager : MonoBehaviour
         string level = levels[currentLevelIndex];
         StartCoroutine(LoadLevel(level));
         GameManager.instance.FadeIn();
+        PlayLevelBGM(false);
     }
 
     // load level by index
@@ -130,7 +110,6 @@ public class LevelManager : MonoBehaviour
 
         if (EnemyManager.enemyManager != null)
             EnemyManager.enemyManager.AddEnemies();
-        //PlayLevelBGM(false);
     }
 
     // return current level name
@@ -180,7 +159,7 @@ public class LevelManager : MonoBehaviour
             if (currentLevel == levels[i])
             {
                 currentLevelIndex = i;
-                Debug.Log(currentLevelIndex);
+                //Debug.Log(currentLevelIndex);
                 return;
             }
         }
@@ -192,7 +171,7 @@ public class LevelManager : MonoBehaviour
             if (target == levels[i])
             {
                 currentLevelIndex = i;
-                Debug.Log(currentLevelIndex);
+                //Debug.Log(currentLevelIndex);
                 return;
             }
         }
@@ -200,7 +179,7 @@ public class LevelManager : MonoBehaviour
     // Check which level the player is in before playing the bgm
     public void PlayLevelBGM(bool loop)
     {
-       AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
+        AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
     }
     public static void LoaderCallback()
     {
@@ -208,6 +187,34 @@ public class LevelManager : MonoBehaviour
         {
             onLoaderCallback();
             onLoaderCallback = null;
+        }
+    }
+    private void OnEnable()
+    {
+        LoadLevelsFromJson(Path.Combine(Application.persistentDataPath, "LevelData.json"));
+    }
+    private void OnDisable()
+    {
+        SaveLevelsToJson(Path.Combine(Application.persistentDataPath, "LevelData.json"));
+    }
+
+    public void SaveLevelsToJson(string filePath)
+    {
+        LevelsData data = new (arrLevels);
+        string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
+        File.WriteAllText(filePath, jsonData);
+    }
+    public void LoadLevelsFromJson(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            string jsonData = File.ReadAllText(filePath);
+            LevelsData data = JsonConvert.DeserializeObject<LevelsData>(jsonData);
+            arrLevels = data.levels;
+        }
+        else
+        {
+            Debug.LogWarning("File not found: " + filePath);
         }
     }
 }

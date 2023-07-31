@@ -192,8 +192,8 @@ public class Boss : MonoBehaviour
                 break;
             case FSM.ATTACK:
                 /* TO DO: Charge Up duration (3s)?
-                 * First select which skill the boss is going to use
-                   before the boss initiates the attack*/
+                    * First select which skill the boss is going to use
+                    before the boss initiates the attack*/
                 if (attacking)
                     // Attack the player with an attack
                     Attack();
@@ -226,11 +226,6 @@ public class Boss : MonoBehaviour
             SpawnBodyRandom();
             bodySpawnTimer = storeSpawnTimer;
         }
-
-    }
-    public void SetElectric(bool val)
-    {
-        controlledPlatform.activate = val;      
     }
     private void PhaseUpdate()
     {
@@ -252,16 +247,6 @@ public class Boss : MonoBehaviour
             pTriggered = false;
 
 
-        }
-    }
-    public void SetPPlate(bool active)
-    {
-        pTriggered = active;
-        // If pressure plate has been released the Phase Number decreases
-        if (!active)
-        {
-            phase--;
-            Debug.Log("Phase Decrease:" + phase);
         }
     }
     private void GenerateSkill()
@@ -706,7 +691,7 @@ public class Boss : MonoBehaviour
         Shuffle(rand1, intervalArray);
         chargeTimer = (float)intervalArray[0];
         timer = chargeTimer;
-        Debug.Log(chargeTimer);
+        //Debug.Log(chargeTimer);
     }
     public void Shuffle(System.Random rng, List<object> array)
     {
@@ -748,22 +733,19 @@ public class Boss : MonoBehaviour
         if (attackArray.Contains(name))
             attackArray.Remove(name);
     }
+    public void SetElectric(bool val)
+    {
+        controlledPlatform.activate = val;
+    }
+    public void SetPPlate(bool active)
+    {
+        pTriggered = active;
+        // If pressure plate has been released the Phase Number decreases
+        if (!active)
+        {
+            phase--;
+            Debug.Log("Phase Decrease:" + phase);
+        }
+    }
 
 }
-
-
-// UNUSED CODE
-
-// TO DO: Spawn a beam of light above the player
-// Done
-//Vector2 dir = (Vector2)playerGO.transform.position - (Vector2)bossHead.transform.position;
-//float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-//Quaternion rotation = Quaternion.AngleAxis(180f + angle, Vector3.forward);
-//Debug.Log(angle);
-// 1 second before the timer runs out the beam will stop following the player
-//if (timer > 1f)
-//    bossBeam.transform.localRotation = rotation;
-//bossBeam.transform.rotation = Quaternion.Slerp(bossBeam.transform.rotation, rotation, 10f * Time.deltaTime);
-
-// Remove the beam
-//bossBeam.SetActive(false);

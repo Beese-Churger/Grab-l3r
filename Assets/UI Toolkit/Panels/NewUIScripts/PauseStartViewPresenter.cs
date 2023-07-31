@@ -75,6 +75,7 @@ public class PauseStartViewPresenter : MonoBehaviour
     {      
         PauseMenuViewPresenter pauseMenuViewPresenter = new(_pauseView);
         pauseMenuViewPresenter.ContinueGame = () => {
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
             Debug.Log("continue");
             NewOptions.instance.SetPauseState(false);
             NewOptions.instance.SetPlayerInput("Gameplay");
@@ -90,6 +91,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         PauseMenuViewPresenter pauseMenuViewPresenter = new(_pauseView);
         pauseMenuViewPresenter.OpenOptions = () =>
         {
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
             SwitchScreen(false, _optionsView);
         };
     }
@@ -97,8 +99,9 @@ public class PauseStartViewPresenter : MonoBehaviour
     {
         PauseMenuViewPresenter pauseMenuViewPresenter = new(_pauseView);
         pauseMenuViewPresenter.QuitGame = () =>
-            { 
-                LevelManager.instance.SetCurrentLevelIndex(-1);
+            {
+                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+                //LevelManager.instance.SetCurrentLevelIndex(-1);
                 GameManager.instance.SetGameState(StateType.open);
                 TogglePauseScreen(false);
                 Time.timeScale = 1;
@@ -108,50 +111,80 @@ public class PauseStartViewPresenter : MonoBehaviour
     private void CloseOptionsMenu()
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
-        optionsMenuViewPresenter.BackAction = () => SwitchScreen(true, _optionsView);
+        optionsMenuViewPresenter.BackAction = () =>
+        {
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            SwitchScreen(true, _optionsView);
+        };
     }
     private void OpenVolumeMenu()
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
-        optionsMenuViewPresenter.OpenVolume = () => SwitchScreen(true, _optionsView, _volumeScreen);
+        optionsMenuViewPresenter.OpenVolume = () =>
+        {
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            SwitchScreen(true, _optionsView, _volumeScreen);
+        };
     }
     private void CloseVolumeMenu()
     {
-        OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         VolumeMenu volumeMenu = new(_volumeScreen);
-        volumeMenu.BackAction = () => SwitchScreen(false, _optionsView, _volumeScreen);
+        volumeMenu.BackAction = () =>
+        {
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            SwitchScreen(false, _optionsView, _volumeScreen);
+        };
     }
     private void OpenBrightnessMenu()
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
-        optionsMenuViewPresenter.OpenBrightness = () => SwitchScreen(true, _optionsView, _brightnessScreen);
+        optionsMenuViewPresenter.OpenBrightness = () =>
+        {
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            SwitchScreen(true, _optionsView, _brightnessScreen);
+        };
     }
     private void CloseBrightnessMenu()
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         BrightnessMenu brightnessMenu = new(_brightnessScreen);
-        brightnessMenu.BackAction = () => SwitchScreen(false, _optionsView, _brightnessScreen);
+        brightnessMenu.BackAction = () => { 
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            SwitchScreen(false, _optionsView, _brightnessScreen);
+        };
     }
     private void OpenResolutionMenu()
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
-        optionsMenuViewPresenter.OpenResolution = () => SwitchScreen(true, _optionsView, _resolutionScreen);
+        optionsMenuViewPresenter.OpenResolution = () => { 
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position); 
+            SwitchScreen(true, _optionsView, _resolutionScreen); 
+        };
     }
     private void CloseResolutionMenu()
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         ResolutionMenu resolutionMenu = new(_resolutionScreen);
-        resolutionMenu.BackAction = () => SwitchScreen(false, _optionsView, _resolutionScreen);
+        resolutionMenu.BackAction = () => { 
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            SwitchScreen(false, _optionsView, _resolutionScreen);
+        };
     }
     private void OpenControlsMenu()
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
-        optionsMenuViewPresenter.OpenControls = () => SwitchScreen(true, _optionsView, _controlScreen);
+        optionsMenuViewPresenter.OpenControls = () => {
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            SwitchScreen(true, _optionsView, _controlScreen);
+        };
     }
     private void CloseControlsMenu()
     {
         ControlsMenu controlsMenu = new(_controlScreen);
-        controlsMenu.BackAction = () => SwitchScreen(false, _optionsView, _controlScreen);
+        controlsMenu.BackAction = () => {
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            SwitchScreen(false, _optionsView, _controlScreen); 
+        };
     }
 
     private void Update()

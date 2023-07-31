@@ -127,6 +127,7 @@ public class PressurePlate : MonoBehaviour
                 {
                     AudioManager.Instance.PlaySFX("boss_death" + Random.Range(1, 2), Boss.instance.transform.position);
                     GameObject.Find("BossToExplode").GetComponent<ExplodeOnAwake>().explode("TheCollector");
+                    NewOptions.instance.SetPlayerInput("Options");
                     Boss.instance.gameObject.SetActive(false);
                 }
             }

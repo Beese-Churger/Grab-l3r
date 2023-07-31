@@ -24,6 +24,9 @@ public class VolumeMenu
         _sfxSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.SFXVolume(evt.newValue * 0.01f); });
         _sfxSlider.value = AudioManager.Instance.sfxSource.volume * 100;
 
+        //_masterSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.SFXVolume(evt.newValue * 0.01f); });
+        //_masterSlider.value = 
+
     }
 
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum StateType
 {
@@ -30,6 +31,10 @@ public class GameManager : MonoBehaviour
     private int collectables;
     private float respawnTimer = 3f;
     private float respawnTimerValue = 3f;
+
+    private float endTimer = 5f;
+    private float endTimerValue = 5f;
+
     private float lastHitTime, hitDelay = 0.3f;
     private MaterialHolder player;
     
@@ -74,7 +79,8 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case StateType.end:
-                StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
+                LevelManager.onLoaderCallback = () => StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
+                SceneManager.LoadScene("LoadingScene");
                 break; ;
             case StateType.open:
                 StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
@@ -152,6 +158,11 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("highscore", highscore);
             PlayerPrefs.Save();
         }
+
+        if (Boss.instance)
+            if (!Boss.instance.gameObject.activeInHierarchy)
+                End();
+ 
     }
 
     // reset game on respawn
@@ -229,7 +240,28 @@ public class GameManager : MonoBehaviour
     {
         return LevelManager.instance;
     }
+    public void End()
+    {
+        if (endTimer >= 0f)
+        {
+            endTimer -= Time.deltaTime;
 
+            if (endTimer < 1.5f)
+            {
+                if (bgColor.a < 1)
+                {
+                    bgColor.a += Time.deltaTime;
+                    respawnBG.color = bgColor;
+                }
+            }
+        }
+        else
+        {
+            endTimer = endTimerValue;
+            LevelManager.instance.LoadNextLevel();
+            FadeIn();
+        }
+    }
     public void FadeIn()
     {
         while (respawnBG.color.a > 0)
