@@ -15,6 +15,7 @@ public class Timer : MonoBehaviour
         else
         {
             instance = this;
+            DontDestroyOnLoad(instance);
         }
     }
     void Awake()
@@ -25,9 +26,14 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
+        if (!timer)
+            timer = GameObject.Find("Timer").GetComponent<TMP_Text>();
 
-        timer.text = formatTimer(time);
+        else
+        {
+            time += Time.deltaTime;
+            timer.text = formatTimer(time);
+        }
     }
 
     private string formatTimer(float currentTime)
