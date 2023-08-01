@@ -96,6 +96,9 @@ public class throwhook : MonoBehaviour
 
 		Vector3 aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
 
+		if (GameObject.Find("LegsToExplode"))
+			return;
+
 		if (lastInputTime + inputDelay < Time.time)
 		{
 			if (grappleAction.action.triggered)

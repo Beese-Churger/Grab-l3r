@@ -394,7 +394,7 @@ MonoBehaviour:
     loop: 0
   - name: player_idle
     clip: {fileID: 8300000, guid: b997cdc94d00c094bac9817feb59cb06, type: 3}
-    volume: 10
+    volume: 5
     loop: 0
   - name: player_land_metal1
     clip: {fileID: 8300000, guid: 56184a2f3d50cfa408a1d62d4cd1c8eb, type: 3}
@@ -419,6 +419,14 @@ MonoBehaviour:
   - name: player_land_sand4
     clip: {fileID: 8300000, guid: 28f1d53b0e93b75468040698d0b58c64, type: 3}
     volume: 10
+    loop: 0
+  - name: coin_collect
+    clip: {fileID: 8300000, guid: b7775f00e549bdf48b3335e72344bb5d, type: 3}
+    volume: 10
+    loop: 0
+  - name: explode
+    clip: {fileID: 8300000, guid: bc351759873045e4ba8f2c0fde5b6369, type: 3}
+    volume: 50
     loop: 0
   bgSounds: []
   bgmSource: {fileID: 4832879944973751681}

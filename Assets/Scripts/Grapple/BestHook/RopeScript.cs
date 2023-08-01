@@ -282,7 +282,7 @@ public class RopeScript : MonoBehaviour
 
 	void PullPlayerTowards()
     {
-		// I have no idea y having these 2 together makes going up the rops smoother but it works so im not complaining
+		// I have no idea y having these 2 together makes going up the ropes smoother but it works so im not complaining
 
 		if (lastNode.GetComponent<DistanceJoint2D>().distance > 0.005f)
 		{
@@ -317,9 +317,9 @@ public class RopeScript : MonoBehaviour
 			gameObject.GetComponent<SpringJoint2D>().connectedBody = null;
 			gameObject.GetComponent<DistanceJoint2D>().connectedBody = null;
 			gameObject.GetComponent<SpriteRenderer>().enabled = false;
-			//gameObject.GetComponent<Collider2D>().enabled = false;
 		}
 	}
+
 	public void SetCanHook(bool _hook)
 	{
 		canHook = _hook;

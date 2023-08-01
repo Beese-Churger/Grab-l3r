@@ -15,6 +15,7 @@ public class Collectable : MonoBehaviour
             // set collectables at game manager and play animation
             GameManager.instance.SetCollectables(1);
             animator.SetBool("collected", true);
+            AudioManager.Instance.PlaySFX("coin_collect", transform.position);
         }
     }
 

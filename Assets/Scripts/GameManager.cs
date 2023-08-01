@@ -121,11 +121,12 @@ public class GameManager : MonoBehaviour
             if (health <= 0)
             {
                 GameObject player = GameObject.FindWithTag("Player");
-                GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode("Player");
+                GameObject.Find("PlayerToExplode").GetComponent<ExplodeOnAwake>().explode(player);
                 AudioManager.Instance.PlaySFX("player_death" + Random.Range(1, 5), player.transform.position);
                 player.SetActive(false);
                 GameObject explosion = Instantiate(ExplodePrefab, player.transform.position, Quaternion.identity);
                 Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.duration);
+                AudioManager.Instance.PlaySFX("explode", player.transform.position);
             }
         }
 
