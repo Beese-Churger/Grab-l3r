@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class throwhook : MonoBehaviour 
 {
@@ -12,7 +13,7 @@ public class throwhook : MonoBehaviour
 	[SerializeField] private Transform crosshair;
 	[SerializeField] private SpriteRenderer crosshairSprite;
 	[SerializeField] private GameObject hookSprite;
-
+	[SerializeField] private Image cursor;
 	public InputActionReference pointer;
 
 	public bool ropeActive;
@@ -55,6 +56,8 @@ public class throwhook : MonoBehaviour
 		hookContext = HookContext.HOOK_BIG;
 		lastInputTime = Time.time;
 		oldPos = transform.position;
+
+		cursor = GameObject.Find("Cursor").GetComponent<Image>();
     }
 
 
@@ -78,6 +81,7 @@ public class throwhook : MonoBehaviour
     void Update () 
 	{		
 		Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(pointer.action.ReadValue<Vector2>().x, pointer.action.ReadValue<Vector2>().y, 0f));
+		cursor.transform.position = pointer.action.ReadValue<Vector2>();
 		Vector3 facingDirection = worldMousePosition - transform.position;
 		float aimAngle = Mathf.Atan2(facingDirection.y, facingDirection.x);
 

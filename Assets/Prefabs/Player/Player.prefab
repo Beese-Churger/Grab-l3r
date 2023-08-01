@@ -132,6 +132,7 @@ MonoBehaviour:
   crosshair: {fileID: 6864009723066297451}
   crosshairSprite: {fileID: 5043636522717126986}
   hookSprite: {fileID: 713828245484858460}
+  cursor: {fileID: 0}
   pointer: {fileID: -5079066100166309683, guid: 53d1f79ea3082da408152170837a1f28, type: 3}
   ropeActive: 0
   maxDistance: 10
