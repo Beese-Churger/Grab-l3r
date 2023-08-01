@@ -11,14 +11,7 @@ public class LevelManager : MonoBehaviour
     public static Action onLoaderCallback;
     private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss", "EndingCutscene", "WinMenu" };
     private string[] levelsBGM = { "mainmenubgm", "introbgm", "level1bgm", "level2bgm", "bossbgm", "endbgm" , "endbgm" };
-    public List<Level> arrLevels = new List<Level> {
-            new(0,false),
-            new(1,false),
-            new(2,false),
-            new(3,false),
-            new(4,false),
-            new(5,false)
-        };
+    public List<Level> arrLevels;
     public static LevelManager instance = null;
 
     private int currentLevelIndex = 0;
@@ -41,6 +34,17 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        //if (arrLevels.Count == 0)
+        //    arrLevels = new()
+        //    {
+        //        new(0, false),
+        //        new(1, false),
+        //        new(2, false),
+        //        new(3, false),
+        //        new(4, false),
+        //        new(5, false)
+        //    };
+
         CheckCurrentIndex();
     }
 
@@ -197,9 +201,30 @@ public class LevelManager : MonoBehaviour
     {
         SaveLevelsToJson(Path.Combine(Application.persistentDataPath, "LevelData.json"));
     }
-
+    private bool IsDataValid(Level level)
+    {
+        return level.level >= 0;
+    }
+    private Level CreateDefaultLevel(int levelNumber)
+    {
+        // Replace this with your default level creation logic
+        // For example, you can set isCompleted to false and set some default values.
+        return new Level(levelNumber, false);
+    }
     public void SaveLevelsToJson(string filePath)
     {
+
+        for (int i = 0; i < arrLevels.Count; i++)
+        {
+            if (!IsDataValid(arrLevels[i]))
+            {
+                Debug.LogWarning("Invalid data found. Replacing Level " + arrLevels[i].level + " with a default level.");
+
+                // Replace the invalid level with a default level
+                arrLevels[i] = CreateDefaultLevel(arrLevels[i].level);
+            }
+        }
+
         LevelsData data = new (arrLevels);
         string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(filePath, jsonData);
@@ -214,7 +239,16 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            arrLevels = new() {
+                new(0, false),
+                new(1, false),
+                new(2, false),
+                new(3, false),
+                new(4, false),
+                new(5, false)
+            };
             Debug.LogWarning("File not found: " + filePath);
+
         }
     }
 }
