@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5469377285829733705}
   - component: {fileID: -8445423502774156372}
   - component: {fileID: 8286890764301131317}
+  - component: {fileID: 2658592996206354080}
   m_Layer: 0
   m_Name: LevelChangeTrigger
   m_TagString: Untagged
@@ -71,3 +72,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 675798dcbe0b83d438d5b5a852ef7cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2658592996206354080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6093486534748998514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa71fa55af1489145aebd83466ca613f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
+  fadein: 0
+  fadeout: 0
+  TimeToFade: 0

@@ -35,7 +35,7 @@ public class LegBreaking : MonoBehaviour
     void Update()
     {
         //AudioManager.Instance.PlaySFX("explode", transform.position);
-        if (done)
+        if (done || !legPivot || !player)
             return;
 
 

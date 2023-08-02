@@ -243,6 +243,7 @@ public class GameManager : MonoBehaviour
     }
     public void End()
     {
+
         if (endTimer >= 0f)
         {
             endTimer -= Time.deltaTime;
@@ -259,6 +260,7 @@ public class GameManager : MonoBehaviour
         else
         {
             endTimer = endTimerValue;
+            Debug.Log("This");
             LevelManager.instance.LoadNextLevel();
             FadeIn();
         }

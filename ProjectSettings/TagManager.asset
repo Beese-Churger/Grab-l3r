@@ -10,6 +10,7 @@ TagManager:
   - ElectricPlatform
   - BossRightArm
   - BossLeftArm
+  - Fade
   layers:
   - Default
   - TransparentFX

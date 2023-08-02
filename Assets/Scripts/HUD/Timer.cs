@@ -26,10 +26,12 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameObject.Find("Timer"))
+            return;
         if (!timer)
             timer = GameObject.Find("Timer").GetComponent<TMP_Text>();
 
-        else
+        else if(timer)
         {
             time += Time.deltaTime;
             timer.text = formatTimer(time);
