@@ -4,13 +4,27 @@ using UnityEngine;
 
 public class LevelChange : MonoBehaviour
 {
+    FadeInOut fade;
     // change level once player triggers level end area
+    private void Awake()
+    {
+        fade = FindObjectOfType<FadeInOut>();
+    }
+
+    public IEnumerator ChangeScene()
+    {
+        fade.FadeIn();
+        yield return new WaitForSeconds(1);
+        LevelManager.instance.LoadNextLevel();
+
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        if (collision.gameObject.tag == "Player")
         {
-            GameManager.instance.SetGameState(StateType.levelChange);
-            Destroy(this);
+            StartCoroutine(ChangeScene());
+            //GameManager.instance.SetGameState(StateType.levelChange);
+            //Destroy(this);
         }
     }
 }
