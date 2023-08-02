@@ -175,11 +175,11 @@ public class Options : MonoBehaviour
             else
                 isPressed = false;
 
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                GameManager.instance.SetGameState(StateType.levelChange);
-                EnemyManager.enemyManager.ClearEnemyList();
-            }
+            //if (Input.GetKeyDown(KeyCode.N))
+            //{
+            //    GameManager.instance.SetGameState(StateType.levelChange);
+            //    EnemyManager.enemyManager.ClearEnemyList();
+            //}
         }
     }
     IEnumerator Wait()

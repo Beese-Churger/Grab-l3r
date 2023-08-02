@@ -13,6 +13,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
     public VideoPlayer vp;
     [SerializeField] private VideoClip startCutscene;
     [SerializeField] private VideoClip endCutscene;
+    [SerializeField] private Texture locked;
+    [SerializeField] private Texture unlockedIntro;
+    [SerializeField] private Texture unlockedEnding;
+    public VisualTreeAsset highScoreEntryTemplate;
 
     private VisualElement _loadgameView;
     private VisualElement _startView;
@@ -105,6 +109,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
         OpenNewGame();
 
         GameManager.instance.GetLevelManager().PlayLevelBGM(false);
+        RebindLoadSave.LoadKeybind();
+        //NewOptions.instance.CheckCurrentInput();
     }
 
     // OPEN NEW GAME
@@ -113,7 +119,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialMainMenuPresenter menuPresenter = new(_startView);
         menuPresenter.OpenNewGame = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            NewOptions.instance.SetPlayerInput("Gameplay");
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             _startView.Display(false);
             GameManager.instance.SetGameState(StateType.levelChange);
         };
@@ -124,7 +131,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
     {
         TutorialMainMenuPresenter menuPresenter = new(_startView);
         menuPresenter.OpenLoadGame = () => {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleLoadGameMenu(true);
             CheckLock();
             Debug.Log("Inside Load Game Menu");
@@ -136,7 +143,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialLoadGameViewPresenter loadgamePresenter = new(_loadgameView);
         loadgamePresenter.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleLoadGameMenu(false);
         };
     }
@@ -145,7 +152,8 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialMainMenuPresenter menuPresenter = new(_startView);
         menuPresenter.OpenCutscene = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
+            CheckCutscene();
             ToggleCutscenesMenu(true);
             Debug.Log("Inside Cutscenes");
         };
@@ -155,7 +163,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         CutscenesMenu cutscenesViewPresenter = new(_cutScenes);
         cutscenesViewPresenter.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleCutscenesMenu(false);
         };
     }
@@ -165,7 +173,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialMainMenuPresenter menuPresenter = new(_startView);
         menuPresenter.OpenQuit = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleQuitMenu(true);
         };
     }
@@ -175,7 +183,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         QuitConfirm quitConfirm = new(_quitconfirm);
         quitConfirm.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleQuitMenu(false);
         };
     }
@@ -185,7 +193,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         QuitConfirm quitConfirm = new(_quitconfirm);
         quitConfirm.CancelAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_decline", Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_decline");
             ToggleQuitMenu(false);
         };
     }
@@ -195,7 +203,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         QuitConfirm quitConfirm = new(_quitconfirm);
         quitConfirm.QuitAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             Quit();
         };
     }
@@ -205,7 +213,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialMainMenuPresenter menuPresenter = new(_startView);
         menuPresenter.OpenCredits = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleCreditsMenu(true);
         };
     }
@@ -215,7 +223,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         MenuCreditsViewPresenter menuCreditsViewPresenter = new(_credits);
         menuCreditsViewPresenter.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleCreditsMenu(false);
         };
     }
@@ -225,17 +233,17 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialMainMenuPresenter menuPresenter = new(_startView);
         menuPresenter.OpenHighScore = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleHighscoreList(true);
         };
     }
     // Close Highscore Menu
     private void CloseHighscoreMenu()
     {
-        HighscoreListViewPresenter highscoreListViewPresenter = new(_highScore);
+        HighscoreListViewPresenter highscoreListViewPresenter = new(_highScore, highScoreEntryTemplate);
         highscoreListViewPresenter.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleHighscoreList(false);
         };
     }
@@ -245,7 +253,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         TutorialMainMenuPresenter menuPresenter = new(_startView);
         menuPresenter.OpenOptions = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleOptionsMenu(true);
         };
     }
@@ -254,7 +262,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_options);
         optionsMenuViewPresenter.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleOptionsMenu(false);
         };
     }
@@ -263,7 +271,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_options);
         optionsMenuViewPresenter.OpenVolume = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleVolumeMenu(true);
         };
     }
@@ -272,7 +280,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         VolumeMenu volumeMenu = new(_volumeScreen);
         volumeMenu.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleVolumeMenu(false);
         };
     }
@@ -281,7 +289,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_options);
         optionsMenuViewPresenter.OpenBrightness = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleBrightnessMenu(true);
         };
     }
@@ -290,7 +298,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         BrightnessMenu brightnessMenu = new(_brightnessScreen);
         brightnessMenu.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleBrightnessMenu(false);
         };
     }
@@ -299,7 +307,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_options);
         optionsMenuViewPresenter.OpenResolution = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleResolutionScreen(true);
         };
     }
@@ -308,7 +316,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         ResolutionMenu resolutionMenu = new(_resolutionScreen);
         resolutionMenu.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleResolutionScreen(false);
         };
     }
@@ -317,7 +325,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_options);
         optionsMenuViewPresenter.OpenControls = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleControlScreen(true);
         };
     }
@@ -326,7 +334,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
         ControlsMenu controlsMenu = new(_controlScreen);
         controlsMenu.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleControlScreen(false);
         };
     }
@@ -339,12 +347,13 @@ public class TutorialStartViewPresenter : MonoBehaviour
             //Debug.Log(LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial"));
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level_forestTutorial")].Completed())
             {
-                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+                NewOptions.instance.SetPlayerInput("Gameplay");
+                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
                 StartCoroutine(LevelManager.instance.LoadLevel("Level_forestTutorial"));
                 GameManager.instance.GetLevelManager().PlayLevelBGM(false);
             }
             else
-                AudioManager.Instance.PlaySFX("menu_decline", Camera.main.transform.position);
+                AudioManager.Instance.PlaySFX("menu_decline");
         };
     }
     private void LoadLevel2()
@@ -353,12 +362,13 @@ public class TutorialStartViewPresenter : MonoBehaviour
         loadgamePresenter.LoadLevel2 = () => {
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout 2")].Completed())
             {
-                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+                NewOptions.instance.SetPlayerInput("Gameplay");
+                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
                 StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2"));
                 GameManager.instance.GetLevelManager().PlayLevelBGM(false);
             }
             else
-                AudioManager.Instance.PlaySFX("menu_decline", Camera.main.transform.position);
+                AudioManager.Instance.PlaySFX("menu_decline");
 
         };
     }
@@ -368,12 +378,13 @@ public class TutorialStartViewPresenter : MonoBehaviour
         loadgamePresenter.LoadLevel3 = () => {
             if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("LevelLayout Boss")].Completed())
             {
-                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+                NewOptions.instance.SetPlayerInput("Gameplay");
+                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
                 StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout Boss"));
                 GameManager.instance.GetLevelManager().PlayLevelBGM(false);
             }
             else
-                AudioManager.Instance.PlaySFX("menu_decline", Camera.main.transform.position);
+                AudioManager.Instance.PlaySFX("menu_decline");
         };
     }
     private void CheckLock()
@@ -395,16 +406,16 @@ public class TutorialStartViewPresenter : MonoBehaviour
             // Play the cutscene when its unlocked
             {
                 Debug.Log("Play Intro Cutscene");
-                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
+                AudioManager.Instance.PlayBGMLoop("introbgm", false);
                 vp.clip = startCutscene;
                 vp.Play();
                 _cutScenes.Display(false);
-                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
 
             }
             else
             {
-                AudioManager.Instance.PlaySFX("menu_decline", Camera.main.transform.position);
+                AudioManager.Instance.PlaySFX("menu_decline");
             }
         };
     }
@@ -417,16 +428,17 @@ public class TutorialStartViewPresenter : MonoBehaviour
             // Play the cutscene when its unlocked
             {
                 Debug.Log("Play Ending Cutscene");
-                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
+                AudioManager.Instance.PlayBGMLoop("introbgm", false);
                 vp.clip = endCutscene;
                 vp.Play();
                 _cutScenes.Display(false);
-                GameManager.instance.GetLevelManager().PlayLevelBGM(true);
+                AudioManager.Instance.PlayBGM("endbgm");
 
             }
             else
             {
-                AudioManager.Instance.PlaySFX("menu_decline", Camera.main.transform.position);
+                AudioManager.Instance.PlaySFX("menu_decline");
             }
         };
     }
@@ -435,6 +447,18 @@ public class TutorialStartViewPresenter : MonoBehaviour
         vp.Stop();
         _cutScenes.Display(true);
         GameManager.instance.GetLevelManager().PlayLevelBGM(false);
+    }
+    private void CheckCutscene()
+    {
+        CutscenesMenu cutscenesMenu = new(_cutScenes); 
+        if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("Level1Cutscene")].Completed())
+            cutscenesMenu._playIntroButton.style.backgroundImage = (StyleBackground)unlockedIntro;
+        else
+            cutscenesMenu._playIntroButton.style.backgroundImage = (StyleBackground)locked;
+        if (LevelManager.instance.arrLevels[LevelManager.instance.GetLevelIndexWithName("EndingCutscene")].Completed())
+            cutscenesMenu._playEndingButton.style.backgroundImage = (StyleBackground)unlockedEnding;
+        else
+            cutscenesMenu._playEndingButton.style.backgroundImage = (StyleBackground)locked;
     }
     /// <summary>
     /// Toggle between Main Menu Screen and other available screens

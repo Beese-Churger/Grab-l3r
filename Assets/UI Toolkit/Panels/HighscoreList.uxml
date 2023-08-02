@@ -6,10 +6,8 @@
             <ui:Label text="Highscore" display-tooltip-when-elided="true" name="HighscoreLabel" class="screentitle" style="-unity-text-align: middle-center; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-font-style: bold; justify-content: center; flex-direction: column; top: 7.5%; left: 35%; white-space: nowrap;" />
             <ui:Label text="Name" display-tooltip-when-elided="true" name="NameLabel1" class="screensecondarytitle" style="-unity-font-style: normal; font-size: 50px; color: rgb(255, 255, 255); margin-right: 0; margin-left: 0; margin-top: 0; margin-bottom: 0; top: 7.5%; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 15%;" />
             <ui:Label text="Time" display-tooltip-when-elided="true" name="TimeLabel" class="screensecondarytitle" style="white-space: nowrap; -unity-text-align: upper-right; margin-right: 0; margin-left: 0; margin-top: 0; margin-bottom: 0; top: -5%; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; left: 70%;" />
-
-            <ui:ListView focusable="true" style="width: 706px; height: 50%; left: 15%; top: -5%;" />
+            <ui:ListView focusable="true" name="TableListView" style="width: 1060px; height: 332px; left: 15%; top: -5%; flex-grow: 0; flex-direction: column-reverse;" />
             <ui:Button display-tooltip-when-elided="true" name="BackButton" class="backbutton" style="margin-left: 0; top: -7.5%; margin-right: 0; margin-top: 0; margin-bottom: 0; left: 85%; bottom: auto;" />
-
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -218,24 +218,22 @@ public class SmallEnemy : EnemyBaseClass
 
         RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.left, 0f, platformLayer);
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.right, 0f, platformLayer);
-
         if ((leftHit.collider != null && direction < 0) || (rightHit.collider != null && direction > 0))
         {
             CheckHit(leftHit, rightHit);
             //Debug.Log(empty.transform.name);
             if (empty.transform.gameObject.layer == LayerMask.NameToLayer("PressurePlate"))
             {
+                //Debug.Log("Direction after jumping" + direction);
                 rb.velocity = Vector2.zero;
                 rb.AddForce(new Vector2(0, 1) * 5f, ForceMode2D.Impulse);
                 rb.AddForce(new Vector2(direction, 0) * 3f, ForceMode2D.Impulse);
-                //Debug.Log("Direction after jumping" + direction);
                 return false;
             }
-            
+            // Debug.Log("Small Enemy is near the wall!");  
             rb.velocity = new Vector2(0, rb.velocity.y);
             ChangeDirection();
             current = FSM.IDLE;
-           // Debug.Log("Small Enemy is near the wall!");  
             return true;
         }
         return false;

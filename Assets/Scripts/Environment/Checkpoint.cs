@@ -21,6 +21,13 @@ public class Checkpoint : MonoBehaviour
 
             // activate checkpoint animation
             animator.SetBool("Activated", true);
+            GameManager.instance.saved = true;
+
         }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+            GameManager.instance.saved = false;
     }
 }

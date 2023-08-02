@@ -366,13 +366,15 @@ public class Boss : MonoBehaviour
 
                         attackTimer = 0f;
                         animator.SetBool("SlamL", false);
+                        bossBeam.SetActive(false);
                         current = FSM.IDLE;
                         slamming = false;
                     }
                     else
                     {
                         attackTimer += Time.deltaTime;
-                        ActivateBeam(ATTACK.SLAM);
+                        if (dir.x < 0)
+                            ActivateBeam(ATTACK.SLAM);
                         //Debug.Log(attackTimer);
                     }
 
@@ -427,12 +429,14 @@ public class Boss : MonoBehaviour
                         slamming = false;
                         attackTimer = 0f;
                         animator.SetBool("SlamR", false);
+                        bossBeam.SetActive(false);
                         current = FSM.IDLE;
                     }
                     else
                     {
                         attackTimer += Time.deltaTime;
-                        ActivateBeam(ATTACK.SLAM);
+                        if (dir.x > 0)
+                            ActivateBeam(ATTACK.SLAM);
                     }
 
                 }

@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
 
 public class ControlsMenu
 {
+    public static ControlsMenu instance = null;
     private Button _backButton;
 
     public Label gLabel;
@@ -15,11 +15,14 @@ public class ControlsMenu
 
     public ControlsMenu(VisualElement root)
     {
+        instance = this;
         _backButton = root.Q<Button>("BackButton");
         gLabel = root.Q("Column2").Q<Label>("GrappleMLabel");
         mLabel = root.Q("Column2").Q<Label>("MovementLabel");
         jLabel = root.Q("Column2").Q<Label>("JumpSpaceLabel");
         sLabel = root.Q("Column2").Q<Label>("ResetRLabel");
+        RebindLoadSave.LoadKeybind();
+        NewOptions.instance.RefreshDisplay();
 
         gLabel.RegisterCallback<ClickEvent>((evt) => {
             NewOptions.instance.BindKey(NewOptions.instance.grappleRebind);

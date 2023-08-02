@@ -3,17 +3,19 @@ using UnityEngine.InputSystem;
 
 public class RebindLoadSave : MonoBehaviour
 {
-    public InputActionAsset inputActions;
-    // Start is called before the first frame update
-    public void OnEnable()
+    public void OnDisable()
+    {
+        SaveKeybind();
+    }
+    public static void LoadKeybind()
     {
         var rebinds = PlayerPrefs.GetString("rebinds");
         if (!string.IsNullOrEmpty(rebinds))
-            inputActions.LoadBindingOverridesFromJson(rebinds);
+            NewOptions.instance.inputActions.LoadBindingOverridesFromJson(rebinds);
     }
-    public void OnDisable()
+    public static void SaveKeybind()
     {
-        var rebinds = inputActions.SaveBindingOverridesAsJson();
+        var rebinds = NewOptions.instance.inputActions.SaveBindingOverridesAsJson();
         PlayerPrefs.SetString("rebinds", rebinds);
     }
 }

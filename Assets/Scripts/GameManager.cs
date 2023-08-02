@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public Vector2 checkpointPos;
     public StateType state;
     public bool resetPlayer;
+    public bool saved = false;
     public int highscore;
 
     [SerializeField] private SpriteRenderer respawnBG;
@@ -86,12 +87,16 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(LevelManager.instance.LoadLevel("MainMenu"));
                 break;
             case StateType.levelChange:
+                if (EnemyManager.enemyManager != null)
+                    EnemyManager.enemyManager.ClearEnemyList();
                 LevelManager.instance.LoadNextLevel();
                 break;
             case StateType.respawn:
                 resetPlayer = true;
                 checkpointPos = SimpleController.Instance.GetCheckpoint();
                 ResetGame();
+                if (EnemyManager.enemyManager != null)
+                    EnemyManager.enemyManager.ClearEnemyList();
                 LevelManager.instance.ReLoadLevel();
                 break;
         }

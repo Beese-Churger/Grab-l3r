@@ -36,7 +36,7 @@ public class Timer : MonoBehaviour
         }
     }
 
-    private string formatTimer(float currentTime)
+    public string formatTimer(float currentTime)
     {
         float minutes = Mathf.FloorToInt(currentTime / 60);
         float seconds = Mathf.FloorToInt(currentTime % 60);

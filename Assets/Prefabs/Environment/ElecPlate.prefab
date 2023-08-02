@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2566642578049206657}
   - component: {fileID: 2892378580720067476}
   - component: {fileID: -2415141743338798941}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ElecPlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,6 +162,7 @@ MonoBehaviour:
   destroyBoss: 0
   animator: {fileID: 2892378580720067476}
   bossDeactivatedElectricity: 0
+  unlockGrinder: 0
 --- !u!95 &2892378580720067476
 Animator:
   serializedVersion: 5

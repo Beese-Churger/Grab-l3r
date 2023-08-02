@@ -1,0 +1,26 @@
+/* Style for the high score table */
+.highscore-table
+{
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    font-style: bold;
+    color: white;
+}
+
+/* Style for player names */
+.player-name
+{
+    flex: 1;
+    font-size: 30px;
+    color: white; /* Gold color */
+}
+
+/* Style for high scores */
+.high-score
+{
+    flex: 1;
+    font-size: 30px;
+    color: white; /* Green color */
+}

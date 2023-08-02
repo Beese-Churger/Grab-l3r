@@ -149,6 +149,12 @@ public class SimpleController : MonoBehaviour
     public void SetCheckPoint(Vector2 point)
     {
         checkpointPos = point;
+        if (!GameManager.instance.saved)
+        {
+            Debug.Log("SAVING");
+            EnemyManager.enemyManager.SaveEnemyPosToJson();
+            GameManager.instance.saved = true;
+        }
     }
 
     public void SetHook(bool _hook)

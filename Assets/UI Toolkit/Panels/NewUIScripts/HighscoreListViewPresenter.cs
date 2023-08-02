@@ -2,23 +2,25 @@ using UnityEngine.UIElements;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-
-public class HighscoreListViewPresenter
+using System.Linq;
+public class HighscoreListViewPresenter : MonoBehaviour
 {
     private Button _backButton;
     private ListView _highScoreList;
+    private VisualTreeAsset vs;
 
     public class HighScoreData
     {
         public string playerName;
-        public int score;
+        public string time;
     }
     public Action BackAction { set => _backButton.clicked += value; }
 
-    public HighscoreListViewPresenter(VisualElement root)
+    public HighscoreListViewPresenter(VisualElement root, VisualTreeAsset visualTreeAsset)
     {
+        vs = visualTreeAsset;
         _backButton = root.Q<Button>("BackButton");
-        _highScoreList = root.Q<ListView>("ListView");
+        _highScoreList = root.Q<ListView>("TableListView");
         _highScoreList.style.flexGrow = 1.0f;
         LoadHighScoreData();
 
@@ -28,10 +30,13 @@ public class HighscoreListViewPresenter
         // Replace this example data with your actual high score data retrieval logic
         List<HighScoreData> highScores = new();
         //GameManager.instance.highscore = PlayerPrefs.GetInt("highscore");
-        var hs = PlayerPrefs.GetInt("highscore");
-
-        highScores.Add(new HighScoreData { playerName = "Player 1", score = hs });
-        PopulateListView(highScores);
+        var temp = PlayerDataManager.instance.playerDataDictionary;
+        for (int i = 0; i < temp.Count; ++i)
+        {
+            highScores.Add(new HighScoreData { playerName = temp[i].playerName , time = formatTimer(temp[i].timeTaken) });
+        }
+        var tempList = highScores.OrderBy(o=>o.time).ToList();
+        PopulateListView(tempList);
     }
 
     private void PopulateListView(List<HighScoreData> highScores)
@@ -39,21 +44,24 @@ public class HighscoreListViewPresenter
         // Clear existing items in the ListView
         _highScoreList.Clear();
 
-        // Create and add new list items for each high score entry
-        foreach (HighScoreData scoreData in highScores)
+        // Add player data entries to the ListView
+        foreach (var playerData in highScores)
         {
-            var listItem = new VisualElement();
-            Label label1 = new Label(scoreData.playerName);
-            label1.style.fontSize = 24;
-            listItem.Add(label1);
+            var entry = vs.CloneTree();
+            var entryPlayerNameLabel = entry.Q<Label>("PlayerNameLabel");
+            var entryHighScoreLabel = entry.Q<Label>("HighScoreLabel");
 
-            var listItem2 = new VisualElement();
-            Label label2 = new Label(scoreData.score.ToString());
-            label2.style.fontSize = 24;
-            listItem2.Add(label2);
+            entryPlayerNameLabel.text = playerData.playerName;
+            entryHighScoreLabel.text = playerData.time.ToString();
 
-            _highScoreList.hierarchy.Add(listItem);
-            _highScoreList.hierarchy.Add(listItem2);
+            _highScoreList.hierarchy.Add(entry);
         }
+    }
+    public string formatTimer(float currentTime)
+    {
+        float minutes = Mathf.FloorToInt(currentTime / 60);
+        float seconds = Mathf.FloorToInt(currentTime % 60);
+
+        return string.Format("{00:00} : {01:00}", minutes, seconds);
     }
 }

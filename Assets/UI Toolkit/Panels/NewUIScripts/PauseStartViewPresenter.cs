@@ -105,7 +105,7 @@ public class PauseStartViewPresenter : MonoBehaviour
                 GameManager.instance.SetGameState(StateType.open);
                 TogglePauseScreen(false);
                 Time.timeScale = 1;
-                NewOptions.instance.SetPlayerInput("Gameplay");
+                NewOptions.instance.SetPlayerInput("Options");
             };
     }
     private void CloseOptionsMenu()

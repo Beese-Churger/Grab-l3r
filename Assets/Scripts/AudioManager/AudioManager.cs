@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource bgmSource, sfxSource, bgSource;
 
     public GameObject sfx;
+    public AudioMixer audioMixerGroup;
 
     private void Awake()
     {
@@ -98,6 +100,21 @@ public class AudioManager : MonoBehaviour
             go.GetComponent<PlayOnAwake>().Play();
         }
     }
+    public void PlaySFX(string name)
+    {
+        SoundScript s = Array.Find(sfxSounds, x => x.name == name);
+
+        if (s == null)
+        {
+            Debug.Log("Sound not found");
+        }
+        else
+        {
+            sfxSource.clip = s.clip;
+            sfxSource.PlayOneShot(s.clip);
+        }
+    }
+
     public void PlaySFXLoop(string name, bool stop)
     {
         SoundScript s = Array.Find(bgmSounds, x => x.name == name);
@@ -185,6 +202,13 @@ public class AudioManager : MonoBehaviour
     public void StopBGM()
     {
         bgmSource.Stop();
+    }
+    public void MasterVolume(float volume)
+    {
+        if (volume == 0f)
+            audioMixerGroup.SetFloat("MasterVolume", -80f);
+        else
+            audioMixerGroup.SetFloat("MasterVolume", Mathf.Log10(volume) * 10f);
     }
 
 }

@@ -195,7 +195,7 @@ namespace UnityEngine.InputSystem.RebindUI
                 {
                     displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath, displayStringOptions);
                     if (NewOptions.instance && !operation)
-                        NewOptions.instance.BindingDone(displayString);
+                        NewOptions.instance.BindingDone(displayString, m_Action);
                 }
             }
 
@@ -266,6 +266,7 @@ namespace UnityEngine.InputSystem.RebindUI
             {
                 m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
                     .WithControlsExcluding("Mouse")
+                    .WithCancelingThrough("<Keyboard>/escape")
                     .OnCancel(
                         operation =>
                         {
@@ -529,14 +530,15 @@ namespace UnityEngine.InputSystem.RebindUI
         public class InteractiveRebindEvent : UnityEvent<Keybind, InputActionRebindingExtensions.RebindingOperation>
         {
         }
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape) && NewOptions.instance.isBinding)
-            {
-                m_RebindOperation?.Cancel();
-                operation = false;
-                UpdateBindingDisplay();
-            }
-        }
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Escape) && NewOptions.instance.isBinding)
+        //    {
+        //        m_RebindOperation?.Cancel();
+        //        m_RebindStopEvent?.Invoke(this, m_RebindOperation);
+        //        operation = false;
+        //        UpdateBindingDisplay();
+        //    }
+        //}
     }
 }

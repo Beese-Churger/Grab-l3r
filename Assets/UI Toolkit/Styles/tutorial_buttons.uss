@@ -130,3 +130,12 @@
 
 .box_middle {
 }
+
+#unity-text-input {
+    font-size: 20px;
+    background-color: black;
+    font-color: white;
+    color: white;
+    flex-grow: 1;
+    -unity-text-outline-color: rgba(255, 255, 255, 255);
+}

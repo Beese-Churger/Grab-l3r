@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class VolumeMenu
@@ -7,6 +8,8 @@ public class VolumeMenu
     private Slider _sfxSlider;
     private Slider _bgmSlider;
     private Slider _masterSlider;
+
+
 
     public Action BackAction { set => _backButton.clicked += value; }
 
@@ -17,6 +20,7 @@ public class VolumeMenu
         _bgmSlider = root.Q<Slider>("MusicVolumeSlider");
         _masterSlider = root.Q<Slider>("MasterVolumeSlider");
 
+        AudioManager.Instance.audioMixerGroup.ClearFloat("MasterSlider");
 
         _bgmSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.BGMVolume(evt.newValue * 0.01f); });
         _bgmSlider.value = AudioManager.Instance.bgmSource.volume * 100;
@@ -24,8 +28,7 @@ public class VolumeMenu
         _sfxSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.SFXVolume(evt.newValue * 0.01f); });
         _sfxSlider.value = AudioManager.Instance.sfxSource.volume * 100;
 
-        //_masterSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.SFXVolume(evt.newValue * 0.01f); });
-        //_masterSlider.value = 
+        _masterSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.MasterVolume(evt.newValue); });
 
     }
 

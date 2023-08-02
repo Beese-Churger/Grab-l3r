@@ -34,16 +34,16 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        //if (arrLevels.Count == 0)
-        //    arrLevels = new()
-        //    {
-        //        new(0, false),
-        //        new(1, false),
-        //        new(2, false),
-        //        new(3, false),
-        //        new(4, false),
-        //        new(5, false)
-        //    };
+        if (arrLevels.Count == 0)
+            arrLevels = new()
+            {
+                new(0, false),
+                new(1, false),
+                new(2, false),
+                new(3, false),
+                new(4, false),
+                new(5, false)
+            };
 
         CheckCurrentIndex();
     }
@@ -59,7 +59,7 @@ public class LevelManager : MonoBehaviour
         currentLevelIndex++;
 
         // If player has reached the level then it will be unlocked for them in the load game menu
-        if (currentLevelIndex != -1 && currentLevelIndex <= arrLevels.Count)
+        if (currentLevelIndex != -1 && currentLevelIndex < arrLevels.Count)
         {
             arrLevels[currentLevelIndex] = new Level(currentLevelIndex, true);
         }        
@@ -76,7 +76,7 @@ public class LevelManager : MonoBehaviour
     public void ReLoadLevel()
     {
         string level = levels[currentLevelIndex];
-        StartCoroutine(LoadLevel(level));
+        StartCoroutine(RespawnLevel(level));
         GameManager.instance.FadeIn();
         PlayLevelBGM(false);
     }
@@ -92,7 +92,6 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
-        
         if (EnemyManager.enemyManager != null)
         {
             EnemyManager.enemyManager.AddEnemies();
@@ -113,7 +112,27 @@ public class LevelManager : MonoBehaviour
         }
 
         if (EnemyManager.enemyManager != null)
+        {
             EnemyManager.enemyManager.AddEnemies();
+        }
+    }
+    // load level by name
+    public IEnumerator RespawnLevel(string scene)
+    {
+        CheckTargetedLevel(scene);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+
+        while (!asyncLoad.isDone)
+        {
+            GameManager.instance.saved = true;
+            yield return null;
+        }
+
+        if (EnemyManager.enemyManager != null)
+        {
+            EnemyManager.enemyManager.AddEnemies();
+            EnemyManager.enemyManager.LoadEnemyPosFromJson();
+        }
     }
 
     // return current level name
