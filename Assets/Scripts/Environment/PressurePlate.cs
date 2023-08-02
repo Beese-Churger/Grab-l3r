@@ -69,6 +69,7 @@ public class PressurePlate : MonoBehaviour
         {
             objectsInTrigger.Add(collision.gameObject);
             animator.SetBool("isPressed", true);
+            AudioManager.Instance.PlaySFX("pressureplate_on", transform.position);
             if (objectsInTrigger.Count < 2)
             {
                 // Increase Boss Phase
@@ -124,7 +125,9 @@ public class PressurePlate : MonoBehaviour
                 // Destroy the boss
                 if (destroyBoss && Boss.instance.gameObject.activeInHierarchy)
                 {
-                    GameObject.Find("BossToExplode").GetComponent<ExplodeOnAwake>().explode("TheCollector");
+                    AudioManager.Instance.PlaySFX("boss_death" + Random.Range(1, 2), Boss.instance.transform.position);
+                    GameObject.Find("BossToExplode").GetComponent<ExplodeOnAwake>().explode(GameObject.Find("TheCollector"));
+                    NewOptions.instance.SetPlayerInput("Options");
                     Boss.instance.gameObject.SetActive(false);
                 }
             }
@@ -140,6 +143,7 @@ public class PressurePlate : MonoBehaviour
             if (objectsInTrigger.Count <= 0)
             {
                 animator.SetBool("isPressed", false);
+                AudioManager.Instance.PlaySFX("pressureplate_off",transform.position);
                 // Decreases Boss Phase
                 if (GameManager.instance.GetLevelManager().GetCurrentLevel() == "LevelLayout Boss")
                 {

@@ -24,6 +24,10 @@ public class SimpleController : MonoBehaviour
 
     [SerializeField] private GameObject DustPrefab;
     public LayerMask ropeLayerMask;
+    float halfHeight;
+
+    // idle sounds
+    private float lastBeepTime;
 
     private void Awake()
     {
@@ -33,6 +37,8 @@ public class SimpleController : MonoBehaviour
         }
         playerPos = transform.position;
         checkpointPos = transform.position;
+        halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
+        lastBeepTime = Time.deltaTime;
     }
 
     void Start()
@@ -58,23 +64,32 @@ public class SimpleController : MonoBehaviour
     void Update()
     {
         jumpInput = jump.action.ReadValue<float>();
-        var halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         groundCheck = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f, ropeLayerMask);
         horizontalInput = movement.action.ReadValue<Vector2>().x;
-    }
 
-    private void FixedUpdate()
-    {
         float Accel = groundCheck ? AirAccel : GroundAccel;
 
         if (groundCheck)
         {
             if (airBorn)
             {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, ropeLayerMask);
+                RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f, ropeLayerMask);
                 GameObject dust = Instantiate(DustPrefab,hit.point,Quaternion.identity);
                 Destroy(dust, dust.GetComponent<ParticleSystem>().main.duration);
-                
+
+                // if land on metal else...
+                if(hit)
+                {
+                    if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Pivot"))
+                    {
+                        AudioManager.Instance.PlaySFX("player_land_metal" + Random.Range(1, 3), transform.position);
+                    }
+                    else
+                    {
+                        AudioManager.Instance.PlaySFX("player_land_sand" + Random.Range(1, 5), transform.position);
+                    }
+                }
+              
                 airBorn = false;
             }
 
@@ -89,33 +104,23 @@ public class SimpleController : MonoBehaviour
             airBorn = true;
             if (horizontalInput > 0f)
             {
-                //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, Accel), 0), ForceMode2D.Force);
                 if(isHooked)
                 {
                     rBody.AddForce(new Vector2(Accel * 2, 0), ForceMode2D.Force);
-                    //rBody.AddForce(new Vector2(0, -1), ForceMode2D.Force);
                 }
-
                 else
                     rBody.AddForce(new Vector2(Accel, 0), ForceMode2D.Force);
             }
 
             else if (horizontalInput < 0f)
             {
-                //rBody.AddForce(new Vector2(SaturatedAdd(-MAXSPEED, MAXSPEED, rBody.velocity.x, -Accel), 0), ForceMode2D.Force);
                 if (isHooked)
                 {
                     rBody.AddForce(new Vector2(-Accel * 2, 0), ForceMode2D.Force);
-                    //rBody.AddForce(new Vector2(0 , -1), ForceMode2D.Force);
                 }
-
                 else
                     rBody.AddForce(new Vector2(-Accel, 0), ForceMode2D.Force);
             }
-            //else
-            //{
-            //    rBody.velocity = new Vector2(rBody.velocity.x * 0.99f, rBody.velocity.y);
-            //}
         }
 
         // clamp the velocity to something sane
@@ -124,6 +129,12 @@ public class SimpleController : MonoBehaviour
 
         if(groundCheck)
             rBody.velocity = new Vector2(rBody.velocity.x * 0.9f, rBody.velocity.y);
+
+        if(lastBeepTime + Random.Range(20,30)< Time.time && groundCheck)
+        {
+            AudioManager.Instance.PlaySFX("player_idle", transform.position);
+            lastBeepTime = Time.time;
+        }
     }
 
     public void damageTaken()
@@ -143,27 +154,5 @@ public class SimpleController : MonoBehaviour
     public void SetHook(bool _hook)
     {
         isHooked = _hook;
-    }
-
-    private float SaturatedAdd(float Min, float Max, float Current, float Modifier)
-    {
-        if (Modifier < 0)
-        {
-            if (Current < Min)
-                return Current;
-            Current += Modifier;
-            if (Current < Min)
-                Current = Min;
-            return Current;
-        }
-        else
-        {
-            if (Current > Max)
-                return Current;
-            Current += Modifier;
-            if (Current > Max)
-                Current = Max;
-            return Current;
-        }
     }
 }

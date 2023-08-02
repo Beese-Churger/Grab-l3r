@@ -45,9 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b156df41cb814299232cd1cbb6f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnBG: {fileID: 5239066617704401590}
   checkpointPos: {x: 0, y: 0}
   state: 0
+  resetPlayer: 0
+  highscore: 0
+  respawnBG: {fileID: 5239066617704401590}
+  ExplodePlayer: {fileID: 0}
+  ExplodePrefab: {fileID: 4443847579455265812, guid: 927fcf37abac6194b9d364e7aef578eb, type: 3}
 --- !u!1001 &7590903647707055177
 PrefabInstance:
   m_ObjectHideFlags: 0

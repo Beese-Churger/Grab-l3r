@@ -887,7 +887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54624820f05ac35478e1c08c2c1237ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyDrop: {fileID: 4876807040678775496, guid: db7fede96980b3d4c93051a122cd6109, type: 3}
+  bodyDrop: {fileID: 5667840588862006481, guid: 25a57e34a00f01142a1b27af354289b6, type: 3}
   bodyDropHolder: {fileID: 0}
   bodySpawnpoint1: {fileID: 0}
   bodySpawnpoint2: {fileID: 0}
@@ -907,7 +907,7 @@ MonoBehaviour:
   slamRClip: {fileID: 7400000, guid: e7dc651aa64198c4ab3a68ca8e9d0de1, type: 2}
   iKLeftHand: {fileID: 8466490970888983000}
   iKRightHand: {fileID: 6880697408549591724}
-  invicibility: 1
+  invicibility: 0
   bodySpawnTimer: 30
   firstPos: 5
   secondPos: 10
@@ -1928,12 +1928,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3959299157903214340, guid: 41594d2163934a545b8791dc358f520d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959299157903214340, guid: 41594d2163934a545b8791dc358f520d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.091
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 3959299157903214340, guid: 41594d2163934a545b8791dc358f520d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.273
+      value: 2.9
       objectReference: {fileID: 0}
     - target: {fileID: 3959299157903214340, guid: 41594d2163934a545b8791dc358f520d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

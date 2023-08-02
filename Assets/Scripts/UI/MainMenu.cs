@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenu : MonoBehaviour
-{    
+{
     public void TriggerStart()
     {
         GameManager.instance.SetGameState(StateType.levelChange);
@@ -12,5 +12,4 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
-
 }

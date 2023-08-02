@@ -81,6 +81,12 @@ public class Terrain : MonoBehaviour
                 transform.position = Vector2.MoveTowards(transform.position, startPos, Time.deltaTime * speed);
             }
         }
+        if (!GameObject.Find("movingplatform_AudioClip"))
+        {
+            AudioManager.Instance.PlaySFX("movingplatform", transform.position);
+        }
+        else if (!GameObject.Find("movingplatform_AudioClip").GetComponent<AudioSource>().isPlaying)
+            GameObject.Find("movingplatform_AudioClip").GetComponent<AudioSource>().Play();
     }
 
     // activate moving platform
@@ -88,6 +94,7 @@ public class Terrain : MonoBehaviour
     {
         triggerPressurePlate = true;
         animator.SetBool("isActivated", true);
+        AudioManager.Instance.PlaySFX("movingplatform_on", transform.position);
     }
 
     // deactivate moving platform
@@ -95,6 +102,9 @@ public class Terrain : MonoBehaviour
     {
         triggerPressurePlate = false;
         animator.SetBool("isActivated", false);
+        AudioManager.Instance.PlaySFX("movingplatform_off", transform.position);
+        GameObject.Find("movingplatform_AudioClip").GetComponent<AudioSource>().Stop();
+
     }
 
     // get terrain type

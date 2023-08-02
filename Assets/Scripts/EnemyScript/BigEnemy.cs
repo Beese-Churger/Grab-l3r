@@ -94,6 +94,7 @@ public class BigEnemy : EnemyBaseClass
                     {
                         Patrol();
                         Slow();
+                        //AudioManager.Instance.PlaySFX("enemy_movement", transform.position);
                     }
                     break;
                 case FSM.AGGRESSIVE:

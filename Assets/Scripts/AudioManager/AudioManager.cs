@@ -8,8 +8,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public Slider SFXvolumeSlider;
-    public Slider BGMvolumeSlider;
+    //public Slider SFXvolumeSlider;
+    //public Slider BGMvolumeSlider;
 
     public SoundScript[] bgmSounds, sfxSounds, bgSounds;
     public AudioSource bgmSource, sfxSource, bgSource;
@@ -94,10 +94,10 @@ public class AudioManager : MonoBehaviour
             AudioSource tempSource = go.GetComponent<AudioSource>();
             tempSource.clip = s.clip;
             tempSource.volume = (s.volume * 0.01f) * sfxSource.volume;
+            go.name = name + "_AudioClip";
             go.GetComponent<PlayOnAwake>().Play();
         }
     }
-
     public void PlaySFXLoop(string name, bool stop)
     {
         SoundScript s = Array.Find(bgmSounds, x => x.name == name);
