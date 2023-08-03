@@ -108,6 +108,7 @@ public class LevelManager : MonoBehaviour
 
         while (!asyncLoad.isDone)
         {
+            GameManager.instance.saved = true;
             yield return null;
         }
 
