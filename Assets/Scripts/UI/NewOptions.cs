@@ -128,10 +128,7 @@ public class NewOptions : MonoBehaviour
         if (grappleRebind == actionRef)
             ControlsMenu.instance.gLabel.text = newActionName;
         else if (jumpRebind == actionRef)
-            if (newActionName != "Space")
-                ControlsMenu.instance.jLabel.text = "Space";
-            else
-                ControlsMenu.instance.jLabel.text = newActionName;
+            ControlsMenu.instance.jLabel.text = newActionName;
         else if (suicideRebind == actionRef)
             ControlsMenu.instance.sLabel.text = newActionName;
 

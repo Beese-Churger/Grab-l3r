@@ -193,7 +193,11 @@ namespace UnityEngine.InputSystem.RebindUI
                 var bindingIndex = action.bindings.IndexOf(x => x.id.ToString() == m_BindingId);
                 if (bindingIndex != -1)
                 {
+                    InputBinding checkBindSpace = action.bindings[bindingIndex];
                     displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath, displayStringOptions);
+                    if (checkBindSpace.effectivePath == "<Keyboard>/space")
+                        displayString = "Space";
+
                     if (NewOptions.instance && !operation)
                         NewOptions.instance.BindingDone(displayString, m_Action);
                 }
