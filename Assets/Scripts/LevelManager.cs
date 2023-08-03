@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 public class LevelManager : MonoBehaviour
 {
     public static Action onLoaderCallback;
-    private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss", "EndingCutscene", "WinMenu" };
+    private string[] levels = { "MainMenu", "Level1Cutscene", "Level_forestTutorial", "LevelLayout 2", "LevelLayout Boss", "EndingCutscene", "PlayableCredits", "WinMenu" };
     private string[] levelsBGM = { "mainmenubgm", "introbgm", "level1bgm", "level2bgm", "bossbgm", "endbgm" , "endbgm" };
     public List<Level> arrLevels;
     public static LevelManager instance = null;
@@ -203,7 +203,8 @@ public class LevelManager : MonoBehaviour
     // Check which level the player is in before playing the bgm
     public void PlayLevelBGM(bool loop)
     {
-        AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
+        if (currentLevelIndex < levelsBGM.Length)
+            AudioManager.Instance.PlayBGMLoop(levelsBGM[currentLevelIndex], loop);
     }
     public static void LoaderCallback()
     {

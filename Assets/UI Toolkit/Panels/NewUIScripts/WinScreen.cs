@@ -5,6 +5,7 @@ public class WinScreen : MonoBehaviour
 {
     private Button backButton;
     private Label statsLabel;
+    private Label collectibleLabel;
 
     private VisualElement highscoreInput;
     private VisualElement background;
@@ -15,13 +16,17 @@ public class WinScreen : MonoBehaviour
         highscoreInput = visualElement.Q("HighscoreInput");
         backButton = visualElement.Q<Button>("OKButton");
         statsLabel = visualElement.Q<Label>("TimeStamp");
+        collectibleLabel = visualElement.Q<Label>("CollectiblesStamp");
+
         backButton.RegisterCallback<MouseUpEvent>((evt) => {
             background.Display(false);
             highscoreInput.Display(true);
             //GameManager.instance.SetGameState(StateType.end);
         });
         ButtonsPressed();
+        collectibleLabel.text = GameManager.instance.GetCollectables().ToString();
         statsLabel.text = Timer.instance.formatTimer(Timer.instance.time);
+        
 
     }
     private void ButtonsPressed()
