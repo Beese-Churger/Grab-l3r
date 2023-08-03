@@ -27,6 +27,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainLevels/EndingCutscene.unity
     guid: 756b4035acce6ff4f9307ec53e5f9fd6
   - enabled: 1
+    path: Assets/Scenes/MainLevels/PlayableCredits.unity
+    guid: fda9ad979cb9e694fa535456e54f1c20
+  - enabled: 1
     path: Assets/Scenes/MainLevels/WinMenu.unity
     guid: 0eac718c5972be64390ce8fdbb7b607d
   - enabled: 1

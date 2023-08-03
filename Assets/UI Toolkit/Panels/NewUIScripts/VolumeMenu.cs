@@ -22,12 +22,13 @@ public class VolumeMenu
 
         AudioManager.Instance.audioMixerGroup.ClearFloat("MasterSlider");
 
-        _bgmSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.BGMVolume(evt.newValue * 0.01f); });
-        _bgmSlider.value = AudioManager.Instance.bgmSource.volume * 100;
+        _bgmSlider.value = AudioManager.Instance.bgmSource.volume * 100f;
+        _bgmSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.BGMVolume(evt.newValue); });
 
-        _sfxSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.SFXVolume(evt.newValue * 0.01f); });
         _sfxSlider.value = AudioManager.Instance.sfxSource.volume * 100;
+        _sfxSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.SFXVolume(evt.newValue); });
 
+        _masterSlider.value = AudioManager.Instance.bgmSource.volume * 100f;
         _masterSlider.RegisterValueChangedCallback((evt) => { AudioManager.Instance.MasterVolume(evt.newValue); });
 
     }

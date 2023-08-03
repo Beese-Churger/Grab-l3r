@@ -191,13 +191,18 @@ public class AudioManager : MonoBehaviour
 
     public void BGMVolume(float volume)
     {
-        bgmSource.volume = volume;
-        //Debug.Log(volume);
+        if (volume == 0f)
+            audioMixerGroup.SetFloat("BGMVolume", -80f);
+        else
+            audioMixerGroup.SetFloat("BGMVolume", Mathf.Log10(volume) * 10f);        
     }
 
     public void SFXVolume(float volume)
     {
-        sfxSource.volume = volume;
+        if (volume == 0f)
+            audioMixerGroup.SetFloat("SFXVolume", -80f);
+        else
+            audioMixerGroup.SetFloat("SFXVolume", Mathf.Log10(volume) * 10f);
     }
     public void StopBGM()
     {
@@ -208,7 +213,7 @@ public class AudioManager : MonoBehaviour
         if (volume == 0f)
             audioMixerGroup.SetFloat("MasterVolume", -80f);
         else
-            audioMixerGroup.SetFloat("MasterVolume", Mathf.Log10(volume) * 10f);
+            audioMixerGroup.SetFloat("MasterVolume", Mathf.Log10(volume) * 5f);
     }
 
 }
