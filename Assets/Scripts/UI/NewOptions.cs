@@ -12,7 +12,6 @@ public class NewOptions : MonoBehaviour
 
     private static bool isPressed = false;
     public static bool isPaused = false;
-    private bool change = false;
 
     // Options GO prefab
     public InputActionAsset inputActions;
@@ -27,7 +26,18 @@ public class NewOptions : MonoBehaviour
     [SerializeField] public InputActionReference suicideRebind;
 
     private List<InputActionReference> allRebindRef;
-
+    private List<string> resolutions = new ()
+    {
+        "1360x768",
+        "1366x768",
+        "1440x900",
+        "1600x900",
+        "1600x1024",
+        "1680x1050",
+        "1920x1080"
+    };
+    public bool isFullscreen = false;
+    public string res;
 
     private void Awake()
     {
@@ -40,6 +50,7 @@ public class NewOptions : MonoBehaviour
                 jumpRebind,
                 suicideRebind
             };
+            res = "1920x1080";
             playerInput.SwitchCurrentActionMap("Options");
             DontDestroyOnLoad(gameObject);
         }
@@ -49,12 +60,6 @@ public class NewOptions : MonoBehaviour
         isPaused = false;
     }
 
-
-    private void Start()
-    {
-
-
-    }
     private void Update()
     {
         if (LevelManager.instance.GetCurrentLevelIndex() > 1)
@@ -157,6 +162,27 @@ public class NewOptions : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
+    }
+    public int GetCurrentResolutionIndex()
+    {
+        // Find the index of the current screen resolution in the available resolutions array
+        string[] temp = res.Split("x");
+        int[] currentResolution =  new int[] { int.Parse(temp[0]), int.Parse(temp[1]) };
+
+        for (int i = 0; i < resolutions.Count; i++)
+        {
+            string[] resolutionArray = resolutions[i].Split("x");
+            int[] valuesIntArray = new int[] { int.Parse(resolutionArray[0]), int.Parse(resolutionArray[1]) };
+            if (valuesIntArray[0] == currentResolution[0] && valuesIntArray[1] == currentResolution[1])
+            {
+                res = valuesIntArray[0].ToString() + "x" + valuesIntArray[1].ToString();
+                Debug.Log(res);
+                return i;
+            }
+        }
+
+        // If the current resolution is not found, return 0 as the default index
+        return 0;
     }
 
 }
