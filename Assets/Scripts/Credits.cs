@@ -39,13 +39,20 @@ public class Credits : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            LevelManager.instance.LoadNextLevel();
+            NewOptions.instance.SetPlayerInput("Options");
+        }
         if (isTransitioning)
         {
             elapsedTime += Time.deltaTime;
             if (elapsedTime >= transitionDelay)
             {
                 LevelManager.instance.LoadNextLevel();
+                NewOptions.instance.SetPlayerInput("Options");
             }
         }
+        
     }
 }
