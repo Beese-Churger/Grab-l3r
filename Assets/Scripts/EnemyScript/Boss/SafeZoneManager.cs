@@ -29,6 +29,7 @@ public class SafeZoneManager : MonoBehaviour
     }
     public void FlashZones(bool isFlashing)
     {
+        //Debug.Log("Flash zones");
         foreach (GameObject safeZone in safeZoneArr)
         {
             if (isFlashing)
