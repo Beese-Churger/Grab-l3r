@@ -373,7 +373,7 @@ public class Boss : MonoBehaviour
                     else
                     {
                         attackTimer += Time.deltaTime;
-                        if (dir.x < 0)
+                        //if (dir.x < 0)
                             ActivateBeam(ATTACK.SLAM);
                         //Debug.Log(attackTimer);
                     }
@@ -435,7 +435,7 @@ public class Boss : MonoBehaviour
                     else
                     {
                         attackTimer += Time.deltaTime;
-                        if (dir.x > 0)
+                        //if (dir.x > 0)
                             ActivateBeam(ATTACK.SLAM);
                     }
 
@@ -730,12 +730,18 @@ public class Boss : MonoBehaviour
     public void AddAttack(ATTACK newAttack)
     {
         if (!attackArray.Contains(newAttack))
+        {
+            //Debug.Log("Add attack");
             attackArray.Add(newAttack);
+        }
     }
     public void RemoveAttack(ATTACK name)
     {
         if (attackArray.Contains(name))
+        {
+            //Debug.Log("Remove attack");
             attackArray.Remove(name);
+        }
     }
     public void SetElectric(bool val)
     {

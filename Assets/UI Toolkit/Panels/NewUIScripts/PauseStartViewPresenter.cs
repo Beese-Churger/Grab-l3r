@@ -75,7 +75,7 @@ public class PauseStartViewPresenter : MonoBehaviour
     {      
         PauseMenuViewPresenter pauseMenuViewPresenter = new(_pauseView);
         pauseMenuViewPresenter.ContinueGame = () => {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             Debug.Log("continue");
             NewOptions.instance.SetPauseState(false);
             NewOptions.instance.SetPlayerInput("Gameplay");
@@ -91,7 +91,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         PauseMenuViewPresenter pauseMenuViewPresenter = new(_pauseView);
         pauseMenuViewPresenter.OpenOptions = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(false, _optionsView);
         };
     }
@@ -100,7 +100,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         PauseMenuViewPresenter pauseMenuViewPresenter = new(_pauseView);
         pauseMenuViewPresenter.QuitGame = () =>
             {
-                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+                AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
                 //LevelManager.instance.SetCurrentLevelIndex(-1);
                 GameManager.instance.SetGameState(StateType.open);
                 TogglePauseScreen(false);
@@ -113,7 +113,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         optionsMenuViewPresenter.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(true, _optionsView);
         };
     }
@@ -122,7 +122,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         optionsMenuViewPresenter.OpenVolume = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(true, _optionsView, _volumeScreen);
         };
     }
@@ -131,7 +131,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         VolumeMenu volumeMenu = new(_volumeScreen);
         volumeMenu.BackAction = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(false, _optionsView, _volumeScreen);
         };
     }
@@ -140,7 +140,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         optionsMenuViewPresenter.OpenBrightness = () =>
         {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(true, _optionsView, _brightnessScreen);
         };
     }
@@ -149,7 +149,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         BrightnessMenu brightnessMenu = new(_brightnessScreen);
         brightnessMenu.BackAction = () => { 
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(false, _optionsView, _brightnessScreen);
         };
     }
@@ -157,7 +157,7 @@ public class PauseStartViewPresenter : MonoBehaviour
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         optionsMenuViewPresenter.OpenResolution = () => { 
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position); 
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2)); 
             SwitchScreen(true, _optionsView, _resolutionScreen); 
         };
     }
@@ -166,7 +166,7 @@ public class PauseStartViewPresenter : MonoBehaviour
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         ResolutionMenu resolutionMenu = new(_resolutionScreen);
         resolutionMenu.BackAction = () => { 
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(false, _optionsView, _resolutionScreen);
         };
     }
@@ -174,7 +174,7 @@ public class PauseStartViewPresenter : MonoBehaviour
     {
         OptionsMenuViewPresenter optionsMenuViewPresenter = new(_optionsView);
         optionsMenuViewPresenter.OpenControls = () => {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(true, _optionsView, _controlScreen);
         };
     }
@@ -182,7 +182,7 @@ public class PauseStartViewPresenter : MonoBehaviour
     {
         ControlsMenu controlsMenu = new(_controlScreen);
         controlsMenu.BackAction = () => {
-            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2), Camera.main.transform.position);
+            AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             SwitchScreen(false, _optionsView, _controlScreen); 
         };
     }

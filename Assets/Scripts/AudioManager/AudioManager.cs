@@ -18,12 +18,17 @@ public class AudioManager : MonoBehaviour
     public GameObject sfx;
     public AudioMixer audioMixerGroup;
 
+    public float masterVol;
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject);
+            audioMixerGroup.ClearFloat("MasterVolume");
+            audioMixerGroup.GetFloat("MasterVolume", out masterVol);
+            masterVol += 80f;
+            audioMixerGroup.SetFloat("MasterVolume", -80f + masterVol);
             //SFXvolumeSlider.value = sfxSource.volume;
             //BGMvolumeSlider.value = bgmSource.volume;
         }
@@ -191,18 +196,12 @@ public class AudioManager : MonoBehaviour
 
     public void BGMVolume(float volume)
     {
-        if (volume == 0f)
-            audioMixerGroup.SetFloat("BGMVolume", -80f);
-        else
-            audioMixerGroup.SetFloat("BGMVolume", Mathf.Log10(volume) * 10f);        
+        bgmSource.volume = volume;
     }
 
     public void SFXVolume(float volume)
     {
-        if (volume == 0f)
-            audioMixerGroup.SetFloat("SFXVolume", -80f);
-        else
-            audioMixerGroup.SetFloat("SFXVolume", Mathf.Log10(volume) * 10f);
+        sfxSource.volume = volume;
     }
     public void StopBGM()
     {
@@ -213,7 +212,9 @@ public class AudioManager : MonoBehaviour
         if (volume == 0f)
             audioMixerGroup.SetFloat("MasterVolume", -80f);
         else
-            audioMixerGroup.SetFloat("MasterVolume", Mathf.Log10(volume) * 5f);
+            audioMixerGroup.SetFloat("MasterVolume", -80f + Mathf.Log10(volume) * 50f);
+
+        masterVol = volume;
     }
 
 }
