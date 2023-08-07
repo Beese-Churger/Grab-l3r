@@ -534,15 +534,5 @@ namespace UnityEngine.InputSystem.RebindUI
         public class InteractiveRebindEvent : UnityEvent<Keybind, InputActionRebindingExtensions.RebindingOperation>
         {
         }
-        //private void Update()
-        //{
-        //    if (Input.GetKeyDown(KeyCode.Escape) && NewOptions.instance.isBinding)
-        //    {
-        //        m_RebindOperation?.Cancel();
-        //        m_RebindStopEvent?.Invoke(this, m_RebindOperation);
-        //        operation = false;
-        //        UpdateBindingDisplay();
-        //    }
-        //}
     }
 }

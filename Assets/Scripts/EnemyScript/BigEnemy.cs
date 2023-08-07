@@ -93,7 +93,6 @@ public class BigEnemy : EnemyBaseClass
                     if (!EdgeDetection() && !WallDetection())
                     {
                         Patrol();
-                        Slow();
                         //AudioManager.Instance.PlaySFX("enemy_movement", transform.position);
                     }
                     break;
@@ -222,23 +221,6 @@ public class BigEnemy : EnemyBaseClass
         else if (direction <= -0.01f)
             transform.localScale = new Vector3(-spriteScale, spriteScale, 1f);
 
-    }
-
-    // Slows big enemy movement down as it approaches the waypoint,
-    private void Slow()
-    {
-        //float distanceFromDestination = Vector2.Distance(rb.position, waypoints[currentWP].transform.position);
-        //if (distanceFromDestination < stoppingDistance)
-        //{
-        //    if (speed > 0)
-        //    {
-        //        speed = distanceFromDestination / stoppingDistance * originalSpeed;
-        //    }
-        //}
-        //else
-        //{
-        //    speed = originalSpeed;
-        //}
     }
     private bool EdgeDetection()
     {
