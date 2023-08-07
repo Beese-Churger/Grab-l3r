@@ -24,7 +24,7 @@ public class WinScreen : MonoBehaviour
             //GameManager.instance.SetGameState(StateType.end);
         });
         ButtonsPressed();
-        collectibleLabel.text = GameManager.instance.GetCollectables().ToString();
+        collectibleLabel.text += GameManager.instance.GetCollectables().ToString();
         statsLabel.text = Timer.instance.formatTimer(Timer.instance.time);
         
 
