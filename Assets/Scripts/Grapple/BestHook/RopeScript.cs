@@ -153,7 +153,7 @@ public class RopeScript : MonoBehaviour
 		int i = 0;
 		if (hooked && playerScript.pulling && playerScript.attachedTo != null)
 			lr.SetPosition(0, playerScript.attachedTo.transform.position);
-		else
+		else if (Nodes.Count > 1)
 			lr.SetPosition(0, Nodes[1].transform.position);
 
 		for (i = 1; i < Nodes.Count; i++)
@@ -177,13 +177,11 @@ public class RopeScript : MonoBehaviour
 
 		lastNode.GetComponent<SpringJoint2D>().connectedBody = go.GetComponent<Rigidbody2D>();
 		lastNode.GetComponent<DistanceJoint2D>().connectedBody = go.GetComponent<Rigidbody2D>();
-
 		lastNode = go;
 
 		Nodes.Add(lastNode);
 		lastNode.name = "Link" + (Nodes.Count - 1);
 		vertexCount++;
-
 	}
 
 	public void RemoveNode(int first)
@@ -308,8 +306,13 @@ public class RopeScript : MonoBehaviour
 			lastNode.GetComponent<SpringJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 			lastNode.GetComponent<DistanceJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
 			lastInputTime = Time.time;
+			if(!cancelled)
+            {
+				playerScript.launch();
+			}
 			cancelled = true;
 			down = true;
+
 		}
 
 		if (playerScript.pulling && gameObject.GetComponent<SpringJoint2D>().connectedBody)

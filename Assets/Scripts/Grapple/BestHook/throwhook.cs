@@ -179,24 +179,12 @@ public class throwhook : MonoBehaviour
 					//delete rope
 					destroyHook();
 
-					Vector2 vel = new Vector2(0,0);
-					for(int i = 0; i < avgVel.Count; ++i)
-                    {
-						vel += avgVel[i];
-                    }
-					playerVel = vel / (5 * Time.deltaTime);
-					launch(playerVel);
+					launch();
 					if (attachedTo != null)
                     {
 						if(attachedTo.GetComponent<SmallEnemy>())
                         {
-							Vector2 attachvel = new Vector2(0, 0);
-							for (int i = 0; i < avgAttachedVel.Count; ++i)
-							{
-								attachvel += avgAttachedVel[i];
-							}
-							attachedVel = attachedVel / (5 * Time.deltaTime);
-							launchAttached(attachedVel);
+							launchAttached();
 						}
 					}
 					hookSprite.GetComponent<SpriteRenderer>().enabled = true;
@@ -205,8 +193,7 @@ public class throwhook : MonoBehaviour
 			}
 		}
 
-		if(!ropeActive)
-			hookSprite.GetComponent<SpriteRenderer>().enabled = true;
+
 
 		if (ropeActive && change && GameObject.Find("Link1"))
         {
@@ -229,6 +216,7 @@ public class throwhook : MonoBehaviour
 
 		gameObject.GetComponent<SimpleController>().SetHook(ropeActive);
 
+		
 		if(avgVel.Count < 5)
 			avgVel.Add((transform.position - oldPos));
 		else
@@ -267,14 +255,26 @@ public class throwhook : MonoBehaviour
 		Vector3 crossHairPosition = new Vector3(x, y, 0);
 		crosshair.transform.position = crossHairPosition;
 	}
-	public void launch(Vector2 velocity)
+	public void launch()
     {
-		gameObject.GetComponent<Rigidbody2D>().velocity = velocity;
+		Vector2 vel = new Vector2(0, 0);
+		for (int i = 0; i < avgVel.Count; ++i)
+		{
+			vel += avgVel[i];
+		}
+		playerVel = vel / (5 * Time.deltaTime);
+		gameObject.GetComponent<Rigidbody2D>().velocity = playerVel;
     }
 
-	public void launchAttached(Vector2 velocity)
+	public void launchAttached()
     {
-		attachedTo.GetComponent<Rigidbody2D>().velocity = velocity; 
+		Vector2 attachvel = new Vector2(0, 0);
+		for (int i = 0; i < avgAttachedVel.Count; ++i)
+		{
+			attachvel += avgAttachedVel[i];
+		}
+		attachedVel = attachedVel / (5 * Time.deltaTime);
+		attachedTo.GetComponent<Rigidbody2D>().velocity = attachvel; 
 	}
 }
 

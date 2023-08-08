@@ -43,7 +43,8 @@ public class FadeInOut : MonoBehaviour
     }
     public void SetAlpha(float i)
     {
-        canvasGroup.alpha = i;
+        if(canvasGroup)
+            canvasGroup.alpha = i;
     }
     public void FadeIn()
     {
