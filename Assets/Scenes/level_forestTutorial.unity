@@ -20081,6 +20081,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5359643665488678135, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5407113248969658598, guid: 32b34aeaa52a9a24f8d5e115d9c721ca, type: 3}
       propertyPath: m_RootOrder
       value: 11
