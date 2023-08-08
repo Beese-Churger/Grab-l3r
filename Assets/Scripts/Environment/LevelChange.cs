@@ -14,7 +14,7 @@ public class LevelChange : MonoBehaviour
     public IEnumerator ChangeScene()
     {
         fade.FadeIn();
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(1);
         LevelManager.instance.LoadNextLevel();
 
     }

@@ -757,6 +757,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 987789526822772232, guid: 41c3923b3e11d77459d161d1716e40b2, type: 3}
+      propertyPath: fade
+      value: 
+      objectReference: {fileID: 1216085303}
     - target: {fileID: 9123792539238281771, guid: 41c3923b3e11d77459d161d1716e40b2, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4629,6 +4633,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1216085303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2658592996206354080, guid: 621bf5c8f5dfdb74f89c5052409c59ad, type: 3}
+  m_PrefabInstance: {fileID: 1762879469}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa71fa55af1489145aebd83466ca613f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1245864736
 PrefabInstance:
   m_ObjectHideFlags: 0
