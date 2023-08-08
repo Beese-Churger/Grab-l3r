@@ -37,8 +37,10 @@ public class throwhook : MonoBehaviour
 
 	private float lastInputTime;
 	private float inputDelay = 0.19f;
-	Vector3 playerVel;
-
+	Vector2 playerVel;
+	Vector2 attachedVel;
+	public List<Vector2> avgVel;
+	public List<Vector2> avgAttachedVel;
 	Vector3 oldPos;
 	Vector3 oldAttachedPos;
 	public enum HookContext
@@ -58,6 +60,7 @@ public class throwhook : MonoBehaviour
 		oldPos = transform.position;
 
 		cursor = GameObject.Find("Cursor").GetComponent<Image>();
+
     }
 
 
@@ -175,11 +178,26 @@ public class throwhook : MonoBehaviour
 				{
 					//delete rope
 					destroyHook();
-					launch();
+
+					Vector2 vel = new Vector2(0,0);
+					for(int i = 0; i < avgVel.Count; ++i)
+                    {
+						vel += avgVel[i];
+                    }
+					playerVel = vel / (5 * Time.deltaTime);
+					launch(playerVel);
 					if (attachedTo != null)
                     {
 						if(attachedTo.GetComponent<SmallEnemy>())
-							launchAttached();
+                        {
+							Vector2 attachvel = new Vector2(0, 0);
+							for (int i = 0; i < avgAttachedVel.Count; ++i)
+							{
+								attachvel += avgAttachedVel[i];
+							}
+							attachedVel = attachedVel / (5 * Time.deltaTime);
+							launchAttached(attachedVel);
+						}
 					}
 					hookSprite.GetComponent<SpriteRenderer>().enabled = true;
 				}
@@ -210,9 +228,29 @@ public class throwhook : MonoBehaviour
 		}
 
 		gameObject.GetComponent<SimpleController>().SetHook(ropeActive);
+
+		if(avgVel.Count < 5)
+			avgVel.Add((transform.position - oldPos));
+		else
+        {
+			avgVel.RemoveAt(0);
+			avgVel.Add((transform.position - oldPos));
+		}
 		oldPos = transform.position;
 		if(attachedTo)
+        {
+			if (avgAttachedVel.Count < 5)
+				avgAttachedVel.Add((attachedTo.transform.position - oldAttachedPos));
+			else
+			{
+				avgAttachedVel.RemoveAt(0);
+				avgAttachedVel.Add((attachedTo.transform.position - oldAttachedPos));
+			}
+			
+
 			oldAttachedPos = attachedTo.transform.position;
+		}
+			
 	}
 
 	// Move the aiming crosshair based on aim angle
@@ -229,14 +267,14 @@ public class throwhook : MonoBehaviour
 		Vector3 crossHairPosition = new Vector3(x, y, 0);
 		crosshair.transform.position = crossHairPosition;
 	}
-	public void launch()
+	public void launch(Vector2 velocity)
     {
-		gameObject.GetComponent<Rigidbody2D>().velocity = (transform.position - oldPos )/ Time.deltaTime;
+		gameObject.GetComponent<Rigidbody2D>().velocity = velocity;
     }
 
-	public void launchAttached()
+	public void launchAttached(Vector2 velocity)
     {
-		attachedTo.GetComponent<Rigidbody2D>().velocity = (attachedTo.transform.position - oldAttachedPos) / Time.deltaTime;
+		attachedTo.GetComponent<Rigidbody2D>().velocity = velocity; 
 	}
 }
 
