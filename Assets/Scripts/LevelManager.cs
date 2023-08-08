@@ -57,6 +57,7 @@ public class LevelManager : MonoBehaviour
     public void LoadNextLevel()
     {
         currentLevelIndex++;
+        EnemyManager.enemyManager.EraseEnemyData();
 
         // If player has reached the level then it will be unlocked for them in the load game menu
         if (currentLevelIndex != -1 && currentLevelIndex < arrLevels.Count)

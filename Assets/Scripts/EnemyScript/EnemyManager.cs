@@ -131,6 +131,8 @@ public class EnemyManager : MonoBehaviour
         //int currentLevel = 1;
 
         string filePath = Path.Combine(Application.persistentDataPath, "Level" + currentLevel + "EnemyData.json");
+        Debug.Log(filePath);
+
         if (File.Exists(filePath))
         {
             string jsonData = File.ReadAllText(filePath);
@@ -163,7 +165,8 @@ public class EnemyManager : MonoBehaviour
         int currentLevel = LevelManager.instance.GetCurrentLevelIndex() - 1;
         //Debug.Log(currentLevel);
         string filePath = Path.Combine(Application.persistentDataPath, "Level" + currentLevel + "EnemyData.json");
-        File.Delete(filePath);
+        if (File.Exists(filePath))
+            File.Delete(filePath);
     }
 
 }
