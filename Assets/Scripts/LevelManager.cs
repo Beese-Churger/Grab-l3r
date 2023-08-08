@@ -116,6 +116,8 @@ public class LevelManager : MonoBehaviour
         {
             EnemyManager.enemyManager.AddEnemies();
         }
+        GameManager.instance.saved = false;
+
     }
     // load level by name
     public IEnumerator RespawnLevel(string scene)

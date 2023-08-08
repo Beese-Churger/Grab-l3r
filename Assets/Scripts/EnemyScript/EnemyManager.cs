@@ -41,7 +41,7 @@ public class EnemyManager : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
     void Update()
@@ -157,6 +157,13 @@ public class EnemyManager : MonoBehaviour
             Debug.LogWarning("File not found: " + filePath);
             return;
         }
+    }
+    public void EraseEnemyData()
+    {
+        int currentLevel = LevelManager.instance.GetCurrentLevelIndex() - 1;
+        //Debug.Log(currentLevel);
+        string filePath = Path.Combine(Application.persistentDataPath, "Level" + currentLevel + "EnemyData.json");
+        File.Delete(filePath);
     }
 
 }
