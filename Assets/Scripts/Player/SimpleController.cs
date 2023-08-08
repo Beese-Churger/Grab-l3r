@@ -153,7 +153,6 @@ public class SimpleController : MonoBehaviour
         {
             Debug.Log("SAVING");
             EnemyManager.enemyManager.SaveEnemyPosToJson();
-            GameManager.instance.saved = true;
         }
     }
 

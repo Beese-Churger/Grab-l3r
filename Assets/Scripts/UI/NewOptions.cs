@@ -90,11 +90,11 @@ public class NewOptions : MonoBehaviour
             else
                 isPressed = false;
 
-            //if (Input.GetKeyDown(KeyCode.N))
-            //{
-            //    GameManager.instance.SetGameState(StateType.levelChange);
-            //    EnemyManager.enemyManager.ClearEnemyList();
-            //}
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                GameManager.instance.SetGameState(StateType.levelChange);
+                EnemyManager.enemyManager.ClearEnemyList();
+            }
             if (suicideRebind.action.triggered && GameManager.instance.GetCurrentPlayerHealth() > 0)
             {
                 GameManager.instance.InstantDeath();
@@ -176,7 +176,7 @@ public class NewOptions : MonoBehaviour
             if (valuesIntArray[0] == currentResolution[0] && valuesIntArray[1] == currentResolution[1])
             {
                 res = valuesIntArray[0].ToString() + "x" + valuesIntArray[1].ToString();
-                Debug.Log(res);
+                //Debug.Log(res);
                 return i;
             }
         }

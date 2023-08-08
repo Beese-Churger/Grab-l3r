@@ -134,7 +134,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
             AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
             ToggleLoadGameMenu(true);
             CheckLock();
-            Debug.Log("Inside Load Game Menu");
+            //Debug.Log("Inside Load Game Menu");
         };
     }
     // CLOSE LOAD GAME MENU
@@ -349,8 +349,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
             {
                 NewOptions.instance.SetPlayerInput("Gameplay");
                 AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
-                StartCoroutine(LevelManager.instance.LoadLevel("Level_forestTutorial"));
+                LevelManager.instance.StartCoroutine(LevelManager.instance.LoadLevel("Level_forestTutorial"));
                 GameManager.instance.GetLevelManager().PlayLevelBGM(false);
+                if (EnemyManager.enemyManager != null)
+                    EnemyManager.enemyManager.EraseEnemyData();
             }
             else
                 AudioManager.Instance.PlaySFX("menu_decline");
@@ -364,8 +366,10 @@ public class TutorialStartViewPresenter : MonoBehaviour
             {
                 NewOptions.instance.SetPlayerInput("Gameplay");
                 AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
-                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2"));
+                LevelManager.instance.StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout 2"));
                 GameManager.instance.GetLevelManager().PlayLevelBGM(false);
+                if (EnemyManager.enemyManager != null)
+                    EnemyManager.enemyManager.EraseEnemyData();
             }
             else
                 AudioManager.Instance.PlaySFX("menu_decline");
@@ -380,7 +384,7 @@ public class TutorialStartViewPresenter : MonoBehaviour
             {
                 NewOptions.instance.SetPlayerInput("Gameplay");
                 AudioManager.Instance.PlaySFX("menu_confirm" + Random.Range(1, 2));
-                StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout Boss"));
+                LevelManager.instance.StartCoroutine(LevelManager.instance.LoadLevel("LevelLayout Boss"));
                 GameManager.instance.GetLevelManager().PlayLevelBGM(false);
             }
             else
