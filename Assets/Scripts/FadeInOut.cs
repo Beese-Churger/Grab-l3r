@@ -43,8 +43,8 @@ public class FadeInOut : MonoBehaviour
     }
     public void SetAlpha(float i)
     {
-        if(canvasGroup)
-            canvasGroup.alpha = i;
+        canvasGroup = GameObject.FindWithTag("Fade").GetComponent<CanvasGroup>();
+        canvasGroup.alpha = i;
     }
     public void FadeIn()
     {
